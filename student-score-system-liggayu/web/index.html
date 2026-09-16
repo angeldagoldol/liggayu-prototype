@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A CC104 student score management prototype with a real Java array-based backend.">
+  <title>ScoreDesk | Student Score Management</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#main-content" aria-label="ScoreDesk home">
+      <span class="brand-mark" aria-hidden="true">S<span>▰</span></span>
+      <span>ScoreDesk<small>STUDENT SCORE MANAGER</small></span>
+    </a>
+    <p class="nav-label">WORKSPACE</p>
+    <nav aria-label="Main navigation">
+      <a class="nav-link active" href="#main-content" aria-current="page"><span aria-hidden="true">▦</span> Dashboard</a>
+      <a class="nav-link" id="array-link" href="#array-section"><span aria-hidden="true">[ ]</span> Array view</a>
+    </nav>
+    <div class="sidebar-project">
+      <span class="tiny-label">THE CORE TECHNIQUE</span>
+      <h2>Small arrays.<br>Clear results.</h2>
+      <p>One name array. One score matrix. Every record connected by its index.</p>
+      <span class="tech-pill">Array / Multidimensional Array</span>
+    </div>
+    <div class="sidebar-footer"><span class="dot"></span> CC104 · Prelim prototype</div>
+  </aside>
+
+  <main id="main-content" class="main-content">
+    <div class="topbar screen-only">
+      <span class="eyebrow">CC104 <span>/</span> DATA STRUCTURES &amp; ALGORITHMS</span>
+      <span class="connection" id="connection" data-state="connecting"><span class="dot"></span><span id="connection-label">Connecting…</span></span>
+    </div>
+
+    <header class="page-header screen-only">
+      <div><p class="section-kicker">YOUR CLASS, AT A GLANCE</p><h1>Student score manager</h1>
+        <p class="subtitle">Record scores. Understand averages. Keep the whole class in view.</p>
+      </div>
+      <div class="header-actions">
+        <button id="sample-btn" class="button button-secondary" type="button" disabled><span aria-hidden="true">＋</span> Load sample data</button>
+        <button id="print-btn" class="button button-primary" type="button" disabled><span aria-hidden="true">↗</span> Print report</button>
+      </div>
+    </header>
+
+    <header class="print-only print-header">
+      <p>ScoreDesk · CC104 array prototype</p><h1>Student Score Report</h1>
+      <p>Three equally weighted scores per student · <span id="print-date"></span></p>
+    </header>
+
+    <section class="summary-grid" aria-label="Class summary">
+      <article class="summary-card">
+        <div class="metric-heading"><h2>Recorded students</h2><span class="metric-icon" aria-hidden="true">#</span></div>
+        <p class="metric"><span id="student-count">0</span><span class="metric-unit"> / 100</span></p>
+        <p class="metric-detail" id="capacity-detail">100 array slots available</p>
+      </article>
+      <article class="summary-card">
+        <div class="metric-heading"><h2>Class average</h2><span class="metric-icon" aria-hidden="true">∑</span></div>
+        <p class="metric" id="class-average">—</p><p class="metric-detail">Three scores, equal weight</p>
+      </article>
+      <article class="summary-card highest-card">
+        <div class="metric-heading"><h2>Highest average</h2><span class="metric-icon" aria-hidden="true">↗</span></div>
+        <p class="metric" id="highest-average">—</p><p class="metric-detail winner-names" id="highest-names">No student records yet</p>
+      </article>
+      <article class="summary-card">
+        <div class="metric-heading"><h2>Lowest average</h2><span class="metric-icon" aria-hidden="true">↘</span></div>
+        <p class="metric" id="lowest-average">—</p><p class="metric-detail winner-names" id="lowest-names">No student records yet</p>
+      </article>
+    </section>
+
+    <div id="feedback" class="feedback screen-only" role="status" aria-live="polite">Connecting to the Java server…</div>
+    <noscript><p class="feedback" role="alert">Enable JavaScript to connect this website to its Java server.</p></noscript>
+
+    <div class="workspace">
+      <section class="panel entry-panel" id="entry-panel" aria-labelledby="entry-title">
+        <div class="panel-heading"><span class="step-number">01</span><h2 id="entry-title">Add a student</h2></div>
+        <p class="panel-description">Enter a name and three assessment scores.</p>
+        <form id="student-form">
+          <fieldset id="input-fields" disabled>
+            <legend class="visually-hidden">Student details and scores</legend>
+            <label for="student-name">Student name</label>
+            <input id="student-name" name="name" type="text" placeholder="e.g., Ana Santos" maxlength="80" autocomplete="off" required>
+            <div class="score-inputs">
+              <div><label for="score1">Score 1</label><input id="score1" name="score1" type="number" min="0" max="100" step="0.01" inputmode="decimal" placeholder="0–100" required></div>
+              <div><label for="score2">Score 2</label><input id="score2" name="score2" type="number" min="0" max="100" step="0.01" inputmode="decimal" placeholder="0–100" required></div>
+              <div><label for="score3">Score 3</label><input id="score3" name="score3" type="number" min="0" max="100" step="0.01" inputmode="decimal" placeholder="0–100" required></div>
+            </div>
+            <p class="field-help">0–100 per score · Up to 2 decimal places</p>
+            <div class="formula"><span>THE CALCULATION</span><code>Average = (S1 + S2 + S3) / 3</code></div>
+            <button id="submit-btn" class="button button-primary button-full" type="submit" disabled><span aria-hidden="true">＋</span> Add student</button>
+            <button id="clear-fields-btn" class="button button-quiet button-full" type="button">Clear fields</button>
+          </fieldset>
+        </form>
+        <div class="capacity-block"><div><span>Array capacity</span><span id="capacity-label">0 / 100</span></div><progress id="capacity-meter" value="0" max="100">0 / 100</progress></div>
+        <p class="session-note"><strong>Session storage</strong> Records stay while Java is running. Restarting the server clears them.</p>
+      </section>
+
+      <section class="panel report-panel" id="report-section" aria-labelledby="report-title">
+        <div class="report-heading">
+          <div><div class="report-title-row"><h2 id="report-title">Class report</h2><span id="report-count" class="count-chip">0 students</span></div>
+            <p class="panel-description">Calculated in Java · Highest and lowest by average</p>
+          </div>
+          <div class="report-actions screen-only">
+            <button id="refresh-btn" class="button button-small" type="button" aria-label="Refresh report" title="Refresh report from Java"><span aria-hidden="true">↻</span></button>
+            <button id="reset-btn" class="button button-small reset-button" type="button" disabled>Reset all</button>
+          </div>
+        </div>
+        <p class="mobile-table-hint screen-only">Swipe sideways in the table to see all scores →</p>
+        <div id="empty-state" class="empty-state">
+          <div class="empty-symbol" aria-hidden="true">[<span>＋</span>]</div>
+          <h3>Your class report starts here</h3><p>Add your first student, or load fictional sample data to see the arrays in action.</p>
+          <div class="empty-tags"><span>3 scores</span><span>1 average</span><span>Clear results</span></div>
+        </div>
+        <div class="table-wrap" id="report-table-wrap" tabindex="0" role="region" aria-label="Student score report table; scroll horizontally on small screens" hidden>
+          <table id="student-table">
+            <caption class="visually-hidden">Student names, three scores, arithmetic averages and highest or lowest standing</caption>
+            <thead><tr><th scope="col" class="index-column">#</th><th scope="col" class="name-column">Student name</th><th scope="col">Score 1</th><th scope="col">Score 2</th><th scope="col">Score 3</th><th scope="col">Average</th><th scope="col" class="standing-column">Standing</th></tr></thead>
+            <tbody id="student-rows"></tbody>
+          </table>
+        </div>
+        <div class="report-footer"><span>Insertion order · Averages shown to 2 decimals</span><span class="java-tag">JAVA ARRAY ENGINE</span></div>
+        <p class="tie-note">All tied students share the label. A single student is both highest and lowest. Comparisons use unrounded values.</p>
+      </section>
+    </div>
+
+    <details class="panel array-section" id="array-section" open>
+      <summary><span class="array-summary-title"><span class="array-symbol" aria-hidden="true">[ ]</span><span>See arrays in action<small>The data structure behind your report</small></span></span><span class="array-summary-meta">INSERT → TRAVERSE → COMPARE <span aria-hidden="true">⌄</span></span></summary>
+      <div class="array-content">
+        <div class="array-code"><span class="tiny-label">IN JAVA MEMORY</span><pre><code><span class="code-type">String[]</span> studentNames
+  = <span class="code-keyword">new</span> String[<span class="code-number">100</span>];
+
+<span class="code-type">double[][]</span> studentScores
+  = <span class="code-keyword">new</span> double[<span class="code-number">100</span>][<span class="code-number">3</span>];</code></pre><p>The same index connects each student to their three scores.</p></div>
+        <div class="array-data"><div class="array-data-heading"><h3>Stored array values</h3><span id="array-count">0 occupied rows</span></div>
+          <p id="array-empty" class="array-empty">No occupied slots yet. Your first student will use index [0].</p>
+          <div class="array-table-wrap" id="array-table-wrap" tabindex="0" role="region" aria-label="Java array values; scroll to view additional rows" hidden>
+            <table class="array-table"><thead><tr><th scope="col">Index</th><th scope="col"><code>studentNames[i]</code></th><th scope="col"><code>studentScores[i][0..2]</code></th></tr></thead><tbody id="array-rows"></tbody></table>
+          </div><p class="array-footnote">Actual values returned by Java. Unused array slots are not shown.</p>
+        </div>
+      </div>
+      <div class="operation-steps"><p><b>01 / INSERT</b> Store the next student at the next free index.</p><p><b>02 / TRAVERSE</b> Visit the occupied rows and total three scores.</p><p><b>03 / COMPARE</b> Find the highest and lowest, including every tie.</p></div>
+    </details>
+    <footer class="page-footer"><span>Student Score Management System Using Arrays</span><span>Records loaded with “Load sample data” are fictional.</span></footer>
+  </main>
+</body>
+</html>

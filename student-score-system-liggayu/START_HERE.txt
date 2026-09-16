@@ -1,0 +1,43 @@
+SCOREDESK
+Student Score Management System Using Arrays
+HTML + CSS + JavaScript + Java
+
+1. Extract the ZIP. Do not run the files from inside the ZIP viewer.
+2. Install a full Java Development Kit: JDK 17 or newer.
+   Check in a terminal: java -version
+                        javac -version
+3. On Windows, double-click run.bat.
+   On macOS/Linux, open a terminal in this folder and enter: sh run.sh
+4. Leave that terminal open and open this address in a browser:
+   http://localhost:8080
+5. Click Load sample data, or enter a student name and three scores.
+   Scores must be 0 to 100. Up to two decimal places are accepted.
+6. Use Print report to print or save the report through your browser.
+
+IMPORTANT
+The Java server must run on a laptop/desktop. This ZIP is a local project,
+not an already hosted website. Opening index.html directly does not run Java.
+
+Refreshing the page keeps records while Java is running.
+Stopping/restarting Java, or choosing Reset all, clears every record.
+There is no database, file saving, login, or permanent student storage.
+
+PORT ALREADY IN USE?
+Windows:     run.bat 8081
+macOS/Linux: sh run.sh 8081
+Then open http://localhost:8081
+
+FILES TO READ
+web/index.html           Page layout
+web/styles.css           Website design and print layout
+web/app.js               Form events, Java requests and result display
+src/StudentStore.java    Main arrays and scoring algorithms
+src/StudentServer.java   Java HTTP server connecting the website to the arrays
+README.md                Setup, features, limitations and assignment mapping
+docs/CODE_WALKTHROUGH.md Code explanation and pseudocode for study
+docs/VERIFICATION.md     What was tested and the verification limitations
+
+Before submission, replace the group/section parts in your archive name:
+CC104_Prelim_Prototype_Group[No.]_[Section].zip
+Review and adapt the code as a group, and follow your instructor's rules.
+The research paper has not been written as part of this code deliverable.
