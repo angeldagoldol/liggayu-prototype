@@ -1,0 +1,8 @@
+*
+!Dockerfile
+!src/
+!src/*.java
+!web/
+!web/*
+!tests/
+!tests/StudentStoreTest.java
