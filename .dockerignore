@@ -1,0 +1,17 @@
+.git
+.gitignore
+.mvn
+.superpowers
+deliverables
+docs
+node_modules
+rendered
+target
+tests
+*.docx
+*.log
+*.zip
+mvnw
+mvnw.cmd
+package.json
+scripts

@@ -1,0 +1,14 @@
+.worktrees/
+target/
+rendered/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.tmp
+*.temp
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/

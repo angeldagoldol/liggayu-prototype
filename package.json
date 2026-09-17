@@ -1,0 +1,8 @@
+{
+  "name": "student-score-management-system",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:frontend": "node --test src/test/frontend/*.test.js"
+  }
+}

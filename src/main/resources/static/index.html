@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Add student assessment scores and view the report calculated by the Java ArrayList service.">
+  <title>Student Score Management System</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-mark" aria-hidden="true">SS</div>
+      <div>
+        <p class="institution-label">Data Structures and Algorithms</p>
+        <h1>Student Score Management System</h1>
+        <p class="header-description">A clear report powered by a Java <code>ArrayList</code>.</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="workspace">
+    <section class="panel entry-panel" aria-labelledby="entry-heading">
+      <div class="section-heading">
+        <p class="section-kicker">New record</p>
+        <h2 id="entry-heading">Add a student</h2>
+        <p>Enter one name and three assessment scores from 0 to 100.</p>
+      </div>
+
+      <form id="student-form" novalidate>
+        <div class="form-field">
+          <label for="student-name">Student Name</label>
+          <input id="student-name" name="name" type="text" maxlength="100" autocomplete="name"
+                 aria-describedby="student-name-hint student-name-error" required>
+          <p id="student-name-hint" class="field-hint">Maximum 100 characters.</p>
+          <p id="student-name-error" class="field-error" aria-live="polite"></p>
+        </div>
+
+        <fieldset>
+          <legend>Assessment scores</legend>
+          <div class="score-fields">
+            <div class="form-field">
+              <label for="assessment-1">Assessment 1</label>
+              <input id="assessment-1" name="assessment1" type="number" inputmode="decimal"
+                     min="0" max="100" step="any" aria-describedby="assessment-1-error" required>
+              <p id="assessment-1-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div class="form-field">
+              <label for="assessment-2">Assessment 2</label>
+              <input id="assessment-2" name="assessment2" type="number" inputmode="decimal"
+                     min="0" max="100" step="any" aria-describedby="assessment-2-error" required>
+              <p id="assessment-2-error" class="field-error" aria-live="polite"></p>
+            </div>
+            <div class="form-field">
+              <label for="assessment-3">Assessment 3</label>
+              <input id="assessment-3" name="assessment3" type="number" inputmode="decimal"
+                     min="0" max="100" step="any" aria-describedby="assessment-3-error" required>
+              <p id="assessment-3-error" class="field-error" aria-live="polite"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <p id="form-error" class="message message-error" role="alert" hidden></p>
+        <p id="form-success" class="message message-success" role="status" aria-live="polite" hidden></p>
+
+        <button id="add-student-button" type="submit">Add Student</button>
+      </form>
+
+      <aside class="memory-note" aria-label="Storage note">
+        <strong>Session-based records</strong>
+        <span>Scores are kept in memory and reset when the server restarts.</span>
+      </aside>
+    </section>
+
+    <section id="report-section" class="panel report-panel" aria-labelledby="report-heading">
+      <div class="section-heading report-heading-row">
+        <div>
+          <p class="section-kicker">Current results</p>
+          <h2 id="report-heading">Student report</h2>
+          <p>Records appear in the order they were added.</p>
+        </div>
+        <span id="record-count" class="record-count" aria-live="polite">0 records</span>
+      </div>
+
+      <p id="report-loading" class="report-state" role="status">Loading student records…</p>
+      <p id="report-error" class="message message-error" role="alert" hidden></p>
+      <div id="report-empty" class="empty-state" hidden>
+        <strong>No student records yet</strong>
+        <p>Add the first student using the form to begin the report.</p>
+      </div>
+
+      <div id="report-content" hidden>
+        <div class="summary-grid" aria-label="Score summary">
+          <article class="summary-card summary-high">
+            <p>Highest Scorer</p>
+            <h3 id="highest-names">—</h3>
+            <span><strong id="highest-average">—</strong> average</span>
+          </article>
+          <article class="summary-card summary-low">
+            <p>Lowest Scorer</p>
+            <h3 id="lowest-names">—</h3>
+            <span><strong id="lowest-average">—</strong> average</span>
+          </article>
+        </div>
+
+        <div id="report-table-container" class="table-region" role="region"
+             aria-labelledby="student-report-caption" tabindex="0">
+          <table>
+            <caption id="student-report-caption">Student assessment scores and backend-calculated averages</caption>
+            <thead>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Assessment 1</th>
+                <th scope="col">Assessment 2</th>
+                <th scope="col">Assessment 3</th>
+                <th scope="col">Average</th>
+              </tr>
+            </thead>
+            <tbody id="student-report-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Student Score Management System · Java ArrayList demonstration</p>
+  </footer>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+package edu.sjpiicd.scores.student;
+
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public record StudentRequest(
+        @NotBlank(message = "Student name is required.")
+        @Size(max = 100, message = "Student name must not exceed 100 characters.")
+        String name,
+        @NotNull(message = "Assessment 1 is required.")
+        @DecimalMin(value = "0.0", message = "Assessment 1 must be from 0 to 100.")
+        @DecimalMax(value = "100.0", message = "Assessment 1 must be from 0 to 100.")
+        Double assessment1,
+        @NotNull(message = "Assessment 2 is required.")
+        @DecimalMin(value = "0.0", message = "Assessment 2 must be from 0 to 100.")
+        @DecimalMax(value = "100.0", message = "Assessment 2 must be from 0 to 100.")
+        Double assessment2,
+        @NotNull(message = "Assessment 3 is required.")
+        @DecimalMin(value = "0.0", message = "Assessment 3 must be from 0 to 100.")
+        @DecimalMax(value = "100.0", message = "Assessment 3 must be from 0 to 100.")
+        Double assessment3) {}

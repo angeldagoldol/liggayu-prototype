@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: student-score-management-system
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/report
