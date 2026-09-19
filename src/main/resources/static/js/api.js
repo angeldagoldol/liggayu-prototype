@@ -22,9 +22,9 @@ function isScore(value) {
 function isStudent(student) {
   return isRecord(student)
     && isName(student.name)
-    && isScore(student.assessment1)
-    && isScore(student.assessment2)
-    && isScore(student.assessment3)
+    && isScore(student.prelim)
+    && isScore(student.midterm)
+    && isScore(student.finals)
     && isScore(student.average);
 }
 

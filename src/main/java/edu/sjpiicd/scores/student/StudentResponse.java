@@ -2,17 +2,17 @@ package edu.sjpiicd.scores.student;
 
 public record StudentResponse(
         String name,
-        double assessment1,
-        double assessment2,
-        double assessment3,
+        double prelim,
+        double midterm,
+        double finals,
         double average) {
 
     static StudentResponse from(Student student) {
         return new StudentResponse(
                 student.name(),
-                student.assessment1(),
-                student.assessment2(),
-                student.assessment3(),
+                student.prelim(),
+                student.midterm(),
+                student.finals(),
                 student.average());
     }
 }

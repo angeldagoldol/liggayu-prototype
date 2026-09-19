@@ -1,7 +1,7 @@
 const scoreFields = [
-  ["assessment1", "Assessment 1"],
-  ["assessment2", "Assessment 2"],
-  ["assessment3", "Assessment 3"]
+  ["prelim", "Prelim"],
+  ["midterm", "Midterm"],
+  ["finals", "Finals"]
 ];
 
 export function validateStudentInput(rawInput) {
@@ -35,9 +35,9 @@ export function validateStudentInput(rawInput) {
 export function buildStudentRequest(rawInput) {
   return {
     name: String(rawInput.name ?? "").trim(),
-    assessment1: Number(rawInput.assessment1),
-    assessment2: Number(rawInput.assessment2),
-    assessment3: Number(rawInput.assessment3)
+    prelim: Number(rawInput.prelim),
+    midterm: Number(rawInput.midterm),
+    finals: Number(rawInput.finals)
   };
 }
 

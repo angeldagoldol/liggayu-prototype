@@ -32,14 +32,14 @@ async function expectJson(path, expectedStatus, options = {}) {
   return readJson(response);
 }
 
-async function addStudent(name, assessment1, assessment2, assessment3) {
+async function addStudent(name, prelim, midterm, finals) {
   return expectJson("/api/students", 201, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ name, assessment1, assessment2, assessment3 })
+    body: JSON.stringify({ name, prelim, midterm, finals })
   });
 }
 
@@ -64,10 +64,10 @@ const tiedReport = await addStudent("Dani", 70, 80, 90);
 
 assert.deepEqual(tiedReport, {
   students: [
-    { name: "Ana", assessment1: 80, assessment2: 90, assessment3: 100, average: 90 },
-    { name: "Ben", assessment1: 70, assessment2: 80, assessment3: 90, average: 80 },
-    { name: "Cara", assessment1: 100, assessment2: 80, assessment3: 90, average: 90 },
-    { name: "Dani", assessment1: 70, assessment2: 80, assessment3: 90, average: 80 }
+    { name: "Ana", prelim: 80, midterm: 90, finals: 100, average: 90 },
+    { name: "Ben", prelim: 70, midterm: 80, finals: 90, average: 80 },
+    { name: "Cara", prelim: 100, midterm: 80, finals: 90, average: 90 },
+    { name: "Dani", prelim: 70, midterm: 80, finals: 90, average: 80 }
   ],
   highest: { average: 90, names: ["Ana", "Cara"] },
   lowest: { average: 80, names: ["Ben", "Dani"] }
@@ -77,7 +77,7 @@ const duplicateNameReport = await addStudent("Ana", 80, 90, 95);
 assert.deepEqual(duplicateNameReport, {
   students: [
     ...tiedReport.students,
-    { name: "Ana", assessment1: 80, assessment2: 90, assessment3: 95, average: 88.33 }
+    { name: "Ana", prelim: 80, midterm: 90, finals: 95, average: 88.33 }
   ],
   highest: tiedReport.highest,
   lowest: tiedReport.lowest
@@ -89,13 +89,13 @@ const invalidResponse = await request("/api/students", {
     Accept: "application/json",
     "Content-Type": "application/json"
   },
-  body: JSON.stringify({ name: "Eli", assessment1: 101, assessment2: 80, assessment3: 90 })
+  body: JSON.stringify({ name: "Eli", prelim: 101, midterm: 80, finals: 90 })
 });
 assert.equal(invalidResponse.status, 400, "POST /api/students rejects score 101");
 const invalidError = await readJson(invalidResponse);
 assert.equal(
-  invalidError.fieldErrors?.assessment1,
-  "Assessment 1 must be from 0 to 100."
+  invalidError.fieldErrors?.prelim,
+  "Prelim must be from 0 to 100."
 );
 assert.deepEqual(
   await expectJson("/api/report", 200),

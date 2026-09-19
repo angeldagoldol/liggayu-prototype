@@ -11,9 +11,9 @@ import {
 
 const validInput = {
   name: "Ana Cruz",
-  assessment1: "80",
-  assessment2: "90",
-  assessment3: "100"
+  prelim: "80",
+  midterm: "90",
+  finals: "100"
 };
 
 test("validateStudentInput rejects a blank name", () => {
@@ -32,9 +32,9 @@ test("validateStudentInput rejects a name longer than 100 characters", () => {
 });
 
 for (const [field, label] of [
-  ["assessment1", "Assessment 1"],
-  ["assessment2", "Assessment 2"],
-  ["assessment3", "Assessment 3"]
+  ["prelim", "Prelim"],
+  ["midterm", "Midterm"],
+  ["finals", "Finals"]
 ]) {
   test(`validateStudentInput rejects blank ${field}`, () => {
     assert.equal(validateStudentInput({ ...validInput, [field]: "  " })[field],
@@ -60,9 +60,9 @@ for (const [field, label] of [
 test("validateStudentInput accepts zero, 100, and decimal scores", () => {
   assert.deepEqual(validateStudentInput({
     name: "Ana",
-    assessment1: "0",
-    assessment2: "100",
-    assessment3: "89.5"
+    prelim: "0",
+    midterm: "100",
+    finals: "89.5"
   }), {});
 });
 
@@ -70,11 +70,11 @@ test("buildStudentRequest trims the name and keeps numeric scores", () => {
   assert.deepEqual(
     buildStudentRequest({
       name: "  Ana Cruz  ",
-      assessment1: "80",
-      assessment2: "90",
-      assessment3: "100"
+      prelim: "80",
+      midterm: "90",
+      finals: "100"
     }),
-    { name: "Ana Cruz", assessment1: 80, assessment2: 90, assessment3: 100 }
+    { name: "Ana Cruz", prelim: 80, midterm: 90, finals: 100 }
   );
 });
 

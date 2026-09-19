@@ -12,9 +12,9 @@ const report = {
 const populatedReport = {
   students: [{
     name: "Ana",
-    assessment1: 80,
-    assessment2: 90,
-    assessment3: 100,
+    prelim: 80,
+    midterm: 90,
+    finals: 100,
     average: 90
   }],
   highest: { average: 90, names: ["Ana"] },
@@ -56,7 +56,7 @@ test("getReport sends a GET request and returns successful JSON", async () => {
 });
 
 test("addStudent sends JSON with the required method and headers", async () => {
-  const student = { name: "Ana", assessment1: 80, assessment2: 90, assessment3: 100 };
+  const student = { name: "Ana", prelim: 80, midterm: 90, finals: 100 };
   let request;
   const result = await addStudent(student, async (...args) => {
     request = args;
@@ -115,7 +115,7 @@ test("getReport rejects blank or overlong student names", async () => {
 });
 
 test("getReport rejects non-number and non-finite student score fields", async () => {
-  for (const field of ["assessment1", "assessment2", "assessment3", "average"]) {
+  for (const field of ["prelim", "midterm", "finals", "average"]) {
     for (const value of ["90", Number.NaN, Number.POSITIVE_INFINITY]) {
       await assertInvalidGetReport({
         ...populatedReport,
@@ -126,7 +126,7 @@ test("getReport rejects non-number and non-finite student score fields", async (
 });
 
 test("getReport rejects out-of-range student score fields", async () => {
-  for (const field of ["assessment1", "assessment2", "assessment3", "average"]) {
+  for (const field of ["prelim", "midterm", "finals", "average"]) {
     for (const value of [-0.01, 100.01]) {
       await assertInvalidGetReport({
         ...populatedReport,
@@ -188,7 +188,7 @@ test("addStudent rejects a malformed successful report", async () => {
 });
 
 test("addStudent preserves server field errors in ApiError", async () => {
-  const fieldErrors = { assessment1: "Assessment 1 must be from 0 to 100." };
+  const fieldErrors = { prelim: "Prelim must be from 0 to 100." };
 
   await assert.rejects(
     addStudent({}, async () => jsonResponse({

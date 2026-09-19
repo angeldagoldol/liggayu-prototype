@@ -28,17 +28,17 @@ const fields = {
     input: document.querySelector("#student-name"),
     error: document.querySelector("#student-name-error")
   },
-  assessment1: {
-    input: document.querySelector("#assessment-1"),
-    error: document.querySelector("#assessment-1-error")
+  prelim: {
+    input: document.querySelector("#prelim"),
+    error: document.querySelector("#prelim-error")
   },
-  assessment2: {
-    input: document.querySelector("#assessment-2"),
-    error: document.querySelector("#assessment-2-error")
+  midterm: {
+    input: document.querySelector("#midterm"),
+    error: document.querySelector("#midterm-error")
   },
-  assessment3: {
-    input: document.querySelector("#assessment-3"),
-    error: document.querySelector("#assessment-3-error")
+  finals: {
+    input: document.querySelector("#finals"),
+    error: document.querySelector("#finals-error")
   }
 };
 
@@ -81,9 +81,9 @@ function showFieldErrors(fieldErrors) {
 function inputValues() {
   return {
     name: fields.name.input.value,
-    assessment1: fields.assessment1.input.value,
-    assessment2: fields.assessment2.input.value,
-    assessment3: fields.assessment3.input.value
+    prelim: fields.prelim.input.value,
+    midterm: fields.midterm.input.value,
+    finals: fields.finals.input.value
   };
 }
 
@@ -103,9 +103,9 @@ function buildReportView(report) {
     const row = document.createElement("tr");
     appendCell(row, String(index + 1), true);
     appendCell(row, student.name);
-    appendCell(row, formatScore(student.assessment1));
-    appendCell(row, formatScore(student.assessment2));
-    appendCell(row, formatScore(student.assessment3));
+    appendCell(row, formatScore(student.prelim));
+    appendCell(row, formatScore(student.midterm));
+    appendCell(row, formatScore(student.finals));
     appendCell(row, formatAverage(student.average));
     rows.append(row);
   });

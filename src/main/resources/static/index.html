@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Add student assessment scores and view the report calculated by the Java ArrayList service.">
+  <meta name="description" content="Add student prelim, midterm, and finals scores and view the report calculated by the Java ArrayList service.">
   <title>Student Score Management System</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/styles.css">
@@ -27,7 +27,7 @@
       <div class="section-heading">
         <p class="section-kicker">New record</p>
         <h2 id="entry-heading">Add a student</h2>
-        <p>Enter one name and three assessment scores from 0 to 100.</p>
+        <p>Enter one name and the prelim, midterm, and finals scores from 0 to 100.</p>
       </div>
 
       <form id="student-form" novalidate>
@@ -40,25 +40,25 @@
         </div>
 
         <fieldset>
-          <legend>Assessment scores</legend>
+          <legend>Term scores</legend>
           <div class="score-fields">
             <div class="form-field">
-              <label for="assessment-1">Assessment 1</label>
-              <input id="assessment-1" name="assessment1" type="number" inputmode="decimal"
-                     min="0" max="100" step="any" aria-describedby="assessment-1-error" required>
-              <p id="assessment-1-error" class="field-error" aria-live="polite"></p>
+              <label for="prelim">Prelim</label>
+              <input id="prelim" name="prelim" type="number" inputmode="decimal"
+                     min="0" max="100" step="any" aria-describedby="prelim-error" required>
+              <p id="prelim-error" class="field-error" aria-live="polite"></p>
             </div>
             <div class="form-field">
-              <label for="assessment-2">Assessment 2</label>
-              <input id="assessment-2" name="assessment2" type="number" inputmode="decimal"
-                     min="0" max="100" step="any" aria-describedby="assessment-2-error" required>
-              <p id="assessment-2-error" class="field-error" aria-live="polite"></p>
+              <label for="midterm">Midterm</label>
+              <input id="midterm" name="midterm" type="number" inputmode="decimal"
+                     min="0" max="100" step="any" aria-describedby="midterm-error" required>
+              <p id="midterm-error" class="field-error" aria-live="polite"></p>
             </div>
             <div class="form-field">
-              <label for="assessment-3">Assessment 3</label>
-              <input id="assessment-3" name="assessment3" type="number" inputmode="decimal"
-                     min="0" max="100" step="any" aria-describedby="assessment-3-error" required>
-              <p id="assessment-3-error" class="field-error" aria-live="polite"></p>
+              <label for="finals">Finals</label>
+              <input id="finals" name="finals" type="number" inputmode="decimal"
+                     min="0" max="100" step="any" aria-describedby="finals-error" required>
+              <p id="finals-error" class="field-error" aria-live="polite"></p>
             </div>
           </div>
         </fieldset>
@@ -109,14 +109,14 @@
         <div id="report-table-container" class="table-region" role="region"
              aria-labelledby="student-report-caption" tabindex="0">
           <table>
-            <caption id="student-report-caption">Student assessment scores and backend-calculated averages</caption>
+            <caption id="student-report-caption">Student term scores and backend-calculated averages</caption>
             <thead>
               <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Student Name</th>
-                <th scope="col">Assessment 1</th>
-                <th scope="col">Assessment 2</th>
-                <th scope="col">Assessment 3</th>
+                <th scope="col">Prelim</th>
+                <th scope="col">Midterm</th>
+                <th scope="col">Finals</th>
                 <th scope="col">Average</th>
               </tr>
             </thead>
