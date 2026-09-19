@@ -11,9 +11,9 @@ public class StudentScoreService {
     public synchronized ReportResponse addStudent(StudentRequest request) {
         Student student = new Student(
                 request.name().trim(),
-                request.assessment1(),
-                request.assessment2(),
-                request.assessment3());
+                request.prelim(),
+                request.midterm(),
+                request.finals());
         students.add(student);
         return buildReport();
     }

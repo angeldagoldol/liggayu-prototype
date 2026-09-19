@@ -65,9 +65,9 @@ public class RestExceptionHandler {
 
     private static String numberMessage(String field) {
         return switch (field) {
-            case "assessment1" -> "Assessment 1 must be a number.";
-            case "assessment2" -> "Assessment 2 must be a number.";
-            case "assessment3" -> "Assessment 3 must be a number.";
+            case "prelim" -> "Prelim must be a number.";
+            case "midterm" -> "Midterm must be a number.";
+            case "finals" -> "Finals must be a number.";
             default -> null;
         };
     }

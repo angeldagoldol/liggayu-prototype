@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 class StudentTest {
     @Test
-    void calculatesAverageFromThreeAssessments() {
+    void calculatesAverageFromThreeTermScores() {
         Student student = new Student("Ana Cruz", 80, 90, 100);
         assertThat(student.average()).isEqualTo(90.0);
     }

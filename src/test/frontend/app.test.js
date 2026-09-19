@@ -10,9 +10,9 @@ const emptyReport = {
 const populatedReport = {
   students: [{
     name: "Ana Cruz",
-    assessment1: 80,
-    assessment2: 90,
-    assessment3: 100,
+    prelim: 80,
+    midterm: 90,
+    finals: 100,
     average: 90
   }],
   highest: { average: 90, names: ["Ana Cruz"] },
@@ -119,12 +119,12 @@ function createDocument() {
     "lowest-average",
     "student-name",
     "student-name-error",
-    "assessment-1",
-    "assessment-1-error",
-    "assessment-2",
-    "assessment-2-error",
-    "assessment-3",
-    "assessment-3-error"
+    "prelim",
+    "prelim-error",
+    "midterm",
+    "midterm-error",
+    "finals",
+    "finals-error"
   ]) {
     elements.set(`#${id}`, new FakeElement(document, id));
   }
@@ -142,7 +142,7 @@ function createDocument() {
   elements.get("#add-student-button").textContent = "Add Student";
   elements.get("#record-count").textContent = "0 records";
   elements.get("#student-form").reset = () => {
-    for (const id of ["student-name", "assessment-1", "assessment-2", "assessment-3"]) {
+    for (const id of ["student-name", "prelim", "midterm", "finals"]) {
       elements.get(`#${id}`).value = "";
     }
   };
@@ -195,9 +195,9 @@ async function installApp(t, fetchImpl) {
 
 function enterValidStudent(elements) {
   elements.get("#student-name").value = "Ana Cruz";
-  elements.get("#assessment-1").value = "80";
-  elements.get("#assessment-2").value = "90";
-  elements.get("#assessment-3").value = "100";
+  elements.get("#prelim").value = "80";
+  elements.get("#midterm").value = "90";
+  elements.get("#finals").value = "100";
 }
 
 function submit(elements) {

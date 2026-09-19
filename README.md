@@ -1,12 +1,12 @@
 # Student Score Management System
 
-This project is a working web application for recording a student's three assessment scores, calculating the two-decimal average in Java, and reporting every student tied for the highest or lowest average. A Spring Boot service owns an in-memory `ArrayList<Student>`, exposes a small JSON API, and serves the responsive HTML, CSS, and JavaScript interface from the same process.
+This project is a working web application for recording a student's prelim, midterm, and finals scores, calculating the two-decimal average in Java, and reporting every student tied for the highest or lowest average. A Spring Boot service owns an in-memory `ArrayList<Student>`, exposes a small JSON API, and serves the responsive HTML, CSS, and JavaScript interface from the same process.
 
 The handoff also includes the completed SJPIIC/CICT Chapter I-II paper and a Render Blueprint for deployment.
 
 ## Features
 
-- Add a student name and exactly three assessment scores.
+- Add a student name and exactly three term scores (prelim, midterm, finals).
 - Accept decimal scores from 0 through 100 and reject invalid requests without changing existing records.
 - Preserve insertion order and allow duplicate student names.
 - Calculate and round each arithmetic mean to two decimal places in Java.
@@ -121,7 +121,7 @@ All endpoints use JSON and share the same host and port as the interface.
 | Method | Path | Result |
 | --- | --- | --- |
 | `GET` | `/api/students` | Returns the stored rows in insertion order. |
-| `POST` | `/api/students` | Validates and stores `name`, `assessment1`, `assessment2`, and `assessment3`, then returns the updated report with HTTP 201. |
+| `POST` | `/api/students` | Validates and stores `name`, `prelim`, `midterm`, and `finals`, then returns the updated report with HTTP 201. |
 | `GET` | `/api/report` | Returns `students`, `highest`, and `lowest`; both summaries are `null` when no records exist. |
 
 Example request:
@@ -129,9 +129,9 @@ Example request:
 ```json
 {
   "name": "Ana Cruz",
-  "assessment1": 80,
-  "assessment2": 90,
-  "assessment3": 95
+  "prelim": 80,
+  "midterm": 90,
+  "finals": 95
 }
 ```
 
