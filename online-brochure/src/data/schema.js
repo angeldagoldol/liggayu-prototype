@@ -13,8 +13,22 @@
  * @property {'serif'|'sans'|'mono'} typeface  heading typeface family
  *
  * @typedef {Object} CoverSpec
- * @property {CoverArtStyle} art   generative art style for <CoverArt>
+ * @property {string} [photo]      photo id (src/data/photos) — a real photograph of the place;
+ *                                 the cover shows it, with the art as a fallback while it loads
+ *                                 or if the photo is unavailable
+ * @property {CoverArtStyle} art   generative art style for <CoverArt> (decorative + fallback)
  * @property {number} seed         integer seed; same seed = same artwork
+ *
+ * @typedef {Object} Location
+ * @property {string} name          English place name ("Fushimi Inari Taisha")
+ * @property {string} nameJp        Japanese name ("伏見稲荷大社")
+ * @property {string} [prefecture]  English prefecture ("Kyoto")
+ * @property {number} lat           WGS84 decimal degrees, 4 decimals
+ * @property {number} lng
+ *
+ * @typedef {Object} Source
+ * @property {string} label         e.g. "Kiyomizu-dera official site"
+ * @property {string} url           https URL of an official or reputable source
  *
  * @typedef {'seigaiha'|'asanoha'|'hinomaru'|'fuji'|'sakura'|'torii'|'shippo'|'enso'|'kumo'|'ichimatsu'} CoverArtStyle
  *   Generative artwork based on traditional Japanese motifs:
@@ -34,7 +48,11 @@
  * @property {string} category             id from data/categories.js
  * @property {string} region               id from data/regions.js
  * @property {string[]} seasons            best seasons: ids from data/seasons.js
- * @property {string} organization         publisher shown on the card (fictional)
+ * @property {string} organization         publisher shown on the card. Built-ins: "Tabi Guides"
+ *                                         (this app's own editorial imprint — never a real company)
+ * @property {Location} [location]         the brochure's main place (map pin, search)
+ * @property {Source[]} [sources]          where the facts come from (official sites first)
+ * @property {string} [factsChecked]       when prices/hours were last verified, e.g. "October 2026"
  * @property {string} summary              one or two sentences for cards/search
  * @property {string[]} tags
  * @property {'booklet'|'bifold'|'trifold'} format
@@ -80,17 +98,30 @@ export const FORMATS = [
  * builds its "Add page" menu and its field editors from this table. It has no prototype, so
  * `PAGE_TYPES[page.type]` is only truthy for a real page type.
  *
+ * `photo` fields hold a photo id from src/data/photos (real, credited photographs
+ * of the actual place). Wherever a photo is missing or not yet downloaded, the
+ * renderer falls back to the generative art (`art` + `seed`).
+ *
  * Field shapes:
- *  cover:    { eyebrow, title, titleJp, subtitle }               titleJp falls back to brochure.titleJp
- *  intro:    { kicker, heading, body, pullQuote }            body: paragraphs split by "\n\n"
- *  features: { kicker, heading, items: [{ icon, title, text }] }          2–6 items
- *  gallery:  { heading, items: [{ art, seed, caption }] }                 2–4 items
+ *  cover:    { eyebrow, title, titleJp, subtitle, photo }        titleJp falls back to brochure.titleJp,
+ *                                                                 photo to brochure.cover.photo
+ *  intro:    { kicker, heading, body, pullQuote, photo }     body: paragraphs split by "\n\n"
+ *  features: { kicker, heading, items: [{ icon, title, text, photo }] }   2–6 items (photo optional)
+ *  gallery:  { heading, items: [{ photo, art, seed, caption }] }          2–4 items
+ *  place:    { kicker, name, nameJp, photo, body, facts: [{ label, value }], lat, lng, website }
+ *            one real sight in depth; facts 2–5 rows such as Hours, Admission, Getting there,
+ *            Time needed, Best time; website = official https URL
  *  stats:    { heading, body, items: [{ value, prefix, suffix, label }] } 2–4 items, value is a number
  *  agenda:   { heading, items: [{ time, title, text }] }                  3–6 items
  *  pricing:  { heading, note, plans: [{ name, price, period, features: string[], highlight }] } 1–3 plans
  *  phrases:  { heading, items: [{ jp, romaji, meaning }] }       3–6 items: useful Japanese
- *  quote:    { quote, author, role }
- *  contact:  { heading, body, cta, details: [{ icon, label, value }] }    2–4 details
+ *  map:      { heading, body, places: [{ name, nameJp, lat, lng, note }] }  2–8 real places, drawn on
+ *            an accurate map of Japan (Natural Earth prefectures)
+ *  quote:    { quote, quoteJp, author, role }               a real, attributable quote — e.g. a haiku
+ *            (quoteJp = original Japanese, quote = translation) — never an invented testimonial
+ *  contact:  { heading, body, cta, ctaUrl, details: [{ icon, label, value, url }] }   2–4 details;
+ *            for built-ins this is "Visitor information": official websites and tourist
+ *            information centres (no phone numbers)
  *  back:     { title, body, tagline }
  */
 export const PAGE_TYPES = dict({
@@ -132,7 +163,7 @@ export const PAGE_TYPES = dict({
   gallery: {
     label: 'Gallery',
     jp: '写真',
-    description: 'Artwork tiles with captions',
+    description: 'Photos with captions',
     icon: 'Camera',
     create: () => ({
       heading: 'A closer look',
@@ -172,10 +203,45 @@ export const PAGE_TYPES = dict({
       ],
     }),
   },
+  place: {
+    label: 'Place',
+    jp: '名所',
+    description: 'One sight in depth: photo, hours, access',
+    icon: 'MapPin',
+    create: () => ({
+      kicker: 'Spotlight',
+      name: 'Kiyomizu-dera',
+      nameJp: '清水寺',
+      photo: '',
+      body: 'Describe the place: what it is, why it matters and what to look for.',
+      facts: [
+        { label: 'Hours', value: 'Check the official site' },
+        { label: 'Admission', value: '—' },
+        { label: 'Getting there', value: 'Nearest station or bus stop' },
+      ],
+      lat: 34.9949,
+      lng: 135.785,
+      website: '',
+    }),
+  },
+  map: {
+    label: 'Map',
+    jp: '地図',
+    description: 'Real places pinned on a map of Japan',
+    icon: 'Map',
+    create: () => ({
+      heading: 'Where it all is',
+      body: 'The places in this brochure.',
+      places: [
+        { name: 'Tokyo', nameJp: '東京', lat: 35.6812, lng: 139.7671, note: 'Tokyo Station' },
+        { name: 'Kyoto', nameJp: '京都', lat: 34.9858, lng: 135.7588, note: 'Kyoto Station' },
+      ],
+    }),
+  },
   pricing: {
-    label: 'Pricing',
+    label: 'Costs',
     jp: '料金',
-    description: 'Plans or packages',
+    description: 'Prices, passes or packages',
     icon: 'Gem',
     create: () => ({
       heading: 'Choose your journey',
@@ -208,11 +274,16 @@ export const PAGE_TYPES = dict({
     }),
   },
   quote: {
-    label: 'Testimonial',
-    jp: 'お客様の声',
-    description: 'A large quote',
+    label: 'Quote',
+    jp: '言葉',
+    description: 'A large quote or haiku',
     icon: 'Star',
-    create: () => ({ quote: 'The quietest, most beautiful week we have ever spent anywhere.', author: 'Alex Rivera', role: 'Traveller, spring 2026' }),
+    create: () => ({
+      quote: 'The quietest, most beautiful week we have ever spent anywhere.',
+      quoteJp: '',
+      author: 'Your name',
+      role: 'Traveller, spring 2026',
+    }),
   },
   contact: {
     label: 'Contact',
@@ -223,6 +294,7 @@ export const PAGE_TYPES = dict({
       heading: 'Let’s talk',
       body: 'We reply within one business day.',
       cta: 'Get in touch',
+      ctaUrl: '',
       details: [
         { icon: 'Mail', label: 'Email', value: 'hello@your-studio.example' },
         { icon: 'Clock', label: 'Hours', value: 'Mon–Fri 10:00–18:00 JST' },
