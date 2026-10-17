@@ -8,6 +8,8 @@ import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
 import { SEASONS } from './seasons.js';
 import { TEMPLATES } from '../components/studio/templates.js';
 import { VOICES } from '../pages/Home/homeContent.js';
+import { getPhoto } from './photos/index.js';
+import { photoIdsIn } from './photos/registry.js';
 
 const REQUIRED = ['id', 'slug', 'title', 'titleJp', 'subtitle', 'category', 'region', 'seasons', 'organization', 'summary', 'tags', 'format', 'updatedAt', 'readMinutes', 'source', 'theme', 'cover', 'pages'];
 const HEX = /^#[0-9a-f]{6}$/i;
@@ -19,8 +21,8 @@ function artIn(brochure) {
 }
 
 describe('built-in brochures', () => {
-  it('ships ten brochures with unique ids and slugs, about half featured', () => {
-    expect(BROCHURES).toHaveLength(10);
+  it('ships at least ten brochures with unique ids and slugs, about half featured', () => {
+    expect(BROCHURES.length).toBeGreaterThanOrEqual(10);
     expect(new Set(BROCHURES.map((b) => b.id)).size).toBe(BROCHURES.length);
     expect(new Set(BROCHURES.map((b) => b.slug)).size).toBe(BROCHURES.length);
     expect(FEATURED_BROCHURES.length).toBeGreaterThanOrEqual(4);
@@ -48,9 +50,9 @@ describe('built-in brochures', () => {
     expect(['serif', 'sans', 'mono']).toContain(b.theme.typeface);
   });
 
-  it.each(BROCHURES.map((b) => [b.slug, b]))('%s has 9–12 valid pages, cover first and back last', (_slug, b) => {
-    expect(b.pages.length).toBeGreaterThanOrEqual(9);
-    expect(b.pages.length).toBeLessThanOrEqual(12);
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s has 12–15 valid pages, cover first and back last', (_slug, b) => {
+    expect(b.pages.length).toBeGreaterThanOrEqual(12);
+    expect(b.pages.length).toBeLessThanOrEqual(15);
     expect(b.pages[0].type).toBe('cover');
     expect(b.pages.at(-1).type).toBe('back');
     expect(new Set(b.pages.map((p) => p.id)).size).toBe(b.pages.length);
@@ -72,8 +74,8 @@ describe('built-in brochures', () => {
       if (page.type === 'contact') {
         for (const d of page.details) {
           expect(ICON_NAMES).toContain(d.icon);
-          if (d.value.includes('@')) expect(d.value).toMatch(/\.example$/);
-          // Japan has no fictional phone range: a printed number could ring a real subscriber.
+          // Built-ins carry official websites only: no email addresses, no phone numbers.
+          expect(d.value).not.toContain('@');
           expect(d.value).not.toMatch(/\+81|^\+?[\d\s().-]{7,}$/);
         }
       }
@@ -87,21 +89,55 @@ describe('built-in brochures', () => {
     expect(contrast(accent, paper)).toBeGreaterThanOrEqual(3);
   });
 
-  it('covers every category, region and art style, with at least three dark papers', () => {
+  it('covers every category and region, with at least three dark papers', () => {
     expect(new Set(BROCHURES.map((b) => b.category))).toEqual(ids(CATEGORIES));
     expect(new Set(BROCHURES.map((b) => b.region))).toEqual(ids(REGIONS));
-    expect(new Set(BROCHURES.map((b) => b.cover.art))).toEqual(new Set(ART_STYLES));
     const dark = BROCHURES.filter((b) => contrast(b.theme.paper, '#000000') < 2);
     expect(dark.length).toBeGreaterThanOrEqual(3);
   });
 });
 
+describe('real places (docs/REAL_CONTENT.md)', () => {
+  const inJapan = (lat, lng) => Number.isFinite(lat) && Number.isFinite(lng) && lat > 20 && lat < 46 && lng > 122 && lng < 154;
+
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s is a Tabi Guides brochure about a real, located, sourced place', (_slug, b) => {
+    expect(b.organization).toBe('Tabi Guides');
+    expect(b.location).toBeTruthy();
+    expect(b.location.name).toBeTruthy();
+    expect(b.location.nameJp).toMatch(/[぀-ヿ一-龯]/);
+    expect(inJapan(b.location.lat, b.location.lng)).toBe(true);
+    expect(Array.isArray(b.sources)).toBe(true);
+    expect(b.sources.length).toBeGreaterThanOrEqual(2);
+    for (const source of b.sources) {
+      expect(source.label).toBeTruthy();
+      expect(source.url).toMatch(/^https:\/\//);
+    }
+  });
+
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s has no invented testimonials and honest "checked" claims', (_slug, b) => {
+    for (const page of b.pages) {
+      if (page.type === 'quote') expect(page.role ?? '').not.toMatch(/traveller|traveler|guest|customer|member since|visitor,/i);
+      if (page.type === 'place') {
+        expect(inJapan(page.lat, page.lng)).toBe(true);
+        if (page.website) expect(page.website).toMatch(/^https:\/\//);
+      }
+      if (page.type === 'map') for (const place of page.places) expect(inJapan(place.lat, place.lng)).toBe(true);
+    }
+    const back = b.pages.at(-1);
+    if (/facts checked/i.test(back.tagline ?? '')) expect(b.factsChecked).toBeTruthy();
+  });
+
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s only references photos that exist in a manifest', (_slug, b) => {
+    for (const id of photoIdsIn(b)) expect(getPhoto(id), id).not.toBeNull();
+  });
+});
+
 describe('fictional readers', () => {
-  it('never reuse a first name across Home letters, brochure and template testimonials (regression)', () => {
-    const quotes = [...BROCHURES, ...TEMPLATES.map((t) => t.brochure)].flatMap((b) => b.pages.filter((p) => p.type === 'quote').map((p) => p.author));
+  it('never reuse a first name across Home letters and template testimonials (regression)', () => {
+    const quotes = TEMPLATES.map((t) => t.brochure).flatMap((b) => b.pages.filter((p) => p.type === 'quote').map((p) => p.author));
     const people = [...VOICES.map((v) => v.name), ...quotes].flatMap((name) => name.split(/\s*&\s*/));
     const firstNames = people.map((person) => person.trim().split(/\s+/)[0]);
-    expect(firstNames.length).toBeGreaterThan(10);
+    expect(firstNames.length).toBeGreaterThan(3);
     expect(firstNames.filter((name, i) => firstNames.indexOf(name) !== i)).toEqual([]);
   });
 });
