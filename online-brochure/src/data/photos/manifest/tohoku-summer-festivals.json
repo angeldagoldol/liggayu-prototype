@@ -1,0 +1,86 @@
+{
+  "brochure": "tohoku-summer-festivals",
+  "photos": [
+    {
+      "id": "tohoku-nebuta-float",
+      "use": "cover",
+      "candidates": [],
+      "alt": "A towering illuminated float of a painted warrior glowing against the night sky",
+      "caption": "A Nebuta float lit from within, Aomori",
+      "place": "Aomori Nebuta Matsuri",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "tohoku-hanagasa",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Rows of dancers in straw hats decorated with red flowers parading down a city street",
+      "caption": "Yamagata Hanagasa Matsuri",
+      "place": "Yamagata",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "tohoku-nebuta-parade",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A huge lantern float of warriors moving through a crowded street at night",
+      "caption": "The Nebuta parade, Aomori",
+      "place": "Aomori Nebuta Matsuri",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "tohoku-kanto-poles",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Tall bamboo poles hung with rows of glowing paper lanterns above a night street",
+      "caption": "Kantō poles over Kantō Ōdōri, Akita",
+      "place": "Akita Kantō Matsuri",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "tohoku-tanabata-streamers",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Long, colourful paper streamers hanging from bamboo poles in a covered shopping arcade",
+      "caption": "Tanabata streamers in a Sendai arcade",
+      "place": "Sendai Tanabata Matsuri",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "tohoku-hirosaki-neputa",
+      "use": "any",
+      "candidates": [],
+      "alt": "A fan-shaped float painted with a warrior, lit from within at night",
+      "caption": "A fan-shaped neputa in Hirosaki",
+      "place": "Hirosaki Neputa Matsuri",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "tohoku-goshogawara-tachineputa",
+      "use": "any",
+      "candidates": [],
+      "alt": "An extremely tall standing float towering over the buildings of a street",
+      "caption": "Tachineputa towering over Goshogawara",
+      "place": "Goshogawara Tachineputa",
+      "focus": "50% 35%"
+    },
+    {
+      "id": "tohoku-nebuta-warasse",
+      "use": "any",
+      "candidates": [],
+      "alt": "Large painted lantern floats on display in a dark exhibition hall",
+      "caption": "Floats on show at Nebuta Museum WA-RASSE, Aomori",
+      "place": "Nebuta Museum WA-RASSE, Aomori",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "tohoku-yamadera",
+      "use": "any",
+      "candidates": [],
+      "alt": "A small wooden temple pavilion on a cliff edge above a green forested valley",
+      "caption": "Yamadera (Risshaku-ji), Yamagata",
+      "place": "Yamadera (Risshaku-ji)",
+      "focus": "50% 45%"
+    }
+  ]
+}

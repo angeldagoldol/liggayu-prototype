@@ -1,0 +1,122 @@
+{
+  "brochure": "tokyo-after-dark",
+  "photos": [
+    {
+      "id": "tokyo-tower-night",
+      "use": "cover",
+      "candidates": [
+        "File:Tokyo Tower, Minato City.jpg",
+        "File:Tokyo Tower At Night.jpg",
+        "File:Tokyo Tower at night 20141224, 001.jpg"
+      ],
+      "alt": "Tokyo Tower's steel lattice lit up against the night sky above the city",
+      "caption": "Tokyo Tower at night, Minato",
+      "place": "Tokyo Tower",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "tokyo-shibuya-crossing",
+      "use": "wide",
+      "candidates": [
+        "File:Shibuya Crossing, Aerial.jpg",
+        "File:2025 Shibuya Crossing at night.jpg",
+        "File:Shibuya Crossing at night (14738088849).jpg"
+      ],
+      "alt": "Crowds streaming across the Shibuya scramble at night, seen from above between lit-up screens and storefronts",
+      "caption": "Shibuya Crossing at night",
+      "place": "Shibuya Crossing",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "tokyo-shibuya-sky",
+      "use": "wide",
+      "candidates": [
+        "File:Shibuya Sky Observation Deck (53415730632).jpg",
+        "File:Tokyo Tower and Skyscrapers from Shibuya Sky Observation Deck (53416648661).jpg",
+        "File:Shibuya Scramble Square SHIBUYA SKY (53083861869).jpg"
+      ],
+      "alt": "The open-air rooftop deck of Shibuya Sky with Tokyo's skyline stretching beyond the glass",
+      "caption": "Shibuya Sky, on the roof of Shibuya Scramble Square",
+      "place": "Shibuya Sky",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "tokyo-golden-gai",
+      "use": "any",
+      "candidates": [
+        "File:2024-10-20 Shinjuku Golden Gai at night.jpg",
+        "File:Golden Gai, Kabukicho, Shinjuku (42385146670).jpg",
+        "File:Golden Gai, Kabukicho, Shinjuku (30325593928).jpg"
+      ],
+      "alt": "A narrow lane of tiny bars with glowing signs and lanterns in Shinjuku Golden Gai",
+      "caption": "Shinjuku Golden Gai at night",
+      "place": "Shinjuku Golden Gai",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "tokyo-sensoji-night",
+      "use": "wide",
+      "candidates": [
+        "File:Sensoji at night.JPG",
+        "File:Sensoji at night 7.jpg",
+        "File:Night scenes at Sensou-ji, Tokyo-P1000768.JPG"
+      ],
+      "alt": "Sensō-ji's Hōzōmon gate and five-storey pagoda illuminated against the night sky",
+      "caption": "Sensō-ji's Hōzōmon and pagoda, lit after dark",
+      "place": "Sensō-ji",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "tokyo-omoide-yokocho",
+      "use": "any",
+      "candidates": [
+        "File:Omoide Yokocho, Shinjuku (42384563020).jpg",
+        "File:Omoide Yokocho, Shinjuku (44144012872).jpg",
+        "File:Yokocho.jpg"
+      ],
+      "alt": "Lanterns and small yakitori counters crowding a narrow alley in Omoide Yokochō",
+      "caption": "Omoide Yokochō, Shinjuku",
+      "place": "Omoide Yokochō",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "tokyo-kaminarimon",
+      "use": "any",
+      "candidates": [
+        "File:Sensoji at night 8.jpg",
+        "File:Kaminarimon 2019.jpg",
+        "File:Kaminari mon.jpg"
+      ],
+      "alt": "The giant red paper lantern hanging in the Kaminarimon gate of Sensō-ji",
+      "caption": "Kaminarimon, Sensō-ji's Thunder Gate",
+      "place": "Kaminarimon, Sensō-ji",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "tokyo-skytree-night",
+      "use": "any",
+      "candidates": [
+        "File:Tokyo Skytree at night (Iki).jpg",
+        "File:Tokyo Skytree at night (Miyabi).jpg",
+        "File:Tokyo Sky Tree at night.JPG"
+      ],
+      "alt": "Tokyo Skytree rising into the night sky, lit along its full height",
+      "caption": "Tokyo Skytree at night, Sumida",
+      "place": "Tokyo Skytree",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "tokyo-shibuya-street",
+      "use": "any",
+      "candidates": [
+        "File:Shibuya crossing at night.jpg",
+        "File:Shibuya Crossing at night.jpg",
+        "File:Shibuya crossing night.jpg"
+      ],
+      "alt": "Pedestrians crossing Shibuya's scramble at street level beneath bright screens at night",
+      "caption": "The scramble at street level, Shibuya",
+      "place": "Shibuya Crossing",
+      "focus": "50% 60%"
+    }
+  ]
+}

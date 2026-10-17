@@ -1,31 +1,40 @@
-/** Naoshima & the Art Islands — 直島. Shape: see src/data/schema.js. */
+/**
+ * Naoshima & the Art Islands — 直島. Shape: see src/data/schema.js.
+ * Real places (October 2026 edition); sources, verification status and notes in
+ * docs/research/naoshima-art-islands.md, photos in src/data/photos/manifest/naoshima-art-islands.json.
+ */
 export default {
   id: 'b_naoshima-art-islands',
   slug: 'naoshima-art-islands',
   title: 'Naoshima & the Art Islands',
   titleJp: '直島',
   titleKana: 'なおしま',
-  subtitle: 'Museums, pumpkins and slow ferries across the Seto Inland Sea',
+  subtitle: 'Tadao Ando museums, Kusama’s pumpkins and slow ferries across the Seto Inland Sea',
   category: 'craft',
   region: 'shikoku',
-  seasons: [
-    'spring',
-    'autumn'
+  seasons: ['spring', 'autumn'],
+  organization: 'Tabi Guides',
+  location: {
+    name: 'Chichu Art Museum',
+    nameJp: '地中美術館',
+    prefecture: 'Kagawa',
+    lat: 34.447,
+    lng: 133.9963,
+  },
+  sources: [
+    { label: 'Benesse Art Site Naoshima — museums, hours and tickets', url: 'https://benesse-artsite.jp/en/' },
+    { label: 'Setouchi Triennale official site', url: 'https://setouchi-artfest.jp/en/' },
+    { label: 'Naoshima Town tourism', url: 'https://www.naoshima.net/en/' },
+    { label: 'Shikoku Kisen — Naoshima and Teshima ferries', url: 'https://www.shikokukisen.com/' },
+    { label: 'Kagawa Prefecture official tourism site', url: 'https://www.my-kagawa.jp/en/' },
   ],
-  organization: 'Setouchi Slow Ferry Club',
-  summary: 'Cycle between museums on Naoshima, Teshima and Inujima — art islands in the calm Seto Inland Sea, with Tadao Ando architecture and Yayoi Kusama’s famous pumpkins.',
-  tags: [
-    'naoshima',
-    'art',
-    'museums',
-    'architecture',
-    'teshima',
-    'setouchi',
-    'cycling'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'Tadao Ando’s museums on Naoshima, the water-drop museum on Teshima and Yayoi Kusama’s pumpkins by the sea — with opening days, ferry times and booking tips for the Seto Inland Sea’s art islands.',
+  tags: ['naoshima', 'teshima', 'art', 'museums', 'architecture', 'tadao ando', 'chichu', 'kusama', 'benesse', 'setouchi', 'ferries'],
   format: 'trifold',
-  updatedAt: '2026-06-20T03:00:00.000Z',
-  readMinutes: 4,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 8,
   featured: false,
   source: 'builtin',
   theme: {
@@ -34,211 +43,236 @@ export default {
     accent: '#b8431b',
     accent2: '#e8b400',
     muted: '#5b5852',
-    typeface: 'mono'
+    typeface: 'mono',
   },
   cover: {
+    photo: 'naoshima-yellow-pumpkin',
     art: 'enso',
-    seed: 7
+    seed: 7,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Shikoku · Spring & autumn edition',
+      eyebrow: 'Shikoku · Kagawa Prefecture',
       title: 'The Art Islands',
       titleJp: '直島',
-      subtitle: 'World-class museums on quiet islands, linked by ferries across the calm Seto Inland Sea.'
+      subtitle: 'Museums sunk into hillsides, pumpkins on the shore and slow ferries across the calm Seto Inland Sea.',
+      photo: 'naoshima-yellow-pumpkin',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Welcome aboard',
       heading: 'Islands that became galleries',
-      body: 'Naoshima was a quiet fishing and industrial island until, from the late 1980s, an ambitious art project began turning it into one of the world’s most unusual museum landscapes. Galleries by the architect Tadao Ando sink into its hillsides, and old houses in Honmura became artworks.\n\nThe idea spread to nearby Teshima and Inujima, and every three years the Setouchi Triennale fills a dozen islands with new work. Bring comfortable shoes, book museum slots ahead, and let the ferries set the pace.',
-      pullQuote: 'The ferry timetable is part of the artwork.'
+      body:
+        'Naoshima was a fishing and copper-smelting island when, in the late 1980s, the publisher Fukutake — today Benesse — set out to build an art site in its southern hills with the architect Tadao Ando. A museum-hotel, art in Honmura’s old houses and a museum buried in a hill followed.\n\nThe idea spread to Teshima and Inujima, and since 2010 the Setouchi Triennale has filled a dozen islands every three years. Book museum slots ahead, check the ferries, and let the islands set the pace.',
+      pullQuote: 'Book ahead, check the ferries, and let the islands set the pace.',
+      photo: 'naoshima-inland-sea',
     },
     {
       id: 'p3',
+      type: 'place',
+      kicker: 'Museum · Naoshima, 2004',
+      name: 'Chichu Art Museum',
+      nameJp: '地中美術館',
+      photo: 'naoshima-chichu',
+      body:
+        'Tadao Ando set this museum into a hillside so as not to spoil the coast, and lit it almost entirely by daylight. It holds work by just three artists: five of Claude Monet’s late Water Lilies, seen in a white room you enter shoeless; three light works by James Turrell; and Walter De Maria’s granite sphere among gilded wooden forms. The art changes with the weather and the hour.',
+      facts: [
+        { label: 'Hours', value: '10:00–18:00 Mar–Sep; 10:00–17:00 Oct–Feb' },
+        { label: 'Closed', value: 'Mondays (Tuesday after a holiday)' },
+        { label: 'Tickets', value: '¥2,500; timed slots, booked online' },
+        { label: 'Getting there', value: 'Town bus to Tsutsujisō, then free shuttle' },
+      ],
+      lat: 34.447,
+      lng: 133.9963,
+      website: 'https://benesse-artsite.jp/en/',
+    },
+    {
+      id: 'p4',
+      type: 'place',
+      kicker: 'Museum & hotel · South shore',
+      name: 'Benesse House Museum',
+      nameJp: 'ベネッセハウス ミュージアム',
+      photo: 'naoshima-benesse-house',
+      body:
+        'Ando’s first museum on the island opened in 1992 as a place to sleep among the art: galleries and guest rooms share one hillside above the sea, and many works were made for their spaces. More stand outdoors along the shore — among them Yayoi Kusama’s Pumpkin, on its pier since 1994. A typhoon swept it into the sea in 2021; a remade Pumpkin returned in 2022.',
+      facts: [
+        { label: 'Hours', value: '8:00–21:00, open daily' },
+        { label: 'Outdoor works', value: 'Along the shore, free to see' },
+        { label: 'Getting there', value: 'Free shuttle around the Benesse area' },
+      ],
+      lat: 34.4425,
+      lng: 133.9915,
+      website: 'https://benesse-artsite.jp/en/',
+    },
+    {
+      id: 'p5',
+      type: 'place',
+      kicker: 'Museum · Teshima, 2010',
+      name: 'Teshima Art Museum',
+      nameJp: '豊島美術館',
+      photo: 'naoshima-teshima-art-museum',
+      body:
+        'On a hillside of restored rice terraces, the artist Rei Naito and the architect Ryue Nishizawa made a single white concrete shell, about 40 by 60 metres, with no columns and two open skylights. Inside, Naito’s work Matrix runs all day: water wells up from the floor in tiny beads that wander, merge and pool. Wind, birdsong and light come in. Shoes off; voices low.',
+      facts: [
+        { label: 'Hours', value: '10:00–17:00 Mar–Sep; 10:00–16:00 Oct–Feb' },
+        { label: 'Closed', value: 'Tue (Mar–Nov); Tue–Thu (Dec–Feb)' },
+        { label: 'Tickets', value: 'Timed slots, booked online' },
+        { label: 'Getting there', value: 'Boat to Ieura, then bus or e-bike' },
+      ],
+      lat: 34.491,
+      lng: 134.092,
+      website: 'https://benesse-artsite.jp/en/',
+    },
+    {
+      id: 'p6',
       type: 'features',
       kicker: 'Don’t miss',
-      heading: 'Four places to start',
+      heading: 'More art, by bike and on foot',
       items: [
-        {
-          icon: 'Landmark',
-          title: 'Chichu Art Museum',
-          text: 'Tadao Ando’s mostly underground museum, lit by daylight, with works by Monet, James Turrell and Walter De Maria.'
-        },
-        {
-          icon: 'Palette',
-          title: 'Kusama’s pumpkins',
-          text: 'Yayoi Kusama’s yellow pumpkin on its pier, and the red one by Miyanoura port.'
-        },
         {
           icon: 'House',
           title: 'Art House Project',
-          text: 'Old homes and a shrine in Honmura, reimagined by contemporary artists.'
+          text: 'Since 1998 artists have remade empty homes, a shrine and a temple site in Honmura, including Minamidera, Ando’s hall for Turrell.',
+        },
+        {
+          icon: 'Palette',
+          title: 'Red Pumpkin',
+          text: 'Kusama’s second Naoshima pumpkin, from 2006, greets the ferries at Miyanoura: red, dotted and hollow, so you can step inside.',
         },
         {
           icon: 'Bath',
           title: 'I♥湯 bathhouse',
-          text: 'A working public bath by Shinro Ohtake — the only artwork on the island you can soak in.'
-        }
-      ]
-    },
-    {
-      id: 'p4',
-      type: 'gallery',
-      heading: 'Light, water, concrete',
-      items: [
-        {
-          art: 'enso',
-          seed: 13,
-          caption: 'A circle of daylight'
+          text: 'Shinro Ohtake’s working public bath near Miyanoura port, opened in 2009: a riot of tiles and collage you can soak in.',
         },
         {
-          art: 'hinomaru',
-          seed: 8,
-          caption: 'The yellow pumpkin at sunset'
+          icon: 'Landmark',
+          title: 'Lee Ufan Museum',
+          text: 'Ando’s half-buried concrete galleries for the Korean-born artist Lee Ufan, opened in 2010 in a valley between the hills and the sea.',
         },
         {
-          art: 'seigaiha',
-          seed: 19,
-          caption: 'The Inland Sea from Teshima'
+          icon: 'Building2',
+          title: 'Naoshima New Museum of Art',
+          text: 'Ando’s newest building on the island, opened in 2025 in Honmura, shows contemporary art from Japan and across Asia.',
         },
         {
-          art: 'ichimatsu',
-          seed: 6,
-          caption: 'A tiled bathhouse wall'
-        }
-      ]
-    },
-    {
-      id: 'p5',
-      type: 'agenda',
-      heading: 'One day on Naoshima',
-      items: [
-        {
-          time: '08:20',
-          title: 'Ferry from Uno',
-          text: 'About 20 minutes to Miyanoura; rent an e-bike at the port.'
+          icon: 'Calendar',
+          title: 'Setouchi Triennale',
+          text: 'Every three years art fills a dozen islands over spring, summer and autumn. After 2025, the next edition is due in 2028.',
         },
-        {
-          time: '10:00',
-          title: 'Art House Project',
-          text: 'Wander Honmura’s lanes between the houses.'
-        },
-        {
-          time: '13:00',
-          title: 'Chichu Art Museum',
-          text: 'Timed entry — book a few weeks ahead.'
-        },
-        {
-          time: '16:30',
-          title: 'Benesse House',
-          text: 'Sculpture on the beach and the yellow pumpkin at golden hour.'
-        },
-        {
-          time: '19:00',
-          title: 'I♥湯',
-          text: 'A soak among the collage before dinner.'
-        }
-      ]
-    },
-    {
-      id: 'p6',
-      type: 'stats',
-      heading: 'Islands in numbers',
-      body: 'Small islands, outsized ambition.',
-      items: [
-        {
-          value: 20,
-          prefix: '',
-          suffix: ' min',
-          label: 'by ferry from Uno port'
-        },
-        {
-          value: 3,
-          prefix: '',
-          suffix: ' yrs',
-          label: 'between Setouchi Triennale editions'
-        },
-        {
-          value: 2,
-          prefix: '',
-          suffix: '',
-          label: 'Kusama pumpkins on Naoshima'
-        }
-      ]
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Gallery Japanese',
+      type: 'gallery',
+      heading: 'Light, water, concrete',
       items: [
-        {
-          jp: '写真撮影禁止',
-          romaji: 'Shashin satsuei kinshi',
-          meaning: 'No photography'
-        },
-        {
-          jp: '予約しています',
-          romaji: 'Yoyaku shite imasu',
-          meaning: 'I have a reservation'
-        },
-        {
-          jp: '自転車を借りたいです',
-          romaji: 'Jitensha o karitai desu',
-          meaning: 'I’d like to rent a bicycle'
-        },
-        {
-          jp: '次のフェリーは何時ですか？',
-          romaji: 'Tsugi no ferī wa nanji desu ka?',
-          meaning: 'When is the next ferry?'
-        },
-        {
-          jp: 'きれいですね',
-          romaji: 'Kirei desu ne',
-          meaning: 'Beautiful, isn’t it?'
-        }
-      ]
+        { photo: 'naoshima-red-pumpkin', art: 'hinomaru', seed: 8, caption: 'Red Pumpkin by Yayoi Kusama, Miyanoura port' },
+        { photo: 'naoshima-honmura', art: 'ichimatsu', seed: 6, caption: 'Art House Project, Honmura' },
+        { photo: 'naoshima-i-love-yu', art: 'enso', seed: 13, caption: 'I♥湯, Shinro Ohtake’s bathhouse' },
+        { photo: 'naoshima-miyanoura-port', art: 'seigaiha', seed: 19, caption: 'Miyanoura port, Naoshima' },
+      ],
     },
     {
       id: 'p8',
-      type: 'quote',
-      quote: 'We arrived for one museum and stayed three days. On Teshima, a single drop of water made my whole family go quiet.',
-      author: 'Yuki & Ben',
-      role: 'Travellers, October 2025'
+      type: 'map',
+      heading: 'Where it all is',
+      body: 'Ferries reach Naoshima’s Miyanoura port from Uno (Okayama) in about 20 minutes and from Takamatsu in about 50. Teshima is a short boat ride east.',
+      places: [
+        { name: 'Uno Port', nameJp: '宇野港', lat: 34.4907, lng: 133.9548, note: 'Ferries from the Okayama side' },
+        { name: 'Miyanoura Port', nameJp: '宮浦港', lat: 34.4588, lng: 133.9738, note: 'Red Pumpkin, I♥湯' },
+        { name: 'Honmura', nameJp: '本村', lat: 34.4568, lng: 133.9985, note: 'Art House Project' },
+        { name: 'Chichu Art Museum', nameJp: '地中美術館', lat: 34.447, lng: 133.9963, note: 'Monet, Turrell, De Maria' },
+        { name: 'Benesse House', nameJp: 'ベネッセハウス', lat: 34.4425, lng: 133.9915, note: 'Museum, hotel, Yellow Pumpkin' },
+        { name: 'Teshima Art Museum', nameJp: '豊島美術館', lat: 34.491, lng: 134.092, note: 'Matrix by Rei Naito, Karato' },
+        { name: 'Takamatsu Port', nameJp: '高松港', lat: 34.351, lng: 134.0478, note: 'Ferries from Shikoku' },
+      ],
     },
     {
       id: 'p9',
-      type: 'contact',
-      heading: 'Plan your crossing',
-      body: 'Most museums close on Mondays and Chichu sells timed tickets. We sort the bookings, ferries and bikes so you can simply look.',
-      cta: 'Plan my island days',
-      details: [
-        {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'ferry@setouchi-slow.example'
-        },
-        {
-          icon: 'Clock',
-          label: 'Hours',
-          value: 'Tue–Sun 08:30–17:30 JST'
-        },
-        {
-          icon: 'MapPin',
-          label: 'Desk',
-          value: 'Miyanoura Port, Naoshima'
-        }
-      ]
+      type: 'agenda',
+      heading: 'One day on Naoshima',
+      items: [
+        { time: '08:30', title: 'Ferry from Uno', text: 'About 20 minutes to Miyanoura; check the day’s timetable.' },
+        { time: '10:00', title: 'Chichu Art Museum', text: 'Book the first slot; bus and shuttle from the port.' },
+        { time: '12:30', title: 'Benesse House Museum', text: 'Galleries above the sea, then lunch nearby.' },
+        { time: '14:30', title: 'Yellow Pumpkin', text: 'On its pier along the shore below the museum.' },
+        { time: '15:15', title: 'Art House Project', text: 'Honmura’s houses until 16:30; Minamidera by timed slot.' },
+        { time: '17:30', title: 'I♥湯', text: 'A soak by Miyanoura port before the ferry back.' },
+      ],
     },
     {
       id: 'p10',
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Adult prices. Benesse House, Lee Ufan, the Art House Project and Teshima Art Museum charge separately — see benesse-artsite.jp. Most are free for children 15 and under.',
+      plans: [
+        {
+          name: 'Chichu Art Museum',
+          price: '¥2,500',
+          period: 'adult, timed online ticket',
+          features: ['Slots can sell out in spring and autumn', 'Closed Mondays', 'Allow about 1½ hours'],
+          highlight: true,
+        },
+        {
+          name: 'Art in the open',
+          price: 'Free',
+          period: 'outdoor works',
+          features: ['Yellow Pumpkin on the Benesse shore', 'Red Pumpkin at Miyanoura port', 'Naoshima Pavilion by Sou Fujimoto'],
+          highlight: false,
+        },
+        {
+          name: 'Getting around',
+          price: '¥100',
+          period: 'town bus, per ride',
+          features: ['Miyanoura – Honmura – Tsutsujisō', 'Free Benesse shuttle to Chichu and Lee Ufan', 'E-bikes for hire at Miyanoura'],
+          highlight: false,
+        },
+      ],
+    },
+    {
+      id: 'p11',
+      type: 'phrases',
+      heading: 'Gallery Japanese',
+      items: [
+        { jp: '予約しています', romaji: 'Yoyaku shite imasu', meaning: 'I have a reservation' },
+        { jp: '靴は脱ぎますか？', romaji: 'Kutsu wa nugimasu ka?', meaning: 'Should I take my shoes off?' },
+        { jp: '写真を撮ってもいいですか？', romaji: 'Shashin o totte mo ii desu ka?', meaning: 'May I take photos?' },
+        { jp: '電動自転車を借りたいです', romaji: 'Dendō jitensha o karitai desu', meaning: 'I’d like to rent an e-bike' },
+        { jp: '次のフェリーは何時ですか？', romaji: 'Tsugi no ferī wa nanji desu ka?', meaning: 'When is the next ferry?' },
+        { jp: '豊島行きの船はどこから出ますか？', romaji: 'Teshima-iki no fune wa doko kara demasu ka?', meaning: 'Where does the boat to Teshima leave from?' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'Bring to life what is here; create what is not.',
+      quoteJp: '在るものを活かし、無いものを創る',
+      author: 'Soichiro Fukutake',
+      role: 'Benesse Art Site Naoshima · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Most Naoshima museums close on Mondays and Teshima’s on Tuesdays, and boats are cut in rough weather. Check opening calendars and ferry timetables before you sail.',
+      cta: 'Open Benesse Art Site Naoshima',
+      ctaUrl: 'https://benesse-artsite.jp/en/',
+      details: [
+        { icon: 'MapPin', label: 'Tourist information', value: 'Miyanoura port terminal, Naoshima' },
+        { icon: 'Globe', label: 'Benesse Art Site', value: 'benesse-artsite.jp', url: 'https://benesse-artsite.jp/en/' },
+        { icon: 'Ship', label: 'Ferries (Shikoku Kisen)', value: 'shikokukisen.com', url: 'https://www.shikokukisen.com/' },
+        { icon: 'Globe', label: 'Naoshima Town tourism', value: 'naoshima.net', url: 'https://www.naoshima.net/en/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Mata ne — until the next tide',
-      body: 'Setouchi Slow Ferry Club plans unhurried art journeys across the Seto Inland Sea.',
-      tagline: 'setouchi-slow.example'
-    }
-  ]
+      body: 'Come back for the Setouchi Triennale in 2028, or on any quiet weekday, when an island and its museums feel like yours alone.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

@@ -1,0 +1,86 @@
+{
+  "brochure": "hokkaido-powder-snow",
+  "photos": [
+    {
+      "id": "hokkaido-tancho-dance",
+      "use": "cover",
+      "candidates": [],
+      "alt": "Two red-crowned cranes with wings raised, dancing in a snowy field",
+      "caption": "Red-crowned cranes (tanchō) dancing in the snow near Tsurui, eastern Hokkaidō",
+      "place": "Tsurui, Kushiro area",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "hokkaido-yotei-niseko",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A snow-covered volcanic cone rising above white fields and birch forest",
+      "caption": "Mount Yōtei from Niseko in winter",
+      "place": "Niseko",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "hokkaido-sapporo-snow-festival",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Large snow sculptures lining a long, snowy city park",
+      "caption": "Ōdōri Park during the Sapporo Snow Festival",
+      "place": "Ōdōri Park, Sapporo",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hokkaido-otaru-canal",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A snowy canal lined with stone warehouses and old-style street lamps at dusk",
+      "caption": "Otaru Canal in winter",
+      "place": "Otaru Canal",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "hokkaido-abashiri-drift-ice",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A sightseeing icebreaker pushing through white floes of sea ice",
+      "caption": "The icebreaker Aurora in the drift ice off Abashiri",
+      "place": "Abashiri, Sea of Okhotsk",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "hokkaido-susukino-ice",
+      "use": "any",
+      "candidates": [],
+      "alt": "Clear carved ice sculptures lit against the night",
+      "caption": "Carved ice at the Susukino site, Sapporo Snow Festival",
+      "place": "Susukino, Sapporo",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hokkaido-upopoy",
+      "use": "any",
+      "candidates": [],
+      "alt": "A low modern museum building beside a lake in winter",
+      "caption": "The National Ainu Museum at Upopoy, Lake Poroto",
+      "place": "Upopoy, Shiraoi",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hokkaido-shiretoko-drift-ice",
+      "use": "any",
+      "candidates": [],
+      "alt": "Sea ice packed along a shore below snow-covered mountains",
+      "caption": "Drift ice along the Shiretoko Peninsula",
+      "place": "Shiretoko Peninsula",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "hokkaido-otaru-snow-light",
+      "use": "any",
+      "candidates": [],
+      "alt": "Rows of small candle-lit snow lanterns beside a canal at night",
+      "caption": "Snow lanterns on the Otaru Snow Light Path, February",
+      "place": "Otaru Canal",
+      "focus": "50% 60%"
+    }
+  ]
+}

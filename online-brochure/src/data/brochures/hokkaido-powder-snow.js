@@ -1,30 +1,47 @@
-/** Hokkaidō: Powder & Ice — 北海道. Shape: see src/data/schema.js. */
+/**
+ * Hokkaidō: Powder & Ice — 北海道. Shape: see src/data/schema.js.
+ * Real places, written October 2026. Neither the writer nor the fact-checker could reach the web
+ * (shared search budget exhausted), so the fact-check was a second, independent review from memory
+ * only: see docs/research/hokkaido-powder-snow.md. `factsChecked` stays unset and the tagline says
+ * "Facts awaiting check" until a sourced pass. Prices, hours and 2027 dates are left out.
+ * Photo slots: src/data/photos/manifest/hokkaido-powder-snow.json (no Commons candidates yet).
+ */
 export default {
   id: 'b_hokkaido-powder-snow',
   slug: 'hokkaido-powder-snow',
   title: 'Hokkaidō: Powder & Ice',
   titleJp: '北海道',
   titleKana: 'ほっかいどう',
-  subtitle: 'Dry powder, ice lanterns and the Sapporo Snow Festival on Japan’s northern island',
+  subtitle: 'The Sapporo Snow Festival, Otaru’s canal and the drift ice of the Sea of Okhotsk',
   category: 'nature',
   region: 'hokkaido',
-  seasons: [
-    'winter'
+  seasons: ['winter'],
+  organization: 'Tabi Guides',
+  location: {
+    name: 'Ōdōri Park, Sapporo',
+    nameJp: '大通公園',
+    prefecture: 'Hokkaidō',
+    lat: 43.06,
+    lng: 141.348,
+  },
+  sources: [
+    { label: 'Sapporo Snow Festival official site', url: 'https://www.snowfes.com/' },
+    { label: 'Sapporo Travel (official city guide)', url: 'https://www.sapporo.travel/en/' },
+    { label: 'Visit Hokkaido (Hokkaido Tourism Organization)', url: 'https://www.visit-hokkaido.jp/en/' },
+    { label: 'Otaru Tourism Association', url: 'https://otaru.gr.jp/' },
+    { label: 'Upopoy, National Ainu Museum and Park', url: 'https://ainu-upopoy.jp/en/' },
+    { label: 'Abashiri icebreaker Aurora', url: 'https://www.ms-aurora.com/abashiri/' },
+    { label: 'Niseko United', url: 'https://www.niseko.ne.jp/en/' },
+    { label: 'UNESCO: Shiretoko', url: 'https://whc.unesco.org/en/list/1193/' },
+    { label: 'Wikipedia: Sapporo Snow Festival', url: 'https://en.wikipedia.org/wiki/Sapporo_Snow_Festival' },
+    { label: 'Wikipedia: Red-crowned crane', url: 'https://en.wikipedia.org/wiki/Red-crowned_crane' },
   ],
-  organization: 'Shirokuma Winter Co.',
-  summary: 'A winter guide to Hokkaidō: famously light powder snow, the giant sculptures of the Sapporo Snow Festival, drift ice on the Sea of Okhotsk and miso ramen to thaw out.',
-  tags: [
-    'hokkaido',
-    'sapporo',
-    'snow festival',
-    'skiing',
-    'powder snow',
-    'drift ice',
-    'ramen'
-  ],
+  summary:
+    'A winter guide to Hokkaidō’s real highlights: the snow and ice sculptures of the Sapporo Snow Festival, Otaru’s lantern-lit canal, drift ice off Abashiri, dancing red-crowned cranes and Ainu culture at Upopoy.',
+  tags: ['hokkaido', 'sapporo', 'snow festival', 'otaru', 'drift ice', 'abashiri', 'shiretoko', 'niseko', 'red-crowned crane', 'ainu', 'upopoy', 'winter'],
   format: 'booklet',
-  updatedAt: '2026-08-28T08:00:00.000Z',
-  readMinutes: 5,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 7,
   featured: true,
   source: 'builtin',
   theme: {
@@ -33,242 +50,204 @@ export default {
     accent: '#7cc7f2',
     accent2: '#e8574a',
     muted: '#9fb1c4',
-    typeface: 'serif'
+    typeface: 'serif',
   },
   cover: {
+    photo: 'hokkaido-tancho-dance',
     art: 'asanoha',
-    seed: 61
+    seed: 61,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Hokkaidō · Winter edition',
+      eyebrow: 'Hokkaidō · Winter',
       title: 'Powder & Ice',
       titleJp: '北海道',
-      subtitle: 'Light, dry snow, a city of ice sculptures and hot springs steaming under the stars.'
+      subtitle: 'Snow sculptures in Sapporo, a candlelit canal in Otaru, sea ice on the Okhotsk coast and cranes dancing in the snow.',
+      photo: 'hokkaido-tancho-dance',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Welcome north',
       heading: 'Where winter is the main event',
-      body: 'Hokkaidō is Japan’s northernmost main island and covers about a fifth of the country’s land. Cold air from Siberia picks up moisture over the Sea of Japan and drops it as snow so light and dry that skiers cross the world for it.\n\nIn the cities, winter is a festival. Sapporo fills its central park with sculptures of snow and ice, Otaru lines its old canal with candles, and a steaming bowl of miso ramen is never far away.',
-      pullQuote: 'Snow so dry it squeaks under your boots.'
+      body:
+        'Hokkaidō, the northernmost of Japan’s main islands, covers about a fifth of the country’s land. In winter, cold air from Siberia crosses the Sea of Japan, gathers moisture and drops it as light, dry snow — the powder that draws skiers to Niseko.\n\nThis is Ainu Mosir, the Ainu homeland, renamed Hokkaidō by the Meiji government in 1869. Come in February for festivals of snow and ice, sea ice on the Okhotsk coast and cranes dancing in the east.',
+      pullQuote: 'Snow so dry it squeaks under your boots.',
+      photo: 'hokkaido-yotei-niseko',
     },
     {
       id: 'p3',
+      type: 'place',
+      kicker: 'Festival · Sapporo',
+      name: 'Sapporo Snow Festival',
+      nameJp: 'さっぽろ雪まつり',
+      photo: 'hokkaido-sapporo-snow-festival',
+      body:
+        'It began in 1950, when local secondary-school students built six snow statues in Ōdōri Park. Now, for about a week in early February, the park fills with snow sculptures — the biggest as large as buildings, lit up until late — while Susukino shows carved ice and the Tsudome site has snow slides for children. More than two million people visit in a typical year.',
+      facts: [
+        { label: 'When', value: 'About a week in early February' },
+        { label: 'Admission', value: 'Free to enter' },
+        { label: 'Getting there', value: 'Subway to Ōdōri Station' },
+        { label: 'Best time', value: 'After dark, when the sculptures are lit' },
+      ],
+      lat: 43.06,
+      lng: 141.348,
+      website: 'https://www.snowfes.com/',
+    },
+    {
+      id: 'p4',
+      type: 'place',
+      kicker: 'Canal town · Otaru',
+      name: 'Otaru Canal',
+      nameJp: '小樽運河',
+      photo: 'hokkaido-otaru-canal',
+      body:
+        'Otaru was one of Hokkaidō’s great trading ports, and in 1923 it completed a canal so barges could unload beside its stone warehouses. When a road plan threatened to fill it in, residents campaigned for years. In the end half its width was kept, and in 1986 it became a stone promenade lit by old-style gas lamps. In February the Snow Light Path lines it with snow lanterns and candles.',
+      facts: [
+        { label: 'Admission', value: 'Free to walk' },
+        { label: 'Getting there', value: 'About 40 min by JR from Sapporo' },
+        { label: 'Snow Light Path', value: 'About a week in February' },
+        { label: 'Best time', value: 'Dusk, when the lamps come on' },
+      ],
+      lat: 43.199,
+      lng: 141.001,
+      website: 'https://otaru.gr.jp/',
+    },
+    {
+      id: 'p5',
+      type: 'place',
+      kicker: 'Sea ice · Okhotsk coast',
+      name: 'Drift ice off Abashiri',
+      nameJp: '網走の流氷',
+      photo: 'hokkaido-abashiri-drift-ice',
+      body:
+        'Sea ice that forms far to the north, where the Amur River freshens the Sea of Okhotsk, drifts south each winter until it presses against Hokkaidō’s coast, level with the south of France. From Abashiri the icebreaker Aurora noses out into the floes on cruises of about an hour. The ice is never guaranteed: February to early March is the safest bet.',
+      facts: [
+        { label: 'Season', value: 'Late Jan–Mar; best Feb to early Mar' },
+        { label: 'Cruise', value: 'About 1 h on the icebreaker Aurora' },
+        { label: 'Getting there', value: 'Fly to Memanbetsu, or 5½ h by train' },
+        { label: 'Ice all year', value: 'Okhotsk Ryūhyō Museum, Mount Tento' },
+      ],
+      lat: 44.017,
+      lng: 144.283,
+      website: 'https://www.ms-aurora.com/abashiri/',
+    },
+    {
+      id: 'p6',
       type: 'features',
-      kicker: 'Winter highlights',
-      heading: 'Five reasons to come in February',
+      kicker: 'Also in winter',
+      heading: 'Five more reasons to come north',
       items: [
-        {
-          icon: 'Snowflake',
-          title: 'Sapporo Snow Festival',
-          text: 'For a week each February, Ōdōri Park fills with giant snow sculptures and Susukino glitters with carved ice.'
-        },
         {
           icon: 'MountainSnow',
           title: 'Niseko powder',
-          text: 'Deep, dry snow on Niseko Annupuri, with the perfect cone of Mount Yōtei across the valley.'
-        },
-        {
-          icon: 'Ship',
-          title: 'Drift ice',
-          text: 'From late January, sea ice from the Sea of Okhotsk reaches the Abashiri coast. Watch it from an icebreaker.'
-        },
-        {
-          icon: 'Lamp',
-          title: 'Otaru Snow Light Path',
-          text: 'Snow lanterns and candles light the canal and its stone warehouses for a week in February.'
+          text: 'Four linked resorts on Mount Niseko Annupuri face 1,898-metre Mount Yōtei. Leave the pistes only through the official gates.',
         },
         {
           icon: 'Bird',
           title: 'Red-crowned cranes',
-          text: 'In eastern Hokkaidō, cranes dance in the snowfields near Kushiro — one of winter’s great sights.'
-        }
-      ]
-    },
-    {
-      id: 'p4',
-      type: 'gallery',
-      heading: 'Winter, in four colours',
-      items: [
-        {
-          art: 'asanoha',
-          seed: 12,
-          caption: 'Frost on a Sapporo window'
+          text: 'Once thought extinct in Japan, tanchō now gather by the hundreds at winter feeding grounds near Kushiro and Tsurui.',
         },
         {
-          art: 'fuji',
-          seed: 9,
-          caption: 'Mount Yōtei, the “Fuji of Ezo”'
+          icon: 'Landmark',
+          title: 'Upopoy',
+          text: 'Japan’s National Ainu Museum and Park, opened 2020 in Shiraoi: Ainu history, dance and craft, told from an Ainu point of view.',
         },
         {
-          art: 'kumo',
-          seed: 31,
-          caption: 'Steam over an open-air bath'
+          icon: 'Snowflake',
+          title: 'Shiretoko',
+          text: 'A UNESCO World Heritage peninsula since 2005. In February, guided walks in dry suits float you among the drift ice at Utoro.',
         },
         {
-          art: 'shippo',
-          seed: 4,
-          caption: 'Ice lanterns in Otaru'
-        }
-      ]
-    },
-    {
-      id: 'p5',
-      type: 'stats',
-      heading: 'Hokkaidō by the numbers',
-      body: 'Big, wild and very snowy — Japan at its most spacious.',
-      items: [
-        {
-          value: 22,
-          prefix: '',
-          suffix: '%',
-          label: 'of Japan’s land area'
+          icon: 'Soup',
+          title: 'Miso ramen',
+          text: 'Sapporo is the home of miso ramen — rich, often topped with butter and corn. Thaw out in Susukino’s noodle alleys.',
         },
-        {
-          value: 5,
-          prefix: '~',
-          suffix: ' m',
-          label: 'of snow falls on Sapporo in an average winter'
-        },
-        {
-          value: 2,
-          prefix: '',
-          suffix: 'M+',
-          label: 'visitors to the Snow Festival in a typical year'
-        }
-      ]
-    },
-    {
-      id: 'p6',
-      type: 'agenda',
-      heading: 'Four winter days',
-      items: [
-        {
-          time: 'Day 1',
-          title: 'Sapporo',
-          text: 'Snow sculptures by day, Susukino’s ice by night, miso ramen at a counter.'
-        },
-        {
-          time: 'Day 2',
-          title: 'Otaru',
-          text: 'Canal walk, glass workshops and the Snow Light Path after dark.'
-        },
-        {
-          time: 'Day 3',
-          title: 'Niseko',
-          text: 'First chair in fresh powder, then an onsen facing Mount Yōtei.'
-        },
-        {
-          time: 'Day 4',
-          title: 'Asahikawa',
-          text: 'Penguins on their winter walk at Asahiyama Zoo.'
-        }
-      ]
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Cold-weather Japanese',
+      type: 'gallery',
+      heading: 'Winter, in four frames',
       items: [
-        {
-          jp: '寒いですね',
-          romaji: 'Samui desu ne',
-          meaning: 'Cold, isn’t it?'
-        },
-        {
-          jp: 'リフト券を一枚ください',
-          romaji: 'Rifuto-ken o ichi-mai kudasai',
-          meaning: 'One lift ticket, please'
-        },
-        {
-          jp: '温かい飲み物はありますか？',
-          romaji: 'Atatakai nomimono wa arimasu ka?',
-          meaning: 'Do you have hot drinks?'
-        },
-        {
-          jp: 'なまら美味しい！',
-          romaji: 'Namara oishii!',
-          meaning: 'Really delicious! — Hokkaidō dialect'
-        },
-        {
-          jp: '滑りやすいので気をつけて',
-          romaji: 'Suberiyasui node ki o tsukete',
-          meaning: 'Careful, it’s slippery'
-        }
-      ]
+        { photo: 'hokkaido-susukino-ice', art: 'shippo', seed: 4, caption: 'Carved ice at the Susukino site, Sapporo Snow Festival' },
+        { photo: 'hokkaido-upopoy', art: 'kumo', seed: 31, caption: 'The National Ainu Museum at Upopoy, Lake Poroto' },
+        { photo: 'hokkaido-shiretoko-drift-ice', art: 'fuji', seed: 9, caption: 'Drift ice along the Shiretoko Peninsula' },
+        { photo: 'hokkaido-otaru-snow-light', art: 'asanoha', seed: 12, caption: 'Snow lanterns on the Otaru Snow Light Path' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Winter journeys',
-      note: 'Per person, sharing. Rail between cities, breakfasts and an English-speaking guide included.',
-      plans: [
-        {
-          name: 'Snow Festival',
-          price: '¥168,000',
-          period: '4 nights',
-          features: [
-            'Sapporo & Otaru hotels',
-            'Festival night walk',
-            'Ramen alley supper'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Powder Week',
-          price: '¥298,000',
-          period: '7 nights',
-          features: [
-            'Everything in Snow Festival',
-            'Three-day Niseko lift pass',
-            'A night in an onsen ryokan',
-            'Avalanche-trained ski guide'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'Where it all is',
+      body: 'Sapporo is the hub, about 40 minutes by JR from New Chitose Airport. Abashiri, Shiretoko and the crane country lie a short flight east.',
+      places: [
+        { name: 'Ōdōri Park, Sapporo', nameJp: '大通公園', lat: 43.06, lng: 141.348, note: 'Snow Festival, early February' },
+        { name: 'Otaru Canal', nameJp: '小樽運河', lat: 43.199, lng: 141.001, note: 'Snow Light Path in February' },
+        { name: 'Niseko Hirafu', nameJp: 'ニセコひらふ', lat: 42.86, lng: 140.7, note: 'Powder, facing Mount Yōtei' },
+        { name: 'Upopoy, Shiraoi', nameJp: 'ウポポイ', lat: 42.556, lng: 141.361, note: 'National Ainu Museum and Park' },
+        { name: 'Abashiri', nameJp: '網走', lat: 44.017, lng: 144.283, note: 'Icebreaker cruises into the drift ice' },
+        { name: 'Utoro, Shiretoko', nameJp: 'ウトロ', lat: 44.068, lng: 144.988, note: 'Guided drift-ice walks' },
+        { name: 'Tsurui-Itō Tanchō Sanctuary', nameJp: '鶴居・伊藤タンチョウサンクチュアリ', lat: 43.23, lng: 144.32, note: 'Red-crowned cranes in winter' },
+        { name: 'New Chitose Airport', nameJp: '新千歳空港', lat: 42.7753, lng: 141.6922, note: 'Main gateway to Hokkaidō' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'We came for the snow festival and stayed for the powder. Our guide had us on the first chair every morning and in a hot spring every night.',
-      author: 'Ines & Sam',
-      role: 'Travellers, February 2026'
+      type: 'agenda',
+      heading: 'Six days in February',
+      items: [
+        { time: 'Day 1', title: 'Sapporo', text: 'Ōdōri Park’s snow sculptures; Susukino ice and ramen at night.' },
+        { time: 'Day 2', title: 'Otaru', text: 'JR, about 40 min; canal walk and Snow Light Path at dusk.' },
+        { time: 'Day 3', title: 'Shiraoi · Upopoy', text: 'Limited express, about 1 h; Ainu museum, dance and crafts.' },
+        { time: 'Day 4', title: 'Abashiri', text: 'Fly from New Chitose to Memanbetsu; ice museum on Mount Tento.' },
+        { time: 'Day 5', title: 'Sea of Okhotsk', text: 'Morning icebreaker cruise among the floes.' },
+        { time: 'Day 6', title: 'Kushiro · Tsurui', text: 'Train south to Kushiro; cranes at the Tsurui sanctuary.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Plan your winter',
-      body: 'February books out by autumn. Send us your dates and ski level and we will build a route around the best snow.',
-      cta: 'Plan my winter trip',
-      details: [
-        {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'snow@shirokuma-winter.example'
-        },
-        {
-          icon: 'Calendar',
-          label: 'Season',
-          value: 'December to March'
-        },
-        {
-          icon: 'MapPin',
-          label: 'Office',
-          value: 'Kita-ku, Sapporo'
-        }
-      ]
+      type: 'phrases',
+      heading: 'Cold-weather Japanese',
+      items: [
+        { jp: 'しばれるね', romaji: 'Shibareru ne', meaning: 'It’s freezing! (Hokkaidō dialect)' },
+        { jp: 'なまら美味しい！', romaji: 'Namara oishii!', meaning: 'Really delicious! (Hokkaidō dialect)' },
+        { jp: 'イランカラプテ', romaji: 'Irankarapte', meaning: 'Hello — an Ainu greeting' },
+        { jp: 'リフト券を一枚ください', romaji: 'Rifuto-ken o ichimai kudasai', meaning: 'One lift ticket, please' },
+        { jp: '流氷は見えますか？', romaji: 'Ryūhyō wa miemasu ka?', meaning: 'Can we see the drift ice?' },
+        { jp: '滑りやすいので気をつけてください', romaji: 'Suberiyasui node ki o tsukete kudasai', meaning: 'It’s slippery, so please be careful' },
+      ],
     },
     {
       id: 'p11',
+      type: 'quote',
+      quote: 'Long ago, this vast Hokkaidō was our ancestors’ land of freedom.',
+      quoteJp: 'その昔この広い北海道は、私たちの先祖の自由の天地でありました。',
+      author: 'Chiri Yukie',
+      role: 'Preface to Ainu Shin’yōshū (1922; published 1923) · Translation: Tabi Guides',
+    },
+    {
+      id: 'p12',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Festival dates, icebreaker timetables and museum hours are set each season, so check the official sites before you book.',
+      cta: 'Open Visit Hokkaido',
+      ctaUrl: 'https://www.visit-hokkaido.jp/en/',
+      details: [
+        { icon: 'MapPin', label: 'Tourist information', value: 'Hokkaidō-Sapporo Tourist Information Center, JR Sapporo Station' },
+        { icon: 'Snowflake', label: 'Snow Festival', value: 'snowfes.com', url: 'https://www.snowfes.com/' },
+        { icon: 'Landmark', label: 'Upopoy', value: 'ainu-upopoy.jp', url: 'https://ainu-upopoy.jp/en/' },
+        { icon: 'Globe', label: 'Sapporo city guide', value: 'sapporo.travel', url: 'https://www.sapporo.travel/en/' },
+      ],
+    },
+    {
+      id: 'p13',
       type: 'back',
       title: 'Mata ne — see you next winter',
-      body: 'Shirokuma Winter Co. runs small-group snow journeys across Hokkaidō.',
-      tagline: 'shirokuma-winter.example'
-    }
-  ]
+      body: 'Winter here is beautiful and serious: dress in layers, leave the pistes only by the gates, never walk on sea ice unguided, and give the cranes room.',
+      tagline: 'Facts awaiting check · Tabi Guides',
+    },
+  ],
 };

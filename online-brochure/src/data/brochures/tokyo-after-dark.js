@@ -1,33 +1,41 @@
-/** Tokyo After Dark — 東京. Shape: see src/data/schema.js. */
+/**
+ * Tokyo After Dark — 東京. Shape: see src/data/schema.js.
+ * Real places, facts checked October 2026; sources and notes in docs/research/tokyo-after-dark.md,
+ * photo candidates in src/data/photos/manifest/tokyo-after-dark.json.
+ */
 export default {
   id: 'b_tokyo-after-dark',
   slug: 'tokyo-after-dark',
   title: 'Tokyo After Dark',
   titleJp: '東京',
   titleKana: 'とうきょう',
-  subtitle: 'Neon alleys, tiny bars and late-night ramen in one of the world’s biggest cities',
+  subtitle: 'Rooftop views, six-seat bars and a temple lit until eleven — the real city after the office lights go out',
   category: 'cities',
   region: 'kanto',
-  seasons: [
-    'spring',
-    'summer',
-    'autumn',
-    'winter'
+  seasons: ['spring', 'summer', 'autumn', 'winter'],
+  organization: 'Tabi Guides',
+  location: { name: 'Tokyo', nameJp: '東京', prefecture: 'Tokyo', lat: 35.6897, lng: 139.6922 },
+  sources: [
+    { label: 'GO TOKYO (Tokyo Convention & Visitors Bureau): SHIBUYA SKY', url: 'https://www.gotokyo.org/en/spot/1749/index.html' },
+    { label: 'GO TOKYO: Shinjuku Golden Gai', url: 'https://www.gotokyo.org/en/spot/62/index.html' },
+    { label: 'GO TOKYO: Tokyo Tourist Information Center', url: 'https://www.gotokyo.org/en/plan/tourist-info-center/index.html' },
+    { label: 'Sensō-ji official site', url: 'https://senso-ji.jp/english/' },
+    { label: 'Shinjuku Nishiguchi Omoide Yokochō: history', url: 'https://en.shinjuku-omoide.com/history' },
+    { label: 'Tokyo Metropolitan Government: subway ticket price revision (Jan 2026)', url: 'https://www.metro.tokyo.lg.jp/information/press/2026/01/2026013016' },
+    { label: 'Toei Subway: fare notice for 14 March 2026', url: 'https://www.kotsu.metro.tokyo.jp/pickup_information/news/subway/2026/sub_p_2026013012379_h.html' },
+    { label: 'JNTO: Tokyo Tower', url: 'https://www.japan.travel/spot/1709' },
+    { label: 'Aozora Bunko: Ishikawa Takuboku, Ichiaku no Suna (1910)', url: 'https://www.aozora.gr.jp/cards/000153/files/816_15786.html' },
+    { label: 'Wikipedia: Shibuya Crossing', url: 'https://en.wikipedia.org/wiki/Shibuya_Crossing' },
+    { label: 'Wikipedia: Shinjuku Golden Gai', url: 'https://en.wikipedia.org/wiki/Shinjuku_Golden_Gai' },
+    { label: 'Wikipedia: Sensō-ji', url: 'https://en.wikipedia.org/wiki/Sens%C5%8D-ji' },
   ],
-  organization: 'Yoru Walks Tokyo',
-  summary: 'A night-owl guide to Tokyo: Shibuya Crossing at full tide, six-seat bars in Golden Gai, izakaya under the train tracks and ramen at 1 a.m.',
-  tags: [
-    'tokyo',
-    'nightlife',
-    'izakaya',
-    'ramen',
-    'shinjuku',
-    'shibuya',
-    'neon'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'A night guide to the real Tokyo: Shibuya Sky above the scramble, Golden Gai’s 200-odd tiny bars, izakaya in Yūrakuchō’s brick arches and Sensō-ji lit until about 23:00 — prices checked October 2026.',
+  tags: ['tokyo', 'nightlife', 'shibuya', 'shinjuku', 'golden gai', 'asakusa', 'senso-ji', 'izakaya', 'night views'],
   format: 'bifold',
-  updatedAt: '2026-10-02T21:00:00.000Z',
-  readMinutes: 4,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 6,
   featured: true,
   source: 'builtin',
   theme: {
@@ -36,237 +44,243 @@ export default {
     accent: '#ff4f7b',
     accent2: '#2ee6d6',
     muted: '#9aa0b4',
-    typeface: 'sans'
+    typeface: 'sans',
   },
   cover: {
+    photo: 'tokyo-tower-night',
     art: 'ichimatsu',
-    seed: 5
+    seed: 5,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Kantō · Open every night',
+      eyebrow: 'Kantō · After dark',
       title: 'Tokyo After Dark',
       titleJp: '東京',
-      subtitle: 'Neon alleys, six-seat bars and ramen at 1 a.m. — the city after the office lights go out.'
+      subtitle: 'Rooftop views, six-seat bars and a temple lit until eleven — the city after the office lights go out.',
+      photo: 'tokyo-tower-night',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Konbanwa',
       heading: 'The city changes shift at sunset',
-      body: 'By day Tokyo is efficient, polite and on time. After dark it loosens its tie. Salarymen crowd into yakitori stands under the railway arches, bartenders pour whisky in rooms the size of a lift, and the last trains leave stations packed and happy.\n\nThis brochure is a map of the best of it — and the manners that make you a welcome guest.',
-      pullQuote: 'Tokyo after dark is loud, tiny, delicious — and remarkably safe.'
+      body:
+        'When the offices empty, Tokyo turns to its smallest rooms. Yakitori smoke drifts from counters under railway arches, bars with barely ten seats glow along Golden Gai’s lanes, and at Shibuya the lights change and thousands cross at once.\n\nThis guide follows the real night: where to look down on the city, where to drink shoulder to shoulder, which temple stays lit after the crowds leave — and the manners that make you a welcome guest.',
+      pullQuote: 'Small rooms, a vast city — and a last train that waits for no one.',
+      photo: 'tokyo-shibuya-crossing',
     },
     {
       id: 'p3',
+      type: 'place',
+      kicker: 'Shibuya · 渋谷',
+      name: 'Shibuya Sky',
+      nameJp: '渋谷スカイ',
+      photo: 'tokyo-shibuya-sky',
+      body:
+        'The open-air roof of Shibuya Scramble Square stands 229 m above the street. Come for the last light, then look straight down on the scramble, where up to 3,000 people cross on a single green at peak times. Bags, hats and tripods go into lockers before the roof, which can close at short notice in wind or rain. Afterwards, go down and join the crossing yourself.',
+      facts: [
+        { label: 'Hours', value: '10:00–22:30 (last entry 21:20)' },
+        { label: 'Admission', value: '¥2,700 online before 15:00, ¥3,400 from 15:00' },
+        { label: 'Getting there', value: 'Directly above Shibuya Station' },
+        { label: 'Best time', value: 'Sunset — book a slot online' },
+      ],
+      lat: 35.6585,
+      lng: 139.7022,
+      website: 'https://www.gotokyo.org/en/spot/1749/index.html',
+    },
+    {
+      id: 'p4',
+      type: 'place',
+      kicker: 'Shinjuku · 新宿',
+      name: 'Shinjuku Golden Gai',
+      nameJp: '新宿ゴールデン街',
+      photo: 'tokyo-golden-gai',
+      body:
+        'Six narrow lanes beside Hanazono Shrine hold around 200 bars, many with barely ten seats. The district grew out of Shinjuku’s postwar black market and keeps its low, two-storey scale. Doors with English signs and posted prices welcome newcomers; most bars add a cover charge and many take cash only. The lanes are private property — ask before you photograph.',
+      facts: [
+        { label: 'Hours', value: 'Evenings until late; varies by bar' },
+        { label: 'Cover charge', value: 'Usually ¥500–1,500 per person' },
+        { label: 'Getting there', value: 'Shinjuku Station East Exit, 5–10 min walk' },
+        { label: 'Nearby', value: 'Omoide Yokochō, by the West Exit' },
+      ],
+      lat: 35.6939,
+      lng: 139.7047,
+      website: 'https://www.gotokyo.org/en/spot/62/index.html',
+    },
+    {
+      id: 'p5',
+      type: 'place',
+      kicker: 'Asakusa · 浅草',
+      name: 'Sensō-ji by night',
+      nameJp: '浅草寺',
+      photo: 'tokyo-sensoji-night',
+      body:
+        'Tokyo’s oldest temple traces its story to 628, when two fishermen netted a small Kannon statue from the Sumida River. By day it is packed. After the main hall closes at 17:00 the grounds stay open, and the Kaminarimon, the Hōzōmon and the five-storey pagoda are lit until about 23:00 — red gates, paper lanterns and a much quieter Tokyo.',
+      facts: [
+        { label: 'Main hall', value: '6:00–17:00 (Oct–Mar from 6:30)' },
+        { label: 'Grounds', value: 'Always open; lit sunset to about 23:00' },
+        { label: 'Admission', value: 'Free' },
+        { label: 'Getting there', value: 'Asakusa Station (Ginza & Asakusa lines)' },
+      ],
+      lat: 35.7148,
+      lng: 139.7967,
+      website: 'https://senso-ji.jp/english/',
+    },
+    {
+      id: 'p6',
       type: 'features',
-      kicker: 'Neighbourhoods',
-      heading: 'Where the night happens',
+      kicker: 'More after dark',
+      heading: 'Where else the night happens',
       items: [
         {
-          icon: 'Footprints',
-          title: 'Shibuya Crossing',
-          text: 'Watch the scramble from above, then join it. Go just after 8 p.m. for full tide.'
-        },
-        {
-          icon: 'Martini',
-          title: 'Golden Gai',
-          text: 'Some two hundred tiny bars in six narrow Shinjuku alleys. Many seat fewer than ten.'
+          icon: 'Lamp',
+          title: 'Omoide Yokochō',
+          text: 'Shinjuku’s postwar “Memory Lane”: dozens of smoky counters, many grilling yakitori and offal.',
         },
         {
           icon: 'TrainFront',
           title: 'Yūrakuchō arches',
-          text: 'Smoky izakaya tucked under the train tracks, with beer and yakitori for the after-work crowd.'
+          text: 'Izakaya tucked into red-brick railway arches from 1910, spilling out between Yūrakuchō and Shimbashi.',
+        },
+        {
+          icon: 'Landmark',
+          title: 'Tokyo Tower',
+          text: 'Finished in 1958 and 333 m tall, with decks at 150 m and 250 m. Still the city’s warmest glow.',
         },
         {
           icon: 'MoonStar',
-          title: 'Tokyo skyline',
-          text: 'See the city glitter from Shibuya Sky or the Tokyo Tower deck before midnight.'
-        }
-      ]
-    },
-    {
-      id: 'p4',
-      type: 'agenda',
-      heading: 'A night, hour by hour',
-      items: [
-        {
-          time: '18:30',
-          title: 'Shibuya Sky',
-          text: 'The open-air rooftop deck, with the whole city lit up below.'
+          title: 'Tokyo Skytree',
+          text: 'At 634 m, Japan’s tallest structure. Decks at 350 m and 450 m; buy a timed ticket online.',
         },
         {
-          time: '20:00',
-          title: 'The scramble',
-          text: 'Cross Shibuya with up to 3,000 people at once.'
+          icon: 'Wallet',
+          title: 'Carry cash',
+          text: 'Small bars often add a seat charge and many take cash only. Prices are usually posted by the door.',
         },
         {
-          time: '21:00',
-          title: 'Izakaya hop',
-          text: 'Yakitori, highballs and edamame under the tracks.'
+          icon: 'Clock',
+          title: 'Mind the last train',
+          text: 'Most lines stop around midnight and start again near 5:00. Check your own line before the last round.',
         },
-        {
-          time: '23:00',
-          title: 'Golden Gai',
-          text: 'Find a bar with an empty stool and a friendly sign.'
-        },
-        {
-          time: '01:00',
-          title: 'Ramen reset',
-          text: 'Rich tonkotsu at a ticket-machine counter.'
-        }
-      ]
-    },
-    {
-      id: 'p5',
-      type: 'gallery',
-      heading: 'Shot after midnight',
-      items: [
-        {
-          art: 'ichimatsu',
-          seed: 3,
-          caption: 'Kabukichō signage, Shinjuku'
-        },
-        {
-          art: 'kumo',
-          seed: 17,
-          caption: 'Steam from a ramen counter'
-        },
-        {
-          art: 'shippo',
-          seed: 26,
-          caption: 'Lanterns in Omoide Yokochō'
-        }
-      ]
-    },
-    {
-      id: 'p6',
-      type: 'stats',
-      heading: 'The size of the night',
-      body: 'Greater Tokyo is one of the world’s largest metropolitan areas.',
-      items: [
-        {
-          value: 37,
-          prefix: '',
-          suffix: 'M',
-          label: 'people in Greater Tokyo'
-        },
-        {
-          value: 13,
-          prefix: '',
-          suffix: '',
-          label: 'subway lines'
-        },
-        {
-          value: 3000,
-          prefix: '',
-          suffix: '',
-          label: 'people per green light at Shibuya, at peak'
-        }
-      ]
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Izakaya Japanese',
+      type: 'gallery',
+      heading: 'Shot after dark',
       items: [
-        {
-          jp: '乾杯！',
-          romaji: 'Kanpai!',
-          meaning: 'Cheers!'
-        },
-        {
-          jp: 'すみません',
-          romaji: 'Sumimasen',
-          meaning: 'Excuse me — how you call the staff'
-        },
-        {
-          jp: 'おすすめは何ですか？',
-          romaji: 'Osusume wa nan desu ka?',
-          meaning: 'What do you recommend?'
-        },
-        {
-          jp: '美味しい！',
-          romaji: 'Oishii!',
-          meaning: 'Delicious!'
-        },
-        {
-          jp: 'お会計お願いします',
-          romaji: 'Okaikei onegaishimasu',
-          meaning: 'The bill, please'
-        }
-      ]
+        { photo: 'tokyo-omoide-yokocho', art: 'shippo', seed: 26, caption: 'Omoide Yokochō, Shinjuku' },
+        { photo: 'tokyo-kaminarimon', art: 'kumo', seed: 17, caption: 'Kaminarimon, Sensō-ji’s Thunder Gate' },
+        { photo: 'tokyo-skytree-night', art: 'ichimatsu', seed: 3, caption: 'Tokyo Skytree, Sumida' },
+        { photo: 'tokyo-shibuya-street', art: 'seigaiha', seed: 41, caption: 'The scramble at street level, Shibuya' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Night walks',
-      note: 'Small groups of up to eight. Food and first drinks included.',
-      plans: [
-        {
-          name: 'Neon Basics',
-          price: '¥14,000',
-          period: '3 hours',
-          features: [
-            'Shibuya Crossing & skyline',
-            'Two izakaya stops',
-            'Local host'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Last Train',
-          price: '¥24,000',
-          period: '5 hours',
-          features: [
-            'Everything in Neon Basics',
-            'Golden Gai bar crawl',
-            'Midnight ramen',
-            'Taxi home included'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'Tokyo by night, mapped',
+      body: 'Shibuya and Shinjuku in the west, Asakusa by the Sumida River in the east — all linked by the subway and the JR Yamanote Line.',
+      places: [
+        { name: 'Shibuya Crossing', nameJp: '渋谷スクランブル交差点', lat: 35.6595, lng: 139.7005, note: 'The scramble, every green light' },
+        { name: 'Shibuya Sky', nameJp: '渋谷スカイ', lat: 35.6585, lng: 139.7022, note: 'Open-air roof, 229 m' },
+        { name: 'Shinjuku Golden Gai', nameJp: '新宿ゴールデン街', lat: 35.6939, lng: 139.7047, note: 'About 200 tiny bars' },
+        { name: 'Omoide Yokochō', nameJp: '思い出横丁', lat: 35.6932, lng: 139.6995, note: 'Yakitori alley, West Exit' },
+        { name: 'Yūrakuchō arches', nameJp: '有楽町ガード下', lat: 35.675, lng: 139.763, note: 'Izakaya under the tracks' },
+        { name: 'Tokyo Tower', nameJp: '東京タワー', lat: 35.6586, lng: 139.7454, note: '333 m, since 1958' },
+        { name: 'Tokyo Skytree', nameJp: '東京スカイツリー', lat: 35.7101, lng: 139.8107, note: '634 m' },
+        { name: 'Sensō-ji', nameJp: '浅草寺', lat: 35.7148, lng: 139.7967, note: 'Lit until about 23:00' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'Our host knew the bartender, the bartender knew the chef, and by 1 a.m. we were eating gyōza with half of the alley.',
-      author: 'Marco D.',
-      role: 'Guest, July 2026'
+      type: 'agenda',
+      heading: 'An autumn night, east to west',
+      items: [
+        { time: '17:30', title: 'Sensō-ji lights up', text: 'Gates and pagoda glow as the day crowds thin.' },
+        { time: '18:30', title: 'Asakusa from above', text: 'Free 8F terrace at the culture centre, open to 22:00.' },
+        { time: '19:30', title: 'Yūrakuchō arches', text: 'Yakitori and a cold beer under the railway bricks.' },
+        { time: '21:00', title: 'Shibuya Sky', text: 'Last entry 21:20 — the city lit to the horizon.' },
+        { time: '22:00', title: 'The scramble', text: 'Cross with the crowd, then take the Yamanote to Shinjuku.' },
+        { time: '22:45', title: 'Golden Gai', text: 'One drink, one bar, then another. Watch the clock.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Book a night',
-      body: 'Walks run every evening from 18:00. Message us your date and we will match you with a host who speaks your language.',
-      cta: 'Book a night walk',
-      details: [
+      type: 'pricing',
+      heading: 'What the night costs',
+      note: 'Adult prices, checked October 2026. Golden Gai bars usually add a ¥500–1,500 cover charge — bring cash.',
+      plans: [
         {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'hello@yoru-walks.example'
+          name: 'Shibuya Sky',
+          price: '¥2,700',
+          period: 'online, entry before 15:00',
+          features: ['¥3,400 online from 15:00', 'At the counter: ¥3,000 / ¥3,700', 'Book sunset slots early', 'Last entry 21:20'],
+          highlight: false,
         },
         {
-          icon: 'Users',
-          label: 'Groups',
-          value: 'Up to six walkers per host'
+          name: 'Tokyo Subway Ticket',
+          price: '¥1,000',
+          period: '24 hours',
+          features: ['All Tokyo Metro and Toei subway lines', '48 h ¥1,500 · 72 h ¥2,000', 'JR lines not included', 'Up from ¥800 on 14 March 2026'],
+          highlight: true,
         },
         {
-          icon: 'MapPin',
-          label: 'Meet',
-          value: 'Hachikō statue, Shibuya Station'
-        }
-      ]
+          name: 'Free after dark',
+          price: '¥0',
+          period: 'Asakusa & Shibuya',
+          features: ['Sensō-ji grounds and illumination', 'Asakusa culture centre 8F terrace', 'Shibuya Crossing, any hour'],
+          highlight: false,
+        },
+      ],
     },
     {
       id: 'p11',
+      type: 'phrases',
+      heading: 'Bar-counter Japanese',
+      items: [
+        { jp: '乾杯！', romaji: 'Kanpai!', meaning: 'Cheers!' },
+        { jp: 'すみません', romaji: 'Sumimasen', meaning: 'Excuse me — to call the staff' },
+        { jp: 'おすすめは何ですか？', romaji: 'Osusume wa nan desu ka?', meaning: 'What do you recommend?' },
+        { jp: '写真を撮ってもいいですか？', romaji: 'Shashin o totte mo ii desu ka?', meaning: 'May I take a photo?' },
+        { jp: '終電は何時ですか？', romaji: 'Shūden wa nanji desu ka?', meaning: 'What time is the last train?' },
+        { jp: 'お会計お願いします', romaji: 'Okaikei onegaishimasu', meaning: 'The bill, please' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'Into the bustle of an Asakusa night I slipped, and slipped out again — a lonely heart.',
+      quoteJp: '浅草の夜のにぎはひに　まぎれ入り　まぎれ出で来しさびしき心',
+      author: 'Ishikawa Takuboku',
+      role: 'Tanka from A Handful of Sand (一握の砂), 1910 · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Official guides and staffed centres for maps, directions and current opening hours. Prices and hours change — check before you go.',
+      cta: 'Open GO TOKYO',
+      ctaUrl: 'https://www.gotokyo.org/en/',
+      details: [
+        { icon: 'Globe', label: 'Official guide', value: 'gotokyo.org', url: 'https://www.gotokyo.org/en/' },
+        {
+          icon: 'Info',
+          label: 'Tokyo Tourist Info Center',
+          value: 'Tokyo Metropolitan Govt. Bldg No. 1, 1F · 9:30–18:30',
+          url: 'https://www.gotokyo.org/en/plan/tourist-info-center/index.html',
+        },
+        { icon: 'MapPin', label: 'Asakusa', value: 'Culture Tourist Information Center, opposite Kaminarimon' },
+        { icon: 'Landmark', label: 'Sensō-ji', value: 'senso-ji.jp', url: 'https://senso-ji.jp/english/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Otsukaresama — you earned it',
-      body: 'Yoru Walks Tokyo runs small-group night walks led by local hosts.',
-      tagline: 'yoru-walks.example'
-    }
-  ]
+      body: 'Go slowly, carry cash, ask before you photograph — and catch the last train, or settle in for the first one at around five.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

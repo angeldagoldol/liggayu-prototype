@@ -1,4 +1,8 @@
-/** Hakone: Steam & Stillness — 箱根. Shape: see src/data/schema.js. */
+/**
+ * Hakone: Steam & Stillness — 箱根. Shape: see src/data/schema.js.
+ * Real places, facts checked October 2026; sources and notes in docs/research/hakone-onsen-ryokan.md,
+ * photo candidates in src/data/photos/manifest/hakone-onsen-ryokan.json.
+ */
 export default {
   id: 'b_hakone-onsen-ryokan',
   slug: 'hakone-onsen-ryokan',
@@ -8,25 +12,30 @@ export default {
   subtitle: 'Hot springs, ryokan manners and Mount Fuji across Lake Ashi',
   category: 'onsen',
   region: 'kanto',
-  seasons: [
-    'spring',
-    'autumn',
-    'winter'
+  seasons: ['spring', 'autumn', 'winter'],
+  organization: 'Tabi Guides',
+  location: { name: 'Hakone', nameJp: '箱根', prefecture: 'Kanagawa', lat: 35.2323, lng: 139.1069 },
+  sources: [
+    { label: 'Hakone Tourism Association (official guide)', url: 'https://hakone-japan.com/' },
+    { label: 'Hakone Navi (Odakyu group transport): fares from 1 Oct 2025', url: 'https://www.hakonenavi.jp/transportation/ticket_info/fee/' },
+    { label: 'Odakyu Electric Railway: Hakone Freepass price revision (press release)', url: 'https://www.odakyu.jp/news/h3de760000005kuv-att/h3de760000005kv2.pdf' },
+    { label: 'Odakyu Hakone travel guide: Hakone Ropeway', url: 'https://hakonetrip.odakyu-global.com/spot/hakone-ropeway/' },
+    { label: 'The Hakone Open-Air Museum: visitor information', url: 'https://www.hakone-oam.or.jp/en/info' },
+    { label: 'Hakone Tourism Association: Ōwakudani', url: 'https://hakone-japan.com/discover/national-park/area-information/owakudani/' },
+    { label: 'Japan Tourism Agency multilingual database: Hakone Shrine', url: 'https://www.mlit.go.jp/tagengo-db/en/R1-01104.html' },
+    { label: 'Japan Tourism Agency multilingual database: the 17 hot springs of Hakone', url: 'https://www.mlit.go.jp/tagengo-db/common/001561574.pdf' },
+    { label: 'Japan Meteorological Agency: Hakoneyama volcano', url: 'https://www.data.jma.go.jp/vois/data/filing/souran_eng/volcanoes/056_hakoneyama.pdf' },
+    { label: 'Bashō, Nozarashi Kikō: the Hakone haiku', url: 'https://www.basho-bp.jp/?page_id=20' },
+    { label: 'Wikipedia: Mount Hakone', url: 'https://en.wikipedia.org/wiki/Mount_Hakone' },
+    { label: 'Wikipedia: Hakone Shrine', url: 'https://en.wikipedia.org/wiki/Hakone_Shrine' },
   ],
-  organization: 'Yuge Travel Atelier',
-  summary: 'A gentle guide to Hakone: soak in volcanic hot springs, learn ryokan etiquette, cruise Lake Ashi and catch Mount Fuji on a clear morning — under two hours from Tokyo.',
-  tags: [
-    'hakone',
-    'onsen',
-    'ryokan',
-    'mount fuji',
-    'lake ashi',
-    'kaiseki',
-    'etiquette'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'A real-world guide to Hakone: onsen etiquette, the steaming vents of Ōwakudani, Lake Ashi’s Peace Torii, the Open-Air Museum and the Hakone Freepass — prices checked October 2026.',
+  tags: ['hakone', 'onsen', 'ryokan', 'mount fuji', 'lake ashi', 'owakudani', 'hakone shrine', 'open-air museum', 'freepass', 'etiquette'],
   format: 'bifold',
-  updatedAt: '2026-09-30T06:00:00.000Z',
-  readMinutes: 5,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 6,
   featured: false,
   source: 'builtin',
   theme: {
@@ -35,31 +44,92 @@ export default {
     accent: '#b0452c',
     accent2: '#4a5d8f',
     muted: '#675963',
-    typeface: 'serif'
+    typeface: 'serif',
   },
   cover: {
+    photo: 'hakone-heiwa-torii',
     art: 'fuji',
-    seed: 23
+    seed: 23,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Kantō · Spring, autumn & winter edition',
+      eyebrow: 'Kantō · Kanagawa',
       title: 'Steam & Stillness',
       titleJp: '箱根',
-      subtitle: 'Volcanic hot springs, quiet ryokan and Mount Fuji across the lake — the classic escape from Tokyo.'
+      subtitle: 'Volcanic hot springs, a vermilion torii in the lake and, on clear mornings, Mount Fuji — under two hours from Shinjuku.',
+      photo: 'hakone-heiwa-torii',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Yōkoso — welcome',
       heading: 'A volcano you can bathe in',
-      body: 'Hakone sits in the caldera of a volcano that is still very much alive. Hot water rises in more than a dozen spa villages, sulphur steams from the vents at Ōwakudani, and on clear days Mount Fuji stands above Lake Ashi.\n\nThe best way to see it is slowly: a morning on the old Tōkaidō road, an afternoon among sculptures in the open-air museum, and an evening in a ryokan where dinner arrives in a dozen small courses and the futon appears while you bathe.',
-      pullQuote: 'Soak first. Sightsee later. Then soak again.'
+      body:
+        'Hakone sits inside the caldera of a volcano that is still awake. Seventeen hot-spring areas, the Hakone Jūshichi-yu, draw on its heat; sulphur steams from the vents at Ōwakudani; and Lake Ashi, dammed by an eruption some 3,000 years ago, holds Mount Fuji on clear days.\n\nTravel it as a loop — mountain railway, cable car, ropeway, boat — and end where Hakone is best: in a hot bath, then dinner at a ryokan.',
+      pullQuote: 'Soak first. Sightsee later. Then soak again.',
+      photo: 'hakone-lake-ashi-fuji',
     },
     {
       id: 'p3',
+      type: 'place',
+      kicker: 'The volcano · 火山',
+      name: 'Ōwakudani',
+      nameJp: '大涌谷',
+      photo: 'hakone-owakudani',
+      body:
+        'The “Great Boiling Valley” was born in the same eruption that dammed Lake Ashi, about 3,000 years ago, and still hisses with sulphur vents. Eggs boiled in its springs turn black; eat one, the saying goes, and add seven years to your life. Volcanic gas is monitored around the clock: visitors with asthma or heart conditions, pregnant women and infants are advised to stay away, and the area can close at short notice.',
+      facts: [
+        { label: 'Ropeway', value: 'Feb–Nov 9:00–16:45 · Dec–Jan 9:00–16:15' },
+        { label: 'Black eggs', value: 'About ¥500 for four' },
+        { label: 'Getting there', value: 'Hakone Ropeway from Sōunzan' },
+        { label: 'Before you go', value: 'Check gas notices on Hakone Navi' },
+      ],
+      lat: 35.2419,
+      lng: 139.0207,
+      website: 'https://hakone-japan.com/discover/national-park/area-information/owakudani/',
+    },
+    {
+      id: 'p4',
+      type: 'place',
+      kicker: 'The lake · 湖',
+      name: 'Lake Ashi & Hakone Shrine',
+      nameJp: '芦ノ湖・箱根神社',
+      photo: 'hakone-lake-ashi-cruise',
+      body:
+        'Sightseeing ships dressed as galleons cross Lake Ashi from Tōgendai to Moto-Hakone. A short walk from the pier, Hakone Shrine — founded, by tradition, in 757 — climbs a cedar-shaded slope above the water. Its Peace Torii stands in the shallows, raised in 1952 to mark the treaty that ended the Allied occupation. Come early, before the queue for photographs forms.',
+      facts: [
+        { label: 'Cruise', value: 'Tōgendai–Moto-Hakone, about 40 min · ¥1,700' },
+        { label: 'Shrine', value: 'Grounds always open; free' },
+        { label: 'Treasure Hall', value: '¥500, about 9:00–16:30' },
+        { label: 'Getting there', value: 'Moto-Hakone port, then a 10 min walk' },
+      ],
+      lat: 35.2039,
+      lng: 139.0256,
+      website: 'https://hakonejinja.or.jp/',
+    },
+    {
+      id: 'p5',
+      type: 'place',
+      kicker: 'The art · 美術',
+      name: 'Hakone Open-Air Museum',
+      nameJp: '彫刻の森美術館',
+      photo: 'hakone-open-air-museum',
+      body:
+        'Japan’s first open-air art museum opened here in 1969. About 120 sculptures stand across 70,000 m² of lawns and hillside, from Bourdelle and Maillol to Henry Moore and Miró. The Picasso Pavilion shows a rotating selection from more than 300 of his works, and a hot-spring footbath on the grounds waits for tired feet — Hakone in a single gesture.',
+      facts: [
+        { label: 'Hours', value: '9:00–17:00 daily (last entry 16:30)' },
+        { label: 'Admission', value: '¥2,000 (¥1,800 online)' },
+        { label: 'Getting there', value: 'Chōkoku-no-Mori Station, 2 min walk' },
+        { label: 'Time needed', value: 'Allow about two hours' },
+      ],
+      lat: 35.2447,
+      lng: 139.0514,
+      website: 'https://www.hakone-oam.or.jp/en/',
+    },
+    {
+      id: 'p6',
       type: 'features',
       kicker: 'Onsen manners',
       heading: 'How to bathe like a local',
@@ -67,226 +137,142 @@ export default {
         {
           icon: 'Bath',
           title: 'Wash first',
-          text: 'Sit at the shower stools and scrub head to toe before you step into the shared bath.'
+          text: 'Sit at the shower stools and scrub head to toe before you step into the shared bath.',
         },
         {
           icon: 'Sparkles',
           title: 'Nothing in the water',
-          text: 'No swimsuits and no towels in the bath. Fold your small towel on your head instead.'
+          text: 'No swimsuits, and the small towel stays out — fold it on your head or set it aside.',
         },
         {
           icon: 'Info',
           title: 'Ask about tattoos',
-          text: 'Some baths still refuse tattoos. Many ryokan have a private bath you can reserve.'
+          text: 'Each bath sets its own rule. A reservable private bath, kashikiri-buro, avoids the question.',
         },
         {
           icon: 'Moon',
           title: 'Slow and quiet',
-          text: 'Keep voices low, tie up long hair, and drink water between soaks.'
+          text: 'Keep voices low, tie up long hair and drink water between soaks.',
         },
         {
           icon: 'Hotel',
           title: 'Yukata, left over right',
-          text: 'Wrap the left side over the right. The reverse is only for the deceased.'
-        }
-      ]
-    },
-    {
-      id: 'p4',
-      type: 'agenda',
-      heading: 'The Hakone loop',
-      items: [
-        {
-          time: '08:30',
-          title: 'Romancecar from Shinjuku',
-          text: 'About 85 minutes to Hakone-Yumoto.'
+          text: 'Wrap the left side over the right. The reverse is only for the dead.',
         },
-        {
-          time: '10:30',
-          title: 'Mountain railway',
-          text: 'The Hakone Tozan line zigzags uphill on switchbacks.'
-        },
-        {
-          time: '12:30',
-          title: 'Ōwakudani',
-          text: 'Volcanic vents and black eggs boiled in the hot springs.'
-        },
-        {
-          time: '14:30',
-          title: 'Lake Ashi cruise',
-          text: 'Cross the caldera lake toward Hakone Shrine’s red torii.'
-        },
-        {
-          time: '17:00',
-          title: 'Ryokan & kaiseki',
-          text: 'Check in, soak, then dinner served in your room.'
-        }
-      ]
-    },
-    {
-      id: 'p5',
-      type: 'gallery',
-      heading: 'Views from the caldera',
-      items: [
-        {
-          art: 'fuji',
-          seed: 41,
-          caption: 'Fuji over Lake Ashi, January'
-        },
-        {
-          art: 'torii',
-          seed: 1,
-          caption: 'Hakone Shrine’s torii in the lake'
-        },
-        {
-          art: 'kumo',
-          seed: 8,
-          caption: 'Steam rising at Ōwakudani'
-        },
-        {
-          art: 'enso',
-          seed: 5,
-          caption: 'An empty bath at dawn'
-        }
-      ]
-    },
-    {
-      id: 'p6',
-      type: 'stats',
-      heading: 'Hakone in figures',
-      body: 'Close to Tokyo, far from the hurry.',
-      items: [
-        {
-          value: 85,
-          prefix: '',
-          suffix: ' min',
-          label: 'from Shinjuku by Romancecar'
-        },
-        {
-          value: 3776,
-          prefix: '',
-          suffix: ' m',
-          label: 'Mount Fuji, seen from the lake on clear days'
-        },
-        {
-          value: 7,
-          prefix: '+',
-          suffix: ' yrs',
-          label: 'added to your life by one black egg — so the legend says'
-        }
-      ]
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'At the ryokan',
+      type: 'gallery',
+      heading: 'Around the caldera',
       items: [
-        {
-          jp: 'お風呂は何時までですか？',
-          romaji: 'Ofuro wa nanji made desu ka?',
-          meaning: 'Until what time is the bath open?'
-        },
-        {
-          jp: '貸切風呂はありますか？',
-          romaji: 'Kashikiri-buro wa arimasu ka?',
-          meaning: 'Is there a private bath?'
-        },
-        {
-          jp: '男湯・女湯',
-          romaji: 'Otoko-yu / Onna-yu',
-          meaning: 'Men’s bath / women’s bath — check the curtain'
-        },
-        {
-          jp: 'いいお湯でした',
-          romaji: 'Ii oyu deshita',
-          meaning: 'That was a lovely bath'
-        },
-        {
-          jp: 'ごちそうさまでした',
-          romaji: 'Gochisōsama deshita',
-          meaning: 'Thank you for the meal'
-        }
-      ]
+        { photo: 'hakone-tozan-railway', art: 'kumo', seed: 8, caption: 'Hakone Tozan Railway on its 80‰ climb' },
+        { photo: 'hakone-ropeway', art: 'fuji', seed: 41, caption: 'Hakone Ropeway above Ōwakudani' },
+        { photo: 'hakone-checkpoint', art: 'torii', seed: 1, caption: 'The rebuilt Hakone Checkpoint by Lake Ashi' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Ryokan stays',
-      note: 'Per person, two sharing. Kaiseki dinner, breakfast and a Hakone loop pass included.',
-      plans: [
-        {
-          name: 'One Night',
-          price: '¥48,000',
-          period: '1 night',
-          features: [
-            'Garden-view room',
-            'Kaiseki dinner',
-            'Shared open-air bath'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Two Nights',
-          price: '¥89,000',
-          period: '2 nights',
-          features: [
-            'Room with private bath',
-            'Two kaiseki dinners',
-            'Lake Ashi cruise',
-            'Late check-out'
-          ],
-          highlight: true
-        },
-        {
-          name: 'Fuji View',
-          price: '¥136,000',
-          period: '2 nights',
-          features: [
-            'Suite facing Mount Fuji',
-            'Chef’s counter dinner',
-            'Private guide day'
-          ],
-          highlight: false
-        }
-      ]
+      type: 'map',
+      heading: 'The Hakone loop, mapped',
+      body: 'Train, cable car, ropeway and boat link the sights in a loop — every leg covered by the Hakone Freepass.',
+      places: [
+        { name: 'Hakone-Yumoto', nameJp: '箱根湯本', lat: 35.2334, lng: 139.1037, note: 'Romancecar terminus, info centre' },
+        { name: 'Hakone Open-Air Museum', nameJp: '彫刻の森美術館', lat: 35.2447, lng: 139.0514, note: 'Sculpture park, since 1969' },
+        { name: 'Sōunzan', nameJp: '早雲山', lat: 35.2465, lng: 139.0359, note: 'Cable car meets the ropeway' },
+        { name: 'Ōwakudani', nameJp: '大涌谷', lat: 35.2419, lng: 139.0207, note: 'Sulphur vents, black eggs' },
+        { name: 'Hakone Shrine', nameJp: '箱根神社', lat: 35.2039, lng: 139.0256, note: 'Peace Torii in the lake' },
+        { name: 'Hakone Checkpoint', nameJp: '箱根関所', lat: 35.1925, lng: 139.0261, note: 'Edo-era barrier, rebuilt' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'Fuji appeared at breakfast, out of nowhere, framed by the window. Our host just smiled and poured more tea.',
-      author: 'Jonas W.',
-      role: 'Guest, January 2026'
+      type: 'agenda',
+      heading: 'The Hakone loop in a day',
+      items: [
+        { time: '08:30', title: 'Romancecar from Shinjuku', text: 'About 75–90 minutes to Hakone-Yumoto.' },
+        { time: '10:15', title: 'Hakone Tozan Railway', text: 'Three switchbacks up gradients as steep as 80‰.' },
+        { time: '11:00', title: 'Open-Air Museum', text: 'Sculpture lawns, the Picasso Pavilion, a footbath.' },
+        { time: '13:00', title: 'Up to Ōwakudani', text: 'Cable car from Gōra, then the ropeway over the vents.' },
+        { time: '14:45', title: 'Cruise & shrine', text: 'Sail to Moto-Hakone and walk to the lakeside torii.' },
+        { time: '17:00', title: 'Onsen & kaiseki', text: 'Back to your ryokan: soak before dinner.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Book a quiet night',
-      body: 'Weekdays are calmest. Tell us your dates and whether you would like a private bath, and we will match you with the right ryokan.',
-      cta: 'Find my ryokan',
-      details: [
+      type: 'pricing',
+      heading: 'What Hakone costs',
+      note: 'Adult prices, checked October 2026. Freepass, ropeway and cruise fares rose on 1 October 2025.',
+      plans: [
         {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'stay@yuge-atelier.example'
+          name: 'Hakone Freepass',
+          price: '¥7,100',
+          period: '2 days from Shinjuku',
+          features: ['3 days from Shinjuku: ¥7,500', 'From Odawara: ¥6,000 / ¥6,400', 'Train, cable car, ropeway, cruise, buses', 'Discounts at about 70 sights'],
+          highlight: true,
         },
         {
-          icon: 'Clock',
-          label: 'Hours',
-          value: 'Daily 09:00–17:00 JST'
+          name: 'Romancecar',
+          price: '¥2,470',
+          period: 'Shinjuku → Hakone-Yumoto',
+          features: ['Fare ¥1,270 + seat ticket ¥1,200', 'Freepass covers the fare, not the seat', 'About 75–90 minutes'],
+          highlight: false,
         },
         {
-          icon: 'MapPin',
-          label: 'Office',
-          value: 'Yumoto, Hakone'
-        }
-      ]
+          name: 'Sights',
+          price: '¥2,000',
+          period: 'Open-Air Museum',
+          features: ['¥1,800 if booked online', 'Hakone Checkpoint ¥500', 'Hakone Shrine Treasure Hall ¥500', 'Black eggs, about ¥500 for four'],
+          highlight: false,
+        },
+      ],
     },
     {
       id: 'p11',
+      type: 'phrases',
+      heading: 'At the ryokan',
+      items: [
+        { jp: '日帰り入浴はできますか？', romaji: 'Higaeri nyūyoku wa dekimasu ka?', meaning: 'Can I bathe here as a day visitor?' },
+        { jp: '貸切風呂はありますか？', romaji: 'Kashikiri-buro wa arimasu ka?', meaning: 'Is there a private bath?' },
+        { jp: 'タトゥーがあっても入れますか？', romaji: 'Tatū ga atte mo hairemasu ka?', meaning: 'Can I bathe with a tattoo?' },
+        { jp: '男湯・女湯', romaji: 'Otoko-yu / Onna-yu', meaning: 'Men’s bath / women’s bath — check the curtain' },
+        { jp: 'いいお湯でした', romaji: 'Ii oyu deshita', meaning: 'That was a lovely bath' },
+        { jp: 'ごちそうさまでした', romaji: 'Gochisōsama deshita', meaning: 'Thank you for the meal' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'Mist and cold drizzle — a day when Fuji stays hidden has its own delight.',
+      quoteJp: '霧しぐれ富士をみぬ日ぞ面白き',
+      author: 'Matsuo Bashō',
+      role: 'Crossing the Hakone pass, 1684 (Nozarashi Kikō) · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Pick up maps, ask about day-trip baths and check volcano, weather and transport notices before you set off.',
+      cta: 'Open Hakone Navi',
+      ctaUrl: 'https://www.hakonenavi.jp/international/en/',
+      details: [
+        { icon: 'Globe', label: 'Official guide', value: 'hakone-japan.com', url: 'https://hakone-japan.com/' },
+        {
+          icon: 'Info',
+          label: 'Tourist information',
+          value: 'Opposite Hakone-Yumoto Station · daily 9:00–17:45',
+          url: 'https://hakone-japan.com/plan-your-trip/stories/helpful-info/hakone-information-center/',
+        },
+        { icon: 'TrainFront', label: 'Transport & live status', value: 'hakonenavi.jp', url: 'https://www.hakonenavi.jp/international/en/' },
+        { icon: 'Landmark', label: 'Hakone Shrine', value: 'hakonejinja.or.jp (Japanese)', url: 'https://hakonejinja.or.jp/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Yukkuri — take it slowly',
-      body: 'Yuge Travel Atelier matches travellers with small, family-run ryokan in Hakone.',
-      tagline: 'yuge-atelier.example'
-    }
-  ]
+      body: 'Hakone rewards the unhurried: a second soak, a later train, one more look across the lake in case Fuji appears.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

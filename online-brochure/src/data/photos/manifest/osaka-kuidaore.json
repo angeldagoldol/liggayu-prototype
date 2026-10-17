@@ -1,0 +1,122 @@
+{
+  "brochure": "osaka-kuidaore",
+  "photos": [
+    {
+      "id": "osaka-dotonbori-night",
+      "use": "cover",
+      "candidates": [
+        "File:Dotonbori, Osaka, November 2016 -01.jpg",
+        "File:Dotonbori at night.jpg",
+        "File:Glico man sign in Dotonbori, Osaka.jpg"
+      ],
+      "alt": "The Dōtonbori canal at dusk, lined with giant illuminated signs including the Glico running man",
+      "caption": "Dōtonbori and the Glico sign at dusk",
+      "place": "Dōtonbori",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "osaka-takoyaki",
+      "use": "wide",
+      "candidates": [
+        "File:Takoyaki by yomi955.jpg",
+        "File:Takoyaki.jpg",
+        "File:Takoyaki 2.jpg"
+      ],
+      "alt": "Round takoyaki in a tray, topped with sauce, mayonnaise and bonito flakes",
+      "caption": "Takoyaki, Osaka’s street snack",
+      "place": "Osaka",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "osaka-dotonbori-canal",
+      "use": "wide",
+      "candidates": [
+        "File:Dotonbori canal.jpg",
+        "File:Dotonbori River and Ebisu Bridge.jpg",
+        "File:Dōtonbori, Osaka.jpg"
+      ],
+      "alt": "The Dōtonbori canal between rows of buildings covered in large shop signs, seen from a bridge",
+      "caption": "The Dōtonbori canal from Ebisu-bashi",
+      "place": "Dōtonbori",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "osaka-kuromon-market",
+      "use": "wide",
+      "candidates": [
+        "File:Kuromon Market.jpg",
+        "File:Kuromon Ichiba Market.jpg",
+        "File:Kuromon Ichiba, Osaka.jpg"
+      ],
+      "alt": "A covered market street lined with seafood and produce stalls",
+      "caption": "Kuromon Market, Nippombashi",
+      "place": "Kuromon Market",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "osaka-shinsekai-tsutenkaku",
+      "use": "wide",
+      "candidates": [
+        "File:Tsutenkaku and Shinsekai.jpg",
+        "File:Shinsekai, Osaka.jpg",
+        "File:Tsutenkaku Tower in Osaka.jpg"
+      ],
+      "alt": "Tsūtenkaku tower rising above a street of restaurant signs in Shinsekai",
+      "caption": "Tsūtenkaku over the streets of Shinsekai",
+      "place": "Shinsekai",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "osaka-okonomiyaki",
+      "use": "any",
+      "candidates": [
+        "File:Okonomiyaki.jpg",
+        "File:Okonomiyaki 001.jpg",
+        "File:Osaka style okonomiyaki.jpg"
+      ],
+      "alt": "A thick savoury pancake on a hotplate, glazed with sauce and mayonnaise",
+      "caption": "Okonomiyaki on the hotplate",
+      "place": "Osaka",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "osaka-kushikatsu",
+      "use": "any",
+      "candidates": [
+        "File:Kushikatsu.jpg",
+        "File:Kushikatsu 001.jpg",
+        "File:Kushi-katsu.jpg"
+      ],
+      "alt": "Golden breaded skewers on a plate beside a tray of dipping sauce",
+      "caption": "Kushikatsu, fresh from the fryer",
+      "place": "Shinsekai",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "osaka-hozenji-fudo",
+      "use": "any",
+      "candidates": [
+        "File:Mizukake Fudo of Hozenji.jpg",
+        "File:Hozenji Temple Osaka.jpg",
+        "File:Hozen-ji (Osaka).jpg"
+      ],
+      "alt": "A stone Buddhist statue completely covered in green moss, surrounded by lanterns",
+      "caption": "Mizukake Fudō at Hōzen-ji, green with moss",
+      "place": "Hōzen-ji",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "osaka-castle",
+      "use": "any",
+      "candidates": [
+        "File:Osaka Castle 02bs3200.jpg",
+        "File:Osaka Castle Keep Tower in 201904 001.jpg",
+        "File:Osaka Castle Nishinomaru Garden April 2005.JPG"
+      ],
+      "alt": "The white and green main tower of Osaka Castle with gold ornaments, above its stone walls",
+      "caption": "The main tower of Osaka Castle",
+      "place": "Osaka Castle",
+      "focus": "50% 40%"
+    }
+  ]
+}

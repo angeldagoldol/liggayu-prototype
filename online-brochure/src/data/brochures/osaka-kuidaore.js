@@ -1,33 +1,43 @@
-/** Osaka: Eat Until You Drop — 大阪. Shape: see src/data/schema.js. */
+/**
+ * Osaka: Eat Until You Drop — 大阪. Shape: see src/data/schema.js.
+ * Real places and facts (October 2026); sources and notes in
+ * docs/research/osaka-kuidaore.md, photos in src/data/photos/manifest/osaka-kuidaore.json.
+ */
 export default {
   id: 'b_osaka-kuidaore',
   slug: 'osaka-kuidaore',
   title: 'Osaka: Eat Until You Drop',
   titleJp: '大阪',
   titleKana: 'おおさか',
-  subtitle: 'Takoyaki, okonomiyaki and the neon canal of Dōtonbori',
+  subtitle: 'Takoyaki on Dōtonbori, grazing at Kuromon Market and kushikatsu under Tsūtenkaku',
   category: 'food',
   region: 'kansai',
-  seasons: [
-    'spring',
-    'summer',
-    'autumn',
-    'winter'
+  seasons: ['spring', 'summer', 'autumn', 'winter'],
+  organization: 'Tabi Guides',
+  location: {
+    name: 'Dōtonbori',
+    nameJp: '道頓堀',
+    prefecture: 'Osaka',
+    lat: 34.6687,
+    lng: 135.5013,
+  },
+  sources: [
+    { label: 'OSAKA-INFO — Osaka Convention & Tourism Bureau', url: 'https://osaka-info.jp/en/' },
+    { label: 'Osaka Castle Main Tower official site', url: 'https://www.osakacastle.net/english/' },
+    { label: 'Kuromon Market official site', url: 'https://kuromon.com/en/' },
+    { label: 'Tsūtenkaku official site', url: 'https://www.tsutenkaku.co.jp/' },
+    { label: 'Osaka Metro — routes and stations', url: 'https://subway.osakametro.co.jp/en/' },
+    { label: 'JNTO — Japan National Tourism Organization', url: 'https://www.japan.travel/en/' },
+    { label: 'Wikipedia — Dōtonbori', url: 'https://en.wikipedia.org/wiki/D%C5%8Dtonbori' },
+    { label: 'Wikipedia — Shinsekai', url: 'https://en.wikipedia.org/wiki/Shinsekai' },
   ],
-  organization: 'Teppan Tours Osaka',
-  summary: 'Osaka’s motto is kuidaore — eat until you drop. A street-food guide to takoyaki, okonomiyaki, kushikatsu and the neon canal of Dōtonbori.',
-  tags: [
-    'osaka',
-    'street food',
-    'takoyaki',
-    'okonomiyaki',
-    'dotonbori',
-    'kushikatsu',
-    'markets'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'A day of eating through the city once called the nation’s kitchen: Osaka Castle in the morning, grazing at Kuromon Market, kushikatsu in Shinsekai and takoyaki on Dōtonbori at dusk — plus street-food etiquette.',
+  tags: ['osaka', 'street food', 'takoyaki', 'okonomiyaki', 'kushikatsu', 'dotonbori', 'kuromon market', 'shinsekai', 'osaka castle'],
   format: 'bifold',
-  updatedAt: '2026-09-05T12:00:00.000Z',
-  readMinutes: 4,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 7,
   featured: true,
   source: 'builtin',
   theme: {
@@ -36,235 +46,236 @@ export default {
     accent: '#c93a22',
     accent2: '#e9a21a',
     muted: '#6b5442',
-    typeface: 'sans'
+    typeface: 'sans',
   },
   cover: {
+    photo: 'osaka-dotonbori-night',
     art: 'shippo',
-    seed: 23
+    seed: 23,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Kansai · Open late',
+      eyebrow: 'Kansai · Osaka Prefecture',
       title: 'Eat Until You Drop',
       titleJp: '大阪',
-      subtitle: 'Takoyaki, okonomiyaki and kushikatsu under the neon of Dōtonbori — a guide to the nation’s kitchen.'
+      subtitle: 'Takoyaki on Dōtonbori, grazing at Kuromon Market and kushikatsu under Tsūtenkaku — a day in the city that eats until it drops.',
+      photo: 'osaka-dotonbori-night',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Kuidaore',
       heading: 'The nation’s kitchen',
-      body: 'In the Edo period Osaka was called tenka no daidokoro — the nation’s kitchen — because rice and goods from all over Japan passed through its merchant warehouses. The merchants ate well, and the city never stopped.\n\nAn old saying goes that Kyoto ruins itself on clothes and Osaka on food. Come hungry, eat standing up, and say ōkini when you leave.',
-      pullQuote: 'Kyoto dresses until it drops. Osaka eats until it drops.'
+      body:
+        'In the Edo period Osaka was tenka no daidokoro, “the nation’s kitchen”: tax rice and goods from domains all over Japan were shipped to its warehouses and traded there.\n\nKuidaore means to eat yourself into ruin. Today that looks like a boat-shaped tray of takoyaki eaten beside the stall, a pancake sizzling on the hotplate at your table, and one more skewer before the last train.',
+      pullQuote: 'Come hungry. Osaka will do the rest.',
+      photo: 'osaka-takoyaki',
     },
     {
       id: 'p3',
+      type: 'place',
+      kicker: 'Canal street · Minami',
+      name: 'Dōtonbori',
+      nameJp: '道頓堀',
+      photo: 'osaka-dotonbori-canal',
+      body:
+        'In 1612 the entrepreneur Yasui Dōton began digging a canal here; he was killed in the Siege of Osaka in 1615 before it was finished, but it still carries his name. Kabuki theatres made it the city’s playground. Today the Glico running man, first lit here in 1935, beams down on Ebisu-bashi bridge, and takoyaki stands keep their griddles busy late into the night.',
+      facts: [
+        { label: 'Hours', value: 'Street always open; stalls till late' },
+        { label: 'Admission', value: 'Free' },
+        { label: 'Getting there', value: 'Namba Station, about 5 min walk' },
+        { label: 'Best time', value: 'Dusk, as the signs light up' },
+      ],
+      lat: 34.6687,
+      lng: 135.5013,
+      website: 'https://osaka-info.jp/en/',
+    },
+    {
+      id: 'p4',
+      type: 'place',
+      kicker: 'Market · Nippombashi',
+      name: 'Kuromon Market',
+      nameJp: '黒門市場',
+      photo: 'osaka-kuromon-market',
+      body:
+        'Osaka’s kitchen: a covered street of about 150 shops that has fed the city since the 19th century, named after the black gate of a temple that once stood nearby. Come before lunch and graze — grilled scallops, tuna by the slice, wagyu skewers, fat strawberries — and eat each one at the stall rather than on the move.',
+      facts: [
+        { label: 'Hours', value: 'Most shops morning to early evening' },
+        { label: 'Admission', value: 'Free; pay per dish' },
+        { label: 'Getting there', value: 'Nippombashi Station, 2 min walk' },
+        { label: 'Best time', value: 'Late morning, before stalls sell out' },
+      ],
+      lat: 34.6658,
+      lng: 135.5065,
+      website: 'https://kuromon.com/en/',
+    },
+    {
+      id: 'p5',
+      type: 'place',
+      kicker: 'Old downtown · Ebisuchō',
+      name: 'Shinsekai & Tsūtenkaku',
+      nameJp: '新世界・通天閣',
+      photo: 'osaka-shinsekai-tsutenkaku',
+      body:
+        'The “New World” opened in 1912, its northern half modelled on Paris, its southern half an amusement park inspired by Coney Island. The first Tsūtenkaku tower was dismantled in 1943; today’s steel tower opened in 1956. Beneath its neon, counters fry kushikatsu — beef, lotus root, quail egg — and one rule still holds: dip once in the shared sauce, never twice.',
+      facts: [
+        { label: 'Streets', value: 'Free, day and night' },
+        { label: 'Tower', value: 'Observation decks, paid entry' },
+        { label: 'Getting there', value: 'Ebisuchō Station, 3 min walk' },
+        { label: 'Best time', value: 'Early evening, as the neon comes on' },
+      ],
+      lat: 34.6525,
+      lng: 135.5062,
+      website: 'https://www.tsutenkaku.co.jp/',
+    },
+    {
+      id: 'p6',
       type: 'features',
       kicker: 'Soul food',
-      heading: 'Four things to eat tonight',
+      heading: 'What to order, and how',
       items: [
         {
           icon: 'Flame',
           title: 'Takoyaki',
-          text: 'Batter balls with octopus, turned with picks on a dimpled griddle. Born in Osaka in the 1930s.'
+          text: 'Octopus in batter, turned with picks on a dimpled griddle. Usually credited to an Osaka stall of 1935.',
         },
         {
           icon: 'Utensils',
           title: 'Okonomiyaki',
-          text: 'A cabbage pancake cooked on the hotplate at your table — the name means “grilled as you like”.'
+          text: 'Cabbage, batter and pork mixed Osaka-style, then cooked on a hotplate at your table. The name means “grilled as you like”.',
         },
         {
           icon: 'Beer',
           title: 'Kushikatsu',
-          text: 'Crisp fried skewers in Shinsekai. One rule: never double-dip in the shared sauce.'
+          text: 'Breaded skewers fried to order, said to have started in Shinsekai in 1929. Dip once in the shared sauce.',
         },
         {
           icon: 'Store',
-          title: 'Kuromon Market',
-          text: 'Around 150 stalls of seafood, fruit and grilled snacks — Osaka’s kitchen for two centuries.'
-        }
-      ]
-    },
-    {
-      id: 'p4',
-      type: 'gallery',
-      heading: 'Dōtonbori after dark',
-      items: [
-        {
-          art: 'ichimatsu',
-          seed: 11,
-          caption: 'Neon over the canal'
+          title: 'Eat at the stall',
+          text: 'Eating while walking is frowned on in Japan. Finish your snack beside the stand, then move on.',
         },
         {
-          art: 'shippo',
-          seed: 30,
-          caption: 'Takoyaki, eight to a tray'
-        },
-        {
-          art: 'hinomaru',
-          seed: 2,
-          caption: 'Lanterns in Hōzenji Yokochō'
-        }
-      ]
-    },
-    {
-      id: 'p5',
-      type: 'agenda',
-      heading: 'A night of eating',
-      items: [
-        {
-          time: '16:00',
-          title: 'Kuromon Market',
-          text: 'Grilled scallops and fresh fruit before the stalls close.'
-        },
-        {
-          time: '18:00',
-          title: 'Dōtonbori',
-          text: 'Takoyaki from a stand near the Glico running man.'
-        },
-        {
-          time: '19:30',
+          icon: 'Landmark',
           title: 'Hōzenji Yokochō',
-          text: 'Okonomiyaki in a stone lane beside a moss-covered statue.'
+          text: 'A stone-paved lane off Dōtonbori. At Hōzen-ji, splash water over the moss-covered Fudō statue for luck.',
         },
         {
-          time: '21:00',
-          title: 'Shinsekai',
-          text: 'Kushikatsu and a cold beer beneath Tsūtenkaku tower.'
+          icon: 'Castle',
+          title: 'Osaka Castle',
+          text: 'Toyotomi Hideyoshi began it in 1583. The main tower, rebuilt in concrete in 1931, is a museum with a top-floor lookout.',
         },
-        {
-          time: '23:00',
-          title: 'Late ramen',
-          text: 'One more bowl. It is Osaka, after all.'
-        }
-      ]
-    },
-    {
-      id: 'p6',
-      type: 'stats',
-      heading: 'Osaka in mouthfuls',
-      body: 'A city that measures life in snacks.',
-      items: [
-        {
-          value: 150,
-          prefix: '~',
-          suffix: '',
-          label: 'stalls in Kuromon Market'
-        },
-        {
-          value: 8,
-          prefix: '',
-          suffix: '',
-          label: 'takoyaki in a typical tray'
-        },
-        {
-          value: 1,
-          prefix: '',
-          suffix: '',
-          label: 'dip allowed per skewer of kushikatsu'
-        }
-      ]
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Osaka-ben for eaters',
+      type: 'gallery',
+      heading: 'Osaka in four frames',
       items: [
-        {
-          jp: 'おおきに',
-          romaji: 'Ōkini',
-          meaning: 'Thanks — Osaka dialect'
-        },
-        {
-          jp: 'めっちゃうまい！',
-          romaji: 'Meccha umai!',
-          meaning: 'So tasty!'
-        },
-        {
-          jp: '二度づけ禁止',
-          romaji: 'Nido-zuke kinshi',
-          meaning: 'No double-dipping'
-        },
-        {
-          jp: 'なんでやねん！',
-          romaji: 'Nande ya nen!',
-          meaning: '“Why on earth?!” — the comic’s comeback'
-        },
-        {
-          jp: 'もうかりまっか？',
-          romaji: 'Mōkarimakka?',
-          meaning: 'Making money? — a merchant’s hello'
-        },
-        {
-          jp: 'ぼちぼちでんな',
-          romaji: 'Bochibochi denna',
-          meaning: 'So-so — the classic reply'
-        }
-      ]
+        { photo: 'osaka-okonomiyaki', art: 'ichimatsu', seed: 11, caption: 'Okonomiyaki on the hotplate' },
+        { photo: 'osaka-kushikatsu', art: 'shippo', seed: 30, caption: 'Kushikatsu, fresh from the fryer' },
+        { photo: 'osaka-hozenji-fudo', art: 'hinomaru', seed: 2, caption: 'Mizukake Fudō at Hōzen-ji, green with moss' },
+        { photo: 'osaka-castle', art: 'seigaiha', seed: 17, caption: 'The main tower of Osaka Castle' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Food walks',
-      note: 'Per person. All food and two drinks included. Vegetarian routes on request.',
-      plans: [
-        {
-          name: 'Street Snacks',
-          price: '¥9,800',
-          period: '2.5 hours',
-          features: [
-            'Kuromon & Dōtonbori',
-            'Six tastings',
-            'Local host'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Kuidaore Night',
-          price: '¥16,500',
-          period: '4 hours',
-          features: [
-            'Everything in Street Snacks',
-            'Shinsekai kushikatsu',
-            'Okonomiyaki you grill yourself',
-            'Late-night ramen'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'Where to eat',
+      body: 'Dōtonbori, Hōzen-ji and Kuromon Market are a short walk apart in Minami. Shinsekai is one stop south of Nippombashi on the Sakaisuji Line; the castle is about 20 minutes north-east by metro.',
+      places: [
+        { name: 'Osaka Castle', nameJp: '大阪城', lat: 34.6873, lng: 135.5259, note: 'Main tower and park' },
+        { name: 'Dōtonbori', nameJp: '道頓堀', lat: 34.6687, lng: 135.5013, note: 'Canal, neon and takoyaki' },
+        { name: 'Hōzen-ji', nameJp: '法善寺', lat: 34.6681, lng: 135.5025, note: 'Mossy Fudō and a stone lane' },
+        { name: 'Kuromon Market', nameJp: '黒門市場', lat: 34.6658, lng: 135.5065, note: 'Market grazing' },
+        { name: 'Shinsekai & Tsūtenkaku', nameJp: '新世界・通天閣', lat: 34.6525, lng: 135.5062, note: 'Kushikatsu under the tower' },
+        { name: 'Shin-Osaka Station', nameJp: '新大阪駅', lat: 34.7334, lng: 135.5002, note: 'Shinkansen' },
+      ],
     },
     {
       id: 'p9',
-      type: 'contact',
-      heading: 'Come hungry',
-      body: 'Walks start every afternoon at 16:00. Tell us about allergies when you book and we will plan the route around them.',
-      cta: 'Book a food walk',
-      details: [
-        {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'eat@teppan-tours.example'
-        },
-        {
-          icon: 'Footprints',
-          label: 'Walk',
-          value: 'About three hours, eight stops'
-        },
-        {
-          icon: 'MapPin',
-          label: 'Meet',
-          value: 'Kuromon Market, Nippombashi'
-        }
-      ]
+      type: 'agenda',
+      heading: 'A day of eating',
+      items: [
+        { time: '09:00', title: 'Osaka Castle', text: 'The keep opens at 9:00. Go early.' },
+        { time: '11:00', title: 'Kuromon Market', text: 'Graze: scallops, tuna, strawberries.' },
+        { time: '13:30', title: 'Shinsekai', text: 'Kushikatsu lunch under Tsūtenkaku.' },
+        { time: '16:00', title: 'Hōzenji Yokochō', text: 'Splash the mossy Fudō for luck.' },
+        { time: '17:30', title: 'Dōtonbori', text: 'Takoyaki as the signs light up.' },
+        { time: '19:00', title: 'Okonomiyaki', text: 'Dinner on a hotplate at your table.' },
+      ],
     },
     {
       id: 'p10',
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Street-food prices vary by stall and change often; paid sights publish current fees on their official sites. Carry some cash for small stands.',
+      plans: [
+        {
+          name: 'Wandering',
+          price: 'Free',
+          period: 'streets, market and temple lane',
+          features: ['Dōtonbori and Shinsekai, day and night', 'Hōzen-ji and its lane', 'Kuromon Market: pay per dish'],
+          highlight: false,
+        },
+        {
+          name: 'Eating',
+          price: 'Per dish',
+          period: 'pay as you go',
+          features: ['Takoyaki: usually 6–10 to a tray', 'Kushikatsu: priced by the skewer', 'Okonomiyaki: one makes a meal', 'Kuromon seafood and wagyu cost more'],
+          highlight: true,
+        },
+        {
+          name: 'Paid sights',
+          price: 'Tickets',
+          period: 'check current fees',
+          features: ['Osaka Castle main tower museum', 'Tsūtenkaku observation decks', 'Osaka Metro: fares by distance; IC cards work'],
+          highlight: false,
+        },
+      ],
+    },
+    {
+      id: 'p11',
+      type: 'phrases',
+      heading: 'Osaka words for eaters',
+      items: [
+        { jp: 'おおきに', romaji: 'Ōkini', meaning: 'Thank you (Osaka dialect)' },
+        { jp: 'これください', romaji: 'Kore kudasai', meaning: 'This one, please' },
+        { jp: 'おすすめは何ですか？', romaji: 'Osusume wa nan desu ka?', meaning: 'What do you recommend?' },
+        { jp: 'なんぼですか？', romaji: 'Nanbo desu ka?', meaning: 'How much is it? (Kansai dialect)' },
+        { jp: 'めっちゃうまい！', romaji: 'Metcha umai!', meaning: 'So tasty! (casual)' },
+        { jp: '二度づけ禁止', romaji: 'Nido-zuke kinshi', meaning: 'No double-dipping — the kushikatsu rule' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'Kyoto ruins itself on fine clothes; Osaka, on food.',
+      quoteJp: '京の着倒れ、大阪の食い倒れ',
+      author: 'Japanese proverb',
+      role: 'Kyō no kidaore, Ōsaka no kuidaore · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Stall hours vary and many small restaurants close one day a week, so check before you cross town. The tourist information centre at JR Osaka Station has maps and multilingual staff.',
+      cta: 'Open the official Osaka guide',
+      ctaUrl: 'https://osaka-info.jp/en/',
+      details: [
+        { icon: 'MapPin', label: 'Tourist information', value: 'Osaka Visitors’ Information Center, JR Osaka Station' },
+        { icon: 'Globe', label: 'Osaka tourism', value: 'osaka-info.jp', url: 'https://osaka-info.jp/en/' },
+        { icon: 'Castle', label: 'Osaka Castle', value: 'osakacastle.net', url: 'https://www.osakacastle.net/english/' },
+        { icon: 'Store', label: 'Kuromon Market', value: 'kuromon.com', url: 'https://kuromon.com/en/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Ōkini — thanks for reading',
-      body: 'Teppan Tours Osaka runs small-group food walks with local hosts.',
-      tagline: 'teppan-tours.example'
-    }
-  ]
+      body: 'Osaka rewards an empty stomach and comfortable shoes. Pace yourself: on Dōtonbori the griddles are still turning long after dinner.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

@@ -1,30 +1,43 @@
-/** Kyoto: A Thousand Gates — 京都. Shape: see src/data/schema.js. */
+/**
+ * Kyoto: A Thousand Gates — 京都. Shape: see src/data/schema.js.
+ * Real places and verified facts (October 2026); sources and notes in
+ * docs/research/kyoto-thousand-gates.md, photos in src/data/photos/manifest/kyoto-thousand-gates.json.
+ */
 export default {
   id: 'b_kyoto-thousand-gates',
   slug: 'kyoto-thousand-gates',
   title: 'Kyoto: A Thousand Gates',
   titleJp: '京都',
   titleKana: 'きょうと',
-  subtitle: 'Temples, tea houses and vermilion torii in Japan’s old capital',
+  subtitle: 'Fushimi Inari, Kiyomizu-dera and Arashiyama in Japan’s old imperial capital',
   category: 'heritage',
   region: 'kansai',
-  seasons: [
-    'spring',
-    'autumn'
+  seasons: ['spring', 'autumn'],
+  organization: 'Tabi Guides',
+  location: {
+    name: 'Fushimi Inari Taisha',
+    nameJp: '伏見稲荷大社',
+    prefecture: 'Kyoto',
+    lat: 34.9672,
+    lng: 135.7728,
+  },
+  sources: [
+    { label: 'Fushimi Inari Taisha official site', url: 'https://inari.jp/en/' },
+    { label: 'Kiyomizu-dera official site', url: 'https://www.kiyomizudera.or.jp/en/' },
+    { label: 'Tenryū-ji official site — admission and access', url: 'https://www.tenryuji.com/en/visit/' },
+    { label: 'Kinkaku-ji (Rokuon-ji), Shōkoku-ji official site', url: 'https://www.shokoku-ji.jp/en/kinkakuji/' },
+    { label: 'Kyoto City Official Travel Guide', url: 'https://kyoto.travel/en/' },
+    { label: 'Kyoto City Bus & Subway guide', url: 'https://www2.city.kyoto.lg.jp/kotsu/webguide/en/' },
+    { label: 'UNESCO — Historic Monuments of Ancient Kyoto', url: 'https://whc.unesco.org/en/list/688/' },
+    { label: 'japan-guide.com — Kyoto', url: 'https://www.japan-guide.com/e/e2158.html' },
   ],
-  organization: 'Kōen Travel Studio',
-  summary: 'A slow guide to Kyoto: walk through ten thousand torii at Fushimi Inari, sip matcha in Gion and catch the bamboo grove before the crowds.',
-  tags: [
-    'kyoto',
-    'temples',
-    'torii',
-    'tea ceremony',
-    'geisha district',
-    'bamboo'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'A field guide to Kyoto’s great sights: climb the torii tunnels of Fushimi Inari at dawn, stand on Kiyomizu-dera’s 13-metre stage and walk the Arashiyama bamboo grove — with real hours, fares and etiquette.',
+  tags: ['kyoto', 'fushimi inari', 'kiyomizu-dera', 'arashiyama', 'kinkaku-ji', 'gion', 'temples', 'shrines', 'unesco'],
   format: 'booklet',
-  updatedAt: '2026-09-18T09:00:00.000Z',
-  readMinutes: 5,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 8,
   featured: true,
   source: 'builtin',
   theme: {
@@ -33,242 +46,240 @@ export default {
     accent: '#d23a22',
     accent2: '#1d4f7a',
     muted: '#6e5b4f',
-    typeface: 'serif'
+    typeface: 'serif',
   },
   cover: {
+    photo: 'kyoto-senbon-torii',
     art: 'torii',
-    seed: 5
+    seed: 5,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Kansai · Spring & autumn edition',
+      eyebrow: 'Kansai · Kyoto Prefecture',
       title: 'A Thousand Gates',
       titleJp: '京都',
-      subtitle: 'Temples, tea houses and vermilion torii in the city that was Japan’s capital for over a thousand years.'
+      subtitle: 'Torii tunnels, hillside temples and bamboo groves in the city that was Japan’s capital for more than a thousand years.',
+      photo: 'kyoto-senbon-torii',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Welcome to Kyoto',
-      heading: 'A city that rewards the early riser',
-      body: 'Kyoto was Japan’s imperial capital from 794 until 1868. It kept its temples, its wooden machiya town houses and its unhurried rituals — and it shows them best before eight in the morning.\n\nThis brochure follows one rule: go early, go slowly, and leave room for the side street you did not plan to walk down.',
-      pullQuote: 'Go early. Go slowly. Take the side street.'
+      heading: 'An old capital that still keeps its rituals',
+      body:
+        'In 794 Emperor Kanmu moved the court to Heian-kyō, a new city laid out on a grid. It remained Japan’s capital until 1868, and sixteen of its temples and shrines, with Nijō Castle, now share one UNESCO World Heritage listing (a few lie in neighbouring Uji and Ōtsu).\n\nKyoto is busy, so this guide follows one rule: start early. Fushimi Inari never closes, Kiyomizu-dera opens at 6:00, and the bamboo grove is free to walk at any hour.',
+      pullQuote: 'Start early. Fushimi Inari never closes.',
+      photo: 'kyoto-yasaka-pagoda',
     },
     {
       id: 'p3',
-      type: 'features',
-      kicker: 'Must-sees',
-      heading: 'Four places that define Kyoto',
-      items: [
-        {
-          icon: 'Landmark',
-          title: 'Fushimi Inari Taisha',
-          text: 'Thousands of vermilion torii climb Mount Inari. Start at sunrise and keep walking past the first crowds.'
-        },
-        {
-          icon: 'TreeDeciduous',
-          title: 'Arashiyama bamboo',
-          text: 'A towering grove on the city’s western edge. Pair it with a river walk and Tenryū-ji’s garden.'
-        },
-        {
-          icon: 'Castle',
-          title: 'Kiyomizu-dera',
-          text: 'A wooden stage on the hillside, built without a single nail, above a sea of maple and cherry.'
-        },
-        {
-          icon: 'Lamp',
-          title: 'Gion at dusk',
-          text: 'Lantern-lit lanes of tea houses. Let maiko pass, never photograph them without asking, and keep out of private lanes.'
-        }
-      ]
+      type: 'place',
+      kicker: 'Shrine · Fushimi',
+      name: 'Fushimi Inari Taisha',
+      nameJp: '伏見稲荷大社',
+      photo: 'kyoto-inari-romon',
+      body:
+        'Head shrine of some 30,000 Inari shrines across Japan, honouring the kami of rice and prosperity since 711. Toyotomi Hideyoshi gave the great two-storey gate. Behind the halls, around 10,000 vermilion torii, each donated by a worshipper or business, climb 233-metre Mount Inari. The Yotsutsuji crossroads, 30–45 minutes up, looks out over the city — a good place to turn back.',
+      facts: [
+        { label: 'Hours', value: 'Grounds open 24 hours' },
+        { label: 'Admission', value: 'Free' },
+        { label: 'Getting there', value: 'JR Inari Station, 5 min from Kyoto' },
+        { label: 'Time needed', value: '2–3 h to the summit and back' },
+        { label: 'Best time', value: 'Sunrise or late afternoon' },
+      ],
+      lat: 34.9672,
+      lng: 135.7728,
+      website: 'https://inari.jp/en/',
     },
     {
       id: 'p4',
-      type: 'gallery',
-      heading: 'Kyoto in four moods',
-      items: [
-        {
-          art: 'torii',
-          seed: 3,
-          caption: 'Senbon torii, 6:40 a.m.'
-        },
-        {
-          art: 'sakura',
-          seed: 8,
-          caption: 'The Philosopher’s Path in early April'
-        },
-        {
-          art: 'enso',
-          seed: 19,
-          caption: 'Raked gravel at Ryōan-ji'
-        },
-        {
-          art: 'asanoha',
-          seed: 44,
-          caption: 'Indigo noren in Gion'
-        }
-      ]
+      type: 'place',
+      kicker: 'Temple · Higashiyama',
+      name: 'Kiyomizu-dera',
+      nameJp: '清水寺',
+      photo: 'kyoto-kiyomizu-dera',
+      body:
+        'Founded in 778 beside the Otowa waterfall, whose pure water gives the temple its name. The Main Hall was rebuilt in 1633; its stage juts some 13 metres above the slope on 18 zelkova pillars, joined without a single nail. Below, visitors drink from the waterfall’s three streams. In late November the maples turn, and the temple stays open until 21:30 from 21 to 30 November 2026.',
+      facts: [
+        { label: 'Hours', value: '6:00–18:00 (18:30 in Jul–Aug)' },
+        { label: 'Admission', value: '¥500 adults' },
+        { label: 'Getting there', value: 'Bus to Gojōzaka, then 10 min uphill' },
+        { label: 'Best time', value: 'At 6:00 opening' },
+      ],
+      lat: 34.995,
+      lng: 135.785,
+      website: 'https://www.kiyomizudera.or.jp/en/',
     },
     {
       id: 'p5',
-      type: 'agenda',
-      heading: 'One perfect day',
-      items: [
-        {
-          time: '06:30',
-          title: 'Fushimi Inari',
-          text: 'Climb the torii tunnels in near silence.'
-        },
-        {
-          time: '10:00',
-          title: 'Nishiki Market',
-          text: 'Pickles, tamagoyaki and matcha everything.'
-        },
-        {
-          time: '13:00',
-          title: 'Higashiyama walk',
-          text: 'Stone lanes from Kiyomizu-dera to Yasaka Shrine.'
-        },
-        {
-          time: '16:00',
-          title: 'Tea ceremony',
-          text: 'A 45-minute sadō lesson in a 100-year-old machiya.'
-        },
-        {
-          time: '19:00',
-          title: 'Kaiseki in Pontochō',
-          text: 'Seasonal courses above the Kamo River.'
-        }
-      ]
+      type: 'place',
+      kicker: 'Bamboo & Zen · Arashiyama',
+      name: 'Arashiyama Bamboo Grove & Tenryū-ji',
+      nameJp: '竹林の小径・天龍寺',
+      photo: 'kyoto-arashiyama-bamboo',
+      body:
+        'On Kyoto’s western edge a path runs between walls of towering bamboo that creak and knock in the wind. Beside it stands Tenryū-ji, founded in 1339 by the shogun Ashikaga Takauji in memory of Emperor Go-Daigo. Its Sōgen pond garden, laid out by the Zen master Musō Soseki, is older than any of the temple’s buildings. Leave by the north gate to walk straight into the grove.',
+      facts: [
+        { label: 'Bamboo grove', value: 'Free, open at all hours' },
+        { label: 'Tenryū-ji garden', value: '¥500 · 8:30–17:00' },
+        { label: 'Getting there', value: 'JR Saga-Arashiyama, then 10 min walk' },
+        { label: 'Best time', value: 'Early morning' },
+      ],
+      lat: 35.0168,
+      lng: 135.6716,
+      website: 'https://www.tenryuji.com/en/',
     },
     {
       id: 'p6',
-      type: 'stats',
-      heading: 'Kyoto by the numbers',
-      body: 'A modern city with a very long memory.',
+      type: 'features',
+      kicker: 'Also in Kyoto',
+      heading: 'Four more for your list',
       items: [
         {
-          value: 1074,
-          prefix: '',
-          suffix: '',
-          label: 'years as Japan’s capital'
+          icon: 'Sparkles',
+          title: 'Kinkaku-ji',
+          text: 'Shogun Ashikaga Yoshimitsu’s gold-leafed retreat over a mirror pond, rebuilt in 1955 after arson. Open 9:00–17:00; ¥500.',
         },
         {
-          value: 1600,
-          prefix: '~',
-          suffix: '',
-          label: 'Buddhist temples'
+          icon: 'Lamp',
+          title: 'Gion & Hanamikōji',
+          text: 'Kyoto’s geiko district. Keep to public streets, stay out of signed private lanes, and never photograph geiko or maiko without permission.',
         },
         {
-          value: 17,
-          prefix: '',
-          suffix: '',
-          label: 'monuments in the Ancient Kyoto UNESCO listing'
-        }
-      ]
+          icon: 'Footprints',
+          title: 'Ninenzaka & Sannenzaka',
+          text: 'Stone-paved slopes of wooden shops between Kiyomizu-dera and Yasaka Shrine. Walk them early, and leave the tripod at home.',
+        },
+        {
+          icon: 'Calendar',
+          title: 'Gion Matsuri',
+          text: 'Yasaka Shrine’s great July festival. Towering floats parade on 17 and 24 July; paid viewing seats go on sale in June.',
+        },
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Temple-town Japanese',
+      type: 'gallery',
+      heading: 'Kyoto in four frames',
       items: [
-        {
-          jp: 'おはようございます',
-          romaji: 'Ohayō gozaimasu',
-          meaning: 'Good morning'
-        },
-        {
-          jp: '写真を撮ってもいいですか？',
-          romaji: 'Shashin o totte mo ii desu ka?',
-          meaning: 'May I take a photo?'
-        },
-        {
-          jp: 'いただきます',
-          romaji: 'Itadakimasu',
-          meaning: 'Said before eating — “I gratefully receive”'
-        },
-        {
-          jp: 'ごちそうさまでした',
-          romaji: 'Gochisōsama deshita',
-          meaning: 'Thank you for the meal'
-        },
-        {
-          jp: '駅はどこですか？',
-          romaji: 'Eki wa doko desu ka?',
-          meaning: 'Where is the station?'
-        }
-      ]
+        { photo: 'kyoto-kinkakuji', art: 'enso', seed: 19, caption: 'Kinkaku-ji across the Kyōko-chi mirror pond' },
+        { photo: 'kyoto-tenryuji-garden', art: 'kumo', seed: 8, caption: 'Sōgen pond garden, Tenryū-ji' },
+        { photo: 'kyoto-gion-street', art: 'asanoha', seed: 44, caption: 'Wooden town houses in Gion' },
+        { photo: 'kyoto-togetsukyo', art: 'seigaiha', seed: 3, caption: 'Togetsukyō Bridge over the Katsura River, Arashiyama' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Guided Kyoto journeys',
-      note: 'Per person, sharing. Includes machiya stay, breakfasts, guide and tea ceremony.',
-      plans: [
-        {
-          name: 'Three Gates',
-          price: '¥148,000',
-          period: '3 nights',
-          features: [
-            'Machiya town-house stay',
-            'Dawn Fushimi Inari walk',
-            'Tea ceremony'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Old Capital',
-          price: '¥268,000',
-          period: '5 nights',
-          features: [
-            'Everything in Three Gates',
-            'Kaiseki dinner in Pontochō',
-            'Day trip to Nara’s deer park',
-            'Private garden visit'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'Where it all is',
+      body: 'Kyoto Station is the hub. Fushimi Inari is two stops south on the JR Nara Line; Arashiyama is 15 minutes west on the JR Sagano Line.',
+      places: [
+        { name: 'Kyoto Station', nameJp: '京都駅', lat: 34.9858, lng: 135.7588, note: 'JR, subway and city-bus hub' },
+        { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', lat: 34.9672, lng: 135.7728, note: 'Torii tunnels, open 24 hours' },
+        { name: 'Kiyomizu-dera', nameJp: '清水寺', lat: 34.995, lng: 135.785, note: 'Hillside stage, opens 6:00' },
+        { name: 'Yasaka Shrine', nameJp: '八坂神社', lat: 35.0036, lng: 135.7786, note: 'Gateway to Gion' },
+        { name: 'Kinkaku-ji', nameJp: '金閣寺', lat: 35.0395, lng: 135.7285, note: 'The Golden Pavilion' },
+        { name: 'Tenryū-ji', nameJp: '天龍寺', lat: 35.016, lng: 135.6738, note: 'Zen temple and pond garden' },
+        { name: 'Arashiyama Bamboo Grove', nameJp: '竹林の小径', lat: 35.0168, lng: 135.6716, note: 'Free, open at all hours' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'We walked the torii at sunrise and did not see another soul for twenty minutes. Our guide knew exactly when every place would be quiet.',
-      author: 'Hannah & Theo',
-      role: 'Travellers, November 2025'
+      type: 'agenda',
+      heading: 'One full day, started early',
+      items: [
+        { time: '06:30', title: 'Fushimi Inari', text: 'JR to Inari; climb to Yotsutsuji and back.' },
+        { time: '09:00', title: 'Kiyomizu-dera', text: 'Keihan to Kiyomizu-Gojō, then 25 minutes uphill.' },
+        { time: '11:00', title: 'Sannenzaka to Gion', text: 'Stone lanes down to Yasaka Shrine; lunch in Gion.' },
+        { time: '13:30', title: 'Tenryū-ji', text: 'Hankyū to Arashiyama; pond garden, last entry 16:50.' },
+        { time: '15:30', title: 'Bamboo grove', text: 'Out through the north gate and into the bamboo.' },
+        { time: '17:00', title: 'Togetsukyō', text: 'Evening light on the river; JR from Saga-Arashiyama.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Plan your Kyoto',
-      body: 'Cherry blossom and autumn leaf weeks fill early. Tell us your dates and we will hold a machiya for 72 hours, free.',
-      cta: 'Request an itinerary',
-      details: [
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Adult prices, checked October 2026. Kyoto plans higher city-bus fares for non-residents from 2027.',
+      plans: [
         {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'kyoto@koen-travel.example'
+          name: 'Temple gates',
+          price: '¥1,500',
+          period: 'five sights, adult entry',
+          features: ['Fushimi Inari: free', 'Kiyomizu-dera: ¥500', 'Kinkaku-ji: ¥500', 'Tenryū-ji garden: ¥500', 'Bamboo grove: free'],
+          highlight: false,
         },
         {
-          icon: 'Clock',
-          label: 'Hours',
-          value: 'Daily 09:00–18:00 JST'
+          name: 'Getting around',
+          price: '¥1,100',
+          period: 'Subway & Bus 1-Day Pass',
+          features: [
+            'Single city-bus ride: ¥230',
+            'EX100/101 weekend bus to Kiyomizu: ¥500, pass valid',
+            'JR Kyoto–Inari: ¥150',
+            'JR Kyoto–Saga-Arashiyama: ¥240',
+          ],
+          highlight: true,
         },
         {
-          icon: 'MapPin',
-          label: 'Studio',
-          value: 'Sanjō-dōri, Nakagyō-ku, Kyoto'
-        }
-      ]
+          name: 'Lodging tax',
+          price: '¥200–10,000',
+          period: 'per person, per night',
+          features: [
+            'Since 1 March 2026, set by room rate',
+            'Under ¥6,000: ¥200',
+            '¥6,000–19,999: ¥400',
+            '¥20,000–49,999: ¥1,000',
+            '¥50,000–99,999: ¥4,000',
+            '¥100,000 and over: ¥10,000',
+          ],
+          highlight: false,
+        },
+      ],
     },
     {
       id: 'p11',
+      type: 'phrases',
+      heading: 'Temple-town Japanese',
+      items: [
+        { jp: 'おはようございます', romaji: 'Ohayō gozaimasu', meaning: 'Good morning' },
+        { jp: '大人一枚お願いします', romaji: 'Otona ichimai onegaishimasu', meaning: 'One adult ticket, please' },
+        { jp: '写真を撮ってもいいですか？', romaji: 'Shashin o totte mo ii desu ka?', meaning: 'May I take a photo?' },
+        { jp: 'このバスは清水寺に行きますか？', romaji: 'Kono basu wa Kiyomizu-dera ni ikimasu ka?', meaning: 'Does this bus go to Kiyomizu-dera?' },
+        { jp: 'お手洗いはどこですか？', romaji: 'Otearai wa doko desu ka?', meaning: 'Where is the toilet?' },
+        { jp: 'ありがとうございました', romaji: 'Arigatō gozaimashita', meaning: 'Thank you (for your help)' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'Here in Kyoto, / still I yearn for Kyoto — / a cuckoo calls.',
+      quoteJp: '京にても京なつかしやほととぎす',
+      author: 'Matsuo Bashō',
+      role: 'Haiku · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Temples change their hours for ceremonies and seasonal night openings, so check the official sites before you go.',
+      cta: 'Open the official Kyoto guide',
+      ctaUrl: 'https://kyoto.travel/en/',
+      details: [
+        { icon: 'MapPin', label: 'Tourist information', value: 'Kyoto Station Building, 2F · 8:30–19:00' },
+        { icon: 'Globe', label: 'Official travel guide', value: 'kyoto.travel', url: 'https://kyoto.travel/en/' },
+        { icon: 'Bus', label: 'Buses & subway', value: 'Kyoto City Bus & Subway guide', url: 'https://www2.city.kyoto.lg.jp/kotsu/webguide/en/' },
+        { icon: 'Info', label: 'Etiquette', value: 'Responsible travel in Kyoto', url: 'https://kyoto.travel/en/responsible-travel/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Mata kite ne — come again',
-      body: 'Kōen Travel Studio designs small-group and private journeys through Kansai.',
-      tagline: 'koen-travel.example'
-    }
-  ]
+      body: 'Kyoto rewards a second visit in another season. Start early, keep the lanes quiet, and leave every temple as you found it.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

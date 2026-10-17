@@ -1,0 +1,124 @@
+{
+  "brochure": "nara-deer-and-temples",
+  "photos": [
+    {
+      "id": "nara-deer",
+      "use": "cover",
+      "candidates": [
+        "File:Sika deer in Nara Park, November 2016.jpg",
+        "File:003 Nara deer in Japan - deer of Nara Park under autumn leaves.jpg",
+        "File:Sika deer in Nara 05.jpg"
+      ],
+      "alt": "A sika deer standing in Nara Park, looking towards the camera",
+      "caption": "A sika deer in Nara Park",
+      "place": "Nara Park",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "nara-park",
+      "use": "wide",
+      "candidates": [
+        "File:Nara Park, November 2016.jpg",
+        "File:Nara deer lounging at Todaiji.jpg",
+        "File:Sika deer in Nara 08.jpg"
+      ],
+      "alt": "Deer resting on open parkland under trees",
+      "caption": "Deer at rest in Nara Park",
+      "place": "Nara Park",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "nara-todaiji-daibutsuden",
+      "use": "wide",
+      "candidates": [
+        "File:The Great Buddha Hall of Tōdai-ji, Nara, November 2016.jpg",
+        "File:Tōdai-ji Great Buddha Hall-2.jpg",
+        "File:Tōdai-ji Daibutsuden, June 2019.jpg",
+        "File:Todai-ji.jpg"
+      ],
+      "alt": "The huge wooden Great Buddha Hall of Tōdai-ji with its sweeping tiled roof and golden roof ornaments",
+      "caption": "The Great Buddha Hall (Daibutsu-den), Tōdai-ji",
+      "place": "Tōdai-ji",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "nara-kasuga-lanterns",
+      "use": "wide",
+      "candidates": [
+        "File:Stone Lanterns lead to The Kasuga Shrine, Nara, Japan.jpg",
+        "File:Even more lanterns at Kasuga Taisha - panoramio.jpg",
+        "File:Nara Kasuga-taisha Lanterns & Enomoto-jinja.jpg",
+        "File:Lanterns at Kasuga Taisha.JPG"
+      ],
+      "alt": "Rows of moss-covered stone lanterns lining a path through the forest",
+      "caption": "Stone lanterns on the approach to Kasuga Taisha",
+      "place": "Kasuga Taisha",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "nara-kofukuji-chukondo",
+      "use": "wide",
+      "candidates": [
+        "File:181029 Chū-kondō of Kōfuku-ji.jpg",
+        "File:Kofukuji Chukondo.jpg",
+        "File:Kofukuji Central Golden Hall.jpg"
+      ],
+      "alt": "A broad two-roofed temple hall with vermilion pillars on a gravel courtyard",
+      "caption": "The Central Golden Hall of Kōfuku-ji, rebuilt in 2018",
+      "place": "Kōfuku-ji",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "nara-daibutsu",
+      "use": "any",
+      "candidates": [
+        "File:Daibutsu, le grand Bouddha (Todai-ji, Nara) (42859120892).jpg",
+        "File:Daibutsu Grand bouddha - Tōdai-ji - Nara.jpg",
+        "File:20100716 Nara Todaiji Daibutsu 2292.jpg"
+      ],
+      "alt": "The colossal seated bronze Buddha of Tōdai-ji with a gilded halo behind it",
+      "caption": "The Great Buddha of Tōdai-ji",
+      "place": "Tōdai-ji",
+      "focus": "50% 35%"
+    },
+    {
+      "id": "nara-nandaimon-guardian",
+      "use": "any",
+      "candidates": [
+        "File:Nio guardians by Unkei in Nara.jpg",
+        "File:Nio Ungyo at Todaiji Nandaimon.jpg",
+        "File:Todaiji Nandaimon Agyō.jpg"
+      ],
+      "alt": "A towering carved wooden guardian figure in a fierce pose inside a temple gate",
+      "caption": "A guardian king by Unkei and Kaikei, Nandai-mon",
+      "place": "Nandai-mon, Tōdai-ji",
+      "focus": "50% 30%"
+    },
+    {
+      "id": "nara-ukimido",
+      "use": "any",
+      "candidates": [
+        "File:Nara-kōen (6156063660).jpg",
+        "File:Nara Japan 2.jpg"
+      ],
+      "alt": "A small hexagonal wooden pavilion standing over a pond on a short bridge",
+      "caption": "Ukimidō pavilion on Sagi-ike pond, Nara Park",
+      "place": "Ukimidō, Nara Park",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "nara-naramachi",
+      "use": "any",
+      "candidates": [
+        "File:Naramachii02n4592.jpg",
+        "File:Naramachii04n4592.jpg",
+        "File:Street in Naramachi area (6156072416).jpg",
+        "File:Naramachii01n3200.jpg"
+      ],
+      "alt": "A quiet lane of old wooden town houses with latticed fronts",
+      "caption": "Latticed town houses in Naramachi",
+      "place": "Naramachi",
+      "focus": "50% 50%"
+    }
+  ]
+}

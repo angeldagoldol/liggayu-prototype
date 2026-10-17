@@ -1,31 +1,43 @@
-/** Okinawa: Islands of Coral — 沖縄. Shape: see src/data/schema.js. */
+/**
+ * Okinawa: Islands of Coral — 沖縄. Shape: see src/data/schema.js.
+ * Real places (October 2026 edition); sources, verification status and notes in
+ * docs/research/okinawa-coral-islands.md, photos in src/data/photos/manifest/okinawa-coral-islands.json.
+ */
 export default {
   id: 'b_okinawa-coral-islands',
   slug: 'okinawa-coral-islands',
   title: 'Okinawa: Islands of Coral',
   titleJp: '沖縄',
   titleKana: 'おきなわ',
-  subtitle: 'Island-hopping, coral seas and the culture of the old Ryūkyū Kingdom',
+  subtitle: 'Kerama-blue seas, whale sharks and the castle and sacred groves of the Ryūkyū Kingdom',
   category: 'islands',
   region: 'kyushu',
-  seasons: [
-    'spring',
-    'summer'
+  seasons: ['spring', 'summer', 'autumn'],
+  organization: 'Tabi Guides',
+  location: {
+    name: 'Shuri Castle',
+    nameJp: '首里城',
+    prefecture: 'Okinawa',
+    lat: 26.2169,
+    lng: 127.7194,
+  },
+  sources: [
+    { label: 'Shuri Castle Park official site', url: 'https://oki-park.jp/shurijo/' },
+    { label: 'Okinawa Churaumi Aquarium official site', url: 'https://churaumi.okinawa/en/' },
+    { label: 'Visit Okinawa Japan (Okinawa Convention & Visitors Bureau)', url: 'https://visitokinawajapan.com/' },
+    { label: 'Ministry of the Environment — Keramashotō National Park', url: 'https://www.env.go.jp/park/kerama/' },
+    { label: 'Zamami Village official site', url: 'https://www.vill.zamami.okinawa.jp/' },
+    { label: 'Nanjō City — Sēfa-utaki', url: 'https://okinawa-nanjo.jp/sefa/' },
+    { label: 'Okinawa Urban Monorail (Yui Rail)', url: 'https://www.yui-rail.co.jp/' },
+    { label: 'UNESCO — Gusuku Sites and Related Properties of the Kingdom of Ryukyu', url: 'https://whc.unesco.org/en/list/972/' },
   ],
-  organization: 'Nirai Island Co.',
-  summary: 'Hop between Okinawa’s subtropical islands: snorkel in the clear Kerama blue, walk the castle sites of the Ryūkyū Kingdom and slow down to island time.',
-  tags: [
-    'okinawa',
-    'islands',
-    'snorkelling',
-    'beaches',
-    'ryukyu',
-    'kerama',
-    'ishigaki'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'Snorkel in the clear Kerama blue, meet the whale sharks of Churaumi and walk the castle and sacred groves of the Ryūkyū Kingdom — with ferry times, entry fees and island etiquette.',
+  tags: ['okinawa', 'naha', 'islands', 'kerama', 'zamami', 'snorkelling', 'shuri castle', 'churaumi', 'ryukyu', 'unesco'],
   format: 'trifold',
-  updatedAt: '2026-07-14T07:00:00.000Z',
-  readMinutes: 5,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 8,
   featured: true,
   source: 'builtin',
   theme: {
@@ -34,237 +46,236 @@ export default {
     accent: '#0b7f8a',
     accent2: '#f0684b',
     muted: '#4c6870',
-    typeface: 'sans'
+    typeface: 'sans',
   },
   cover: {
+    photo: 'okinawa-kerama-beach',
     art: 'seigaiha',
-    seed: 3
+    seed: 3,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Kyūshū & Okinawa · Spring & summer edition',
+      eyebrow: 'Kyūshū & Okinawa · Okinawa Prefecture',
       title: 'Islands of Coral',
       titleJp: '沖縄',
-      subtitle: 'Turquoise water, coral reefs and a kingdom’s worth of history, less than three hours’ flight from Tokyo.'
+      subtitle: 'Kerama-blue water, whale sharks at Churaumi and the castle of the Ryūkyū kings — under three hours’ flight from Tokyo.',
+      photo: 'okinawa-kerama-beach',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Mensōre — welcome',
       heading: 'Japan, on island time',
-      body: 'Okinawa Prefecture is a chain of around 160 islands strung between Kyūshū and Taiwan. For more than four centuries it was the Ryūkyū Kingdom, trading with China, Korea and Southeast Asia, and its food, music and architecture still feel distinct from mainland Japan.\n\nCome for the water — some of the clearest in Asia — and stay for the slower rhythm: a sanshin playing somewhere, a shīsā guarding every roof, and nobody in a hurry.',
-      pullQuote: 'Nankurunaisa — it will all work out.'
+      body:
+        'Okinawa is a chain of some 160 subtropical islands strung between Kyūshū and Taiwan. From 1429 to 1879 it was the Ryūkyū Kingdom, trading with China, Korea, Japan and Southeast Asia, and its food, music, faith and architecture still feel distinct from the mainland.\n\nCome for some of Japan’s clearest water — the “Kerama blue”, under an hour from Naha by fast boat — and stay for the slower rhythm: a sanshin playing somewhere, shīsā guarding the rooftops, and nobody in a hurry.',
+      pullQuote: 'Makutu sōkē, nankurunaisa — do what is right, and it will all work out.',
+      photo: 'okinawa-shisa',
     },
     {
       id: 'p3',
-      type: 'features',
-      kicker: 'Island highlights',
-      heading: 'Where to go',
-      items: [
-        {
-          icon: 'Fish',
-          title: 'Kerama Islands',
-          text: 'A national park of clear “Kerama blue” water and sea turtles, about an hour from Naha by fast ferry.'
-        },
-        {
-          icon: 'Landmark',
-          title: 'Shuri Castle Park',
-          text: 'Seat of the Ryūkyū kings, its main hall rebuilt after the 2019 fire; part of a UNESCO listing of gusuku sites.'
-        },
-        {
-          icon: 'Sun',
-          title: 'Ishigaki & Taketomi',
-          text: 'Red-tiled roofs, coral-stone walls and water-buffalo carts on a tiny island across the bay.'
-        },
-        {
-          icon: 'TreePine',
-          title: 'Iriomote',
-          text: 'Mangrove rivers and jungle over most of the island — best explored by kayak.'
-        }
-      ]
+      type: 'place',
+      kicker: 'Castle · Naha',
+      name: 'Shuri Castle',
+      nameJp: '首里城',
+      photo: 'okinawa-shureimon',
+      body:
+        'For some 450 years this hilltop gusuku was the palace of the Ryūkyū kings, its vermilion main hall a blend of Chinese and Japanese styles. Destroyed in 1945 and rebuilt in 1992, the hall burned again in October 2019. Its rebuilding, carried out in full view of visitors, is due to be completed in autumn 2026. Enter through Shureimon, the gate on the ¥2,000 note.',
+      facts: [
+        { label: 'Hours', value: 'Paid area usually 8:30 to early evening' },
+        { label: 'Admission', value: 'Paid area about ¥400; outer park free' },
+        { label: 'Getting there', value: 'Yui Rail to Shuri, then 15 min on foot' },
+        { label: 'UNESCO', value: 'Gusuku sites of Ryūkyū, listed 2000' },
+      ],
+      lat: 26.2169,
+      lng: 127.7194,
+      website: 'https://oki-park.jp/shurijo/',
     },
     {
       id: 'p4',
-      type: 'gallery',
-      heading: 'Shades of blue',
-      items: [
-        {
-          art: 'seigaiha',
-          seed: 4,
-          caption: 'Low tide off Zamami'
-        },
-        {
-          art: 'hinomaru',
-          seed: 23,
-          caption: 'Sunset from Cape Manzamo'
-        },
-        {
-          art: 'shippo',
-          seed: 9,
-          caption: 'Coral-stone walls on Taketomi'
-        }
-      ]
+      type: 'place',
+      kicker: 'Islands · 40 km west of Naha',
+      name: 'Kerama Islands',
+      nameJp: '慶良間諸島',
+      photo: 'okinawa-zamami',
+      body:
+        'Protected since 2014 as Keramashotō National Park, these islands sit among coral reefs in water so clear it gave its name to a colour: Kerama blue. Stay on Zamami or Tokashiki, snorkel off Furuzamami Beach, look for sea turtles grazing the seagrass off Ama Beach, and from January to March watch the humpback whales that come here to breed. Rough seas cancel sailings — keep a spare day.',
+      facts: [
+        { label: 'Getting there', value: 'Boats from Tomari Port, Naha' },
+        { label: 'High-speed boat', value: 'About 50–70 min to Zamami, 35 to Tokashiki' },
+        { label: 'Car ferry', value: 'About 2 h to Zamami, 70 min to Tokashiki' },
+        { label: 'Whale season', value: 'January to March' },
+      ],
+      lat: 26.2287,
+      lng: 127.3037,
+      website: 'https://www.env.go.jp/park/kerama/',
     },
     {
       id: 'p5',
-      type: 'agenda',
-      heading: 'An island-hopping week',
-      items: [
-        {
-          time: 'Day 1',
-          title: 'Naha',
-          text: 'Kokusai-dōri, the Makishi market and Shuri at dusk.'
-        },
-        {
-          time: 'Days 2–3',
-          title: 'Zamami',
-          text: 'Fast ferry to the Keramas; two days of snorkelling with turtles.'
-        },
-        {
-          time: 'Day 4',
-          title: 'Ishigaki',
-          text: 'Fly south to the Yaeyama Islands.'
-        },
-        {
-          time: 'Day 5',
-          title: 'Taketomi',
-          text: 'Cycle sandy lanes and look for star sand.'
-        },
-        {
-          time: 'Day 6',
-          title: 'Iriomote',
-          text: 'Kayak through the mangroves to a jungle waterfall.'
-        }
-      ]
+      type: 'place',
+      kicker: 'Aquarium · Motobu Peninsula',
+      name: 'Okinawa Churaumi Aquarium',
+      nameJp: '沖縄美ら海水族館',
+      photo: 'okinawa-churaumi-kuroshio',
+      body:
+        'Opened in 2002 in Ocean Expo Park, Churaumi is built around the Kuroshio Sea: a 7,500-cubic-metre tank where whale sharks and manta rays glide past a viewing window 8.2 metres high and 22.5 metres wide. Don’t rush the coral-reef tank, open to the sun and fed with fresh seawater, then walk down to Emerald Beach in the park.',
+      facts: [
+        { label: 'Hours', value: 'Usually 8:30–18:30; longer in summer' },
+        { label: 'Admission', value: '¥2,180 adult; cheaper from 16:00' },
+        { label: 'Getting there', value: '2–3 h from Naha by car or express bus' },
+        { label: 'Time needed', value: '2–3 hours' },
+      ],
+      lat: 26.6942,
+      lng: 127.8781,
+      website: 'https://churaumi.okinawa/en/',
     },
     {
       id: 'p6',
-      type: 'stats',
-      heading: 'Okinawa by the numbers',
-      body: 'Subtropical, sociable and famously long-lived.',
+      type: 'features',
+      kicker: 'Ryūkyū culture',
+      heading: 'Beyond the beach',
       items: [
         {
-          value: 160,
-          prefix: '~',
-          suffix: '',
-          label: 'islands in the prefecture'
+          icon: 'Store',
+          title: 'Kokusai-dōri & Makishi market',
+          text: 'Naha’s 1.6 km “Miracle Mile”. In the rebuilt Makishi Public Market, buy fish downstairs and have it cooked upstairs.',
         },
         {
-          value: 450,
-          prefix: '',
-          suffix: '',
-          label: 'years of the Ryūkyū Kingdom, 1429–1879'
+          icon: 'Flame',
+          title: 'Tsuboya pottery lanes',
+          text: 'Kilns were gathered here by royal order in 1682. Walk stone-paved lanes past potters, shīsā makers and the pottery museum.',
         },
         {
-          value: 23,
-          prefix: '',
-          suffix: '°C',
-          label: 'average yearly temperature in Naha'
-        }
-      ]
+          icon: 'TreePine',
+          title: 'Sēfa-utaki',
+          text: 'The kingdom’s holiest site: a forest grove where, beyond the rock gap of Sangūi, you look out to sacred Kudaka Island. Closed some days for rites.',
+        },
+        {
+          icon: 'Soup',
+          title: 'Island flavours',
+          text: 'Okinawa soba (wheat noodles, no buckwheat), gōyā champurū stir-fry, and awamori distilled from Thai rice with black kōji.',
+        },
+        {
+          icon: 'Music',
+          title: 'Sanshin & eisā',
+          text: 'The snakeskin-covered sanshin lute, and in late summer the drums of eisā, the Bon dance of Okinawa’s neighbourhoods.',
+        },
+        {
+          icon: 'Flower',
+          title: 'Remember 1945',
+          text: 'At Mabuni, the Cornerstone of Peace bears more than 240,000 names: soldiers and civilians of every nationality, most lost in the Battle of Okinawa.',
+        },
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Island words',
+      type: 'gallery',
+      heading: 'Old Ryūkyū, everyday Okinawa',
       items: [
-        {
-          jp: 'めんそーれ',
-          romaji: 'Mensōre',
-          meaning: 'Welcome — in Okinawan'
-        },
-        {
-          jp: 'はいさい',
-          romaji: 'Haisai',
-          meaning: 'Hello — in Okinawan'
-        },
-        {
-          jp: 'にふぇーでーびる',
-          romaji: 'Nifēdēbiru',
-          meaning: 'Thank you — in Okinawan'
-        },
-        {
-          jp: 'なんくるないさ',
-          romaji: 'Nankurunaisa',
-          meaning: 'It will all work out'
-        },
-        {
-          jp: 'ここで泳いでもいいですか？',
-          romaji: 'Koko de oyoide mo ii desu ka?',
-          meaning: 'Is it OK to swim here?'
-        }
-      ]
+        { photo: 'okinawa-sefa-utaki', art: 'shippo', seed: 9, caption: 'Sangūi, the rock gap at Sēfa-utaki' },
+        { photo: 'okinawa-tsuboya', art: 'asanoha', seed: 14, caption: 'Tsuboya Yachimun-dōri, the pottery street of Naha' },
+        { photo: 'okinawa-kokusai-dori', art: 'hinomaru', seed: 23, caption: 'Kokusai-dōri, Naha’s main street' },
+        { photo: 'okinawa-bise-fukugi', art: 'seigaiha', seed: 4, caption: 'Fukugi-tree lanes of Bise, near Churaumi' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Island journeys',
-      note: 'Per person, sharing. Ferries, the inter-island flight and snorkel gear included.',
-      plans: [
-        {
-          name: 'Kerama Blue',
-          price: '¥128,000',
-          period: '4 nights',
-          features: [
-            'Naha & Zamami stays',
-            'Guided snorkel',
-            'Shuri Castle visit'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Southern Islands',
-          price: '¥246,000',
-          period: '7 nights',
-          features: [
-            'Everything in Kerama Blue',
-            'Ishigaki, Taketomi & Iriomote',
-            'Mangrove kayak day',
-            'Ryūkyū dinner with sanshin music'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'Where it all is',
+      body: 'Naha’s sights are linked by the Yui Rail monorail. The Kerama Islands lie some 40 km west by boat, Churaumi about two hours’ drive north, and Sēfa-utaki and Mabuni in the south, under an hour away.',
+      places: [
+        { name: 'Naha Airport', nameJp: '那覇空港', lat: 26.1956, lng: 127.6458, note: 'Arrivals and the Yui Rail' },
+        { name: 'Kokusai-dōri', nameJp: '国際通り', lat: 26.2158, lng: 127.6862, note: 'Market, shops, Tsuboya nearby' },
+        { name: 'Shuri Castle', nameJp: '首里城', lat: 26.2169, lng: 127.7194, note: 'Castle of the Ryūkyū kings' },
+        { name: 'Zamami Island', nameJp: '座間味島', lat: 26.2287, lng: 127.3037, note: 'Kerama Islands' },
+        { name: 'Churaumi Aquarium', nameJp: '沖縄美ら海水族館', lat: 26.6942, lng: 127.8781, note: 'Whale sharks, Ocean Expo Park' },
+        { name: 'Sēfa-utaki', nameJp: '斎場御嶽', lat: 26.1729, lng: 127.8273, note: 'Sacred grove, Nanjō' },
+        { name: 'Peace Memorial Park', nameJp: '平和祈念公園', lat: 26.0958, lng: 127.7264, note: 'Mabuni, Itoman' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'Two turtles, one sunset and a grandmother on Taketomi who taught us to say thank you in Okinawan. The best week of our year.',
-      author: 'Lena K.',
-      role: 'Guest, June 2026'
+      type: 'agenda',
+      heading: 'Four days from Naha',
+      items: [
+        { time: 'Day 1 am', title: 'Shuri Castle', text: 'Yui Rail to Shuri, then up through Shureimon.' },
+        { time: 'Day 1 pm', title: 'Kokusai-dōri & Tsuboya', text: 'Market lunch, pottery lanes, the main street at dusk.' },
+        { time: 'Day 2', title: 'Zamami', text: 'High-speed boat from Tomari; snorkel and look for turtles.' },
+        { time: 'Day 3', title: 'Churaumi', text: 'Two hours north by car; aquarium, beach, Bise’s lanes.' },
+        { time: 'Day 4', title: 'The south', text: 'Sēfa-utaki in the morning, the Peace Memorial Park after.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Find your island',
-      body: 'Late summer can bring typhoons, so we build in a spare day and rebook ferries for you if the sea says no.',
-      cta: 'Plan an island hop',
-      details: [
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Adult prices; Shuri’s fee may change once the rebuilt hall opens. Kerama boat fares vary by boat — see the Zamami and Tokashiki village sites and book ahead in summer.',
+      plans: [
         {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'hello@nirai-island.example'
+          name: 'Shuri Castle',
+          price: '¥400',
+          period: 'paid area, adult',
+          features: ['Shureimon and the outer park: free', 'Yui Rail from the airport: about 30 min', 'Allow 1½–2 hours'],
+          highlight: false,
         },
         {
-          icon: 'Clock',
-          label: 'Hours',
-          value: 'Daily 10:00–19:00 JST'
+          name: 'Churaumi Aquarium',
+          price: '¥2,180',
+          period: 'adult',
+          features: ['Cheaper tickets from 16:00', 'Ocean Expo Park grounds: free', 'Allow 2–3 hours'],
+          highlight: true,
         },
         {
-          icon: 'MapPin',
-          label: 'Office',
-          value: 'Kumoji, Naha'
-        }
-      ]
+          name: 'Sēfa-utaki',
+          price: '¥300',
+          period: 'adult',
+          features: ['Tickets at the visitor centre nearby', 'Closed on some days for rites', 'Allow about an hour'],
+          highlight: false,
+        },
+      ],
     },
     {
       id: 'p11',
+      type: 'phrases',
+      heading: 'Island words',
+      items: [
+        { jp: 'めんそーれ', romaji: 'Mensōre', meaning: 'Welcome — in Okinawan (Uchināguchi)' },
+        { jp: 'はいさい', romaji: 'Haisai', meaning: 'Hello — said by men; women say haitai' },
+        { jp: 'にふぇーでーびる', romaji: 'Nifēdēbiru', meaning: 'Thank you — in Okinawan' },
+        { jp: 'まくとぅそーけー、なんくるないさ', romaji: 'Makutu sōkē, nankurunaisa', meaning: 'Do what is right, and it will work out' },
+        { jp: '次の船は何時に出ますか？', romaji: 'Tsugi no fune wa nanji ni demasu ka?', meaning: 'When does the next boat leave?' },
+        { jp: 'ここで泳いでもいいですか？', romaji: 'Koko de oyoide mo ii desu ka?', meaning: 'Is it OK to swim here?' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'The Kingdom of Ryūkyū is a fine land in the southern seas … With its ships it is a bridge between all nations, and rare goods and treasures fill every corner of the land.',
+      quoteJp: '琉球国は南海の勝地にして……舟楫を以て万国の津梁と為し、異産至宝は十方刹に充満せり',
+      author: 'Bankoku Shinryō bell',
+      role: 'Inscription, Shuri Castle, 1458 · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Typhoons can cancel boats and flights from July to October, and sacred sites close on some days for rites. Check the official sites the day before.',
+      cta: 'Open the official Okinawa guide',
+      ctaUrl: 'https://visitokinawajapan.com/',
+      details: [
+        { icon: 'MapPin', label: 'Tourist information', value: 'Naha Airport arrivals hall · Kokusai-dōri, Naha' },
+        { icon: 'Globe', label: 'Visit Okinawa (OCVB)', value: 'visitokinawajapan.com', url: 'https://visitokinawajapan.com/' },
+        { icon: 'Castle', label: 'Shuri Castle Park', value: 'oki-park.jp/shurijo', url: 'https://oki-park.jp/shurijo/' },
+        { icon: 'Fish', label: 'Churaumi Aquarium', value: 'churaumi.okinawa', url: 'https://churaumi.okinawa/en/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Nifēdēbiru — thank you',
-      body: 'Nirai Island Co. plans unhurried island-hopping journeys across Okinawa.',
-      tagline: 'nirai-island.example'
-    }
-  ]
+      body: 'Okinawa rewards the unhurried: one island at a time, a spare day for the weather, and quiet respect in the sacred groves.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

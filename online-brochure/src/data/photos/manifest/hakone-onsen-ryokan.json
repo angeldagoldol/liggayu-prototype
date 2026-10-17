@@ -1,0 +1,108 @@
+{
+  "brochure": "hakone-onsen-ryokan",
+  "photos": [
+    {
+      "id": "hakone-heiwa-torii",
+      "use": "cover",
+      "candidates": [
+        "File:Hakone-jinja torii - Hakone, Japan - DSC05478.jpg",
+        "File:箱根神社鳥居 Hakone-jinja torii 02.jpg"
+      ],
+      "alt": "The vermilion Peace Torii of Hakone Shrine standing at the water's edge of Lake Ashi, framed by forest",
+      "caption": "Heiwa-no-Torii, Hakone Shrine, Lake Ashi",
+      "place": "Hakone Shrine",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hakone-lake-ashi-fuji",
+      "use": "wide",
+      "candidates": [
+        "File:Lake Ashi & Mt Fuji & Hakone Shrine.jpg",
+        "File:Mount Fuji from Lake Ashi 20211202-2.jpg",
+        "File:View of Mount Fuji from Lake Ashi.jpg"
+      ],
+      "alt": "Mount Fuji rising beyond the forested shores of Lake Ashi under a clear sky",
+      "caption": "Mount Fuji from Lake Ashi",
+      "place": "Lake Ashi",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "hakone-owakudani",
+      "use": "wide",
+      "candidates": [
+        "File:A view of Owakudani - a volcanic valley with active sulphur vents and hot springs in Hakone, Japan.jpg",
+        "File:View of Owakudani Valley from Hakone Cable Car.JPG",
+        "File:Great Boiling valley owakudani.jpg"
+      ],
+      "alt": "Steam rising from sulphur vents on the bare, yellow-grey slopes of Ōwakudani",
+      "caption": "Ōwakudani, the Great Boiling Valley",
+      "place": "Ōwakudani",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hakone-lake-ashi-cruise",
+      "use": "wide",
+      "candidates": [
+        "File:Hakone-jinja torii and pirate ship.jpg",
+        "File:Mount Fuji @ Lake Ashi @ Hakone (13776927014).jpg",
+        "File:LakeAshi and MtFuji Hakone.JPG"
+      ],
+      "alt": "A galleon-style sightseeing ship on Lake Ashi passing the lakeside torii of Hakone Shrine",
+      "caption": "Sightseeing ship and Peace Torii on Lake Ashi",
+      "place": "Lake Ashi",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "hakone-open-air-museum",
+      "use": "wide",
+      "candidates": [
+        "File:Hakone Open Air Museum (6969727342).jpg",
+        "File:Les quatre Vertus d'A.Bourdelle (Hakone open-air museum, Japon) (42913478042).jpg",
+        "File:220622 Hakone Open-air Museum Japan02s3.jpg"
+      ],
+      "alt": "Bronze sculptures on green lawns ringed by wooded hills at the Hakone Open-Air Museum",
+      "caption": "The Hakone Open-Air Museum",
+      "place": "Hakone Open-Air Museum",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hakone-tozan-railway",
+      "use": "any",
+      "candidates": [
+        "File:Tozan ALLEGRA Miyanoshita 80permillage.jpg",
+        "File:Tozan ALLEGRA Gora Sta 20141102.jpg",
+        "File:Hakone Tozan Railway.jpg"
+      ],
+      "alt": "A red Hakone Tozan mountain train climbing a steep, wooded track",
+      "caption": "Hakone Tozan Railway near Miyanoshita",
+      "place": "Hakone Tozan Railway",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "hakone-ropeway",
+      "use": "any",
+      "candidates": [
+        "File:Owakudani Tram-23.jpg",
+        "File:Hakone Ropeway @ From Sounzan to Owakudani @ Hakone (10621102274).jpg",
+        "File:Hakone Ropeway 1.jpg"
+      ],
+      "alt": "A Hakone Ropeway gondola hanging above the volcanic slopes of Ōwakudani",
+      "caption": "Hakone Ropeway above Ōwakudani",
+      "place": "Hakone Ropeway",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "hakone-checkpoint",
+      "use": "any",
+      "candidates": [
+        "File:Hakone Checkpoint and Lake Ashi.jpg",
+        "File:Hakone Checkpoint.jpg",
+        "File:Hakone Sekisho.jpg"
+      ],
+      "alt": "The rebuilt wooden gates and guardhouses of the Hakone Checkpoint beside Lake Ashi",
+      "caption": "Hakone Checkpoint (Hakone Sekisho), Lake Ashi",
+      "place": "Hakone Checkpoint",
+      "focus": "50% 50%"
+    }
+  ]
+}

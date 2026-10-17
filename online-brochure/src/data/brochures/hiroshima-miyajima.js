@@ -1,31 +1,43 @@
-/** Hiroshima & Miyajima — 広島・宮島. Shape: see src/data/schema.js. */
+/**
+ * Hiroshima & Miyajima — 広島・宮島. Shape: see src/data/schema.js.
+ * Real places and facts (October 2026); sources and notes in
+ * docs/research/hiroshima-miyajima.md, photos in src/data/photos/manifest/hiroshima-miyajima.json.
+ */
 export default {
   id: 'b_hiroshima-miyajima',
   slug: 'hiroshima-miyajima',
   title: 'Hiroshima & Miyajima',
   titleJp: '広島・宮島',
   titleKana: 'ひろしま みやじま',
-  subtitle: 'Remembrance, renewal and the floating torii of Itsukushima',
+  subtitle: 'Remembrance in the Peace Memorial Park, and the great torii of Itsukushima standing in the sea',
   category: 'heritage',
   region: 'chugoku',
-  seasons: [
-    'spring',
-    'autumn'
+  seasons: ['spring', 'autumn'],
+  organization: 'Tabi Guides',
+  location: {
+    name: 'Hiroshima Peace Memorial Park',
+    nameJp: '広島平和記念公園',
+    prefecture: 'Hiroshima',
+    lat: 34.3929,
+    lng: 132.4526,
+  },
+  sources: [
+    { label: 'Hiroshima Peace Memorial Museum official site', url: 'https://hpmmuseum.jp/?lang=eng' },
+    { label: 'Itsukushima Shrine official site', url: 'https://www.itsukushimajinja.jp/' },
+    { label: 'Miyajima Tourist Association — sights and tide tables', url: 'https://www.miyajima.or.jp/english/' },
+    { label: 'Hiroshima Navigator — Hiroshima City tourism', url: 'https://www.hiroshima-navi.or.jp/en/' },
+    { label: 'Hatsukaichi City — Miyajima Visitor Tax', url: 'https://www.city.hatsukaichi.hiroshima.jp/' },
+    { label: 'UNESCO — Hiroshima Peace Memorial (Genbaku Dome)', url: 'https://whc.unesco.org/en/list/775/' },
+    { label: 'UNESCO — Itsukushima Shinto Shrine', url: 'https://whc.unesco.org/en/list/776/' },
+    { label: 'Wikipedia — Itsukushima Shrine', url: 'https://en.wikipedia.org/wiki/Itsukushima_Shrine' },
   ],
-  organization: 'Seto Tide Guides',
-  summary: 'A respectful two-day journey: the Peace Memorial Park and Museum in Hiroshima, then the island of Miyajima, where the great torii of Itsukushima Shrine stands in the sea.',
-  tags: [
-    'hiroshima',
-    'miyajima',
-    'peace memorial',
-    'itsukushima',
-    'unesco',
-    'history',
-    'deer'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'A respectful two-day journey: the Atomic Bomb Dome and the Peace Memorial Museum in Hiroshima, then Miyajima, where Itsukushima Shrine and its great torii stand in the sea — with hours, fees, tides and the island’s visitor tax.',
+  tags: ['hiroshima', 'miyajima', 'peace memorial', 'atomic bomb dome', 'itsukushima', 'unesco', 'mount misen', 'okonomiyaki', 'history'],
   format: 'booklet',
-  updatedAt: '2026-05-12T09:00:00.000Z',
-  readMinutes: 6,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 8,
   featured: false,
   source: 'builtin',
   theme: {
@@ -34,237 +46,237 @@ export default {
     accent: '#bf3f2b',
     accent2: '#557a8a',
     muted: '#53646a',
-    typeface: 'serif'
+    typeface: 'serif',
   },
   cover: {
+    photo: 'miyajima-otorii',
     art: 'kumo',
-    seed: 21
+    seed: 21,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Chūgoku · A journey of two days',
+      eyebrow: 'Chūgoku · Hiroshima Prefecture',
       title: 'Hiroshima & Miyajima',
       titleJp: '広島・宮島',
-      subtitle: 'A city that chose peace, and an island shrine that rises from the tide.'
+      subtitle: 'A city that rebuilt itself for peace, and an island shrine that stands in the sea — two World Heritage Sites, about an hour apart.',
+      photo: 'miyajima-otorii',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Before you go',
-      heading: 'Before the shrine, the memorial',
-      body: 'At 8:15 a.m. on 6 August 1945, the first atomic bomb used in war destroyed much of Hiroshima. The city rebuilt itself as a place dedicated to peace, and the ruined Genbaku Dome — left as it stood — is now a UNESCO World Heritage Site.\n\nA short train and ferry ride away, Miyajima offers a different kind of quiet: a shrine built over the water, deer in the lanes and forest paths up Mount Misen. We suggest taking your time with both.',
-      pullQuote: 'Allow time. Hiroshima asks to be listened to.'
+      heading: 'Remembrance, then the tide',
+      body:
+        'At 8:15 a.m. on 6 August 1945, the first atomic bomb used in war exploded over central Hiroshima. By the end of that year an estimated 140,000 people had died. The city rebuilt itself as a voice for peace, and the ruined dome at its heart, kept as it stood, is now a World Heritage Site.\n\nAbout an hour away by train and ferry, Miyajima offers another kind of quiet: a shrine built over the tide, deer in the lanes and forest paths up Mount Misen.',
+      pullQuote: 'Allow time. Hiroshima asks to be listened to.',
+      photo: 'hiroshima-cenotaph',
     },
     {
       id: 'p3',
-      type: 'features',
-      kicker: 'Two places, two moods',
-      heading: 'What to see',
-      items: [
-        {
-          icon: 'Landmark',
-          title: 'Peace Memorial Park',
-          text: 'The Cenotaph, the Flame of Peace and the Genbaku Dome across the river, laid out on one quiet axis.'
-        },
-        {
-          icon: 'BookOpen',
-          title: 'Peace Memorial Museum',
-          text: 'Personal belongings and survivors’ testimony. Allow at least two unhurried hours.'
-        },
-        {
-          icon: 'Bird',
-          title: 'Children’s Peace Monument',
-          text: 'Strings of paper cranes, sent from all over the world in memory of Sadako Sasaki.'
-        },
-        {
-          icon: 'Waves',
-          title: 'Itsukushima Shrine',
-          text: 'Vermilion halls on stilts above the tide, and the great torii standing in the sea.'
-        }
-      ]
+      type: 'place',
+      kicker: 'World Heritage · 1996',
+      name: 'Atomic Bomb Dome',
+      nameJp: '原爆ドーム',
+      photo: 'hiroshima-atomic-bomb-dome',
+      body:
+        'Designed by the Czech architect Jan Letzel, it opened in 1915 as the Prefectural Commercial Exhibition Hall. The bomb exploded almost directly overhead: everyone inside was killed, but the walls and the steel frame of the dome survived. In 1966 the city resolved to preserve the ruin as it stood, and in 1996 UNESCO inscribed it as the Hiroshima Peace Memorial.',
+      facts: [
+        { label: 'Viewing', value: 'From outside, at any hour; free' },
+        { label: 'Interior', value: 'Closed to visitors' },
+        { label: 'Getting there', value: 'Tram to Genbaku Dome-mae' },
+        { label: 'Time needed', value: 'About 30 minutes' },
+      ],
+      lat: 34.3955,
+      lng: 132.4536,
+      website: 'https://whc.unesco.org/en/list/775/',
     },
     {
       id: 'p4',
-      type: 'gallery',
-      heading: 'Between sea and sky',
-      items: [
-        {
-          art: 'torii',
-          seed: 1,
-          caption: 'The great torii at high tide'
-        },
-        {
-          art: 'kumo',
-          seed: 12,
-          caption: 'Morning mist on Mount Misen'
-        },
-        {
-          art: 'enso',
-          seed: 21,
-          caption: 'A moment of stillness'
-        }
-      ]
+      type: 'place',
+      kicker: 'Museum · Peace Memorial Park',
+      name: 'Peace Memorial Museum',
+      nameJp: '広島平和記念資料館',
+      photo: 'hiroshima-peace-museum',
+      body:
+        'Kenzō Tange laid out the park on a single axis: from the museum, through the arched Cenotaph and the Flame of Peace, to the Dome across the river. Inside, victims’ belongings, photographs and survivors’ testimony tell what happened to the people beneath the bomb. Some exhibits are hard to look at. Take your time, then walk to the Children’s Peace Monument, where visitors leave garlands of paper cranes.',
+      facts: [
+        { label: 'Hours', value: 'From 7:30; closes 17:00–19:00 by season' },
+        { label: 'Admission', value: 'Adults ¥200; high-school students ¥100' },
+        { label: 'Getting there', value: 'Genbaku Dome-mae tram stop, 10 min walk' },
+        { label: 'Time needed', value: 'At least two hours' },
+        { label: 'Best time', value: 'At opening, before the queues' },
+      ],
+      lat: 34.3917,
+      lng: 132.4527,
+      website: 'https://hpmmuseum.jp/?lang=eng',
     },
     {
       id: 'p5',
-      type: 'agenda',
-      heading: 'A day, unhurried',
-      items: [
-        {
-          time: '09:00',
-          title: 'Peace Memorial Park',
-          text: 'Walk from the Genbaku Dome to the Cenotaph.'
-        },
-        {
-          time: '10:30',
-          title: 'Peace Memorial Museum',
-          text: 'Give it at least two quiet hours.'
-        },
-        {
-          time: '13:30',
-          title: 'Hiroshima okonomiyaki',
-          text: 'Layered with noodles and cooked in front of you.'
-        },
-        {
-          time: '16:00',
-          title: 'Ferry to Miyajima',
-          text: 'About ten minutes across the strait.'
-        },
-        {
-          time: '18:30',
-          title: 'Itsukushima at dusk',
-          text: 'The great torii, lit after sunset — at high tide it seems to float.'
-        }
-      ]
+      type: 'place',
+      kicker: 'World Heritage · Miyajima',
+      name: 'Itsukushima Shrine',
+      nameJp: '厳島神社',
+      photo: 'miyajima-itsukushima-shrine',
+      body:
+        'A shrine to three sea goddesses, founded by tradition in 593 and given its present form by Taira no Kiyomori in 1168. Its vermilion halls and corridors stand on piles over the tidal flats, so at high tide the whole shrine seems to float. The great torii, nearly 17 metres tall and held upright by its own weight, dates from 1875; its latest restoration ended in December 2022.',
+      facts: [
+        { label: 'Hours', value: 'From 6:30; closes 17:00–18:00 by season' },
+        { label: 'Admission', value: 'Adults ¥300' },
+        { label: 'Getting there', value: 'Ferry to Miyajima, then 10–15 min walk' },
+        { label: 'Best time', value: 'High tide to see it float' },
+      ],
+      lat: 34.2959,
+      lng: 132.3198,
+      website: 'https://www.itsukushimajinja.jp/',
     },
     {
       id: 'p6',
-      type: 'stats',
-      heading: 'Two sites, one journey',
-      body: 'Both were inscribed on the UNESCO World Heritage List in 1996.',
+      type: 'features',
+      kicker: 'Know before you go',
+      heading: 'Tides, deer and the long way up',
       items: [
         {
-          value: 2,
-          prefix: '',
-          suffix: '',
-          label: 'World Heritage Sites, about an hour apart'
+          icon: 'Ticket',
+          title: 'Miyajima visitor tax',
+          text: 'Since October 2023 visitors pay ¥100 per visit, usually collected with the ferry fare. A ¥500 annual option also exists.',
         },
         {
-          value: 10,
-          prefix: '~',
-          suffix: ' min',
-          label: 'by ferry from Miyajimaguchi'
+          icon: 'Waves',
+          title: 'Read the tide table',
+          text: 'At low tide you can walk out to the torii on the sand; at high tide it seems to float.',
         },
         {
-          value: 16,
-          prefix: '~',
-          suffix: ' m',
-          label: 'height of the great torii'
-        }
-      ]
+          icon: 'Mountain',
+          title: 'Mount Misen',
+          text: 'Miyajima’s sacred 535-metre peak, with views across the Inland Sea. A ropeway climbs most of the way (check it is running); on foot, about two hours.',
+        },
+        {
+          icon: 'Landmark',
+          title: 'Daishō-in',
+          text: 'An old Shingon temple at the foot of Misen: prayer wheels on the stair rails, hundreds of little stone statues and a quiet trailhead.',
+        },
+        {
+          icon: 'Utensils',
+          title: 'Hiroshima okonomiyaki',
+          text: 'Built in layers, not mixed: a thin crêpe, a mound of cabbage, pork, noodles and egg, pressed on the hotplate.',
+        },
+        {
+          icon: 'Leaf',
+          title: 'Miyajima’s deer',
+          text: 'They are wild animals. Please don’t feed them, and keep maps, tickets and snacks out of reach.',
+        },
+      ],
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Words for the journey',
+      type: 'gallery',
+      heading: 'Between sea and sky',
       items: [
-        {
-          jp: '平和',
-          romaji: 'Heiwa',
-          meaning: 'Peace'
-        },
-        {
-          jp: '折り鶴',
-          romaji: 'Orizuru',
-          meaning: 'A folded paper crane'
-        },
-        {
-          jp: '黙祷',
-          romaji: 'Mokutō',
-          meaning: 'A silent prayer'
-        },
-        {
-          jp: '潮の時間を教えてください',
-          romaji: 'Shio no jikan o oshiete kudasai',
-          meaning: 'Could you tell me the tide times?'
-        },
-        {
-          jp: '鹿に餌をあげないでください',
-          romaji: 'Shika ni esa o agenaide kudasai',
-          meaning: 'Please do not feed the deer'
-        }
-      ]
+        { photo: 'miyajima-otorii-low-tide', art: 'torii', seed: 1, caption: 'The great torii at low tide' },
+        { photo: 'hiroshima-childrens-peace-monument', art: 'enso', seed: 21, caption: 'Paper cranes at the Children’s Peace Monument' },
+        { photo: 'miyajima-pagoda', art: 'kumo', seed: 12, caption: 'The five-storey pagoda above the shrine' },
+        { photo: 'miyajima-misen-view', art: 'seigaiha', seed: 8, caption: 'The Inland Sea from Mount Misen' },
+      ],
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Guided days',
-      note: 'Per person. Museum entry, ferry and lunch included. Guides speak English, French or Spanish.',
-      plans: [
-        {
-          name: 'Hiroshima Day',
-          price: '¥22,000',
-          period: '1 day',
-          features: [
-            'Peace Memorial Park & Museum',
-            'Lunch with your guide',
-            'Unhurried time to reflect'
-          ],
-          highlight: false
-        },
-        {
-          name: 'Shrine & Tides',
-          price: '¥58,000',
-          period: '2 days, 1 night',
-          features: [
-            'Everything in Hiroshima Day',
-            'Ryokan night on Miyajima',
-            'The torii at high and low tide',
-            'Dawn walk up Mount Misen'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'Where it all is',
+      body: 'Trams take about 15–20 minutes from Hiroshima Station to the Peace Memorial Park. For Miyajima, ride the JR Sanyō Line to Miyajimaguchi, about 30 minutes, then the ten-minute ferry.',
+      places: [
+        { name: 'Hiroshima Station', nameJp: '広島駅', lat: 34.3975, lng: 132.4753, note: 'Shinkansen, JR lines and trams' },
+        { name: 'Atomic Bomb Dome', nameJp: '原爆ドーム', lat: 34.3955, lng: 132.4536, note: 'World Heritage Site' },
+        { name: 'Peace Memorial Museum', nameJp: '広島平和記念資料館', lat: 34.3917, lng: 132.4527, note: 'In the Peace Memorial Park' },
+        { name: 'Miyajimaguchi', nameJp: '宮島口', lat: 34.3122, lng: 132.3036, note: 'JR station and ferry piers' },
+        { name: 'Itsukushima Shrine', nameJp: '厳島神社', lat: 34.2959, lng: 132.3198, note: 'World Heritage Site' },
+        { name: 'Mount Misen', nameJp: '弥山', lat: 34.2794, lng: 132.3194, note: 'Summit, 535 m' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'Our guide’s grandmother survived the bombing. He told her story simply, then walked us to the river and gave us time. We will not forget that morning.',
-      author: 'Margaret L.',
-      role: 'Traveller, April 2026'
+      type: 'agenda',
+      heading: 'Two days, unhurried',
+      items: [
+        { time: '07:30', title: 'Peace Memorial Museum', text: 'Come at opening; allow two hours.' },
+        { time: '10:00', title: 'Peace Memorial Park', text: 'The Cenotaph, the cranes, then the Dome.' },
+        { time: '12:00', title: 'Okonomiyaki lunch', text: 'Hiroshima style, layered with noodles.' },
+        { time: '13:30', title: 'To Miyajima', text: 'Tram or train, then ferry: about an hour.' },
+        { time: '15:00', title: 'Itsukushima Shrine', text: 'Time your visit to the tide.' },
+        { time: 'Day 2', title: 'Mount Misen', text: 'Hike up early via Daishō-in.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Plan a thoughtful visit',
-      body: 'We check the tide tables for your dates, so you see the great torii both standing in the sea and on the sand.',
-      cta: 'Ask a guide',
-      details: [
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Adult prices; confirm on the official sites before you travel. Children pay less or enter free; the ropeway and the shrine’s Treasure Hall charge separately.',
+      plans: [
         {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'guides@seto-tide.example'
+          name: 'Peace Memorial Museum',
+          price: '¥200',
+          period: 'adult entry',
+          features: ['High-school students ¥100', 'Junior-high age and under: free', 'Park, Cenotaph and Dome: free, at any hour'],
+          highlight: false,
         },
         {
-          icon: 'Languages',
-          label: 'Guides',
-          value: 'English · Français · Español'
+          name: 'Crossing to Miyajima',
+          price: 'About ¥300',
+          period: 'one way: ferry + ¥100 visitor tax',
+          features: ['JR and Matsudai ferries, about 10 min', 'Ferry about ¥200 each way; fares at the pier', 'Tax: ¥100 a visit, or ¥500 a year', 'Japan Rail Pass covers the JR ferry, not the tax'],
+          highlight: true,
         },
         {
-          icon: 'MapPin',
-          label: 'Meet',
-          value: 'Hiroshima Station, south exit'
-        }
-      ]
+          name: 'Itsukushima Shrine',
+          price: '¥300',
+          period: 'adult entry',
+          features: ['Torii, streets and pagoda: free to see', 'Mount Misen trails: free', 'Ropeway: separate fare'],
+          highlight: false,
+        },
+      ],
     },
     {
       id: 'p11',
+      type: 'phrases',
+      heading: 'Words for the journey',
+      items: [
+        { jp: '平和', romaji: 'Heiwa', meaning: 'Peace' },
+        { jp: '折り鶴', romaji: 'Orizuru', meaning: 'A folded paper crane' },
+        { jp: '黙祷', romaji: 'Mokutō', meaning: 'A moment of silent prayer' },
+        { jp: '干潮は何時ですか？', romaji: 'Kanchō wa nanji desu ka?', meaning: 'What time is low tide?' },
+        { jp: 'フェリー乗り場はどこですか？', romaji: 'Ferī noriba wa doko desu ka?', meaning: 'Where is the ferry pier?' },
+        { jp: 'そばでお願いします', romaji: 'Soba de onegaishimasu', meaning: 'With soba noodles, please — ordering okonomiyaki' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'Let all the souls here rest in peace; for we shall not repeat the evil.',
+      quoteJp: '安らかに眠って下さい　過ちは繰返しませぬから',
+      author: 'Tadayoshi Saika',
+      role: 'Epitaph on the Cenotaph for the A-bomb Victims, Peace Memorial Park',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Tide times change daily and opening hours shift with the seasons, so check the official sites before you set out. Each year on 6 August the park hosts the Peace Memorial Ceremony.',
+      cta: 'Open the official Hiroshima guide',
+      ctaUrl: 'https://www.hiroshima-navi.or.jp/en/',
+      details: [
+        { icon: 'MapPin', label: 'Tourist information', value: 'Hiroshima Station · Peace Park Rest House · Miyajima ferry terminal' },
+        { icon: 'Globe', label: 'Hiroshima City tourism', value: 'hiroshima-navi.or.jp', url: 'https://www.hiroshima-navi.or.jp/en/' },
+        { icon: 'Waves', label: 'Miyajima & tide tables', value: 'miyajima.or.jp', url: 'https://www.miyajima.or.jp/english/' },
+        { icon: 'Landmark', label: 'Peace Memorial Museum', value: 'hpmmuseum.jp', url: 'https://hpmmuseum.jp/?lang=eng' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Heiwa — peace',
-      body: 'Seto Tide Guides leads small, respectful journeys through Hiroshima and the Inland Sea.',
-      tagline: 'seto-tide.example'
-    }
-  ]
+      body: 'Hiroshima asks for time and quiet; Miyajima rewards an early start and a glance at the tide table. If you can, stay a night on the island, after the last day-trippers have gone.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

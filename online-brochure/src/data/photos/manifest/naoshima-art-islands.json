@@ -1,0 +1,122 @@
+{
+  "brochure": "naoshima-art-islands",
+  "photos": [
+    {
+      "id": "naoshima-yellow-pumpkin",
+      "use": "cover",
+      "candidates": [
+        "File:Yayoi Kusama Pumpkin Naoshima.jpg",
+        "File:Naoshima Pumpkin.jpg",
+        "File:Pumpkin, Naoshima.jpg"
+      ],
+      "alt": "Yayoi Kusama’s yellow, black-dotted pumpkin sculpture at the end of a concrete pier above the sea",
+      "caption": "Pumpkin by Yayoi Kusama, Benesse House shore",
+      "place": "Benesse House, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-inland-sea",
+      "use": "wide",
+      "candidates": [
+        "File:Naoshima.jpg",
+        "File:直島.jpg",
+        "File:Seto Inland Sea from Naoshima.jpg"
+      ],
+      "alt": "Calm water and low wooded islands of the Seto Inland Sea under a soft sky",
+      "caption": "The Seto Inland Sea from Naoshima",
+      "place": "Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-chichu",
+      "use": "wide",
+      "candidates": [
+        "File:Chichu Art Museum.jpg",
+        "File:地中美術館.jpg",
+        "File:Chichu Art Museum, Naoshima.jpg"
+      ],
+      "alt": "Bare concrete walls of the Chichu Art Museum set into a green hillside",
+      "caption": "Chichu Art Museum by Tadao Ando",
+      "place": "Chichu Art Museum",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-benesse-house",
+      "use": "wide",
+      "candidates": [
+        "File:Benesse House.jpg",
+        "File:Benesse House Museum.jpg",
+        "File:ベネッセハウス.jpg"
+      ],
+      "alt": "Tadao Ando’s concrete and glass museum building on a hillside above the sea",
+      "caption": "Benesse House Museum, Naoshima",
+      "place": "Benesse House Museum",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-teshima-art-museum",
+      "use": "wide",
+      "candidates": [
+        "File:Teshima Art Museum.jpg",
+        "File:豊島美術館.jpg",
+        "File:Teshima Art Museum 01.jpg"
+      ],
+      "alt": "A low white concrete shell curving out of green rice terraces near the sea",
+      "caption": "Teshima Art Museum among the rice terraces",
+      "place": "Teshima Art Museum",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "naoshima-red-pumpkin",
+      "use": "any",
+      "candidates": [
+        "File:Red Pumpkin Naoshima.jpg",
+        "File:Naoshima red pumpkin.jpg",
+        "File:Red Pumpkin, Miyanoura, Naoshima.jpg"
+      ],
+      "alt": "A large red pumpkin sculpture with black dots and round openings beside the harbour",
+      "caption": "Red Pumpkin by Yayoi Kusama, Miyanoura port",
+      "place": "Miyanoura Port, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-honmura",
+      "use": "any",
+      "candidates": [
+        "File:Minamidera Naoshima.jpg",
+        "File:Art House Project Naoshima.jpg",
+        "File:Honmura, Naoshima.jpg"
+      ],
+      "alt": "Old wooden houses with dark charred-cedar walls on a quiet village lane",
+      "caption": "Art House Project, Honmura",
+      "place": "Honmura, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-i-love-yu",
+      "use": "any",
+      "candidates": [
+        "File:I Love Yu Naoshima.jpg",
+        "File:Naoshima Bath I Love Yu.jpg",
+        "File:直島銭湯「I♥湯」.jpg"
+      ],
+      "alt": "The collaged, tile-covered facade of a small public bathhouse",
+      "caption": "I♥湯, Shinro Ohtake’s bathhouse",
+      "place": "Miyanoura, Naoshima",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "naoshima-miyanoura-port",
+      "use": "any",
+      "candidates": [
+        "File:Naoshima Marine Station.jpg",
+        "File:Miyanoura Port Naoshima.jpg",
+        "File:Naoshima Pavilion.jpg"
+      ],
+      "alt": "The thin, flat white roof of the ferry terminal at Miyanoura port",
+      "caption": "Miyanoura port, Naoshima",
+      "place": "Miyanoura Port, Naoshima",
+      "focus": "50% 50%"
+    }
+  ]
+}
