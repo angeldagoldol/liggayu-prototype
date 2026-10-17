@@ -1,0 +1,83 @@
+.intro {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.rule {
+  flex: none;
+  margin: 3.6cqw 0 3.4cqw;
+}
+
+.copy {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  font-size: var(--copy, 2.5cqw);
+  line-height: 1.62;
+  color: var(--b-body);
+  hyphens: auto;
+}
+
+.copy[data-columns='2'] {
+  columns: 2;
+  column-gap: 5cqw;
+  column-rule: var(--hair) solid var(--b-rule);
+}
+
+.copy[data-long] {
+  mask-image: linear-gradient(to bottom, #000 82%, transparent);
+}
+
+.copy p {
+  margin: 0;
+}
+
+.copy p + p {
+  margin-top: 0.9em;
+}
+
+.copy[data-dropcap] p:first-child::first-letter {
+  float: left;
+  margin: 0.06em 0.12em 0 0;
+  font-family: var(--b-font);
+  font-size: 3.3em;
+  font-weight: 500;
+  line-height: 0.82;
+  color: var(--b-accent);
+}
+
+.pull {
+  flex: none;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.4cqw;
+  margin: 3.2cqw 0 0;
+  padding-top: 3.2cqw;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.bracket {
+  font-family: var(--font-jp);
+  font-size: 7cqw;
+  line-height: 0.9;
+  color: var(--b-accent);
+}
+
+.pull p {
+  margin: 0.6cqw 0 0;
+  font-family: var(--b-font);
+  font-size: var(--fs, 4.2cqw);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  color: var(--b-ink);
+}
+
+[data-typeface='serif'] .pull p {
+  font-style: italic;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 100,
+    'WONK' 1;
+}

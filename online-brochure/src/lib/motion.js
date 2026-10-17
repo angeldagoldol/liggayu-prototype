@@ -60,13 +60,6 @@ export function stagger(each = 0.08, delayChildren = 0) {
   };
 }
 
-/** Route-level transition used by <PageTransition>. */
-export const pageTransition = {
-  initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.out } },
-  exit: { opacity: 0, y: -10, transition: { duration: 0.25, ease: ease.in } },
-};
-
 /** Overlay (modal / drawer / palette) backdrop. */
 export const backdrop = {
   hidden: { opacity: 0 },

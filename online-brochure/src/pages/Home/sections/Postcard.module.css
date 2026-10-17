@@ -1,0 +1,212 @@
+.card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  margin: 0;
+  min-height: 100%;
+  padding: clamp(1.25rem, 0.8rem + 1.8vw, 2.75rem);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 3%, transparent), transparent 18%),
+    var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- Message ------------------------------------------------------------- */
+.message {
+  position: relative;
+  display: grid;
+  align-content: center;
+  padding: var(--space-6) clamp(1rem, 0.5rem + 2vw, 2.5rem) var(--space-6) var(--space-4);
+  border-right: 1px solid var(--line-strong);
+}
+
+.open,
+.close {
+  position: absolute;
+  font-family: var(--font-jp);
+  font-size: clamp(2.5rem, 1.6rem + 2.6vw, 4.5rem);
+  line-height: 1;
+  color: var(--accent);
+}
+
+.open {
+  top: -0.45em;
+  left: -0.3em;
+}
+
+.close {
+  right: 0.1em;
+  bottom: -0.45em;
+}
+
+.quote {
+  margin: 0;
+  font-family: var(--font-headline, var(--font-display));
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 2.1rem);
+  font-weight: 380;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  text-wrap: pretty;
+}
+
+/* --- Address side ------------------------------------------------------- */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding-left: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+}
+
+.franking {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.postmark {
+  position: relative;
+  z-index: 2;
+  width: clamp(7rem, 5rem + 5vw, 9.5rem);
+  margin-top: var(--space-4);
+  margin-right: -1.6rem;
+  color: var(--ink-3);
+  transform: rotate(-8deg);
+  opacity: 0.85;
+}
+
+.waves path,
+.ring,
+.ringInner {
+  fill: none;
+  stroke: currentColor;
+}
+
+.waves path {
+  stroke-width: 1.4;
+}
+
+.ring {
+  stroke-width: 1.6;
+}
+
+.ringInner {
+  stroke-width: 0.8;
+}
+
+.town,
+.date {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+}
+
+.town {
+  font-size: 9px;
+}
+
+.date {
+  font-size: 8.5px;
+}
+
+/* Perforated edge: the paper shows through the holes around the art. */
+.stamp {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: none;
+  width: clamp(4.5rem, 3.4rem + 2.6vw, 6rem);
+  padding: 6px 6px 4px;
+  background: radial-gradient(circle, transparent 2.6px, var(--page-paper) 3.2px) -5px -5px / 10px 10px;
+  filter: drop-shadow(0 1px 1px rgb(var(--shadow-color) / 0.2));
+  transform: rotate(3deg);
+}
+
+.stampArt {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.stampText {
+  padding-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-align: center;
+  color: color-mix(in srgb, var(--wa-sumi) 70%, var(--page-paper));
+}
+
+.from {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: auto;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.fromLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.name {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-lg);
+  font-style: italic;
+  line-height: 1.15;
+}
+
+.city {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.lines {
+  display: block;
+  height: 2.6rem;
+  background:
+    linear-gradient(var(--line-strong), var(--line-strong)) 0 calc(1.3rem - 1px) / 100% 1px no-repeat,
+    linear-gradient(var(--line-strong), var(--line-strong)) 0 calc(2.6rem - 1px) / 100% 1px no-repeat;
+}
+
+@media (max-width: 680px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .message {
+    padding: var(--space-6) var(--space-3);
+    border-right: 0;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .side {
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: var(--space-5) 0 0;
+  }
+
+  .franking {
+    flex: none;
+  }
+
+  .postmark {
+    display: none;
+  }
+
+  .from {
+    flex: 1;
+    margin-top: 0;
+  }
+
+  .lines {
+    display: none;
+  }
+}

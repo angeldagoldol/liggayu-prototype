@@ -1,0 +1,65 @@
+import { memo, useEffect, useRef } from 'react';
+import { MiniPage } from './MiniPage.jsx';
+import { spreadLabel, spreadName } from './spreads.js';
+import styles from './ThumbRail.module.css';
+
+const Thumb = memo(function Thumb({ brochure, spread, double, current, onSelect }) {
+  return (
+    <li className={styles.item}>
+      <button
+        type="button"
+        className={styles.thumb}
+        aria-current={current || undefined}
+        aria-label={`Go to ${spreadName(spread).toLowerCase()}`}
+        onClick={() => onSelect(spread.index)}
+      >
+        <span
+          className={styles.pages}
+          data-lone-left={(double && spread.left === null) || undefined}
+          data-lone-right={(double && spread.right === null) || undefined}
+        >
+          <MiniPage brochure={brochure} face={spread.left} />
+          <MiniPage brochure={brochure} face={spread.right} />
+        </span>
+        <span className={styles.label} aria-hidden="true">
+          {spreadLabel(spread)}
+        </span>
+        <span className={styles.marker} aria-hidden="true" />
+      </button>
+    </li>
+  );
+});
+
+/**
+ * Strip of spread thumbnails under the book. The current spread is
+ * highlighted and kept centred in the strip as the reader turns pages.
+ * Props: brochure, book, position, onSelect(position), smooth (scroll behaviour).
+ */
+export function ThumbRail({ brochure, book, position, onSelect, smooth = true }) {
+  const listRef = useRef(null);
+
+  useEffect(() => {
+    const list = listRef.current;
+    const el = list?.querySelector('[aria-current="true"]')?.parentElement;
+    if (!list || !el) return;
+    const left = el.offsetLeft - (list.clientWidth - el.offsetWidth) / 2;
+    list.scrollTo({ left: Math.max(0, left), behavior: smooth ? 'smooth' : 'auto' });
+  }, [position, smooth, book]);
+
+  return (
+    <nav className={styles.rail} aria-label="Page thumbnails">
+      <ol ref={listRef} className={styles.list}>
+        {book.spreads.map((spread) => (
+          <Thumb
+            key={spread.index}
+            brochure={brochure}
+            spread={spread}
+            double={book.mode === 'double'}
+            current={spread.index === position}
+            onSelect={onSelect}
+          />
+        ))}
+      </ol>
+    </nav>
+  );
+}

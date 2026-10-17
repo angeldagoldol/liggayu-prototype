@@ -1,0 +1,457 @@
+.section {
+  padding-block: var(--section-y);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 1rem + 4vw, 5.5rem);
+  margin-top: clamp(2rem, 1rem + 3vw, 4rem);
+}
+
+/* --- The print: a framed sheet holding the map ---------------------------- */
+.print {
+  position: relative;
+  margin: 0;
+  padding: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.printHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.printHead > :first-child {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--ink);
+}
+
+.compass {
+  color: var(--accent);
+}
+
+/* Registration dots at every grid point; tiles sit on their own cells. */
+.map {
+  --gap: clamp(3px, 0.15rem + 0.4vw, 9px);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+  gap: var(--gap);
+  aspect-ratio: var(--cols) / var(--rows);
+  background-image: radial-gradient(circle, var(--line-strong) 1.1px, transparent 1.6px);
+  background-size: calc(100% / var(--cols)) calc(100% / var(--rows));
+}
+
+.rail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.railLine,
+.bridgeLine {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.railLine {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+}
+
+.bridgeLine {
+  stroke: var(--ink-3);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 5;
+}
+
+/* Sea names in the empty water: Sea of Japan to the west, Pacific to the east. */
+.sea {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--ink-3);
+  pointer-events: none;
+}
+
+.sea[data-sea='west'] {
+  top: 6%;
+  left: 4%;
+}
+
+.sea[data-sea='east'] {
+  right: 2%;
+  bottom: 3%;
+}
+
+.seaJp {
+  font-size: clamp(0.9rem, 0.7rem + 0.6vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.5em;
+}
+
+.seaEn {
+  writing-mode: vertical-rl;
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-xs);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* --- Tiles --------------------------------------------------------------- */
+.tile {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  padding: 0;
+  border-radius: var(--radius-sm);
+  container-type: inline-size;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.face {
+  --pat: color-mix(in srgb, currentColor 16%, transparent);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4cqi;
+  border: 1px solid var(--line-strong);
+  border-radius: inherit;
+  background-color: var(--bg-elevated);
+  color: var(--ink);
+  transition:
+    transform 0.45s var(--ease-out),
+    box-shadow 0.45s var(--ease-out),
+    background-color var(--dur-3) var(--ease-out),
+    color var(--dur-3) var(--ease-out),
+    border-color var(--dur-3) var(--ease-out);
+}
+
+/* The printed pattern frames the type, fading out toward the centre. */
+.face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  mask-image: radial-gradient(circle at center, transparent 32%, #000 78%);
+  -webkit-mask-image: radial-gradient(circle at center, transparent 32%, #000 78%);
+}
+
+.tile[data-pattern='seigaiha'] .face::before {
+  background: radial-gradient(circle at 50% 100%, transparent 28%, var(--pat) 29% 36%, transparent 37% 56%, var(--pat) 57% 64%, transparent 65%) 0 0 / 14px 8px;
+}
+
+.tile[data-pattern='ichimatsu'] .face::before {
+  background: conic-gradient(var(--pat) 25%, transparent 0 50%, var(--pat) 0 75%, transparent 0) 0 0 / 12px 12px;
+}
+
+.tile[data-pattern='stripes'] .face::before {
+  background: repeating-linear-gradient(45deg, var(--pat) 0 1px, transparent 1px 6px);
+}
+
+.tile[data-pattern='dots'] .face::before {
+  background: radial-gradient(var(--pat) 1.2px, transparent 1.7px) 0 0 / 7px 7px;
+}
+
+.tile[data-pattern='asanoha'] .face::before {
+  background:
+    repeating-linear-gradient(0deg, var(--pat) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(60deg, var(--pat) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(-60deg, var(--pat) 0 1px, transparent 1px 9px);
+}
+
+@media (hover: hover) {
+  .tile:hover .face {
+    transform: translateY(-5px);
+    border-color: var(--ink);
+    box-shadow: 4px 5px 0 var(--ink);
+  }
+}
+
+/* Hit area reaches into the grid gap, so even small tiles stay ≥ 40px to tap. */
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--gap) / -2 - 1px);
+}
+
+.tile:focus-visible {
+  outline: none;
+}
+
+.tile:focus-visible .face {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.tile[data-active] .face {
+  transform: translateY(-7px) rotate(-3deg);
+  border-color: var(--accent);
+  background-color: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: 5px 6px 0 var(--ink);
+}
+
+.tileJp {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  font-family: var(--font-jp);
+  font-size: 25cqi;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+}
+
+.tileJp[data-long] {
+  font-size: 21cqi;
+}
+
+.tileLabel {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: max(8px, 9cqi);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.tileCount {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tile[data-active] .tileCount {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+@container (max-width: 58px) {
+  .tileLabel {
+    display: none;
+  }
+
+  .tileJp {
+    font-size: 30cqi;
+  }
+
+  .tileJp[data-long] {
+    font-size: 24cqi;
+  }
+}
+
+/* --- Caption / legend ---------------------------------------------------- */
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  margin-top: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.caption > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.railKey,
+.bridgeKey {
+  width: 22px;
+  height: 0;
+  border-top: 2.5px solid var(--accent);
+}
+
+.bridgeKey {
+  border-top: 1.5px dashed var(--ink-3);
+}
+
+.keys {
+  margin-left: auto;
+}
+
+/* --- Detail card --------------------------------------------------------- */
+.detail {
+  position: relative;
+  min-height: 25rem;
+}
+
+.detailInner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.detailJp {
+  font-size: clamp(3rem, 1.8rem + 3.4vw, 5.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.detailBody {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  padding-top: var(--space-2);
+}
+
+.detailMeta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.detailTitle {
+  font-family: var(--font-headline, var(--font-display));
+  font-size: var(--fs-2xl);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.blurb {
+  max-width: 36ch;
+  font-size: var(--fs-md);
+  color: var(--ink-2);
+}
+
+.list {
+  width: 100%;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.listLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding-block: var(--space-2);
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.listLink > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.listJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+.listLink svg {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+  color: var(--ink-3);
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
+}
+
+.listLink:hover {
+  color: var(--accent);
+}
+
+.listLink:hover svg {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+.detailActions {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail {
+    min-height: 22rem;
+  }
+}
+
+@media (max-width: 520px), (hover: none) {
+  .caption .keys {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .print {
+    padding: var(--space-3);
+  }
+
+  .detailInner {
+    gap: var(--space-4);
+  }
+}

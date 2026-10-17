@@ -33,9 +33,9 @@
   --ink-3: #6b6457;
   --line: rgb(22 20 15 / 0.12);
   --line-strong: rgb(22 20 15 / 0.26);
-  --accent: #d23a22; /* deep shu vermilion, AA with white text */
+  --accent: #c4321c; /* deep shu vermilion: AA as text on the paper (4.7:1) and under --accent-ink */
   --accent-ink: #fff9f2; /* text that sits on --accent */
-  --accent-soft: rgb(210 58 34 / 0.1);
+  --accent-soft: rgb(196 50 28 / 0.1);
   --accent-2: var(--wa-ai);
   --highlight: #f9d77e;
   --success: #0b8a4d;
@@ -50,8 +50,10 @@
 
   /* --- Typography ------------------------------------------------------- */
   /* Latin glyphs come from the first family; kanji/kana fall through to the
-     Japanese family, so mixed strings like "Kyoto 京都" just work. */
-  --font-display: 'Fraunces', 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+     Japanese family, so mixed strings like "Kyoto 京都" just work.
+     'Tabi Macrons' (base.css) only covers ā ē ī ō ū so "Tōhoku" keeps its
+     macron on top of the letter in Fraunces. */
+  --font-display: 'Tabi Macrons', 'Fraunces', 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
   --font-sans: 'Geist', 'Zen Kaku Gothic New', 'Hiragino Sans', 'Yu Gothic', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-jp: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;

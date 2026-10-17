@@ -1,0 +1,76 @@
+.form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.field label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+/* Editorial underline field instead of a boxed input. */
+.form .input {
+  min-height: 44px;
+  padding-inline: 0;
+  border-width: 0 0 1px;
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--fs-md);
+}
+
+.form .input:hover {
+  border-color: var(--ink-2);
+}
+
+.form .input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 1px 0 0 var(--accent);
+}
+
+.submit {
+  /* Line the button up with the input below the label. */
+  margin-top: calc(var(--fs-2xs) * 1.6 + 0.45rem);
+}
+
+.done {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.doneText {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.email {
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.change {
+  min-height: 32px;
+  margin-top: 0.15rem;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+@media (max-width: 479.98px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .submit {
+    margin-top: 0;
+  }
+}

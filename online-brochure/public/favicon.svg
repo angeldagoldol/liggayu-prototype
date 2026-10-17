@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#1b1a17"/>
-  <path d="M16 12h24l8 8v32H16z" fill="#f3eee4"/>
-  <path d="M40 12v8h8z" fill="#d9d0bf"/>
-  <circle cx="32" cy="34" r="10" fill="#e8442b"/>
-  <path d="M16 46h32" stroke="#1d4f7a" stroke-width="3"/>
+  <!-- Sumi sheet with its top-right corner folded over, and a vermilion sun. -->
+  <path d="M14 0H46L64 18V50A14 14 0 0 1 50 64H14A14 14 0 0 1 0 50V14A14 14 0 0 1 14 0Z" fill="#1b1a17"/>
+  <path d="M46 0V12A6 6 0 0 0 52 18H64Z" fill="#f3eee4"/>
+  <circle cx="28" cy="36" r="15" fill="#e8442b"/>
+  <path d="M10 54H46" stroke="#f3eee4" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
 </svg>

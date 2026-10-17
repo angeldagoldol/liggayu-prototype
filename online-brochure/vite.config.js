@@ -13,9 +13,25 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          motion: ['framer-motion'],
+        // Fold tiny shared chunks (a single lucide icon, Chip, Switch…) into
+        // their importers instead of shipping a dozen sub-kilobyte requests.
+        experimentalMinChunkSize: 8_000,
+        // Shared chunks are otherwise named after whichever module Rollup
+        // picks first; give the cover-art chunk a recognisable name.
+        chunkFileNames(chunk) {
+          const coverArt = chunk.moduleIds.some((id) => /[\\/]components[\\/]brochure[\\/]CoverArt\.jsx$/.test(id));
+          return coverArt && !chunk.isDynamicEntry ? 'assets/cover-art-[hash].js' : 'assets/[name]-[hash].js';
+        },
+        // Two long-lived vendor chunks that change far less often than app
+        // code. A function (not the object form) so sub-paths such as
+        // react-dom/client and framer-motion's motion-dom land here too.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom|cookie|set-cookie-parser)[\\/]/.test(id)) {
+            return 'react';
+          }
+          if (/[\\/]node_modules[\\/](framer-motion|motion-dom|motion-utils)[\\/]/.test(id)) return 'motion';
+          return undefined;
         },
       },
     },

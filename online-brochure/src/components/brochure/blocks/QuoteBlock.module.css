@@ -1,0 +1,99 @@
+.quote {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+  margin: 0;
+  padding-bottom: 4cqw;
+}
+
+/* The ensō hangs in the upper margin, clear of the words. */
+.art {
+  position: absolute;
+  top: -12cqw;
+  right: -20cqw;
+  z-index: -1;
+  width: 72cqw;
+  aspect-ratio: 300 / 424;
+  pointer-events: none;
+}
+
+/* Opacity and a feathered edge on the artwork itself: the wrapper's opacity
+   belongs to the entrance animation. */
+.art svg {
+  opacity: 0.85;
+  mask-image: radial-gradient(closest-side at 50% 48%, #000 62%, transparent);
+}
+
+.open {
+  margin: 0 0 0 -1.4cqw;
+  font-family: var(--font-jp);
+  font-size: 18cqw;
+  line-height: 0.8;
+  color: var(--b-accent);
+}
+
+.text {
+  margin: 2cqw 0 0;
+}
+
+.text p {
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: var(--fs, 6cqw);
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  text-wrap: pretty;
+  color: var(--b-ink);
+}
+
+[data-typeface='serif'] .text p {
+  font-style: italic;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 100,
+    'WONK' 1;
+}
+
+.close {
+  margin-left: 0.15em;
+  font-family: var(--font-jp);
+  font-style: normal;
+  color: var(--b-accent);
+}
+
+.by {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1cqw 2.4cqw;
+  margin-top: 6cqw;
+  padding-left: 9cqw;
+  position: relative;
+}
+
+.by::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 1cqw;
+  width: 6cqw;
+  height: 0.35cqw;
+  background: var(--b-accent);
+}
+
+.author {
+  font-family: var(--font-mono);
+  font-size: 1.8cqw;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--b-ink);
+}
+
+.role {
+  font-size: 2cqw;
+  color: var(--b-muted-text);
+}

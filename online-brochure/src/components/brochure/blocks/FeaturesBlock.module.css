@@ -1,0 +1,120 @@
+.features {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows, 2), minmax(0, 1fr));
+  column-gap: 5.5cqw;
+  margin: 5cqw 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grid[data-columns='1'] {
+  --cols: 1;
+  --num: 4.6cqw;
+}
+
+.grid[data-rows='3'] {
+  --num: 4.4cqw;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 6cqw minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  column-gap: 2.4cqw;
+  min-height: 0;
+  padding: 2.4cqw 0 2cqw;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.num {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: var(--num, 6cqw);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--b-accent);
+}
+
+.icon {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 6.4cqw;
+  height: 6.4cqw;
+  border: var(--hair) solid var(--b-rule);
+  border-radius: 50%;
+  color: var(--b-ink);
+}
+
+.icon svg {
+  width: 3.2cqw;
+  height: 3.2cqw;
+  stroke-width: 1.6;
+}
+
+.copy {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  min-height: 0;
+  overflow: hidden;
+  padding-top: 3cqw;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: 3.2cqw;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--b-ink);
+}
+
+[data-typeface='sans'] .title {
+  font-weight: 650;
+}
+
+.text {
+  margin: 1.2cqw 0 0;
+  font-size: 2.1cqw;
+  line-height: 1.5;
+  color: var(--b-body);
+}
+
+/* One column: icon rail on the left, copy beside it. */
+.grid[data-columns='1'] .item {
+  grid-template-columns: 6cqw 9cqw minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: start;
+  padding-top: 3cqw;
+}
+
+.grid[data-columns='1'] .icon {
+  grid-column: 2;
+  justify-self: start;
+}
+
+.grid[data-columns='1'] .copy {
+  grid-column: 3;
+  grid-row: 1;
+  padding-top: 0.6cqw;
+}
+
+.grid[data-columns='1'] .title {
+  font-size: 3.8cqw;
+}
+
+.grid[data-columns='1'] .text {
+  font-size: 2.35cqw;
+}

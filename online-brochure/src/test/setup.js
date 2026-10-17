@@ -37,3 +37,6 @@ window.IntersectionObserver ??= MockObserver;
 window.ResizeObserver ??= MockObserver;
 window.scrollTo = vi.fn();
 Element.prototype.scrollIntoView ??= vi.fn();
+Element.prototype.scrollTo ??= function scrollTo() {};
+Element.prototype.scrollBy ??= function scrollBy() {};
+window.scrollBy ??= vi.fn();

@@ -1,0 +1,121 @@
+.back {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 38% minmax(0, 1fr);
+}
+
+.band {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 0.9cqw solid var(--b-accent);
+}
+
+.content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2cqw;
+  min-height: 0;
+  padding: 6.5cqw 8cqw 6cqw;
+}
+
+.tagline {
+  margin: 0.6cqw 0 0;
+  font-family: var(--font-mono);
+  font-size: 1.6cqw;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--b-accent-text);
+}
+
+/* 奥付: the colophon printed on the last page of a Japanese book. */
+.colophon {
+  position: relative;
+  margin-top: auto;
+  max-width: 62cqw;
+  padding: 2.4cqw 0 0;
+  border-top: 0.35cqw solid var(--b-ink);
+}
+
+.colophonTitle {
+  display: flex;
+  gap: 1.6cqw;
+  align-items: baseline;
+  margin: 0 0 1.6cqw;
+  font-family: var(--font-mono);
+  font-size: 1.35cqw;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.colophonTitle span:first-child {
+  font-size: 2.1cqw;
+  letter-spacing: 0.3em;
+  color: var(--b-ink);
+}
+
+.rows {
+  display: grid;
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 19cqw minmax(0, 1fr);
+  gap: 2cqw;
+  padding: 1.05cqw 0;
+  border-top: var(--hair) solid var(--b-rule);
+}
+
+.row dt {
+  display: flex;
+  gap: 1.2cqw;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: 1.3cqw;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.row dt span {
+  font-size: 1.7cqw;
+  letter-spacing: 0.1em;
+  color: var(--b-ink);
+}
+
+.row dd {
+  margin: 0;
+  font-size: 1.85cqw;
+  line-height: 1.4;
+  color: var(--b-ink);
+  overflow-wrap: anywhere;
+}
+
+.sealWrap {
+  position: absolute;
+  right: -20cqw;
+  bottom: 0.4cqw;
+}
+
+.content .seal {
+  --hanko-size: 14cqw !important;
+  --hanko-ink: var(--b-accent);
+}
+
+/* A printer's colour bar along the foot of the page. */
+.proof {
+  position: absolute;
+  right: 8cqw;
+  bottom: 2.6cqw;
+  display: flex;
+  border: var(--hair) solid var(--b-rule);
+}
+
+.proof span {
+  width: 2cqw;
+  height: 1.2cqw;
+}

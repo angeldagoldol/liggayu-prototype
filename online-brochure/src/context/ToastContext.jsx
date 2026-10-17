@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, CircleAlert, Info, X } from 'lucide-react';
@@ -18,6 +18,19 @@ const ICONS = { success: Check, error: CircleAlert, default: Info };
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const timers = useRef(new Map());
+  // Toasts render into the fullscreen element while one is active (the
+  // reader's fullscreen mode); anything portalled to <body> would be hidden.
+  const [host, setHost] = useState(() => document.fullscreenElement ?? document.body);
+
+  useEffect(() => {
+    const onChange = () => setHost(document.fullscreenElement ?? document.webkitFullscreenElement ?? document.body);
+    document.addEventListener('fullscreenchange', onChange);
+    document.addEventListener('webkitfullscreenchange', onChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', onChange);
+      document.removeEventListener('webkitfullscreenchange', onChange);
+    };
+  }, []);
 
   const dismiss = useCallback((id) => {
     setToasts((list) => list.filter((t) => t.id !== id));
@@ -83,7 +96,7 @@ export function ToastProvider({ children }) {
             </AnimatePresence>
           </ol>
         </div>,
-        document.body,
+        host,
       )}
     </ToastContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { BROCHURES } from '../data/brochures.js';
 import { readStorage, writeStorage } from '../lib/storage.js';
 import { createId, uniqueSlug } from '../lib/id.js';
@@ -8,12 +8,24 @@ const BrochureContext = createContext(null);
 const RECENT_LIMIT = 8;
 
 /** Drop anything from storage that does not look like a brochure. */
-function sanitizeUserBrochures(value) {
+export function sanitizeUserBrochures(value) {
   if (!Array.isArray(value)) return [];
   return value.filter(
     (b) => b && typeof b === 'object' && typeof b.id === 'string' && typeof b.slug === 'string' && Array.isArray(b.pages),
   );
 }
+
+/** A unique list of string ids; anything else in storage is ignored. */
+export function sanitizeIds(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((id) => typeof id === 'string' && id))];
+}
+
+const STORAGE_READERS = {
+  brochures: () => sanitizeUserBrochures(readStorage('brochures', [])),
+  favorites: () => sanitizeIds(readStorage('favorites', [])),
+  recent: () => sanitizeIds(readStorage('recent', [])).slice(0, RECENT_LIMIT),
+};
 
 /**
  * The brochure library: built-in brochures (src/data/brochures.js) plus the
@@ -21,9 +33,26 @@ function sanitizeUserBrochures(value) {
  * and recently-viewed history.
  */
 export function BrochureProvider({ children }) {
-  const [userBrochures, setUserBrochures] = useState(() => sanitizeUserBrochures(readStorage('brochures', [])));
-  const [favoriteIds, setFavoriteIds] = useState(() => readStorage('favorites', []));
-  const [recentIds, setRecentIds] = useState(() => readStorage('recent', []));
+  const [userBrochures, setUserBrochures] = useState(STORAGE_READERS.brochures);
+  const [favoriteIds, setFavoriteIds] = useState(STORAGE_READERS.favorites);
+  const [recentIds, setRecentIds] = useState(STORAGE_READERS.recent);
+
+  // Keep several open tabs in step: a brochure published or favourited in one
+  // tab shows up in the others without a reload.
+  useEffect(() => {
+    const setters = { brochures: setUserBrochures, favorites: setFavoriteIds, recent: setRecentIds };
+    const onStorage = (event) => {
+      if (event.storageArea !== window.localStorage) return;
+      if (event.key === null) {
+        Object.entries(setters).forEach(([key, set]) => set(STORAGE_READERS[key]()));
+        return;
+      }
+      const key = event.key.startsWith('tabi:') ? event.key.slice(5) : null;
+      if (key && setters[key]) setters[key](STORAGE_READERS[key]());
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   const brochures = useMemo(() => [...userBrochures, ...BROCHURES], [userBrochures]);
 
@@ -41,8 +70,10 @@ export function BrochureProvider({ children }) {
   /** Create or update a user brochure. Returns the saved copy (with final id/slug). */
   const saveBrochure = useCallback(
     (draft) => {
-      const existing = userBrochures.find((b) => b.id === draft.id);
-      const taken = new Set(brochures.filter((b) => b.id !== draft.id).map((b) => b.slug));
+      const existing = draft.id ? userBrochures.find((b) => b.id === draft.id) : undefined;
+      // Only the brochure being updated may keep its own slug; a draft that
+      // still carries a built-in's id (a remix) must not take that slug.
+      const taken = new Set(brochures.filter((b) => b !== existing).map((b) => b.slug));
       const saved = {
         ...draft,
         id: existing ? draft.id : draft.id && !getById(draft.id) ? draft.id : createId('b'),
@@ -61,8 +92,15 @@ export function BrochureProvider({ children }) {
     (id) => {
       persistUser((list) => list.filter((b) => b.id !== id));
       setFavoriteIds((ids) => {
+        if (!ids.includes(id)) return ids;
         const next = ids.filter((x) => x !== id);
         writeStorage('favorites', next);
+        return next;
+      });
+      setRecentIds((ids) => {
+        if (!ids.includes(id)) return ids;
+        const next = ids.filter((x) => x !== id);
+        writeStorage('recent', next);
         return next;
       });
     },

@@ -1,0 +1,191 @@
+.form {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.form[aria-busy='true'] {
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9.5rem;
+  gap: var(--space-4);
+}
+
+@media (max-width: 479.98px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* --- Trip stub ------------------------------------------------------ */
+.stub {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 0 50%, transparent 7px, var(--surface) 7.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, transparent 7px, var(--surface) 7.5px) right / 51% 100% no-repeat;
+}
+
+.stubCover {
+  --mini-w: 48px;
+  display: block;
+  box-shadow: var(--shadow-md);
+  transform: rotate(-2deg);
+}
+
+.stubText {
+  min-width: 0;
+}
+
+.stubKicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.stubTitle {
+  margin-top: 2px;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.stubSeasons {
+  margin-top: var(--space-1);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
+.stubKanji {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  color: color-mix(in srgb, var(--season) 70%, var(--ink));
+}
+
+.stubSeal {
+  align-self: start;
+}
+
+/* --- Travellers stepper -------------------------------------------- */
+.stepper {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  min-height: 46px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+
+.stepper:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.stepper:has([aria-invalid='true']) {
+  border-color: var(--danger);
+}
+
+.step {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  color: var(--ink-2);
+  border-radius: var(--radius-sm);
+  transition: color var(--dur-2) var(--ease-out), background-color var(--dur-2) var(--ease-out);
+}
+
+.step:hover:not(:disabled) {
+  color: var(--ink);
+  background: var(--accent-soft);
+}
+
+.step:disabled {
+  opacity: 0.35;
+}
+
+.step svg {
+  width: 16px;
+  height: 16px;
+}
+
+.stepValue {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.stepValue::-webkit-outer-spin-button,
+.stepValue::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.stepValue:focus {
+  outline: none;
+}
+
+/* --- Interests ------------------------------------------------------ */
+.interests {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: 0.6rem;
+  padding: 0;
+  font-size: var(--fs-sm);
+  font-weight: 560;
+}
+
+.optional {
+  margin-left: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chips > button {
+  height: 40px;
+}
+
+.kanji {
+  font-family: var(--font-jp);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+}
