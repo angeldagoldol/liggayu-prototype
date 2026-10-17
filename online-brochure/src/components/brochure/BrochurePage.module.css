@@ -39,11 +39,15 @@
 }
 
 .sheet {
+  /* Page margins, also read by blocks that bleed a photo to the trim. */
+  --pad-top: 7cqw;
+  --pad-x: 8.5cqw;
+  --pad-bottom: 5.5cqw;
   position: absolute;
   inset: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  padding: 7cqw 8.5cqw 5.5cqw;
+  padding: var(--pad-top) var(--pad-x) var(--pad-bottom);
   font-size: 2.4cqw;
   line-height: 1.5;
 }
@@ -68,6 +72,16 @@
 .body > * {
   flex: 1;
   min-height: 0;
+}
+
+/* While copy is fitted (blocks/fit.js), measure the layout as it rests:
+   entrance transforms in flight must not count as overflow. */
+.page[data-fitting] [data-fit],
+.page[data-fitting] [data-fit] * {
+  transform: none !important;
+  translate: none !important;
+  scale: none !important;
+  rotate: none !important;
 }
 
 .page :focus-visible {

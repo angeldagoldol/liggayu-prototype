@@ -5,179 +5,188 @@
   height: 100%;
 }
 
-/* 〒, the Japan Post mark, floats in the open space above the ticket. It is
-   anchored to the ticket's top edge (the ticket's height depends on the data),
-   or to the page when there is no ticket. */
-.contact .postmark {
-  right: -4cqw;
-  bottom: 30cqw;
-  font-size: 56cqw;
-}
-
-.ticket .postmark {
-  right: 2cqw;
-  bottom: calc(100% + 3cqw);
-  font-size: 34cqw;
-}
-
-/* 切符: a railway ticket with a perforated stub. */
-.ticket {
-  --stub: 17cqw;
-  --edge: 0.3cqw;
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--stub);
-  margin-top: auto;
-  border: var(--edge) solid var(--b-ink);
-  border-radius: 1.4cqw;
-  background: var(--b-paper);
-}
-
-/* Punched half-circles where the perforation meets the edges. */
-.ticket::before,
-.ticket::after {
-  content: '';
+/* 案内 (annai, "information"), a pale vertical mark in the open space. */
+.watermark {
   position: absolute;
-  right: calc(var(--stub) - 1.8cqw);
-  width: 3.6cqw;
-  height: 3.6cqw;
-  border: var(--edge) solid var(--b-ink);
-  border-radius: 50%;
-  background: var(--b-paper);
-  translate: calc(var(--edge) / 2) 0;
+  top: 22cqw;
+  right: -1cqw;
+  z-index: -1;
+  writing-mode: vertical-rl;
+  font-family: var(--font-jp);
+  font-size: 19cqw;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--b-accent2);
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
 }
 
-.ticket::before {
-  top: calc(-1.8cqw - var(--edge));
-  clip-path: inset(50% 0 0 0);
+[data-side='verso'] .watermark {
+  right: auto;
+  left: -2cqw;
 }
 
-.ticket::after {
-  bottom: calc(-1.8cqw - var(--edge));
-  clip-path: inset(0 0 50% 0);
+.lede {
+  max-width: 66cqw;
+}
+
+.main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-top: 4cqw;
+}
+
+/* Pushed to the foot with an auto margin (not justify-content), so a list
+   too long for the page overflows downwards, where the fit pass sees it. */
+.main > :first-child {
+  margin-top: auto;
 }
 
 .details {
-  display: grid;
-  gap: 2.4cqw;
   margin: 0;
-  padding: 3.6cqw 3.6cqw 3.8cqw;
+  border-top: 0.35cqw solid var(--b-ink);
 }
 
-/* The icon sits inside the <dt> (a dl group only allows dt/dd) and is pulled
-   out into the row's left gutter. */
 .row {
   position: relative;
-  display: block;
-  min-height: 4.6cqw;
-  padding-left: 6.8cqw;
-}
-
-.icon {
-  position: absolute;
-  top: 0;
-  left: 0;
   display: grid;
-  place-items: center;
-  width: 4.6cqw;
-  height: 4.6cqw;
-  border-radius: 50%;
-  background: var(--b-soft);
-  color: var(--b-accent-text);
-}
-
-.icon svg {
-  width: 2.4cqw;
-  height: 2.4cqw;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 1cqw 4cqw;
+  padding: calc(2.6cqw * var(--fit, 1)) 0;
+  border-bottom: var(--hair) solid var(--b-rule-strong);
 }
 
 .row dt {
+  display: flex;
+  align-items: center;
+  gap: 1.8cqw;
   font-family: var(--font-mono);
-  font-size: 1.3cqw;
+  font-size: calc(1.35cqw * var(--fit, 1));
   font-weight: 500;
-  letter-spacing: 0.18em;
-  line-height: 1.4;
+  letter-spacing: 0.16em;
+  line-height: 1.35;
   text-transform: uppercase;
   color: var(--b-muted-text);
 }
 
-.row dd {
-  margin: 0.3cqw 0 0;
-  font-size: 2.3cqw;
-  line-height: 1.35;
-  color: var(--b-ink);
-  overflow-wrap: anywhere;
+.icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 4.4cqw;
+  height: 4.4cqw;
+  border-radius: 50%;
+  background: var(--b-soft);
+  color: var(--b-accent-on-soft);
 }
 
-.row dd a {
+.icon svg {
+  width: 2.2cqw;
+  height: 2.2cqw;
+}
+
+.row dd {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5cqw;
+  min-width: 0;
+  margin: 0;
+  font-size: calc(2.2cqw * var(--fit, 1));
+  line-height: 1.38;
+  color: var(--b-ink);
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.link {
+  align-self: flex-start;
   color: inherit;
+  font-weight: 560;
+  text-decoration: underline;
   text-decoration-color: var(--b-accent);
-  text-decoration-thickness: max(1px, 0.2cqw);
+  text-decoration-thickness: max(1px, 0.18cqw);
   text-underline-offset: 0.25em;
 }
 
-.row dd a:hover {
+.link svg {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-left: 0.25em;
+  vertical-align: -0.1em;
   color: var(--b-accent-text);
 }
 
-.stub {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2cqw;
-  padding: 3.6cqw 0 3cqw;
-  border-left: var(--edge) dashed var(--b-ink);
-}
-
-.stubJp {
-  font-size: 3.6cqw;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+a.link:hover {
   color: var(--b-accent-text);
-  max-height: 34cqw;
-  overflow: hidden;
 }
 
-.serial {
+.address {
   font-family: var(--font-mono);
-  font-size: 1.25cqw;
-  letter-spacing: 0.16em;
-  writing-mode: vertical-rl;
+  font-size: calc(1.25cqw * var(--fit, 1));
+  letter-spacing: 0.04em;
   color: var(--b-muted-text);
 }
 
 .action {
-  padding-top: 5cqw;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.4cqw 3cqw;
+  padding-top: calc(5cqw * var(--fit, 1));
 }
 
 /* Page-scaled call to action in the brochure's own colours. Two classes so
    these win over the Button primitive's size and variant tokens. */
 .action .cta {
-  --btn-h: max(40px, 8cqw);
-  --btn-px: 4cqw;
-  --btn-fs: max(12px, 2.3cqw);
+  --btn-h: max(36px, 7.4cqw);
+  --btn-px: 3.6cqw;
+  --btn-fs: max(11px, calc(2.2cqw * var(--fit, 1)));
   --btn-bg: var(--b-accent);
   --btn-fg: var(--b-on-accent);
   --btn-fill: var(--b-ink);
   --btn-fill-fg: var(--b-paper);
+  max-width: 100%;
 }
 
+/* The same button, drawn for a static page (thumbnails, print). */
 .ctaStatic {
   display: inline-flex;
   align-items: center;
   gap: 1.2cqw;
-  height: 8cqw;
-  padding-inline: 4cqw;
+  height: 7.4cqw;
+  padding-inline: 3.6cqw;
   border-radius: 999px;
   background: var(--b-accent);
   color: var(--b-on-accent);
-  font-size: 2.3cqw;
+  font-size: calc(2.2cqw * var(--fit, 1));
   font-weight: 560;
   white-space: nowrap;
 }
 
 .ctaStatic svg {
-  width: 2.6cqw;
-  height: 2.6cqw;
+  width: 2.4cqw;
+  height: 2.4cqw;
+}
+
+.ctaAddress {
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  letter-spacing: 0.06em;
+  color: var(--b-muted-text);
+}
+
+/* No link and nothing to do: the line is set as text, not as a button. */
+.ctaText {
+  margin: 0;
+  font-family: var(--b-font);
+  font-size: calc(3cqw * var(--fit, 1));
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--b-ink);
 }

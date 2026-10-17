@@ -328,3 +328,19 @@
     width: 100%;
   }
 }
+
+/* --- Photo credits under the tri-fold ----------------------------------- */
+.stage {
+  position: relative;
+}
+
+.credits {
+  justify-content: end;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 960px) {
+  .credits {
+    justify-content: center;
+  }
+}

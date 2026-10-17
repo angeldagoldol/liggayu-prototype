@@ -4,13 +4,14 @@ import { ArrowLeft, ArrowRight, Pause, Play } from 'lucide-react';
 import { IconButton } from '../../../components/ui/index.js';
 import { pad } from '../../../lib/format.js';
 import { ease } from '../../../lib/motion.js';
-import { SECTIONS, VOICES } from '../homeContent.js';
+import { HAIKU, SECTIONS, TRANSLATION_CREDIT } from '../homeContent.js';
 import { useMotionPaused } from '../homeMotion.js';
 import { Postcard } from './Postcard.jsx';
 import { SectionHead } from './SectionHead.jsx';
-import styles from './Voices.module.css';
+import styles from './Haiku.module.css';
 
-const SECONDS_PER_LETTER = 7;
+/** Long enough to read a three-line poem, its romaji and its translation. */
+const SECONDS_PER_CARD = 9;
 
 /** Cards are dealt in from the side they come from and tossed out the other way. */
 const deal = {
@@ -20,12 +21,15 @@ const deal = {
 };
 
 /**
- * 08 声 — letters from readers as a deck of postcards. Advances on its own
- * every few seconds while visible, pausing on hover, while keyboard focus is
- * inside, when the visitor presses pause, and by default under reduced motion
- * or the hero's "Pause motion" (this deck's own Play still overrides it).
+ * 08 俳句 — five classic haiku as a deck of postcards, each franked at the
+ * place that inspired it: the original set vertically, romaji, and our own
+ * translation (credited). No invented readers: every poem, poet, place and
+ * year is in docs/research/home.md. Advances on its own every few seconds
+ * while visible, pausing on hover, while keyboard focus is inside, when the
+ * visitor presses pause, and by default under reduced motion or the hero's
+ * "Pause motion" (this deck's own Play still overrides it).
  */
-export function Voices() {
+export function Haiku() {
   const sectionRef = useRef(null);
   const shownIndex = useRef(0);
   const inView = useInView(sectionRef, { amount: 0.35 });
@@ -46,18 +50,18 @@ export function Voices() {
   const progress = useMotionValue(0);
   const paused = userPaused ?? (Boolean(reduce) || motionPaused);
   const running = inView && !paused && !hovered && !focused;
-  const count = VOICES.length;
-  const voice = VOICES[index];
+  const count = HAIKU.length;
+  const poem = HAIKU[index];
 
   useEffect(() => {
-    // A new letter always starts its timer from zero.
+    // A new postcard always starts its timer from zero.
     if (shownIndex.current !== index) {
       shownIndex.current = index;
       progress.set(0);
     }
     if (!running) return undefined;
     const controls = animate(progress, 1, {
-      duration: SECONDS_PER_LETTER * (1 - progress.get()),
+      duration: SECONDS_PER_CARD * (1 - progress.get()),
       ease: 'linear',
       onComplete: () => {
         setDirection(1);
@@ -73,7 +77,7 @@ export function Voices() {
   };
 
   return (
-    <section ref={sectionRef} className={styles.section} aria-roledescription="carousel" aria-label="Letters from readers">
+    <section ref={sectionRef} className={styles.section} aria-roledescription="carousel" aria-label="Haiku postcards">
       <div
         className={`container ${styles.layout}`}
         onFocus={(event) => event.target.matches(':focus-visible') && setFocused(true)}
@@ -81,25 +85,30 @@ export function Voices() {
       >
         <div className={styles.aside}>
           <SectionHead
-            section={SECTIONS.voices}
+            section={SECTIONS.haiku}
             layout="stack"
-            title={['Letters from ', { text: 'readers', className: 'serif-italic' }]}
-            intro="Notes from people who planned, dreamed or simply read their way around Japan with Tabi."
+            title={['Postcards from the ', { text: 'poets', className: 'serif-italic' }]}
+            intro={`Five classic haiku, each posted from the place that inspired it. ${TRANSLATION_CREDIT.replace('Translation', 'Translations')}.`}
           />
 
           <ol className={styles.readers}>
-            {VOICES.map((v, i) => (
-              <li key={v.id}>
+            {HAIKU.map((h, i) => (
+              <li key={h.id}>
                 <button
                   type="button"
                   className={styles.reader}
                   aria-current={i === index || undefined}
-                  aria-label={`Letter ${i + 1} of ${count}: ${v.name}, ${v.city}`}
+                  aria-label={`Postcard ${i + 1} of ${count}: ${h.poet}, ${h.place}`}
                   onClick={() => i !== index && show(i, i > index ? 1 : -1)}
                 >
                   <span className={styles.readerNum}>{pad(i + 1)}</span>
-                  <span className={styles.readerName}>{v.name}</span>
-                  <span className={styles.readerCity}>{v.city}</span>
+                  <span className={styles.readerName}>
+                    <span lang="ja" className={styles.readerJp}>
+                      {h.jp[0]}
+                    </span>
+                    {h.poet}
+                  </span>
+                  <span className={styles.readerCity}>{h.year}</span>
                   <span className={styles.readerBar} aria-hidden="true">
                     {i === index && <motion.span className={styles.readerFill} style={{ scaleX: progress }} />}
                   </span>
@@ -109,16 +118,16 @@ export function Voices() {
           </ol>
 
           <div className={styles.controls}>
-            <IconButton label="Previous letter" icon={<ArrowLeft />} variant="outline" size="lg" tooltipSide="top" onClick={() => show(index - 1, -1)} />
+            <IconButton label="Previous postcard" icon={<ArrowLeft />} variant="outline" size="lg" tooltipSide="top" onClick={() => show(index - 1, -1)} />
             <IconButton
-              label={paused ? 'Play letters automatically' : 'Pause letters'}
+              label={paused ? 'Play postcards automatically' : 'Pause postcards'}
               icon={paused ? <Play /> : <Pause />}
               variant="solid"
               size="lg"
               tooltipSide="top"
               onClick={() => setUserPaused(!paused)}
             />
-            <IconButton label="Next letter" icon={<ArrowRight />} variant="outline" size="lg" tooltipSide="top" onClick={() => show(index + 1, 1)} />
+            <IconButton label="Next postcard" icon={<ArrowRight />} variant="outline" size="lg" tooltipSide="top" onClick={() => show(index + 1, 1)} />
             <span className={styles.counter} aria-hidden="true">
               {pad(index + 1)} <span>/ {pad(count)}</span>
             </span>
@@ -135,7 +144,7 @@ export function Voices() {
           <div className={styles.deck} aria-live={running ? 'off' : 'polite'}>
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
-                key={voice.id}
+                key={poem.id}
                 className={styles.slot}
                 custom={direction}
                 variants={deal}
@@ -146,7 +155,7 @@ export function Voices() {
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}`}
               >
-                <Postcard voice={voice} />
+                <Postcard haiku={poem} />
               </motion.div>
             </AnimatePresence>
           </div>

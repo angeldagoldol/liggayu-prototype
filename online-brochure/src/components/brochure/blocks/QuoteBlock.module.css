@@ -1,33 +1,102 @@
+/* A poem page: the original in a vertical column on the outer side, the
+   translation and its attribution at the foot, an ensō in the open space. */
 .quote {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
+  column-gap: 6cqw;
   height: 100%;
   margin: 0;
-  padding-bottom: 4cqw;
 }
 
-/* The ensō hangs in the upper margin, clear of the words. */
+/* Verso pages carry the column on the left (their outer edge). */
+[data-side='verso'] .quote[data-original] {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+[data-side='verso'] .quote[data-original] .original {
+  grid-column: 1;
+}
+
+[data-side='verso'] .quote[data-original] .foot {
+  grid-column: 2;
+}
+
+/* The ensō floats in the open upper part of the page, clear of the words. */
 .art {
   position: absolute;
-  top: -12cqw;
-  right: -20cqw;
+  top: -6cqw;
+  left: -14cqw;
   z-index: -1;
-  width: 72cqw;
+  width: 66cqw;
   aspect-ratio: 300 / 424;
   pointer-events: none;
+}
+
+[data-side='verso'] .quote[data-original] .art {
+  left: auto;
+  right: -14cqw;
 }
 
 /* Opacity and a feathered edge on the artwork itself: the wrapper's opacity
    belongs to the entrance animation. */
 .art svg {
-  opacity: 0.85;
+  opacity: 0.55;
   mask-image: radial-gradient(closest-side at 50% 48%, #000 62%, transparent);
 }
 
+/* --- The original, 縦書き ---------------------------------------------- */
+.original {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
+  padding-top: 1cqw;
+}
+
+.jp {
+  height: var(--col, 90cqw);
+  margin: 0;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-jp);
+  font-size: var(--jp, 6cqw);
+  font-weight: 500;
+  line-height: 1.75;
+  letter-spacing: 0.16em;
+  font-feature-settings: 'vert', 'vpal';
+  color: var(--b-ink);
+}
+
+.jpLine {
+  display: block;
+}
+
+/* Each further line of a tanka starts a little lower, as written by hand. */
+.jpLine + .jpLine {
+  padding-block-start: 1.6em;
+}
+
+.bracket {
+  color: var(--b-accent);
+}
+
+/* --- The translation ---------------------------------------------------- */
+.foot {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+  padding-bottom: 3cqw;
+}
+
 .open {
-  margin: 0 0 0 -1.4cqw;
+  position: absolute;
+  top: 4cqw;
+  left: -1.4cqw;
   font-family: var(--font-jp);
   font-size: 18cqw;
   line-height: 0.8;
@@ -35,16 +104,16 @@
 }
 
 .text {
-  margin: 2cqw 0 0;
+  margin: 0;
 }
 
 .text p {
   margin: 0;
   font-family: var(--b-font);
-  font-size: var(--fs, 6cqw);
+  font-size: calc(var(--fs, 5cqw) * var(--fit, 1));
   font-weight: 400;
-  line-height: 1.16;
-  letter-spacing: -0.025em;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
   text-wrap: pretty;
   color: var(--b-ink);
 }
@@ -57,6 +126,19 @@
     'WONK' 1;
 }
 
+.line {
+  display: block;
+}
+
+/* Verse: a hanging indent for the middle line, like a printed haiku. */
+.text[data-verse] .line:nth-child(2) {
+  padding-left: 1.4em;
+}
+
+.text[data-verse] p {
+  line-height: 1.32;
+}
+
 .close {
   margin-left: 0.15em;
   font-family: var(--font-jp);
@@ -65,20 +147,19 @@
 }
 
 .by {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 1cqw 2.4cqw;
-  margin-top: 6cqw;
-  padding-left: 9cqw;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.8cqw * var(--fit, 1));
+  margin-top: calc(5cqw * var(--fit, 1));
+  padding-left: 9cqw;
 }
 
 .by::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 1cqw;
+  top: 0.9cqw;
   width: 6cqw;
   height: 0.35cqw;
   background: var(--b-accent);
@@ -86,7 +167,7 @@
 
 .author {
   font-family: var(--font-mono);
-  font-size: 1.8cqw;
+  font-size: calc(1.8cqw * var(--fit, 1));
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -94,29 +175,8 @@
 }
 
 .role {
-  font-size: 2cqw;
+  font-size: calc(1.9cqw * var(--fit, 1));
+  line-height: 1.45;
   color: var(--b-muted-text);
-}
-
-/* The original Japanese (e.g. a haiku), above its translation. */
-.text p.original,
-[data-typeface] .text p.original {
-  margin: 1.6cqw 0 0;
-  font-family: var(--font-jp);
-  font-size: var(--fs, 4.2cqw);
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0.12em;
-  color: var(--b-ink);
-  font-feature-settings: 'palt';
-}
-
-.text p.original {
-  font-style: normal;
-  font-variation-settings: normal;
-  margin-bottom: 2.4cqw;
-}
-
-.text[data-translation] p:not(.original) {
-  font-size: calc(var(--fs, 6cqw) * 0.78);
+  text-wrap: pretty;
 }

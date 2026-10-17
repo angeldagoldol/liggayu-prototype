@@ -7,7 +7,6 @@ import { REGIONS } from './regions.js';
 import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
 import { SEASONS } from './seasons.js';
 import { TEMPLATES } from '../components/studio/templates.js';
-import { VOICES } from '../pages/Home/homeContent.js';
 import { getPhoto } from './photos/index.js';
 import { photoIdsIn } from './photos/registry.js';
 
@@ -132,12 +131,14 @@ describe('real places (docs/REAL_CONTENT.md)', () => {
   });
 });
 
+// Only the Studio templates' testimonials are fictional now: Home's postcards
+// are real haiku (docs/research/home.md §1.1; checked in pages/Home/homeContent.test.js).
 describe('fictional readers', () => {
-  it('never reuse a first name across Home letters and template testimonials (regression)', () => {
+  it('never reuse a first name across template testimonials (regression)', () => {
     const quotes = TEMPLATES.map((t) => t.brochure).flatMap((b) => b.pages.filter((p) => p.type === 'quote').map((p) => p.author));
-    const people = [...VOICES.map((v) => v.name), ...quotes].flatMap((name) => name.split(/\s*&\s*/));
+    const people = quotes.flatMap((name) => name.split(/\s*&\s*/));
     const firstNames = people.map((person) => person.trim().split(/\s+/)[0]);
-    expect(firstNames.length).toBeGreaterThan(3);
+    expect(firstNames.length).toBeGreaterThan(1);
     expect(firstNames.filter((name, i) => firstNames.indexOf(name) !== i)).toEqual([]);
   });
 });

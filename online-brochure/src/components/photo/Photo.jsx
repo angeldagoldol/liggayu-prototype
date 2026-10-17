@@ -1,14 +1,17 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useLayoutEffect, useRef, useState } from 'react';
 import { cn } from '../../lib/cn.js';
-import { getPhoto } from '../../data/photos/index.js';
+import { resolvePhoto } from '../../data/photos/index.js';
+import { PhotoContext } from './photoContext.js';
+import { PhotoCredit } from './PhotoCredit.jsx';
 import { renderedWidth } from './renderedWidth.js';
 import styles from './Photo.module.css';
 
 const DEFAULT_SIZES = '(min-width: 900px) 50vw, 100vw';
 
 /**
- * A real photograph from the photo registry (src/data/photos), drawn the way
- * print does it: the dominant colour and a blurred preview hold the space,
+ * A real photograph from the photo registry (src/data/photos) or one the
+ * brochure carries itself (brochure.userPhotos, ids "user:<key>"), drawn the
+ * way print does it: the dominant colour and a blurred preview hold the space,
  * then the picture sharpens in. Until a photo has been downloaded — or if it
  * fails to load — the `fallback` (usually the brochure's <CoverArt>) stands
  * in, filling the same box, so pages always look finished.
@@ -16,7 +19,9 @@ const DEFAULT_SIZES = '(min-width: 900px) 50vw, 100vw';
  *   <Photo id="kyoto-senbon-torii" sizes="(min-width: 900px) 50vw, 100vw"
  *          credit="overlay" fallback={<CoverArt style="torii" seed={5} theme={theme} />} />
  *
- * - `id` | `photo`  a registry id, or a record from getPhoto().
+ * - `id` | `photo`  a photo id (registry or "user:<key>"), or a record from resolvePhoto().
+ * - `brochure`      where "user:<key>" ids are looked up; defaults to the surrounding
+ *                   <PhotoContext> (every <BrochurePage> provides its brochure).
  * - `alt`           overrides the manifest's alt text (falling back to its caption);
  *                   '' makes the photo decorative.
  * - `sizes`         a first guess at the slot's width, for srcset. Once laid out, the
@@ -26,15 +31,17 @@ const DEFAULT_SIZES = '(min-width: 900px) 50vw, 100vw';
  *                   never upscale. `priority` loads eagerly with high fetch priority.
  * - `fit`           'cover' (default) or 'contain'; `focus` overrides the CSS
  *                   object-position from the manifest ("50% 40%").
- * - `credit`        'none' (decorative or thumbnail), 'overlay' (a small chip in the
- *                   corner) or 'caption' (a credit line under the picture).
- *                   `creditLinks={false}` prints it without links (static pages).
+ * - `credit`        'none' (decorative, thumbnail, or credited elsewhere on the page),
+ *                   'overlay' (a small chip in the corner) or 'caption' (a credit line
+ *                   under the picture). `creditLinks={false}` prints it without links
+ *                   (static pages). Hosts can also place <PhotoCredit> themselves.
  * - `rounded`, `kenBurns` (a slow drift in scale; off under reduced motion).
  * Fills its parent box; with no height from the parent it keeps the photo's aspect ratio.
  */
 export function Photo({
   id,
   photo,
+  brochure,
   alt,
   sizes = DEFAULT_SIZES,
   priority = false,
@@ -47,9 +54,10 @@ export function Photo({
   rounded = false,
   kenBurns = false,
 }) {
-  const record = photo && typeof photo === 'object' ? photo : getPhoto(id);
-  const usable = Boolean(record?.available && record.srcSet);
-  const key = usable ? record.srcSet : 'none';
+  const fromContext = useContext(PhotoContext);
+  const record = photo && typeof photo === 'object' ? photo : resolvePhoto(id, brochure ?? fromContext);
+  const usable = Boolean(record?.available && (record.srcSet || record.src?.(960)));
+  const key = usable ? `${record.id}|${record.token ?? record.srcSet}` : 'none';
   return (
     <PhotoFrame
       key={key}
@@ -76,6 +84,7 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
   const [drawn, setDrawn] = useState(null);
   const img = useRef(null);
   const frameRef = useRef(null);
+  const responsive = Boolean(record?.srcSet);
 
   // An image already in the cache can finish before React listens: check once.
   useLayoutEffect(() => {
@@ -88,14 +97,14 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
   const aspect = record?.width && record?.height ? record.width / record.height : 0;
   useLayoutEffect(() => {
     const el = frameRef.current;
-    if (!el || !record) return undefined;
+    if (!el || !responsive) return undefined;
     const measure = () => setDrawn(renderedWidth(el.clientWidth, el.clientHeight, aspect, fit));
     measure();
     if (typeof ResizeObserver !== 'function') return undefined;
     const observer = new ResizeObserver(measure);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [record, aspect, fit]);
+  }, [responsive, aspect, fit]);
 
   const showFallback = !record || state === 'error';
   const position = focus || record?.focus || '50% 50%';
@@ -121,8 +130,8 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
             ref={img}
             className={styles.img}
             src={record.src(960)}
-            srcSet={record.srcSet}
-            sizes={drawn ? `${drawn}px` : sizes}
+            srcSet={responsive ? record.srcSet : undefined}
+            sizes={responsive ? (drawn ? `${drawn}px` : sizes) : undefined}
             width={record.width ?? undefined}
             height={record.height ?? undefined}
             alt={alt ?? (record.alt || record.caption || '')}
@@ -133,7 +142,7 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
             onLoad={() => setState('loaded')}
             onError={() => setState('error')}
           />
-          {credit === 'overlay' && <Credit record={record} links={creditLinks} className={styles.chip} />}
+          {credit === 'overlay' && <PhotoCredit credit={record.credit} links={creditLinks} className={styles.chip} />}
         </>
       )}
     </div>
@@ -144,56 +153,10 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
       className={cn(styles.photo, withCaption && styles.withCaption, rounded && styles.rounded, kenBurns && styles.kenBurns, className)}
       style={style}
       data-state={showFallback ? 'fallback' : state}
-      data-fit={fit === 'contain' ? 'contain' : 'cover'}
+      data-object-fit={fit === 'contain' ? 'contain' : 'cover'}
     >
       {frame}
-      {withCaption && <Credit record={record} links={creditLinks} className={styles.caption} />}
+      {withCaption && <PhotoCredit credit={record.credit} links={creditLinks} className={styles.caption} />}
     </div>
   );
-}
-
-/**
- * "Photo: Author · CC BY-SA 4.0" — the author links to the file page (title,
- * author and licence are all there), the licence to its deed. When space runs
- * out the author's name is shortened, never the licence; the full credit,
- * with the work's title, is in the tooltip.
- */
-function Credit({ record, links, className }) {
-  const { title, author, license, licenseUrl, sourceUrl } = record.credit ?? {};
-  if (!author && !license) return null;
-  const name = author || 'Unknown author';
-  const full = `${title ? `“${title}” by ` : ''}${name}${license ? ` · ${license}` : ''}`;
-  const external = (href, children, label) =>
-    links && safeHref(href) ? (
-      <a href={safeHref(href)} target="_blank" rel="noopener noreferrer" aria-label={label}>
-        {children}
-      </a>
-    ) : (
-      children
-    );
-  return (
-    <small className={className} title={full}>
-      <span className={styles.creditLabel}>Photo:</span>{' '}
-      <span className={styles.creditAuthor}>{external(sourceUrl, name, `${name}, source of this photo (opens in a new tab)`)}</span>
-      {license && (
-        <>
-          <span className={styles.creditSep} aria-hidden="true">
-            {' · '}
-          </span>
-          <span className={styles.creditLicense}>{external(licenseUrl, license, `Licence ${license} (opens in a new tab)`)}</span>
-        </>
-      )}
-    </small>
-  );
-}
-
-/** Only http(s) links leave the page. */
-function safeHref(href) {
-  if (typeof href !== 'string') return null;
-  try {
-    const url = new URL(href);
-    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null;
-  } catch {
-    return null;
-  }
 }

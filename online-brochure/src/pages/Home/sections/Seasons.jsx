@@ -1,14 +1,16 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { Photo } from '../../../components/photo/Photo.jsx';
 import { VerticalText } from '../../../components/ui/index.js';
 import { japanMonth, seasonIdForMonth } from '../../../components/layout/japanTime.js';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
+import { getPhoto } from '../../../data/photos/index.js';
 import { SEASONS, SEASON_MAP } from '../../../data/seasons.js';
 import { pluralize } from '../../../lib/format.js';
 import { ease } from '../../../lib/motion.js';
-import { SEASON_LINES, SEASON_SWATCH, SECTIONS } from '../homeContent.js';
+import { SEASON_LINES, SEASON_PHOTOS, SEASON_SWATCH, SECTIONS } from '../homeContent.js';
 import { countBy, tightRange } from '../homeStats.js';
 import { SeasonMotif } from './SeasonMotif.jsx';
 import { SectionHead } from './SectionHead.jsx';
@@ -25,14 +27,36 @@ const detail = {
   exit: { opacity: 0, transition: { duration: 0.12 } },
 };
 
-/** One season of the accordion: a colour block that widens when chosen. */
+/** The photo plate opens like a shutter from the panel's spine; a plain fade under reduced motion. */
+const plateIn = {
+  initial: { opacity: 0, clipPath: 'inset(0% 0% 0% 100%)' },
+  animate: { opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 0.95, ease: ease.out, delay: 0.12 } },
+  exit: { opacity: 0, transition: { duration: 0.12 } },
+};
+const plateFade = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.4 } },
+  exit: { opacity: 0, transition: { duration: 0.12 } },
+};
+
+/**
+ * One season of the accordion: a colour block that widens when chosen. An
+ * open season shows its photograph as a full-height plate beside the text
+ * (a band under the heading on phones) — only once the photo is downloaded;
+ * until then the panel keeps its colour and emblem.
+ */
 function SeasonPanel({ season, count, active, isNow, ids, onChoose, onHover, onKeyDown, buttonRef }) {
+  const reduce = useReducedMotion();
+  const photoId = SEASON_PHOTOS[season.id];
+  const photo = getPhoto(photoId);
+  const hasPhoto = Boolean(photo?.available);
   return (
     <motion.div
       layout
       transition={LAYOUT}
       className={styles.panel}
       data-active={active || undefined}
+      data-photo={hasPhoto || undefined}
       style={{ '--c': SEASON_SWATCH[season.id].fill, '--fg': SEASON_SWATCH[season.id].ink, borderRadius: 18 }}
       onPointerEnter={(event) => event.pointerType === 'mouse' && onHover(season.id)}
       onClick={() => onChoose(season.id)}
@@ -72,6 +96,15 @@ function SeasonPanel({ season, count, active, isNow, ids, onChoose, onHover, onK
       )}
 
       <AnimatePresence initial={false}>
+        {active && hasPhoto && (
+          <motion.div key="plate" layout="position" transition={LAYOUT} className={styles.plate} {...(reduce ? plateFade : plateIn)}>
+            <Photo id={photoId} sizes="(min-width: 761px) 32vw, 100vw" credit="overlay" />
+            {photo.caption && <p className={styles.plateCaption}>{photo.caption}</p>}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false}>
         {active && (
           <motion.div key="detail" id={ids.panel} role="region" aria-labelledby={ids.button} className={styles.detail} {...detail}>
             <p className={styles.motifName}>{season.motif}</p>
@@ -90,8 +123,8 @@ function SeasonPanel({ season, count, active, isNow, ids, onChoose, onHover, onK
 /**
  * 04 四季 — a four-panel accordion of the seasons. Hover (mouse), focus or
  * click opens a season, tints the whole section in its colour and shows its
- * brochures. Opens on the current season in Japan. Arrow keys move between
- * seasons; on phones the panels stack.
+ * photograph and brochures. Opens on the current season in Japan. Arrow keys
+ * move between seasons; on phones the panels stack.
  */
 export function Seasons() {
   const { brochures } = useBrochures();

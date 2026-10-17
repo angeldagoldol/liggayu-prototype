@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createPhotoRegistry, photoIdsIn, photoUrl, pickWidth } from './registry.js';
+import { createPhotoRegistry, isUserPhotoId, photoIdsIn, photoUrl, pickWidth, resolveUserPhoto, safeImageSrc } from './registry.js';
 import * as live from './index.js';
 
 const manifests = {
@@ -172,8 +172,98 @@ describe('photoIdsIn / creditsFor', () => {
         licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
         sourceUrl: 'https://commons.wikimedia.org/wiki/File:A.jpg',
         attributionRequired: true,
+        user: false,
       },
       expect.objectContaining({ id: 'imported-only', author: 'Me' }),
+    ]);
+  });
+});
+
+describe('user photos (brochure.userPhotos, "user:<key>")', () => {
+  const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  const mine = {
+    src: PNG,
+    alt: 'My photo of the gate at dusk',
+    caption: 'The gate at dusk',
+    focus: '30% 60%',
+    width: 1200,
+    height: 800,
+    credit: { author: 'Aiko', license: 'CC BY 4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', sourceUrl: 'javascript:alert(1)' },
+  };
+  const brochure = {
+    cover: { photo: 'user:gate' },
+    userPhotos: {
+      gate: mine,
+      blob: { src: 'blob:http://localhost:5173/0f8e7c2a-1b3d-4e5f-8a9b-0c1d2e3f4a5b', alt: 'A blob', width: 800, height: 600, credit: {} },
+      remote: { src: 'https://example.com/hotlink.jpg', alt: 'Hotlinked', width: 10, height: 10, credit: { author: 'X' } },
+      svg: { src: 'data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=', alt: 'svg' },
+    },
+    pages: [
+      { id: 'p1', type: 'cover', photo: 'user:gate' },
+      { id: 'p2', type: 'intro', photo: 'user:blob' },
+      { id: 'p3', type: 'place', photo: 'kyoto-senbon-torii' },
+      { id: 'p4', type: 'gallery', items: [{ photo: 'user:remote' }, { photo: 'user:missing' }, { photo: 'user:constructor' }] },
+    ],
+  };
+
+  it('recognises user ids and only safe inline images', () => {
+    expect(isUserPhotoId('user:gate')).toBe(true);
+    expect(isUserPhotoId(' user:gate ')).toBe(true);
+    for (const id of ['user:', 'kyoto-senbon-torii', '', null, 3]) expect(isUserPhotoId(id)).toBe(false);
+    expect(safeImageSrc(PNG)).toBe(PNG);
+    expect(safeImageSrc('data:image/jpeg;base64,/9j/4AAQ')).toBe('data:image/jpeg;base64,/9j/4AAQ');
+    expect(safeImageSrc('blob:http://localhost:5173/0f8e7c2a-1b3d-4e5f-8a9b-0c1d2e3f4a5b')).toBeTruthy();
+    for (const bad of ['https://example.com/a.jpg', 'javascript:alert(1)', 'data:image/svg+xml;base64,AAAA', 'data:text/html;base64,AAAA', 'data:image/png;base64,AA") url(x', 'blob:javascript:1', 42]) {
+      expect(safeImageSrc(bad)).toBe('');
+    }
+  });
+
+  it('resolves "user:<key>" to the brochure’s own photo, shaped like a registry photo', () => {
+    const photo = registry.resolvePhoto('user:gate', brochure);
+    expect(photo).toMatchObject({
+      id: 'user:gate',
+      alt: 'My photo of the gate at dusk',
+      caption: 'The gate at dusk',
+      focus: '30% 60%',
+      width: 1200,
+      height: 800,
+      available: true,
+      user: true,
+      srcSet: '',
+      credit: { author: 'Aiko', license: 'CC BY 4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', sourceUrl: '' },
+    });
+    expect(photo.src(480)).toBe(PNG);
+    // Same entry → same record, so <Photo> keeps its loading state across renders.
+    expect(registry.resolvePhoto('user:gate', brochure)).toBe(photo);
+    expect(registry.resolvePhoto('user:gate', { ...brochure, userPhotos: { gate: { ...mine } } }).token).not.toBe(photo.token);
+  });
+
+  it('leaves hotlinks, SVGs, unknown keys and prototype names unavailable or null', () => {
+    expect(registry.resolvePhoto('user:remote', brochure)).toMatchObject({ available: false, src: expect.any(Function) });
+    expect(registry.resolvePhoto('user:remote', brochure).src(960)).toBeNull();
+    expect(registry.resolvePhoto('user:svg', brochure).available).toBe(false);
+    for (const id of ['user:missing', 'user:constructor', 'user:__proto__', 'user:toString']) expect(registry.resolvePhoto(id, brochure)).toBeNull();
+    expect(registry.resolvePhoto('user:gate', null)).toBeNull();
+    expect(registry.resolvePhoto('user:gate', { userPhotos: 'x' })).toBeNull();
+    expect(resolveUserPhoto('user:gate', { userPhotos: { gate: 'not a record' } })).toBeNull();
+    expect(registry.resolvePhoto('user:gate', { userPhotos: { gate: { src: PNG, width: 'wide', height: -4, focus: 'url(x)' } } })).toMatchObject({
+      width: null,
+      height: null,
+      widths: [],
+      focus: '50% 50%',
+      alt: '',
+    });
+  });
+
+  it('still resolves registry ids', () => {
+    expect(registry.resolvePhoto('kyoto-senbon-torii', brochure)).toBe(registry.getPhoto('kyoto-senbon-torii'));
+    expect(registry.resolvePhoto('kyoto-senbon-torii')).toBe(registry.getPhoto('kyoto-senbon-torii'));
+  });
+
+  it('credits uploads that name an author or licence, in reading order', () => {
+    expect(registry.creditsFor(brochure).map((c) => [c.id, c.author, c.license, c.user])).toEqual([
+      ['user:gate', 'Aiko', 'CC BY 4.0', true],
+      ['kyoto-senbon-torii', 'Example Photographer', 'CC BY-SA 4.0', false],
     ]);
   });
 });

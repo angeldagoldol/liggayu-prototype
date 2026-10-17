@@ -4,6 +4,14 @@
  * records (what was downloaded: size, LQIP, colour, credit — written by
  * scripts/photos/fetch.mjs). index.js builds the app's registry from the real
  * files; tests build one from fixtures.
+ *
+ * A brochure can also carry its own photos (the Studio's uploads):
+ *   brochure.userPhotos = { [key]: { src, alt, caption?, focus?, width, height,
+ *                                     credit: { author, license, licenseUrl?, sourceUrl? } } }
+ * and page photo fields reference them as "user:<key>". `src` must be a
+ * data:image/… URL (png, jpeg, webp, gif, avif) or a blob: URL; anything else
+ * leaves the photo unavailable, so its fallback art shows. resolvePhoto(id,
+ * brochure) answers both kinds of id with the same record shape.
  */
 
 /** Widths the pipeline writes (public/photos/<id>-<w>.webp). */
@@ -35,6 +43,86 @@ export function pickWidth(widths, width) {
   return widths.find((w) => w >= target) ?? widths.at(-1);
 }
 
+/** Prefix of photo ids that point into brochure.userPhotos ("user:<key>"). */
+export const USER_PHOTO_PREFIX = 'user:';
+
+/** True for "user:<key>" ids (a photo the brochure carries itself). */
+export function isUserPhotoId(id) {
+  return typeof id === 'string' && id.trim().startsWith(USER_PHOTO_PREFIX) && id.trim().length > USER_PHOTO_PREFIX.length;
+}
+
+/** The image URL of an uploaded photo, or '' — only inline data:image/… (raster) and blob: URLs; never http(s). */
+export function safeImageSrc(value) {
+  if (typeof value !== 'string') return '';
+  const src = value.trim();
+  if (/^data:image\/(?:png|jpeg|jpg|webp|gif|avif);base64,[A-Za-z0-9+/]+={0,2}$/i.test(src)) return src;
+  if (/^blob:(?:https?:\/\/[^\s"'()<>\\]+|null)\/[0-9a-f-]{8,}$/i.test(src)) return src;
+  return '';
+}
+
+const positive = (value) => (Number.isFinite(value) && value > 0 ? Math.round(value) : null);
+/** "50% 40%" / "left top" style object-position: letters, digits, %, ., spaces, minus only. */
+const focusValue = (value) => {
+  const focus = str(value);
+  return focus && /^[a-z0-9%.\s-]{1,40}$/i.test(focus) ? focus : '50% 50%';
+};
+
+// One record per userPhotos entry object, so re-renders keep the same record (and loading state).
+const userRecords = new WeakMap();
+let userToken = 0;
+
+/**
+ * The photo record for an uploaded photo (brochure.userPhotos[key]), shaped
+ * like a registry photo; `user: true`, a single `src` and no srcSet.
+ * Unavailable (fallback art) when its src is not a safe inline image.
+ */
+export function userPhotoRecord(key, entry) {
+  if (!isRecord(entry)) return null;
+  const cached = userRecords.get(entry);
+  if (cached && cached.id === `${USER_PHOTO_PREFIX}${key}`) return cached;
+  const src = safeImageSrc(entry.src);
+  const credit = isRecord(entry.credit) ? entry.credit : {};
+  const width = positive(entry.width);
+  const height = width ? positive(entry.height) : null;
+  const record = Object.freeze({
+    id: `${USER_PHOTO_PREFIX}${key}`,
+    alt: str(entry.alt),
+    caption: str(entry.caption),
+    place: '',
+    focus: focusValue(entry.focus),
+    use: 'any',
+    width: height ? width : null,
+    height,
+    widths: height ? [width] : [],
+    lqip: '',
+    color: '',
+    credit: Object.freeze({
+      title: str(credit.title),
+      author: str(credit.author),
+      authorUrl: webUrl(credit.authorUrl),
+      license: str(credit.license),
+      licenseUrl: webUrl(credit.licenseUrl),
+      sourceUrl: webUrl(credit.sourceUrl),
+    }),
+    attributionRequired: Boolean(str(credit.author) || str(credit.license)),
+    available: Boolean(src),
+    user: true,
+    /** Changes whenever the entry does, so <Photo> restarts its loading state. */
+    token: `user-${++userToken}`,
+    src: () => src || null,
+    srcSet: '',
+  });
+  userRecords.set(entry, record);
+  return record;
+}
+
+/** brochure.userPhotos[key] for a "user:<key>" id (own keys only), as a photo record; else null. */
+export function resolveUserPhoto(id, brochure) {
+  if (!isUserPhotoId(id) || !isRecord(brochure) || !isRecord(brochure.userPhotos)) return null;
+  const key = id.trim().slice(USER_PHOTO_PREFIX.length);
+  return Object.hasOwn(brochure.userPhotos, key) ? userPhotoRecord(key, brochure.userPhotos[key]) : null;
+}
+
 function mergePhoto(id, entry, record) {
   const widths = Array.isArray(record?.widths) ? record.widths.filter((w) => Number.isInteger(w) && w > 0).sort((a, b) => a - b) : [];
   const available = widths.length > 0;
@@ -63,6 +151,8 @@ function mergePhoto(id, entry, record) {
     }),
     attributionRequired: record?.attributionRequired !== false,
     available,
+    user: false,
+    token: available ? widths.join(',') : 'none',
     /** URL for a slot `w` px wide (null until downloaded). */
     src: (w) => (available ? photoUrl(id, pickWidth(widths, w)) : null),
     srcSet: available ? widths.map((w) => `${photoUrl(id, w)} ${w}w`).join(', ') : '',
@@ -101,17 +191,34 @@ export function createPhotoRegistry(manifests = {}, generated = {}) {
     return [...photos.values()].sort((a, b) => a.id.localeCompare(b.id));
   }
 
-  /** Credits for the downloaded photos a brochure shows, in reading order:
-   *  [{ id, caption, place, title, author, authorUrl, license, licenseUrl, sourceUrl, attributionRequired }]
-   *  (title = the work's title on Commons; links are http(s) or ''). */
-  function creditsFor(brochure) {
-    return photoIdsIn(brochure)
-      .map(getPhoto)
-      .filter((photo) => photo?.available)
-      .map((photo) => ({ id: photo.id, caption: photo.caption, place: photo.place, ...photo.credit, attributionRequired: photo.attributionRequired }));
+  /**
+   * Any photo id a page can hold: "user:<key>" → the brochure's own uploaded
+   * photo (brochure.userPhotos), anything else → the registry. Null when unknown.
+   */
+  function resolvePhoto(id, brochure) {
+    return isUserPhotoId(id) ? resolveUserPhoto(id, brochure) : getPhoto(id);
   }
 
-  return { getPhoto, listPhotos, creditsFor, photoIdsIn };
+  /** Credits for the photos a brochure shows (downloaded registry photos and its own
+   *  uploads), in reading order, once each:
+   *  [{ id, caption, place, title, author, authorUrl, license, licenseUrl, sourceUrl, attributionRequired, user }]
+   *  (title = the work's title on Commons; links are http(s) or ''). Uploads
+   *  without an author or licence have nothing to credit and are left out. */
+  function creditsFor(brochure) {
+    return photoIdsIn(brochure)
+      .map((id) => resolvePhoto(id, brochure))
+      .filter((photo) => photo?.available && (!photo.user || photo.credit.author || photo.credit.license))
+      .map((photo) => ({
+        id: photo.id,
+        caption: photo.caption,
+        place: photo.place,
+        ...photo.credit,
+        attributionRequired: photo.attributionRequired,
+        user: photo.user,
+      }));
+  }
+
+  return { getPhoto, listPhotos, creditsFor, photoIdsIn, resolvePhoto };
 }
 
 /**

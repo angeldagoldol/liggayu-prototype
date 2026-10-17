@@ -9,10 +9,12 @@
   min-height: 0;
   display: grid;
   grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
-  grid-template-rows: repeat(var(--rows, 2), minmax(0, 1fr));
+  /* Rows share the height but never shrink below their text (see fit.js). */
+  grid-template-rows: repeat(var(--rows, 2), minmax(auto, 1fr));
   column-gap: 5.5cqw;
   margin: 5cqw 0 0;
   padding: 0;
+  overflow: hidden;
   list-style: none;
 }
 
@@ -25,13 +27,13 @@
   --num: 4.4cqw;
 }
 
-/* Three rows of cells: a little less air and type, so four lines still fit. */
+/* Three rows of cells: a little less air and type. */
 .grid[data-rows='3'] .copy {
   padding-top: 2.2cqw;
 }
 
-.grid[data-rows='3'] .text {
-  font-size: 2.35cqw;
+.grid[data-rows='3'] {
+  --text: 2.3cqw;
 }
 
 .item {
@@ -76,14 +78,13 @@
   grid-column: 1 / -1;
   grid-row: 2;
   min-height: 0;
-  overflow: hidden;
-  padding-top: 3cqw;
+  padding-top: calc(3cqw * var(--fit, 1));
 }
 
 .title {
   margin: 0;
   font-family: var(--b-font);
-  font-size: 3.2cqw;
+  font-size: calc(var(--title, 3.2cqw) * var(--fit, 1));
   font-weight: 500;
   line-height: 1.12;
   letter-spacing: -0.02em;
@@ -95,8 +96,8 @@
 }
 
 .text {
-  margin: 1.2cqw 0 0;
-  font-size: 2.45cqw;
+  margin: calc(1.2cqw * var(--fit, 1)) 0 0;
+  font-size: calc(var(--text, 2.45cqw) * var(--fit, 1));
   line-height: 1.48;
   color: var(--b-body);
 }
@@ -120,10 +121,58 @@
   padding-top: 0.6cqw;
 }
 
-.grid[data-columns='1'] .title {
-  font-size: 3.8cqw;
+.grid[data-columns='1'] {
+  --title: 3.8cqw;
+  --text: 2.6cqw;
 }
 
-.grid[data-columns='1'] .text {
-  font-size: 2.6cqw;
+/* With photos: a small plate per item, its numeral set on the photograph. */
+.thumb {
+  position: relative;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: block;
+  height: 13cqw;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--b-ink) 6%, var(--b-paper));
+}
+
+.thumb > svg,
+.thumb > .photo {
+  position: absolute;
+  inset: 0;
+}
+
+.thumbNum {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 5.4cqw;
+  height: 5.4cqw;
+  background: var(--b-paper);
+  font-size: 2.8cqw;
+  font-weight: 600;
+  color: var(--b-accent-text);
+}
+
+.grid[data-photos] .item {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.grid[data-photos][data-columns='1'] .item {
+  grid-template-columns: 30cqw minmax(0, 1fr);
+  column-gap: 4cqw;
+}
+
+.grid[data-photos][data-columns='1'] .thumb {
+  grid-column: 1;
+  height: 100%;
+  min-height: 14cqw;
+}
+
+.grid[data-photos][data-columns='1'] .copy {
+  grid-column: 2;
 }

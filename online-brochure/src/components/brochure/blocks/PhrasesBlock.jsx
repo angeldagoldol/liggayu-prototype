@@ -12,7 +12,7 @@ export function PhrasesBlock({ page }) {
     <div className={styles.phrases}>
       <header className={type.header}>
         {heading && (
-          <Reveal as="h2" className={`${type.heading} ${type.clamp}`} style={{ '--fs': `${fitSize(heading, { max: 6.8, min: 4.2, ideal: 26 })}cqw`, '--lines': 2 }}>
+          <Reveal as="h2" className={type.heading} style={{ '--fs': `${fitSize(heading, { max: 6.8, min: 4.2, ideal: 26 })}cqw` }}>
             {heading}
           </Reveal>
         )}
@@ -27,7 +27,7 @@ export function PhrasesBlock({ page }) {
       </header>
 
       {items.length > 0 && (
-        <ol className={styles.list}>
+        <ol className={styles.list} data-fit="">
           {items.map((item, i) => {
             const jp = text(item.jp);
             return (
@@ -43,11 +43,7 @@ export function PhrasesBlock({ page }) {
                   )}
                   {text(item.romaji) && <p className={styles.romaji}>{text(item.romaji)}</p>}
                 </div>
-                {text(item.meaning) && (
-                  <p className={`${styles.meaning} ${type.clamp}`} style={{ '--lines': 3 }}>
-                    {text(item.meaning)}
-                  </p>
-                )}
+                {text(item.meaning) && <p className={styles.meaning}>{text(item.meaning)}</p>}
               </Reveal>
             );
           })}

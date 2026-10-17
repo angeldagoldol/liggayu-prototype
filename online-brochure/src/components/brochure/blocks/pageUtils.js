@@ -3,7 +3,7 @@
  * user-made content, accessible labels, folios, text fitting and theme vars.
  */
 import { PAGE_TYPES } from '../../../data/schema.js';
-import { ensureContrast, mix, normalizeTheme, readableOn } from '../art/color.js';
+import { ensureContrast, luminance, mix, normalizeTheme, readableOn } from '../art/color.js';
 import { pad } from '../../../lib/format.js';
 import { dict } from '../../../data/lookup.js';
 import { toLat, toLng } from '../../../data/sanitize.js';
@@ -113,6 +113,50 @@ export function fitSize(value, { max, min, ideal }) {
   return Math.round(Math.max(min, size) * 100) / 100;
 }
 
+/**
+ * A poem's lines: Japanese verse breaks at spaces (full- or half-width, as
+ * tanka and inscriptions are often printed), an English translation at " / "
+ * (the usual way to quote verse in running text). Empty parts are dropped.
+ */
+export function verseLines(value, { japanese = false } = {}) {
+  const source = text(value);
+  if (!source) return [];
+  const parts = japanese ? source.split(/[\u3000\s]+/) : source.split(/\s+\/\s+/);
+  return parts.map((part) => part.trim()).filter(Boolean);
+}
+
+/**
+ * Type size (cqw) for vertical Japanese verse in a column `height` cqw tall:
+ * the longest line fits one column at up to `max`; very long lines (prose
+ * inscriptions) wrap into further columns at no less than `min`.
+ */
+export function verseSize(lines, { height = 92, max = 7.2, min = 3.4, perChar = 1.1 } = {}) {
+  const longest = Math.max(1, ...lines.map((line) => Array.from(line).length));
+  const total = lines.reduce((sum, line) => sum + Array.from(line).length, 0);
+  // Long single lines wrap: aim for about three columns of text.
+  const perColumn = longest > 22 ? Math.ceil(Math.max(longest, total) / 3) : longest;
+  const size = height / (perColumn * perChar);
+  return Math.floor(Math.min(max, Math.max(min, size)) * 100) / 100;
+}
+
+/** "https://www.kiyomizudera.or.jp/en/" → "kiyomizudera.or.jp" ('' for anything that is not a URL). */
+export function hostLabel(url) {
+  try {
+    return new URL(url).hostname.replace(/^www\d*\./, '');
+  } catch {
+    return '';
+  }
+}
+
+/** Where a link leads, short enough to print: the host, plus the first path segment when it is short
+ *  ("https://kyoto.travel/en/responsible-travel/" → "kyoto.travel/en"). */
+export function linkLabel(url) {
+  const host = hostLabel(url);
+  if (!host) return '';
+  const first = new URL(url).pathname.split('/').filter(Boolean)[0];
+  return first && first.length <= 12 ? `${host}/${first}` : host;
+}
+
 /** "34.9949° N · 135.7850° E" — '' unless both are real coordinates. */
 export function formatLatLng(lat, lng) {
   const a = toLat(lat);
@@ -136,13 +180,20 @@ const FONTS = { serif: 'var(--font-display)', sans: 'var(--font-sans)', mono: 'v
  * nudged toward the ink until they read at 4.5:1 on the paper (and on the
  * tinted --b-soft), so any theme (including user-made ones) stays legible.
  * Small accent-coloured text uses --b-accent-text; raw --b-accent is for
- * rules, dots and type at 24px or more.
+ * rules, dots and type at 24px or more. Type set over photographs uses
+ * --b-light on a --b-shade scrim (the lighter and darker of paper and ink,
+ * so dark-paper themes work too).
  */
 export function themeVars(theme) {
   const t = normalizeTheme(theme);
   const onAccent = readableOn(t.accent, [t.paper, t.ink, '#ffffff', '#16140f']);
   const soft = mix(t.paper, t.accent, 0.12);
+  const paperIsLight = luminance(t.paper) >= luminance(t.ink);
+  const light = paperIsLight ? t.paper : t.ink;
+  const shade = paperIsLight ? t.ink : t.paper;
   return {
+    '--b-light': mix(light, '#ffffff', 0.35),
+    '--b-shade': mix(shade, '#000000', 0.35),
     '--b-paper': t.paper,
     '--b-ink': t.ink,
     '--b-accent': t.accent,

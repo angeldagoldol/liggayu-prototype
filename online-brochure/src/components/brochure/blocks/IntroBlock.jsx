@@ -6,8 +6,12 @@ import { Reveal } from './Reveal.jsx';
 import styles from './IntroBlock.module.css';
 import type from './type.module.css';
 
-/** Opening story: kicker, headline, an optional photograph of the place, two-column
- *  copy with a drop cap, and a bracketed pull quote. */
+/**
+ * Opening story. With a photograph: a tall plate bleeding off the page's
+ * outer edge with the pull quote beneath it, and the kicker, headline and copy
+ * (with a drop cap) in the inner column. Without: headline across the page,
+ * copy in two columns and a bracketed pull quote. Copy shrinks to fit.
+ */
 export function IntroBlock({ page, brochure }) {
   const { isStatic } = usePage();
   const photo = text(page.photo);
@@ -19,27 +23,24 @@ export function IntroBlock({ page, brochure }) {
   const length = copy.join(' ').length;
   // Narrow letters (I, J, l…) make a weak drop cap, as does anything non-Latin.
   const dropCap = /^[A-HK-Za-hkm-z]/.test(copy[0] ?? '');
+  const withPhoto = Boolean(photo);
+
+  const pull = pullQuote && (
+    <Reveal as="blockquote" className={styles.pull}>
+      <span className={styles.bracket} lang="ja" aria-hidden="true">
+        「
+      </span>
+      <p style={{ '--fs': `${fitSize(pullQuote, { max: withPhoto ? 3.6 : 4.4, min: 2.4, ideal: withPhoto ? 44 : 60 })}cqw` }}>{pullQuote}</p>
+    </Reveal>
+  );
 
   return (
-    <div className={styles.intro}>
-      <header className={type.header}>
-        {kicker && (
-          <Reveal as="p" className={type.kicker}>
-            {kicker}
-          </Reveal>
-        )}
-        {heading && (
-          <Reveal as="h2" className={`${type.heading} ${type.clamp}`} style={{ '--fs': `${fitSize(heading, { max: 7.4, min: 4.4, ideal: 32 })}cqw`, '--lines': 3 }}>
-            {heading}
-          </Reveal>
-        )}
-      </header>
-
-      {photo && (
-        <Reveal variant="fade" className={styles.media}>
+    <div className={styles.intro} data-photo={withPhoto || undefined}>
+      {withPhoto && (
+        <Reveal variant="fade" className={styles.media} data-bleed="outer">
           <Photo
             id={photo}
-            sizes="(min-width: 1100px) 560px, 90vw"
+            sizes="(min-width: 1100px) 340px, 50vw"
             credit="overlay"
             creditLinks={!isStatic}
             className={styles.photo}
@@ -48,32 +49,44 @@ export function IntroBlock({ page, brochure }) {
         </Reveal>
       )}
 
-      <Reveal variant="wipe" className={`${type.rule} ${styles.rule}`} />
+      <div className={styles.text}>
+        <header className={type.header}>
+          {kicker && (
+            <Reveal as="p" className={type.kicker}>
+              {kicker}
+            </Reveal>
+          )}
+          {heading && (
+            <Reveal
+              as="h2"
+              className={type.heading}
+              style={{ '--fs': `${fitSize(heading, withPhoto ? { max: 6.4, min: 4.6, ideal: 22 } : { max: 7.4, min: 4.4, ideal: 32 })}cqw` }}
+            >
+              {heading}
+            </Reveal>
+          )}
+        </header>
 
-      {copy.length > 0 && (
-        <Reveal
-          className={styles.copy}
-          data-columns={length > 320 ? 2 : 1}
-          data-dropcap={dropCap || undefined}
-          data-long={length > (photo ? 520 : 900) || undefined}
-          style={{ '--copy': `${fitSize(copy.join(' '), { max: length > 320 ? 2.75 : 3, min: 1.85, ideal: photo ? 360 : 560 })}cqw` }}
-        >
-          {copy.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </Reveal>
-      )}
+        <Reveal variant="wipe" className={`${type.rule} ${styles.rule}`} />
 
-      {pullQuote && (
-        <Reveal as="blockquote" className={styles.pull}>
-          <span className={styles.bracket} lang="ja" aria-hidden="true">
-            「
-          </span>
-          <p className={type.clamp} style={{ '--fs': `${fitSize(pullQuote, { max: 4.4, min: 2.8, ideal: 60 })}cqw`, '--lines': 3 }}>
-            {pullQuote}
-          </p>
-        </Reveal>
-      )}
+        {copy.length > 0 && (
+          <Reveal
+            className={styles.copy}
+            data-fit={!withPhoto && length > 320 ? 'both' : ''}
+            data-columns={!withPhoto && length > 320 ? 2 : 1}
+            data-dropcap={dropCap || undefined}
+            style={{ '--copy': `${withPhoto ? 2.5 : length > 320 ? 2.6 : 2.9}cqw` }}
+          >
+            {copy.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </Reveal>
+        )}
+
+        {!withPhoto && pull}
+      </div>
+
+      {withPhoto && pull && <div className={styles.pullSlot}>{pull}</div>}
     </div>
   );
 }

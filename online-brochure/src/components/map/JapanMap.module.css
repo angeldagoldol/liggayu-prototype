@@ -191,3 +191,57 @@
   font-weight: 500;
   font-size: 0.86em;
 }
+
+/* A close-up plate is mostly one region: no tint (its key map shows where it is). */
+.map[data-zoomed] {
+  --map-highlight: var(--map-land);
+}
+
+/* --- Locator: the whole country, quiet, one ringed dot ------------------ */
+.locator .region path {
+  stroke: var(--map-land);
+  stroke-width: 0.4px;
+}
+
+.locator .region[data-highlighted] path {
+  stroke: var(--map-highlight);
+}
+
+.locator .insetFrame rect {
+  stroke: var(--map-border);
+}
+
+.ring {
+  fill: color-mix(in srgb, var(--map-accent) 18%, transparent);
+  stroke: var(--map-accent);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+
+/* --- Key map in a corner of a zoomed plate ------------------------------ */
+.keyMap {
+  overflow: hidden;
+}
+
+.keyPaper {
+  fill: var(--map-paper);
+  stroke: var(--map-quiet);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+
+.keyMap path {
+  fill: color-mix(in srgb, var(--map-ink) 14%, var(--map-paper));
+  stroke: none;
+}
+
+.keyMap path[data-highlighted] {
+  fill: color-mix(in srgb, var(--map-accent) 38%, var(--map-paper));
+}
+
+.keyView {
+  fill: none;
+  stroke: var(--map-accent);
+  stroke-width: 1.25px;
+  vector-effect: non-scaling-stroke;
+}

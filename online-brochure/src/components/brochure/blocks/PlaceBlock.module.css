@@ -1,18 +1,31 @@
-/* A museum label for one real place: photograph, name, story, facts. */
+/* One real place: a photograph to the trim, the name, the story, the facts. */
 .place {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
+/* The photograph bleeds off both sides of the page (past the margins). */
 .media {
   position: relative;
   flex: none;
-  height: 46cqw;
-  margin: 0 0 4.2cqw;
-  outline: var(--hair) solid var(--b-rule);
-  outline-offset: 0.8cqw;
-  --photo-credit-size: 1.2cqw;
+  height: 52cqw;
+  margin: -1.4cqw calc(-1 * var(--pad-x)) 4.4cqw;
+  /* Credit chip at the foot of the outer side, under the name slip. */
+  --photo-credit-size: 1.12cqw;
+  --photo-chip-left: auto;
+  --photo-chip-right: var(--pad-x);
+  --photo-chip-bottom: 2.4cqw;
+}
+
+[data-side='verso'] .media {
+  --photo-chip-left: var(--pad-x);
+  --photo-chip-right: auto;
+}
+
+/* Leave the locator's side of the photograph to the locator. */
+.media :global([data-state]) small {
+  max-width: 52cqw;
 }
 
 .media > .photo {
@@ -20,19 +33,93 @@
   inset: 0;
 }
 
-.header {
-  margin-bottom: 3.2cqw;
+/* 短冊: the Japanese name on a paper slip hung from the top of the photograph,
+   on the page's outer side. */
+.slip {
+  position: absolute;
+  top: 0;
+  left: var(--pad-x);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  max-height: 45cqw;
+  padding: 2.6cqw 1.5cqw 2.4cqw;
+  overflow: hidden;
+  background: var(--b-paper);
+  box-shadow:
+    inset 0 0 0 0.5cqw var(--b-paper),
+    inset 0 0 0 calc(0.5cqw + var(--hair)) var(--b-rule-strong),
+    0 0.6cqw 2.4cqw color-mix(in srgb, var(--b-shade) 22%, transparent);
 }
 
-.nameJp {
-  display: inline-block;
-  margin-left: 0.45em;
-  font-size: 0.5em;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--b-accent-text);
-  vertical-align: 0.2em;
+.slip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.8cqw;
+  background: var(--b-accent);
+}
+
+[data-side='recto'] .slip {
+  left: auto;
+  right: var(--pad-x);
+}
+
+.slipText {
+  font-size: var(--jp, 4cqw);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: var(--b-ink);
+}
+
+/* A "you are here" card on the inner side of the photograph. */
+.locator {
+  position: absolute;
+  bottom: 2.4cqw;
+  right: var(--pad-x);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7cqw;
+  width: 16cqw;
+  margin: 0;
+  padding: 1.1cqw 1.1cqw 0.9cqw;
+  background: color-mix(in srgb, var(--b-paper) 94%, transparent);
+  box-shadow:
+    inset 0 0 0 var(--hair) var(--b-rule),
+    0 0.6cqw 2.4cqw color-mix(in srgb, var(--b-shade) 22%, transparent);
+}
+
+[data-side='recto'] .locator {
+  right: auto;
+  left: var(--pad-x);
+}
+
+.locatorMap {
+  display: flex;
+  justify-content: center;
+}
+
+.coords {
+  font-family: var(--font-mono);
+  font-size: 0.95cqw;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
   white-space: nowrap;
+  text-align: center;
+  color: var(--b-muted-text);
+}
+
+/* The bleeding photograph covers the outer margin: no vertical section name there. */
+.header {
+  margin-bottom: 3.4cqw;
+}
+
+.name {
+  font-size: var(--fs, 6.6cqw);
 }
 
 .columns {
@@ -40,23 +127,23 @@
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 4.4cqw;
-  border-top: var(--hair) solid var(--b-rule);
+  gap: 4.6cqw;
   padding-top: 3.2cqw;
+  border-top: var(--hair) solid var(--b-rule);
 }
 
-.columns[data-facts] {
-  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+.columns[data-aside] {
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
 }
 
 .copy {
   min-height: 0;
   overflow: hidden;
-  font-size: var(--copy, 2.4cqw);
+  font-size: calc(2.35cqw * var(--fit, 1));
   line-height: 1.6;
   color: var(--b-body);
   hyphens: auto;
-  mask-image: linear-gradient(to bottom, #000 88%, transparent);
+  text-wrap: pretty;
 }
 
 .copy p {
@@ -70,7 +157,7 @@
 .aside {
   display: flex;
   flex-direction: column;
-  gap: 2.4cqw;
+  gap: calc(2.6cqw * var(--fit, 1));
   min-height: 0;
   overflow: hidden;
 }
@@ -80,60 +167,70 @@
 }
 
 .fact {
-  padding: 1.3cqw 0 1.4cqw;
+  padding: calc(1.25cqw * var(--fit, 1)) 0 calc(1.35cqw * var(--fit, 1));
   border-bottom: var(--hair) solid var(--b-rule);
 }
 
 .fact:first-child {
-  padding-top: 0;
+  padding-top: 0.2cqw;
 }
 
 .fact dt {
   font-family: var(--font-mono);
-  font-size: 1.35cqw;
+  font-size: calc(1.3cqw * var(--fit, 1));
   font-weight: 500;
+  line-height: 1.3;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--b-accent-text);
 }
 
 .fact dd {
-  margin: 0.5cqw 0 0;
-  font-size: 2cqw;
-  line-height: 1.4;
+  margin: 0.45cqw 0 0;
+  font-size: calc(2cqw * var(--fit, 1));
+  line-height: 1.38;
   color: var(--b-ink);
+  text-wrap: pretty;
 }
 
 .site {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+  margin: 0;
+}
+
+.siteLabel {
+  font-family: var(--font-mono);
+  font-size: calc(1.3cqw * var(--fit, 1));
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--b-muted-text);
+}
+
+.siteLink {
   display: inline-flex;
   align-items: center;
   gap: 0.6cqw;
   align-self: flex-start;
-  margin: 0;
-  font-size: 1.9cqw;
+  font-size: calc(2cqw * var(--fit, 1));
   font-weight: 600;
   color: var(--b-ink);
   text-decoration: underline;
-  text-decoration-thickness: var(--hair);
-  text-underline-offset: 0.5cqw;
-  text-decoration-color: var(--b-rule-strong);
+  text-decoration-thickness: max(1px, 0.18cqw);
+  text-underline-offset: 0.45cqw;
+  text-decoration-color: var(--b-accent);
   overflow-wrap: anywhere;
 }
 
-.site svg {
+.siteLink svg {
   flex: none;
   width: 2cqw;
   height: 2cqw;
+  color: var(--b-accent-text);
 }
 
-a.site:hover {
-  text-decoration-color: currentColor;
-}
-
-.where {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 1.3cqw;
-  letter-spacing: 0.06em;
-  color: var(--b-muted-text);
+a.siteLink:hover {
+  color: var(--b-accent-text);
 }

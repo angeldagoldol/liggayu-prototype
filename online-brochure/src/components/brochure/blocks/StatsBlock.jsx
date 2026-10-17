@@ -28,19 +28,19 @@ export function StatsBlock({ page }) {
       </span>
       <header className={type.header}>
         {heading && (
-          <Reveal as="h2" className={`${type.heading} ${type.clamp}`} style={{ '--fs': `${fitSize(heading, { max: 6.8, min: 4.2, ideal: 26 })}cqw`, '--lines': 2 }}>
+          <Reveal as="h2" className={type.heading} style={{ '--fs': `${fitSize(heading, { max: 6.8, min: 4.2, ideal: 26 })}cqw` }}>
             {heading}
           </Reveal>
         )}
         {body && (
-          <Reveal as="p" className={`${type.lede} ${type.clamp}`} style={{ '--lines': 3 }}>
+          <Reveal as="p" className={type.lede}>
             {body}
           </Reveal>
         )}
       </header>
 
       {items.length > 0 && (
-        <ul className={styles.list} style={{ '--fs': `${size}cqw` }}>
+        <ul className={styles.list} style={{ '--fs': `${size}cqw` }} data-fit="">
           {items.map((item, i) => (
             <Reveal as="li" key={i} className={styles.item}>
               <span className={styles.value}>
@@ -55,9 +55,7 @@ export function StatsBlock({ page }) {
                 <span className={`${styles.index} ${type.jp}`} lang="ja" aria-hidden="true">
                   {kanjiNumeral(i + 1)}
                 </span>
-                <span className={type.clamp} style={{ '--lines': 3 }}>
-                  {text(item.label)}
-                </span>
+                <span>{text(item.label)}</span>
               </span>
             </Reveal>
           ))}

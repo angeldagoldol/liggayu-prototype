@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BrochurePage } from '../components/brochure/BrochurePage.jsx';
 import { CoverArt } from '../components/brochure/CoverArt.jsx';
 import { themeVars } from '../components/brochure/blocks/pageUtils.js';
@@ -7,11 +7,14 @@ import { Photo } from '../components/photo/Photo.jsx';
 import { Button, Chip, Field, Select, Switch } from '../components/ui/index.js';
 import { BROCHURES } from '../data/brochures.js';
 import { ART_LABELS, ART_STYLES, PAGE_TYPE_IDS } from '../data/schema.js';
+import { auditAll } from './audit.js';
 import styles from './Playground.module.css';
 
 const SECTIONS = [
   { id: 'art', label: 'Art styles' },
-  { id: 'pages', label: 'All pages' },
+  { id: 'reader', label: 'Reader size' },
+  { id: 'pages', label: 'Thumbnails' },
+  { id: 'audit', label: 'Audit' },
   { id: 'large', label: 'Large brochure' },
   { id: 'empty', label: 'Empty pages' },
   { id: 'map', label: 'Map' },
@@ -161,6 +164,19 @@ const MAP_SETS = {
   ],
 };
 const DEFAULT_SEEDS = [7, 23, 61];
+
+/**
+ * The same brochure on dark paper (a sumi-ink user palette): paper and ink
+ * swapped for near-black and cream, accents kept — the page's themeVars then
+ * nudge every accent to a readable contrast, as they do for Studio themes.
+ */
+function onDarkPaper(brochure) {
+  const theme = brochure.theme ?? {};
+  return { ...brochure, theme: { ...theme, paper: '#1a1714', ink: '#efe7d8', muted: '#b4a898' } };
+}
+
+/** Reader-size widths (px) to review at: a phone, a laptop page and a large one. */
+const READER_WIDTHS = [340, 460, 640];
 const CROPS = { native: '1 / 1.414', '3:4': '3 / 4', '1:1': '1 / 1' };
 
 const params = new URLSearchParams(window.location.search);
@@ -185,7 +201,17 @@ export function Playground() {
   const [cta, setCta] = useState(0);
   const [mapRegion, setMapRegion] = useState(null);
   const [pickedRegion, setPickedRegion] = useState('kansai');
+  const [paper, setPaper] = useState(params.get('paper') === 'dark' ? 'dark' : 'theme');
+  const [readerSlug, setReaderSlug] = useState(params.get('rb') ?? 'all');
+  const [readerWidth, setReaderWidth] = useState(READER_WIDTHS.includes(Number(params.get('w'))) ? Number(params.get('w')) : 460);
+  const [report, setReport] = useState(null);
   const testCard = useTestCard();
+  const shelf = useMemo(() => (paper === 'dark' ? BROCHURES.map(onDarkPaper) : BROCHURES), [paper]);
+  const readerBrochures = readerSlug === 'all' ? shelf : shelf.filter((b) => b.slug === readerSlug);
+  const userPhotoBrochure = useMemo(
+    () => (testCard ? { userPhotos: { card: { src: testCard.src(), alt: 'A test card uploaded by a user', width: 1600, height: 1067, credit: { author: 'A Studio user', license: 'CC BY 4.0' } } } } : null),
+    [testCard],
+  );
   const kyotoTheme = (BROCHURES.find((x) => x.slug === 'kyoto-thousand-gates') ?? BROCHURES[0]).theme;
   const only = params.get('section');
   const brochure = BROCHURES.find((b) => b.slug === slug) ?? BROCHURES[0];
@@ -194,6 +220,22 @@ export function Playground() {
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   }, [dark]);
+
+  // window.__tabiAudit() for scripted checks; ?audit=1 runs it once fonts and photos settle.
+  useEffect(() => {
+    const run = () => {
+      const issues = auditAll(document);
+      setReport(issues);
+      return issues;
+    };
+    window.__tabiAudit = run;
+    if (params.get('audit') !== '1') return undefined;
+    let timer = 0;
+    document.fonts?.ready.then(() => {
+      timer = window.setTimeout(run, 2500);
+    });
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const show = (id) => !only || only === id;
   const jump = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -212,6 +254,12 @@ export function Playground() {
           ))}
         </nav>
         <div className={styles.controls}>
+          <Field label="Paper">
+            <Select value={paper} onChange={(e) => setPaper(e.target.value)}>
+              <option value="theme">Brochure theme</option>
+              <option value="dark">Dark paper</option>
+            </Select>
+          </Field>
           <Switch checked={animated} onChange={setAnimated} label="Animate art" />
           <Switch checked={dark} onChange={setDark} label="Dark app" />
         </div>
@@ -275,10 +323,81 @@ export function Playground() {
         </section>
       )}
 
+      {show('reader') && (
+        <section id="reader" className={styles.section} aria-labelledby="reader-title">
+          <div className={styles.sectionHead}>
+            <h2 id="reader-title" className={styles.title}>
+              Every page at reader size
+            </h2>
+            <div className={styles.filters}>
+              <Field label="Brochure">
+                <Select value={readerSlug} onChange={(e) => setReaderSlug(e.target.value)}>
+                  <option value="all">All brochures</option>
+                  {BROCHURES.map((b) => (
+                    <option key={b.slug} value={b.slug}>
+                      {b.title}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+              <Field label="Page width">
+                <Select value={readerWidth} onChange={(e) => setReaderWidth(Number(e.target.value))}>
+                  {READER_WIDTHS.map((w) => (
+                    <option key={w} value={w}>{`${w}px`}</option>
+                  ))}
+                </Select>
+              </Field>
+            </div>
+          </div>
+          {readerBrochures.map((b) => (
+            <div key={b.id} className={styles.strip}>
+              <p className={styles.stripTitle}>
+                {b.title} <span>{`${b.pages.length} pages · ${b.factsChecked ? `facts checked ${b.factsChecked}` : 'facts not checked'}`}</span>
+              </p>
+              <div className={styles.readerRow} style={{ '--page-w': `${readerWidth}px` }}>
+                {b.pages.map((page, i) => (
+                  <BrochurePage key={page.id} brochure={b} page={page} index={i} total={b.pages.length} className={styles.readerPage} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {show('audit') && (
+        <section id="audit" className={styles.section} aria-labelledby="audit-title">
+          <div className={styles.sectionHead}>
+            <h2 id="audit-title" className={styles.title}>
+              Layout audit
+            </h2>
+            <Button size="sm" variant="secondary" onClick={() => setReport(auditAll(document))}>
+              Audit every page on screen
+            </Button>
+          </div>
+          <div aria-live="polite">
+            {report === null ? (
+              <p className={styles.note}>Checks every page rendered above for clipped, cut-off or off-page text (add ?audit=1 to run on load).</p>
+            ) : report.length === 0 ? (
+              <p className={styles.note} data-audit="clean">
+                No clipped text on any page.
+              </p>
+            ) : (
+              <ol className={styles.audit} data-audit="issues">
+                {report.map((issue, i) => (
+                  <li key={i}>
+                    <strong>{issue.kind}</strong> {issue.where} — “{issue.text}”
+                  </li>
+                ))}
+              </ol>
+            )}
+          </div>
+        </section>
+      )}
+
       {show('pages') && (
         <section id="pages" className={styles.section} aria-labelledby="pages-title">
-          <h2 id="pages-title" className={styles.title}>Every page of every brochure</h2>
-          {BROCHURES.map((b) => (
+          <h2 id="pages-title" className={styles.title}>Every page of every brochure · thumbnails</h2>
+          {shelf.map((b) => (
             <div key={b.id} className={styles.strip}>
               <p className={styles.stripTitle}>
                 {b.title} <span>{`${b.pages.length} pages · ${b.cover.art}`}</span>
@@ -381,6 +500,8 @@ export function Playground() {
               ['Ken Burns', { photo: testCard, kenBurns: true, credit: 'overlay' }],
               ['Unknown id → fallback art', { id: 'no-such-photo' }],
               ['Listed, not downloaded → fallback art', { id: 'kyoto-senbon-torii', credit: 'overlay' }],
+              ['Uploaded (user:card) via brochure', { id: 'user:card', brochure: userPhotoBrochure, credit: 'caption' }],
+              ['Upload with a hotlink → fallback art', { id: 'user:x', brochure: { userPhotos: { x: { src: 'https://example.com/x.jpg' } } } }],
             ].map(([label, props], i) => (
               <figure key={label} className={styles.photoTile}>
                 <div className={styles.photoBox}>

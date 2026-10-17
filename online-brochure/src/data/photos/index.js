@@ -6,6 +6,7 @@
  *   // → { id, alt, caption, place, focus, use, width, height, lqip, color,
  *   //     credit: { title, author, authorUrl, license, licenseUrl, sourceUrl },
  *   //     src(width), srcSet, available } — or null for an unknown id
+ *   resolvePhoto('user:abc', brochure)  // the brochure's own upload (brochure.userPhotos.abc), same shape
  *
  * Sources: ./manifest/<brochure>.json (what each photo shows; docs/REAL_CONTENT.md)
  * and ./photos.generated.json (written by `npm run photos:fetch`). A photo listed
@@ -19,5 +20,5 @@ const manifests = import.meta.glob('./manifest/*.json', { eager: true, import: '
 
 const registry = createPhotoRegistry(manifests, generated);
 
-export const { getPhoto, listPhotos, creditsFor } = registry;
-export { PHOTO_WIDTHS, photoIdsIn, photoUrl, pickWidth } from './registry.js';
+export const { getPhoto, listPhotos, creditsFor, resolvePhoto } = registry;
+export { PHOTO_WIDTHS, USER_PHOTO_PREFIX, isUserPhotoId, photoIdsIn, photoUrl, pickWidth, safeImageSrc } from './registry.js';

@@ -52,6 +52,19 @@
   color: var(--accent);
 }
 
+.readerJp {
+  margin-right: 0.75em;
+  font-family: var(--font-jp);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.reader:not([aria-current]) .readerJp {
+  color: inherit;
+}
+
 .readerName {
   font-family: var(--font-headline, var(--font-display));
   font-size: var(--fs-md);
@@ -59,6 +72,8 @@
 }
 
 .readerCity {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--fs-sm);
 }
 

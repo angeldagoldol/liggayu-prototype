@@ -2,10 +2,16 @@ import { useId, useMemo } from 'react';
 import { cn } from '../../lib/cn.js';
 import { REGIONS } from '../../data/regions.js';
 import { graticule, height, insets, lakes, prefectures, project, regionCenters, width } from '../../data/geo/japan.js';
-import { estimateTextWidth, fitView, layoutMarkers, mapSummary, pinFrame, placeLabels, projectPins } from './mapLayout.js';
+import { estimateTextWidth, fitView, layoutMarkers, mapSummary, pathBounds, pinFrame, placeLabels, projectPins, unionBounds } from './mapLayout.js';
 import styles from './JapanMap.module.css';
 
 const FULL = { x: 0, y: 0, width, height };
+/** The four main islands and their neighbours (no inset), framed with a little sea: the key map's view. */
+const MAIN = (() => {
+  const box = unionBounds(prefectures.map((p) => pathBounds(p.d))) ?? FULL;
+  const pad = Math.max(box.width, box.height) * 0.04;
+  return { x: box.x - pad, y: box.y - pad, width: box.width + 2 * pad, height: box.height + 2 * pad };
+})();
 const PREFECTURES_BY_REGION = REGIONS.map((region) => ({ region, prefectures: prefectures.filter((p) => p.region === region.id) }));
 const SEAS = [
   { id: 'nihonkai', label: 'Sea of Japan', labelJp: '日本海', lat: 38.6, lng: 134.2 },
@@ -31,6 +37,13 @@ const SEAS = [
  * - `aspect`            width / height of the slot (e.g. 1.3), so the view fills it; an inset
  *                       view keeps its box's shape. Default: the map's own shape.
  * - `labelScale`        multiplies marker and label size (1 = sized for a brochure page).
+ * - `minSpan`           the closest zoom, as a share of the whole map's width (default 0.26,
+ *                       about 400 km); a city guide can go to ~0.05 (about 80 km).
+ * - `overview`          with a zoomed view, a small key map of the whole country in a free
+ *                       corner, marking the area on show.
+ * - `variant`           'atlas' (default) or 'locator': the whole country, quiet (no grid,
+ *                       borders, labels or numbers), each pin a dot with a ring — a
+ *                       "you are here" for one place.
  * - `label`             accessible name; defaults to a summary of the pins.
  * Colours come from CSS variables: the brochure theme (--b-*) on a brochure page,
  * the app tokens elsewhere; override --map-* on the root to restyle.
@@ -46,33 +59,40 @@ export function JapanMap({
   onRegionEnter,
   onRegionClick,
   labelScale = 1,
+  minSpan,
+  overview = false,
+  variant = 'atlas',
   aspect,
   label,
   className,
 }) {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const interactive = Boolean(onRegionClick || onRegionEnter);
+  const locator = variant === 'locator';
 
   const projected = useMemo(() => projectPins(pins, project), [pins]);
   const visible = useMemo(() => projected.filter((p) => p.inFrame), [projected]);
-  const { view, insetView } = useMemo(() => {
+  const { view, insetView, mainOnly } = useMemo(() => {
     // Pins in an inset and on the main islands live in two coordinate systems: show the whole map.
     const mixed = visible.some((p) => p.inset) && visible.some((p) => !p.inset);
-    const whole = focus === 'japan' || mixed;
+    // A locator for places on the main islands frames just those islands (no inset box).
+    if (locator && !visible.some((p) => p.inset)) return { view: MAIN, insetView: false, mainOnly: true };
+    const whole = focus === 'japan' || mixed || locator;
     const frame = whole ? FULL : pinFrame(visible, FULL, insets);
     const inInset = frame.width < width;
-    return { view: fitView(whole ? [] : visible, frame, { aspect: inInset ? undefined : aspect }), insetView: inInset };
-  }, [focus, visible, aspect]);
-  const zoomed = view.width < width;
+    const span = Number.isFinite(minSpan) && minSpan > 0 ? { minSpan } : {};
+    return { view: fitView(whole ? [] : visible, frame, { aspect: inInset ? undefined : aspect, ...span }), insetView: inInset };
+  }, [focus, visible, aspect, locator, minSpan]);
+  const zoomed = view.width < width && !mainOnly;
   // A close-up of the main islands never shows a sliver of the inset box (or its islands) in a corner.
-  const showInsets = !zoomed || insetView;
+  const showInsets = (!zoomed || insetView) && !mainOnly;
   const unit = view.width / 100;
   const radius = 1.45 * unit * labelScale;
   const fontSize = 2.35 * unit * labelScale;
 
   // Inset captions sit in the bottom-right corner of the part of the box on show.
   const insetCaptions = useMemo(() => {
-    if (!showInsets) return [];
+    if (!showInsets || locator) return [];
     const size = zoomed ? fontSize : 44 * labelScale;
     const pad = zoomed ? fontSize * 0.7 : 24;
     return insets.map((inset) => {
@@ -81,15 +101,18 @@ export function JapanMap({
       const w = estimateTextWidth(`${inset.labelJp}  ${inset.label}`, size);
       return { id: inset.id, inset, x, y, size, box: { x: x - w, y: y - size * 1.05, width: w, height: size * 1.3 } };
     });
-  }, [showInsets, zoomed, fontSize, labelScale, view]);
+  }, [showInsets, zoomed, fontSize, labelScale, view, locator]);
 
-  const markers = useMemo(() => layoutMarkers(visible, { radius }), [visible, radius]);
+  const markers = useMemo(() => (locator ? visible.map((p) => ({ ...p, mx: p.x, my: p.y, displaced: false })) : layoutMarkers(visible, { radius })), [visible, radius, locator]);
+  // The key map takes the first corner of a zoomed main-islands view that no marker touches.
+  const keyMap = useMemo(() => (overview && zoomed && !insetView && !locator ? overviewBox(view, markers, radius) : null), [overview, zoomed, insetView, locator, view, markers, radius]);
   const labels = useMemo(() => {
-    if (!showLabels) return [];
+    if (!showLabels || locator) return [];
     const texts = markers.map((m) => [m.label, m.labelJp].filter((t) => typeof t === 'string' && t.trim()).join('  '));
     const inset = { x: view.x + unit, y: view.y + unit, width: view.width - 2 * unit, height: view.height - 2 * unit };
-    return placeLabels(markers, { radius, fontSize, bounds: inset, texts, obstacles: insetCaptions.map((c) => c.box) });
-  }, [markers, showLabels, radius, fontSize, view, unit, insetCaptions]);
+    const obstacles = [...insetCaptions.map((c) => c.box), ...(keyMap ? [keyMap] : [])];
+    return placeLabels(markers, { radius, fontSize, bounds: inset, texts, obstacles });
+  }, [markers, showLabels, locator, radius, fontSize, view, unit, insetCaptions, keyMap]);
 
   const summary = label || mapSummary(pins, REGIONS.find((r) => r.id === highlightedRegion)?.label);
   const regionProps = (region) => {
@@ -115,7 +138,11 @@ export function JapanMap({
   };
 
   return (
-    <div className={cn(styles.map, interactive && styles.interactive, className)} style={{ '--map-aspect': `${view.width} / ${view.height}` }} data-zoomed={zoomed || undefined}>
+    <div
+      className={cn(styles.map, interactive && styles.interactive, locator && styles.locator, className)}
+      style={{ '--map-aspect': `${view.width} / ${view.height}` }}
+      data-zoomed={zoomed || undefined}
+    >
       <svg
         className={styles.svg}
         viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`}
@@ -137,12 +164,12 @@ export function JapanMap({
 
         <g clipPath={`url(#${uid}-view)`}>
           <rect className={styles.sea} x={view.x} y={view.y} width={view.width} height={view.height} />
-          <path className={styles.graticule} d={graticule.main} />
+          {!locator && <path className={styles.graticule} d={graticule.main} />}
 
           {(showInsets ? insets : []).map((inset) => (
             <g key={inset.id} className={styles.insetFrame}>
               <rect x={inset.box.x} y={inset.box.y} width={inset.box.width} height={inset.box.height} />
-              {graticule[inset.id] && <path className={styles.graticule} d={graticule[inset.id]} clipPath={`url(#${uid}-${inset.id})`} />}
+              {graticule[inset.id] && !locator && <path className={styles.graticule} d={graticule[inset.id]} clipPath={`url(#${uid}-${inset.id})`} />}
             </g>
           ))}
 
@@ -190,10 +217,11 @@ export function JapanMap({
               </text>
             ))}
 
-            {!zoomed && seaLabels && SEAS.map((sea) => <SeaLabel key={sea.id} sea={sea} size={42 * labelScale} />)}
+            {!zoomed && seaLabels && !locator && SEAS.map((sea) => <SeaLabel key={sea.id} sea={sea} size={42 * labelScale} />)}
 
             {!zoomed &&
               regionLabels &&
+              !locator &&
               REGIONS.map((region) => {
                 const at = regionCenters[region.id];
                 if (!at) return null;
@@ -205,7 +233,20 @@ export function JapanMap({
               })}
           </g>
 
-          {markers.length > 0 && (
+          {keyMap && <KeyMap box={keyMap} view={view} highlightedRegion={highlightedRegion} />}
+
+          {markers.length > 0 && locator && (
+            <g className={styles.pins} aria-hidden="true">
+              {markers.map((m) => (
+                <g key={m.id}>
+                  <circle className={styles.ring} cx={m.mx} cy={m.my} r={radius * 2.4} />
+                  <circle className={styles.marker} cx={m.mx} cy={m.my} r={radius} />
+                </g>
+              ))}
+            </g>
+          )}
+
+          {markers.length > 0 && !locator && (
             <g className={styles.pins} aria-hidden="true" style={{ '--r': radius }}>
               {markers.map((m) => (m.displaced ? <line key={`l-${m.id}`} className={styles.leader} x1={m.x} y1={m.y} x2={m.mx} y2={m.my} /> : null))}
               {markers.map((m) => (m.displaced ? <circle key={`d-${m.id}`} className={styles.spot} cx={m.x} cy={m.y} r={radius * 0.28} /> : null))}
@@ -237,6 +278,40 @@ export function JapanMap({
         {zoomed && <rect className={styles.plate} x={view.x + unit * 0.12} y={view.y + unit * 0.12} width={view.width - unit * 0.24} height={view.height - unit * 0.24} />}
       </svg>
     </div>
+  );
+}
+
+/**
+ * Where the key map goes in a zoomed view: a box 27% of the view wide, in the
+ * first corner (bottom-right, top-left, top-right, bottom-left) that no marker
+ * touches; null when every corner is taken.
+ */
+function overviewBox(view, markers, radius) {
+  const w = view.width * 0.27;
+  const h = (w * MAIN.height) / MAIN.width;
+  const pad = view.width * 0.025;
+  const corners = [
+    { x: view.x + view.width - pad - w, y: view.y + view.height - pad - h },
+    { x: view.x + pad, y: view.y + pad },
+    { x: view.x + view.width - pad - w, y: view.y + pad },
+    { x: view.x + pad, y: view.y + view.height - pad - h },
+  ];
+  const clear = (box) => markers.every((m) => m.mx + radius * 1.6 < box.x || m.mx - radius * 1.6 > box.x + w || m.my + radius * 1.6 < box.y || m.my - radius * 1.6 > box.y + h);
+  const found = corners.find((c) => clear(c));
+  return found ? { ...found, width: w, height: h } : null;
+}
+
+/** A small whole-country map (main islands) marking the area a zoomed view shows. */
+function KeyMap({ box, view, highlightedRegion }) {
+  const size = Math.max(view.width, 150);
+  const cx = view.x + view.width / 2;
+  const cy = view.y + view.height / 2;
+  return (
+    <svg className={styles.keyMap} x={box.x} y={box.y} width={box.width} height={box.height} viewBox={`${MAIN.x} ${MAIN.y} ${MAIN.width} ${MAIN.height}`} aria-hidden="true">
+      <rect className={styles.keyPaper} x={MAIN.x} y={MAIN.y} width={MAIN.width} height={MAIN.height} />
+      {prefectures.map((p) => (p.d ? <path key={p.code} d={p.d} data-highlighted={p.region === highlightedRegion || undefined} /> : null))}
+      <rect className={styles.keyView} x={cx - size / 2} y={cy - (size * view.height) / view.width / 2} width={size} height={(size * view.height) / view.width} />
+    </svg>
   );
 }
 

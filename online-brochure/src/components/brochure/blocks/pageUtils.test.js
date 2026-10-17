@@ -14,6 +14,8 @@ import {
   text,
   themeVars,
   toNumber,
+  verseLines,
+  verseSize,
 } from './pageUtils.js';
 
 const brochure = { title: 'Kyoto: A Thousand Gates', titleJp: '京都' };
@@ -125,5 +127,25 @@ describe('formatLatLng', () => {
     expect(formatLatLng(-33.8568, 151.2153)).toBe('33.8568° S · 151.2153° E');
     expect(formatLatLng('x', 1)).toBe('');
     expect(formatLatLng(undefined, undefined)).toBe('');
+  });
+});
+
+describe('verse helpers', () => {
+  it('splits Japanese verse at spaces and translations at slashes', () => {
+    expect(verseLines('浅草の夜のにぎはひに　まぎれ入り　まぎれ出で来しさびしき心', { japanese: true })).toEqual(['浅草の夜のにぎはひに', 'まぎれ入り', 'まぎれ出で来しさびしき心']);
+    expect(verseLines('京にても京なつかしやほととぎす', { japanese: true })).toEqual(['京にても京なつかしやほととぎす']);
+    expect(verseLines('Here in Kyoto, / still I yearn for Kyoto — / a cuckoo calls.')).toEqual(['Here in Kyoto,', 'still I yearn for Kyoto —', 'a cuckoo calls.']);
+    expect(verseLines('Kyoto and/or Nara')).toEqual(['Kyoto and/or Nara']);
+    expect(verseLines(undefined)).toEqual([]);
+  });
+
+  it('sizes a column so the longest line fits, wrapping very long lines', () => {
+    expect(verseSize(['古池や蛙飛び込む水の音'])).toBe(7.2);
+    const haiku = verseSize(['京にても京なつかしやほととぎす']);
+    expect(haiku * 15 * 1.1).toBeLessThanOrEqual(92.01);
+    const inscription = verseSize(['琉球国は南海の勝地にして……舟楫を以て万国の津梁と為し、異産至宝は十方刹に充満せり']);
+    expect(inscription).toBeGreaterThan(5);
+    expect(verseSize([], { min: 3 })).toBe(7.2);
+    expect(verseSize(['あ'.repeat(200)])).toBe(3.4);
   });
 });

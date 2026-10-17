@@ -85,6 +85,11 @@
   color: var(--b-muted-text);
 }
 
+/* Pages whose photograph bleeds over the outer margin drop the side label. */
+:global(article:has([data-bleed])) .side {
+  display: none;
+}
+
 .side[data-recto] {
   left: auto;
   right: 2.6cqw;

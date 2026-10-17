@@ -1,115 +1,170 @@
-import { useId, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, PenLine } from 'lucide-react';
-import { Button, VerticalText } from '../../../components/ui/index.js';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion, useInView } from 'framer-motion';
+import { ArrowLeft, ArrowRight, PenLine } from 'lucide-react';
+import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
+import { ErrorBoundary } from '../../../components/layout/ErrorBoundary.jsx';
+import { Photo } from '../../../components/photo/Photo.jsx';
+import { Button, IconButton, VerticalText } from '../../../components/ui/index.js';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
+import { hasKey } from '../../../data/lookup.js';
+import { getPhoto } from '../../../data/photos/index.js';
 import { REGIONS, REGION_MAP } from '../../../data/regions.js';
 import { pad, pluralize } from '../../../lib/format.js';
 import { ease, fadeUp, viewportOnce } from '../../../lib/motion.js';
-import { BRIDGE_LINE, RAIL_LINE, SECTIONS } from '../homeContent.js';
-import { brochuresWith, busiestId, countBy } from '../homeStats.js';
-import { neighborInDirection, routePoints, tileBounds } from './regionMap.js';
+import { MAP_SOURCE, REGION_NOTES, SECTIONS } from '../homeContent.js';
+import { busiestId, countBy } from '../homeStats.js';
+import { stepId } from './regionMap.js';
 import { SectionHead } from './SectionHead.jsx';
 import styles from './Regions.module.css';
 
-const BOUNDS = tileBounds(REGIONS);
-const RAIL = routePoints(REGIONS, RAIL_LINE, BOUNDS);
-const BRIDGE = routePoints(REGIONS, BRIDGE_LINE, BOUNDS);
-/** Each tile is printed with its own traditional pattern. */
-const PATTERNS = ['asanoha', 'seigaiha', 'ichimatsu', 'stripes', 'dots', 'seigaiha', 'asanoha', 'ichimatsu'];
+// The map and its prefecture outlines are their own chunk, fetched as the section nears the viewport.
+const RegionsMap = lazy(() => import('./RegionsMap.jsx'));
 
-const tileIn = {
-  hidden: { opacity: 0, scale: 0.6 },
-  show: (i) => ({ opacity: 1, scale: 1, transition: { duration: 0.7, ease: ease.out, delay: 0.15 + i * 0.06 } }),
+const IDS = REGIONS.map((r) => r.id);
+/** A pointer sweeping across the map previews a region only once it rests on it. */
+const PREVIEW_MS = 90;
+/** The art plate (until a photo is downloaded) is printed matter: fixed colours in both themes. */
+const PRINT = { paper: '#f4eee2', ink: '#22140f', accent: '#d23a22', accent2: '#1d4f7a', muted: '#6e5b4f' };
+
+const card = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.45, ease: ease.out } },
+  exit: { opacity: 0, transition: { duration: 0.2, ease: ease.in } },
+};
+const settle = {
+  initial: { scale: 1.06 },
+  animate: { scale: 1, transition: { duration: 1.1, ease: ease.out } },
+};
+const rise = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: ease.out, delay: 0.08 } },
 };
 
-/**
- * The open region's card: vertical kanji, blurb, count and its brochures.
- * Not a live region: the focused tile already says "Kantō, 2 brochures", and
- * re-reading the whole card on every arrow key drowned that out. The tiles
- * point here with aria-controls, and the card is next in the tab order.
- */
-function RegionDetail({ id, region, count, brochures, index }) {
+/** Holds the map's place (same aspect ratio) until its chunk arrives. */
+function MapPlaceholder() {
+  return <div className={styles.placeholder} aria-hidden="true" />;
+}
+
+/** If the map's chunk cannot be fetched (offline, a stale deploy), the page stays whole: the card's pager still travels. */
+function MapUnavailable() {
   return (
-    <div id={id} className={styles.detail}>
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={region.id}
-          className={styles.detailInner}
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0, transition: { duration: 0.45, ease: ease.out } }}
-          exit={{ opacity: 0, y: -8, transition: { duration: 0.15 } }}
-        >
-          <VerticalText className={styles.detailJp}>{region.jp}</VerticalText>
-          <div className={styles.detailBody}>
-            <p className={styles.detailMeta}>
-              Region {pad(index + 1)} / {pad(REGIONS.length)} · {count > 0 ? pluralize(count, 'brochure') : 'No brochures yet'}
-            </p>
-            <h3 className={styles.detailTitle}>{region.label}</h3>
-            <p className={styles.blurb}>{region.blurb}</p>
-            {brochures.length > 0 && (
-              <ul className={styles.list}>
-                {brochures.map((b) => (
-                  <li key={b.id ?? b.slug}>
-                    <Link to={`/brochures/${b.slug}`} className={styles.listLink}>
-                      <span>{b.title}</span>
-                      {b.titleJp && (
-                        <span lang="ja" className={styles.listJp}>
-                          {b.titleJp}
-                        </span>
-                      )}
-                      <ArrowUpRight aria-hidden="true" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <div className={styles.detailActions}>
-              {count > 0 ? (
-                <Button to={`/brochures?region=${region.id}`} variant="primary" iconRight={<ArrowRight />}>
-                  {`Browse ${region.label}`}
-                </Button>
-              ) : (
-                <Button to="/studio" variant="secondary" iconRight={<PenLine />}>
-                  Make the first one
-                </Button>
-              )}
-            </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+    <div className={styles.placeholder} data-failed="">
+      <p className={styles.failed}>The map could not load. Use the arrows beside the region card to travel.</p>
     </div>
   );
 }
 
 /**
- * 05 地方 — Japan's eight regions as a printed mosaic on a schematic grid
- * (REGIONS[].tile), joined by a rail line. Hover or focus a tile to lift it
- * and open its card; arrow keys move across the map spatially.
+ * The chosen region's card: its photograph (or, until it is downloaded, a
+ * generative plate), the Japanese name set vertically, what the region is
+ * known for, one place to see, its brochure count and a link into the
+ * Library. Cards cross-fade in place. Not a live region: hovering or
+ * arrowing across the map would read the whole card out each time; it is
+ * next in the tab order instead, with its own previous/next pager.
+ */
+function RegionCard({ region, index, count, onStep }) {
+  const note = REGION_NOTES[region.id];
+  const photo = getPhoto(note?.photo);
+  const hasPhoto = Boolean(photo?.available);
+  const prev = REGION_MAP[stepId(IDS, region.id, -1)];
+  const next = REGION_MAP[stepId(IDS, region.id, 1)];
+
+  return (
+    <article className={styles.card}>
+      <div className={styles.cardHead}>
+        <p className={styles.cardMeta}>{count > 0 ? pluralize(count, 'brochure') : 'No brochures yet'}</p>
+        <div className={styles.pager}>
+          <IconButton label={`Previous region: ${prev.label}`} icon={<ArrowLeft />} variant="outline" size="sm" tooltipSide="top" onClick={() => onStep(-1)} />
+          <span className={styles.pagerCount} aria-hidden="true">
+            {pad(index + 1)} <span>/ {pad(REGIONS.length)}</span>
+          </span>
+          <IconButton label={`Next region: ${next.label}`} icon={<ArrowRight />} variant="outline" size="sm" tooltipSide="top" onClick={() => onStep(1)} />
+        </div>
+      </div>
+
+      <div className={styles.stack}>
+        <AnimatePresence initial={false}>
+          <motion.div key={region.id} className={styles.cardInner} {...card}>
+            <div className={styles.plate}>
+              <motion.div className={styles.plateInner} {...settle}>
+                <Photo
+                  id={note?.photo}
+                  sizes="(min-width: 900px) 42vw, 100vw"
+                  credit="overlay"
+                  fallback={<CoverArt style={note?.art} seed={note?.seed} theme={PRINT} />}
+                />
+              </motion.div>
+            </div>
+
+            <motion.div className={styles.cardBody} {...rise}>
+              <VerticalText className={styles.cardJp}>{region.jp}</VerticalText>
+              <div className={styles.cardText}>
+                <h3 className={styles.cardTitle}>{region.label}</h3>
+                <p className={styles.knownFor}>{note?.knownFor || region.blurb}</p>
+                {note && (
+                  <p className={styles.place}>
+                    <span className={styles.placeLabel}>{hasPhoto ? 'Pictured' : 'Highlight'}</span>
+                    <span className={styles.placeName}>{hasPhoto && photo.caption ? photo.caption : note.place}</span>
+                    <span lang="ja" className={styles.placeJp}>
+                      {note.placeJp}
+                    </span>
+                  </p>
+                )}
+                <div className={styles.cardActions}>
+                  {count > 0 ? (
+                    <Button to={`/brochures?region=${region.id}`} variant="primary" iconRight={<ArrowRight />}>
+                      {`Browse ${region.label}`}
+                    </Button>
+                  ) : (
+                    <Button to="/studio" variant="secondary" iconRight={<PenLine />}>
+                      Make the first one
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </article>
+  );
+}
+
+/**
+ * 05 地方 — Japan's eight regions on the accurate map (<JapanMap>, loaded
+ * lazily as the section nears the viewport) beside a card for the chosen
+ * region. Hover or focus a region to preview it, click or press it to
+ * choose it; arrow keys travel across the map and the card has a pager.
+ * Opens on the region with the most brochures.
  */
 export function Regions() {
   const { brochures } = useBrochures();
   const counts = useMemo(() => countBy(brochures, 'region'), [brochures]);
-  const [activeId, setActiveId] = useState(() => busiestId(counts, REGIONS.map((r) => r.id)));
-  const tiles = useRef({});
-  const detailId = `${useId()}-region-detail`;
+  const [activeId, setActiveId] = useState(() => busiestId(counts, IDS));
+  const sectionRef = useRef(null);
+  const timer = useRef(0);
+  const near = useInView(sectionRef, { once: true, margin: '900px 0px' });
   const region = REGION_MAP[activeId] ?? REGIONS[0];
-  const regionIndex = REGIONS.findIndex((r) => r.id === region.id);
-  const inRegion = useMemo(() => brochuresWith(brochures, 'region', region.id, 3), [brochures, region.id]);
+  const index = IDS.indexOf(region.id);
 
-  const onKeyDown = (event) => {
-    let next = neighborInDirection(REGIONS, region.id, event.key);
-    if (event.key === 'Home') next = REGIONS[0].id;
-    if (event.key === 'End') next = REGIONS[REGIONS.length - 1].id;
-    if (!next || (next === region.id && !event.key.startsWith('Arrow'))) return;
-    event.preventDefault();
-    setActiveId(next);
-    tiles.current[next]?.focus();
-  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const select = useCallback((id) => {
+    window.clearTimeout(timer.current);
+    if (hasKey(REGION_MAP, id)) setActiveId(id);
+  }, []);
+
+  // Pointer / focus: wait for the pointer to rest; leaving the map cancels a pending preview.
+  const preview = useCallback(
+    (id) => {
+      window.clearTimeout(timer.current);
+      if (id) timer.current = window.setTimeout(() => select(id), PREVIEW_MS);
+    },
+    [select],
+  );
 
   return (
-    <section className={styles.section}>
+    <section ref={sectionRef} className={styles.section}>
       <div className="container">
         <SectionHead
           section={SECTIONS.regions}
@@ -120,86 +175,35 @@ export function Regions() {
         <div className={styles.layout}>
           <motion.figure className={styles.print} variants={fadeUp} initial="hidden" whileInView="show" viewport={viewportOnce}>
             <div className={styles.printHead} aria-hidden="true">
-              <span>日本地図</span>
-              <span>Schematic · not to scale</span>
+              <span lang="ja">日本地図</span>
+              <span>The eight regions</span>
               <span className={styles.compass}>N ↑</span>
             </div>
 
-            <div
-              className={styles.map}
-              style={{ '--cols': BOUNDS.cols, '--rows': BOUNDS.rows }}
-              role="group"
-              aria-label="Regions of Japan"
-              onKeyDown={onKeyDown}
-            >
-              <svg className={styles.rail} viewBox={`0 0 ${BOUNDS.cols} ${BOUNDS.rows}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                <polyline points={RAIL} className={styles.railLine} vectorEffect="non-scaling-stroke" />
-                <polyline points={BRIDGE} className={styles.bridgeLine} vectorEffect="non-scaling-stroke" />
-              </svg>
-
-              <span className={styles.sea} data-sea="west" aria-hidden="true">
-                <VerticalText className={styles.seaJp}>日本海</VerticalText>
-                <span className={styles.seaEn}>Sea of Japan</span>
-              </span>
-              <span className={styles.sea} data-sea="east" aria-hidden="true">
-                <VerticalText className={styles.seaJp}>太平洋</VerticalText>
-                <span className={styles.seaEn}>Pacific Ocean</span>
-              </span>
-
-              {REGIONS.map((r, i) => {
-                const active = r.id === region.id;
-                const count = counts[r.id] ?? 0;
-                const lines = r.jp.split('・');
-                return (
-                  <motion.button
-                    key={r.id}
-                    ref={(node) => {
-                      tiles.current[r.id] = node;
-                    }}
-                    type="button"
-                    className={styles.tile}
-                    data-active={active || undefined}
-                    data-pattern={PATTERNS[i % PATTERNS.length]}
-                    style={{ gridColumn: r.tile.x - BOUNDS.minX + 1, gridRow: r.tile.y - BOUNDS.minY + 1 }}
-                    custom={i}
-                    variants={tileIn}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={viewportOnce}
-                    tabIndex={active ? 0 : -1}
-                    aria-pressed={active}
-                    aria-controls={detailId}
-                    aria-label={`${r.label}, ${count > 0 ? pluralize(count, 'brochure') : 'no brochures yet'}`}
-                    onPointerEnter={(event) => event.pointerType === 'mouse' && setActiveId(r.id)}
-                    onFocus={() => setActiveId(r.id)}
-                    onClick={() => setActiveId(r.id)}
-                  >
-                    <span className={styles.face}>
-                      <span lang="ja" className={styles.tileJp} data-long={lines.length > 1 || undefined}>
-                        {lines.map((line) => (
-                          <span key={line}>{line}</span>
-                        ))}
-                      </span>
-                      <span className={styles.tileLabel}>{r.label.split(' ')[0]}</span>
-                      {count > 0 && <span className={styles.tileCount}>{count}</span>}
-                    </span>
-                  </motion.button>
-                );
-              })}
+            <div className={styles.mapSlot}>
+              {near ? (
+                <ErrorBoundary fallback={() => <MapUnavailable />}>
+                  <Suspense fallback={<MapPlaceholder />}>
+                    <RegionsMap activeId={region.id} onPreview={preview} onSelect={select} />
+                  </Suspense>
+                </ErrorBoundary>
+              ) : (
+                <MapPlaceholder />
+              )}
             </div>
 
             <figcaption className={styles.caption}>
-              <span>
-                <span className={styles.railKey} aria-hidden="true" /> Shinkansen spine
+              <span>{MAP_SOURCE}</span>
+              <span className={styles.keys} aria-hidden="true">
+                Tab · ← ↑ → ↓ to travel
               </span>
-              <span>
-                <span className={styles.bridgeKey} aria-hidden="true" /> Seto Ōhashi bridge
+              <span className={styles.tap} aria-hidden="true">
+                Tap a region
               </span>
-              <span className={styles.keys}>← ↑ → ↓ to travel</span>
             </figcaption>
           </motion.figure>
 
-          <RegionDetail id={detailId} region={region} index={regionIndex} count={counts[region.id] ?? 0} brochures={inRegion} />
+          <RegionCard region={region} index={index} count={counts[region.id] ?? 0} onStep={(delta) => select(stepId(IDS, region.id, delta))} />
         </div>
       </div>
     </section>

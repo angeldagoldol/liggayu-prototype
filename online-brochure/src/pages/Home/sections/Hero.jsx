@@ -4,15 +4,19 @@ import { ArrowDown, ArrowRight, PenLine } from 'lucide-react';
 import { Button, Magnetic, RevealText, VerticalText } from '../../../components/ui/index.js';
 import { useFinePointer } from '../../../hooks/useMediaQuery.js';
 import { ease } from '../../../lib/motion.js';
-import { SECTIONS } from '../homeContent.js';
+import { HERO_PANELS, SECTIONS } from '../homeContent.js';
 import { useMotionPaused } from '../homeMotion.js';
 import { HeroStage } from './HeroStage.jsx';
 import { MotionToggle } from './MotionToggle.jsx';
 import { Petals } from './Petals.jsx';
+import { PhotoCredits } from './PhotoCredits.jsx';
 import { TokyoClock } from './TokyoClock.jsx';
 import styles from './Hero.module.css';
 
 const HEADLINE = ['Japan, ', { text: 'folded', className: `serif-italic ${styles.folded}` }, ' into pages.'];
+
+/** The tri-fold's photographs, credited left to right as the brochure reads. */
+const HERO_CREDITS = [HERO_PANELS.left, HERO_PANELS.middle, HERO_PANELS.right].map((panel) => ({ id: panel.photo, label: panel.title }));
 
 /** Copy blocks rise in after the headline. */
 const rise = (delay) => ({
@@ -35,7 +39,8 @@ function Spine() {
 
 /**
  * The first impression: masthead headline, pitch and CTAs beside an
- * interactive tri-fold brochure under a rising sun, with drifting sakura and
+ * interactive tri-fold brochure of real photographs (Fuji, Fushimi Inari,
+ * Shibuya; credited under it) under a rising sun, with drifting sakura and
  * a meta strip (counts, the page's "Pause motion" control, live Tokyo clock).
  * The brochure follows the pointer and folds shut as the hero scrolls away.
  *
@@ -101,6 +106,9 @@ export function Hero({ brochureCount = 0 }) {
 
         <div className={styles.stage}>
           <HeroStage pointerX={pointerX} pointerY={pointerY} progress={scrollYProgress} />
+          <motion.div {...rise(1.1)}>
+            <PhotoCredits slots={HERO_CREDITS} className={styles.credits} />
+          </motion.div>
         </div>
         <Spine />
       </div>

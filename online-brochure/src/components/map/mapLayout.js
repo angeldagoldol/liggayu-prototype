@@ -173,3 +173,57 @@ export function placeLabels(markers, { radius, fontSize, bounds, texts, obstacle
 function round(n) {
   return Math.round(n * 10) / 10;
 }
+
+/**
+ * Bounding box ({ x, y, width, height }) of SVG path data written with M, l
+ * and z commands (what scripts/geo emits); null for empty or other data.
+ */
+export function pathBounds(d) {
+  if (typeof d !== 'string' || !d) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let x = 0;
+  let y = 0;
+  let startX = 0;
+  let startY = 0;
+  const visit = () => {
+    minX = Math.min(minX, x);
+    maxX = Math.max(maxX, x);
+    minY = Math.min(minY, y);
+    maxY = Math.max(maxY, y);
+  };
+  for (const [, cmd, args] of d.matchAll(/([MLlZz])([^MLlZz]*)/g)) {
+    const n = (args.match(/-?\d*\.?\d+(?:e-?\d+)?/gi) ?? []).map(Number);
+    if (cmd === 'z' || cmd === 'Z') {
+      x = startX;
+      y = startY;
+      continue;
+    }
+    for (let i = 0; i + 1 < n.length; i += 2) {
+      if (cmd === 'l') {
+        x += n[i];
+        y += n[i + 1];
+      } else {
+        x = n[i];
+        y = n[i + 1];
+      }
+      if (cmd === 'M' && i === 0) {
+        startX = x;
+        startY = y;
+      }
+      visit();
+    }
+  }
+  return Number.isFinite(minX) ? { x: minX, y: minY, width: maxX - minX, height: maxY - minY } : null;
+}
+
+/** The union of boxes (nulls skipped); null when there are none. */
+export function unionBounds(boxes) {
+  const list = boxes.filter(Boolean);
+  if (!list.length) return null;
+  const x = Math.min(...list.map((b) => b.x));
+  const y = Math.min(...list.map((b) => b.y));
+  return { x, y, width: Math.max(...list.map((b) => b.x + b.width)) - x, height: Math.max(...list.map((b) => b.y + b.height)) - y };
+}

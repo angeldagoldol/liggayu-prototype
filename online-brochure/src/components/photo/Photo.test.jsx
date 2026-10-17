@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createPhotoRegistry } from '../../data/photos/registry.js';
 import { Photo } from './Photo.jsx';
+import { PhotoContext, usePhotoRecord } from './photoContext.js';
+import { PhotoCredit } from './PhotoCredit.jsx';
 import { renderedWidth } from './renderedWidth.js';
 
 const registry = createPhotoRegistry(
@@ -156,5 +158,59 @@ describe('<Photo> sizes', () => {
     expect(renderedWidth(39, 55, 1.5)).toBe(120);
     expect(renderedWidth(300, 0, 1.5)).toBe(320);
     expect(renderedWidth(0, 400, 1.5)).toBeNull();
+  });
+});
+
+describe('<Photo> with a brochure’s own photos ("user:<key>")', () => {
+  const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  const brochure = {
+    userPhotos: {
+      dusk: { src: PNG, alt: 'The gate at dusk', width: 1200, height: 800, focus: '20% 70%', credit: { author: 'Aiko', license: 'CC BY 4.0' } },
+      remote: { src: 'https://example.com/x.jpg', alt: 'Hotlink' },
+    },
+  };
+
+  it('renders an upload from the surrounding PhotoContext, with a plain src and its credit', () => {
+    const { container } = render(
+      <PhotoContext.Provider value={brochure}>
+        <Photo id="user:dusk" credit="overlay" fallback={<Art />} />
+      </PhotoContext.Provider>,
+    );
+    const img = screen.getByRole('img', { name: 'The gate at dusk' });
+    expect(img).toHaveAttribute('src', PNG);
+    expect(img).not.toHaveAttribute('srcset');
+    expect(img).not.toHaveAttribute('sizes');
+    expect(container.firstChild.style.getPropertyValue('--photo-focus')).toBe('20% 70%');
+    expect(container.textContent).toContain('Photo: Aiko · CC BY 4.0');
+  });
+
+  it('takes the brochure as a prop, and falls back for hotlinks or missing keys', () => {
+    render(<Photo id="user:dusk" brochure={brochure} />);
+    expect(screen.getByRole('img', { name: 'The gate at dusk' })).toBeInTheDocument();
+    const remote = render(<Photo id="user:remote" brochure={brochure} fallback={<Art />} />);
+    expect(remote.container.querySelector('img')).toBeNull();
+    expect(remote.getByTestId('art')).toBeInTheDocument();
+    const missing = render(<Photo id="user:dusk" fallback={<Art />} />);
+    expect(missing.container.firstChild).toHaveAttribute('data-state', 'fallback');
+  });
+
+  it('usePhotoRecord resolves ids in context', () => {
+    let seen = null;
+    function Probe() {
+      seen = usePhotoRecord('user:dusk');
+      return null;
+    }
+    render(
+      <PhotoContext.Provider value={brochure}>
+        <Probe />
+      </PhotoContext.Provider>,
+    );
+    expect(seen).toMatchObject({ id: 'user:dusk', available: true, user: true });
+  });
+
+  it('<PhotoCredit> takes a creditsFor() entry and can drop its label', () => {
+    const { container } = render(<PhotoCredit credit={{ author: 'Aiko', license: 'CC0' }} label="" links={false} />);
+    expect(container.textContent).toBe('Aiko · CC0');
+    expect(render(<PhotoCredit credit={{}} />).container.textContent).toBe('');
   });
 });

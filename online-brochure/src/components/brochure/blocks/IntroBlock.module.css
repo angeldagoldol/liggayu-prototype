@@ -4,24 +4,51 @@
   height: 100%;
 }
 
-.rule {
-  flex: none;
-  margin: 3.6cqw 0 3.4cqw;
+.text {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
 }
 
-/* The photograph sits between the headline and the copy. */
+/* With a photograph: plate + pull quote on the outer side, story inside. */
+.intro[data-photo] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'media text'
+    'pull text';
+  column-gap: 5.4cqw;
+}
+
+[data-side='recto'] .intro[data-photo] {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-areas:
+    'text media'
+    'text pull';
+}
+
+.intro[data-photo] .text {
+  grid-area: text;
+}
+
+/* The plate bleeds off the outer edge of the page. */
 .media {
+  grid-area: media;
   position: relative;
-  flex: none;
-  height: 34cqw;
-  margin-top: 3.6cqw;
-  outline: var(--hair) solid var(--b-rule);
-  outline-offset: 0.8cqw;
-  --photo-credit-size: 1.15cqw;
+  min-height: 30cqw;
+  margin-inline-start: calc(-1 * var(--pad-x));
+  --photo-credit-size: 1.1cqw;
+  --photo-chip-left: auto;
+  --photo-chip-right: 1.6cqw;
+  --photo-chip-bottom: 1.6cqw;
 }
 
-.media + .rule {
-  margin-top: 3.4cqw;
+[data-side='recto'] .media {
+  margin-inline: 0 calc(-1 * var(--pad-x));
+  --photo-chip-left: 1.6cqw;
+  --photo-chip-right: auto;
 }
 
 .media > .photo {
@@ -29,14 +56,24 @@
   inset: 0;
 }
 
+.pullSlot {
+  grid-area: pull;
+}
+
+.rule {
+  flex: none;
+  margin: 3.4cqw 0 3.2cqw;
+}
+
 .copy {
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
-  font-size: var(--copy, 2.5cqw);
+  font-size: calc(var(--copy, 2.5cqw) * var(--fit, 1));
   line-height: 1.62;
   color: var(--b-body);
   hyphens: auto;
+  text-wrap: pretty;
 }
 
 .copy[data-columns='2'] {
@@ -45,16 +82,21 @@
   column-rule: var(--hair) solid var(--b-rule);
 }
 
-.copy[data-long] {
-  mask-image: linear-gradient(to bottom, #000 82%, transparent);
-}
-
 .copy p {
   margin: 0;
 }
 
 .copy p + p {
   margin-top: 0.9em;
+}
+
+.copy[data-dropcap] {
+  /* Room for the drop cap's ascent inside the clipped region. */
+  padding-top: 0.6em;
+}
+
+.rule:has(+ .copy[data-dropcap]) {
+  margin-bottom: 1.8cqw;
 }
 
 .copy[data-dropcap] p:first-child::first-letter {
@@ -89,9 +131,10 @@
   font-family: var(--b-font);
   font-size: var(--fs, 4.2cqw);
   font-weight: 400;
-  line-height: 1.16;
+  line-height: 1.18;
   letter-spacing: -0.02em;
   color: var(--b-ink);
+  text-wrap: pretty;
 }
 
 [data-typeface='serif'] .pull p {
@@ -100,4 +143,15 @@
     'opsz' 144,
     'SOFT' 100,
     'WONK' 1;
+}
+
+/* Under the plate the pull quote hangs from a short accent rule. */
+.pullSlot .pull {
+  margin-top: 0;
+  padding-top: 3.4cqw;
+  border-top: 0;
+}
+
+.pullSlot .bracket {
+  font-size: 5.6cqw;
 }

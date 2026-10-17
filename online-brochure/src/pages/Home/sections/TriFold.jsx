@@ -1,51 +1,49 @@
 import { useEffect } from 'react';
 import { animate, motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
 import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
+import { Photo } from '../../../components/photo/Photo.jsx';
 import { VerticalText } from '../../../components/ui/index.js';
+import { getPhoto } from '../../../data/photos/index.js';
 import { cn } from '../../../lib/cn.js';
 import { ease, spring } from '../../../lib/motion.js';
+import { HERO_PANELS as PANELS } from '../homeContent.js';
+import { allAvailable } from '../photoCredits.js';
 import { flapAngles, openness, shade } from './trifold.js';
 import styles from './TriFold.module.css';
 
 /** The demo brochure is a printed object: it keeps its own paper colours in both themes. */
 const PRINT = { paper: '#f4eee2', ink: '#22140f', accent: '#d23a22', accent2: '#1d4f7a', muted: '#6e5b4f' };
 
-const PANELS = {
-  left: {
-    art: 'fuji',
-    seed: 23,
-    jp: '富士山',
-    title: 'Mount Fuji',
-    body: 'Japan’s highest peak rises 3,776 m between Shizuoka and Yamanashi.',
-    folio: '02',
-  },
-  middle: {
-    art: 'hinomaru',
-    seed: 7,
-    jp: '日の出',
-    title: 'First light',
-    body: 'Nihon, the country’s own name for itself, literally means “origin of the sun”.',
-    folio: '03',
-  },
-  right: {
-    art: 'seigaiha',
-    seed: 61,
-    jp: '青海波',
-    title: 'Seigaiha',
-    body: 'Overlapping waves — an old pattern that wishes for calm seas and good fortune.',
-    folio: '04',
-  },
-};
-
 const TILT = { stiffness: 110, damping: 18, mass: 0.7 };
 const FOLD = { stiffness: 140, damping: 26 };
 
-/** One inside panel: artwork over a printed text block. */
-function ArtPanel({ panel }) {
+/** The scene's accessible name: it says "photographs" only once they are all on show. */
+function sceneLabel() {
+  const photos = allAvailable(Object.values(PANELS).map((p) => p.photo), getPhoto);
+  return photos
+    ? 'A tri-fold brochure about Japan, unfolding: photographs of Mount Fuji, the torii of Fushimi Inari and Shibuya Crossing at night'
+    : 'A tri-fold brochure about Japan, unfolding: panels on Mount Fuji, the torii of Fushimi Inari and Shibuya Crossing';
+}
+
+/**
+ * One inside panel: a full-bleed photograph (or, until it is downloaded, the
+ * panel's generative art) over a printed text block. Credits for the three
+ * photos are printed under the hero stage (<PhotoCredits>), since the panels
+ * live inside one 3D object.
+ */
+function PhotoPanel({ panel }) {
   return (
     <div className={styles.panel}>
       <div className={styles.art}>
-        <CoverArt style={panel.art} seed={panel.seed} theme={PRINT} />
+        <Photo
+          id={panel.photo}
+          sizes="240px"
+          priority
+          credit="none"
+          className={styles.photo}
+          fallback={<CoverArt style={panel.art} seed={panel.seed} theme={PRINT} />}
+        />
+        <span className={styles.plateEdge} aria-hidden="true" />
       </div>
       <div className={styles.copy}>
         <span className={styles.kicker} lang="ja">
@@ -151,7 +149,7 @@ export function TriFold({ pointerX, pointerY, fold }) {
     <div
       className={styles.scene}
       role="img"
-      aria-label="An illustrated tri-fold brochure about Japan, unfolding: Mount Fuji, the rising sun and seigaiha waves"
+      aria-label={sceneLabel()}
       style={{
         '--p-paper': PRINT.paper,
         '--p-ink': PRINT.ink,
@@ -170,12 +168,12 @@ export function TriFold({ pointerX, pointerY, fold }) {
         <motion.div className={styles.object} style={{ rotateX, rotateY, rotateZ, scale }}>
           <div className={styles.middle}>
             <div className={styles.face}>
-              <ArtPanel panel={PANELS.middle} />
+              <PhotoPanel panel={PANELS.middle} />
             </div>
 
             <motion.div className={cn(styles.flap, styles.left)} style={{ rotateY: leftAngle, z: 3 }}>
               <div className={styles.face}>
-                <ArtPanel panel={PANELS.left} />
+                <PhotoPanel panel={PANELS.left} />
                 <motion.span className={styles.shade} style={{ opacity: leftShade }} />
               </div>
               <div className={cn(styles.face, styles.back)}>
@@ -185,7 +183,7 @@ export function TriFold({ pointerX, pointerY, fold }) {
 
             <motion.div className={cn(styles.flap, styles.right)} style={{ rotateY: rightAngle, z: 1.5 }}>
               <div className={styles.face}>
-                <ArtPanel panel={PANELS.right} />
+                <PhotoPanel panel={PANELS.right} />
                 <motion.span className={cn(styles.shade, styles.shadeRight)} style={{ opacity: rightShade }} />
               </div>
               <div className={cn(styles.face, styles.back)}>

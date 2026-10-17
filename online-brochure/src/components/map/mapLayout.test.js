@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { estimateTextWidth, fitView, layoutMarkers, pinFrame, placeLabels, projectPins } from './mapLayout.js';
+import { estimateTextWidth, fitView, layoutMarkers, pathBounds, pinFrame, placeLabels, projectPins, unionBounds } from './mapLayout.js';
 
 const project = (lat, lng) => (Number.isFinite(lat) && Number.isFinite(lng) ? { x: lng * 10, y: (90 - lat) * 10, inset: lat < 27 ? 'okinawa' : null, inFrame: lng < 150 } : null);
 
@@ -129,5 +129,19 @@ describe('estimateTextWidth', () => {
     expect(estimateTextWidth('京都', 10)).toBe(20);
     expect(estimateTextWidth('kyoto', 10)).toBeLessThan(30);
     expect(estimateTextWidth(undefined, 10)).toBe(0);
+  });
+});
+
+describe('pathBounds / unionBounds', () => {
+  it('measures M/l/z path data, including several rings', () => {
+    expect(pathBounds('M10 20l5 0 0 5-5 0z')).toEqual({ x: 10, y: 20, width: 5, height: 5 });
+    expect(pathBounds('M10 20l5-3zM100 100l-2 4z')).toEqual({ x: 10, y: 17, width: 90, height: 87 });
+    expect(pathBounds('')).toBeNull();
+    expect(pathBounds(null)).toBeNull();
+  });
+
+  it('joins boxes and skips nulls', () => {
+    expect(unionBounds([{ x: 0, y: 0, width: 2, height: 2 }, null, { x: 5, y: -1, width: 1, height: 1 }])).toEqual({ x: 0, y: -1, width: 6, height: 3 });
+    expect(unionBounds([null])).toBeNull();
   });
 });
