@@ -1,0 +1,20 @@
+.reveal {
+  display: block;
+}
+
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Room for descenders and italic overhang inside the clip. */
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+  padding-inline: 0.04em;
+  margin-inline: -0.04em;
+}
+
+.piece {
+  display: inline-block;
+  transform-origin: 0 100%;
+  will-change: transform;
+}
