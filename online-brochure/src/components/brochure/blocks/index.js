@@ -10,9 +10,11 @@ import { PhrasesBlock } from './PhrasesBlock.jsx';
 import { PricingBlock } from './PricingBlock.jsx';
 import { QuoteBlock } from './QuoteBlock.jsx';
 import { StatsBlock } from './StatsBlock.jsx';
+import { dict } from '../../../data/lookup.js';
 
-/** Page type → block component (types from data/schema.js PAGE_TYPES). */
-export const BLOCKS = {
+/** Page type → block component (types from data/schema.js PAGE_TYPES). No prototype, so
+ *  a stored type like "constructor" falls back instead of finding Object. */
+export const BLOCKS = dict({
   cover: CoverBlock,
   intro: IntroBlock,
   features: FeaturesBlock,
@@ -24,7 +26,7 @@ export const BLOCKS = {
   quote: QuoteBlock,
   contact: ContactBlock,
   back: BackBlock,
-};
+});
 
 /** Full-bleed page types draw their own layout instead of the running head and folio. */
 export const FULL_BLEED = new Set(['cover', 'back']);

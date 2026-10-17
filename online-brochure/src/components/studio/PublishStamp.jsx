@@ -20,6 +20,7 @@ const KINDS = {
  * The finishing flourish: a vermilion hanko slams onto the page with an ink
  * splash, then "Published · 出版しました". Calls `onDone` when it has played
  * (sooner under reduced motion). Clicking anywhere or Escape skips it.
+ * Hidden from assistive tech: pair it with a toast that says what happened.
  *   <PublishStamp kind="publish" title="Tokyo in 48 Hours" onDone={…} />
  */
 export function PublishStamp({ kind = 'publish', title, onDone }) {
@@ -48,8 +49,8 @@ export function PublishStamp({ kind = 'publish', title, onDone }) {
       animate={{ opacity: 1, transition: { duration: 0.25 } }}
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
       onClick={() => done.current?.()}
-      role="status"
-      aria-live="assertive"
+      // Decorative: the "Published" toast raised with it is the announcement.
+      aria-hidden="true"
       data-print="hide"
     >
       <motion.div

@@ -25,6 +25,15 @@
   --num: 4.4cqw;
 }
 
+/* Three rows of cells: a little less air and type, so four lines still fit. */
+.grid[data-rows='3'] .copy {
+  padding-top: 2.2cqw;
+}
+
+.grid[data-rows='3'] .text {
+  font-size: 2.35cqw;
+}
+
 .item {
   display: grid;
   grid-template-columns: 6cqw minmax(0, 1fr);
@@ -41,7 +50,7 @@
   font-size: var(--num, 6cqw);
   font-weight: 500;
   line-height: 1;
-  color: var(--b-accent);
+  color: var(--b-accent-text);
 }
 
 .icon {
@@ -87,8 +96,8 @@
 
 .text {
   margin: 1.2cqw 0 0;
-  font-size: 2.1cqw;
-  line-height: 1.5;
+  font-size: 2.45cqw;
+  line-height: 1.48;
   color: var(--b-body);
 }
 
@@ -116,5 +125,5 @@
 }
 
 .grid[data-columns='1'] .text {
-  font-size: 2.35cqw;
+  font-size: 2.6cqw;
 }

@@ -1,5 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { BROCHURES } from '../data/brochures.js';
+import { sanitizeStoredBrochure } from '../data/sanitize.js';
 import { readStorage, writeStorage } from '../lib/storage.js';
 import { createId, uniqueSlug } from '../lib/id.js';
 import { estimateReadMinutes } from '../lib/format.js';
@@ -7,12 +8,15 @@ import { estimateReadMinutes } from '../lib/format.js';
 const BrochureContext = createContext(null);
 const RECENT_LIMIT = 8;
 
-/** Drop anything from storage that does not look like a brochure. */
+/**
+ * Brochures from storage, normalised so every renderer can trust them
+ * (data/sanitize.js): anything without a string id, slug and at least one
+ * readable page is dropped, unreadable pages are skipped and fields of the
+ * wrong type are reset. Valid records come back unchanged.
+ */
 export function sanitizeUserBrochures(value) {
   if (!Array.isArray(value)) return [];
-  return value.filter(
-    (b) => b && typeof b === 'object' && typeof b.id === 'string' && typeof b.slug === 'string' && Array.isArray(b.pages),
-  );
+  return value.map(sanitizeStoredBrochure).filter(Boolean);
 }
 
 /** A unique list of string ids; anything else in storage is ignored. */
@@ -36,11 +40,18 @@ export function BrochureProvider({ children }) {
   const [userBrochures, setUserBrochures] = useState(STORAGE_READERS.brochures);
   const [favoriteIds, setFavoriteIds] = useState(STORAGE_READERS.favorites);
   const [recentIds, setRecentIds] = useState(STORAGE_READERS.recent);
+  // The latest user list, for writes that must know synchronously whether
+  // storage accepted them. Updated wherever the state is replaced.
+  const userRef = useRef(userBrochures);
 
   // Keep several open tabs in step: a brochure published or favourited in one
   // tab shows up in the others without a reload.
   useEffect(() => {
-    const setters = { brochures: setUserBrochures, favorites: setFavoriteIds, recent: setRecentIds };
+    const setUser = (list) => {
+      userRef.current = list;
+      setUserBrochures(list);
+    };
+    const setters = { brochures: setUser, favorites: setFavoriteIds, recent: setRecentIds };
     const onStorage = (event) => {
       if (event.storageArea !== window.localStorage) return;
       if (event.key === null) {
@@ -56,41 +67,53 @@ export function BrochureProvider({ children }) {
 
   const brochures = useMemo(() => [...userBrochures, ...BROCHURES], [userBrochures]);
 
+  /**
+   * Write the next user list to storage first and only show it when the write
+   * succeeded, so the UI never claims a brochure is saved when it is not
+   * (full quota, storage disabled). Returns whether it was saved.
+   */
   const persistUser = useCallback((updater) => {
-    setUserBrochures((list) => {
-      const next = updater(list);
-      writeStorage('brochures', next);
-      return next;
-    });
+    const next = updater(userRef.current);
+    if (!writeStorage('brochures', next)) return false;
+    userRef.current = next;
+    setUserBrochures(next);
+    return true;
   }, []);
 
   const getBySlug = useCallback((slug) => brochures.find((b) => b.slug === slug) ?? null, [brochures]);
   const getById = useCallback((id) => brochures.find((b) => b.id === id) ?? null, [brochures]);
 
-  /** Create or update a user brochure. Returns the saved copy (with final id/slug). */
+  /**
+   * Create or update a user brochure. Returns the saved copy (with final
+   * id/slug), or null when storage refused the write (nothing changes then).
+   */
   const saveBrochure = useCallback(
     (draft) => {
-      const existing = draft.id ? userBrochures.find((b) => b.id === draft.id) : undefined;
+      const list = userRef.current;
+      const all = [...list, ...BROCHURES];
+      const existing = draft.id ? list.find((b) => b.id === draft.id) : undefined;
       // Only the brochure being updated may keep its own slug; a draft that
       // still carries a built-in's id (a remix) must not take that slug.
-      const taken = new Set(brochures.filter((b) => b !== existing).map((b) => b.slug));
+      const taken = new Set(all.filter((b) => b !== existing).map((b) => b.slug));
+      const idTaken = Boolean(draft.id) && all.some((b) => b.id === draft.id);
       const saved = {
         ...draft,
-        id: existing ? draft.id : draft.id && !getById(draft.id) ? draft.id : createId('b'),
+        id: existing ? draft.id : draft.id && !idTaken ? draft.id : createId('b'),
         slug: uniqueSlug(draft.slug || draft.title, taken),
         source: 'user',
         updatedAt: new Date().toISOString(),
         readMinutes: estimateReadMinutes(draft),
       };
-      persistUser((list) => (existing ? list.map((b) => (b.id === saved.id ? saved : b)) : [saved, ...list]));
-      return saved;
+      const ok = persistUser((current) => (existing ? current.map((b) => (b.id === saved.id ? saved : b)) : [saved, ...current]));
+      return ok ? saved : null;
     },
-    [brochures, userBrochures, getById, persistUser],
+    [persistUser],
   );
 
+  /** Remove a user brochure (and its favourite/recent entries). Returns false when storage refused. */
   const deleteBrochure = useCallback(
     (id) => {
-      persistUser((list) => list.filter((b) => b.id !== id));
+      if (!persistUser((list) => list.filter((b) => b.id !== id))) return false;
       setFavoriteIds((ids) => {
         if (!ids.includes(id)) return ids;
         const next = ids.filter((x) => x !== id);
@@ -103,6 +126,7 @@ export function BrochureProvider({ children }) {
         writeStorage('recent', next);
         return next;
       });
+      return true;
     },
     [persistUser],
   );

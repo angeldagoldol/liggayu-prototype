@@ -17,7 +17,8 @@ export function useStudio(initialDoc, initialSelectedId) {
 /**
  * Debounced autosave of `draft` ({ doc, selectedId }) to a storage key.
  * The value it starts with counts as already saved. Pending work is flushed
- * when the editor unmounts or the tab is hidden, so nothing typed is lost.
+ * on visibilitychange → hidden, on pagehide and when the editor unmounts,
+ * so nothing typed is lost.
  * Returns { saving, savedAt, error, flush, discard }.
  */
 export function useAutosave(key, draft, { delay = 600, enabled = true, initialSavedAt = 0 } = {}) {
@@ -45,13 +46,20 @@ export function useAutosave(key, draft, { delay = 600, enabled = true, initialSa
     return () => clearTimeout(timer);
   }, [draft, saved.draft, enabled, delay, save]);
 
-  // Flush on tab hide and on unmount (navigation away mid-debounce).
+  // Flush on visibilitychange → hidden (switching apps on a phone, where the
+  // OS may discard the tab with no pagehide), on pagehide, and on unmount
+  // (navigation away mid-debounce).
   useEffect(() => {
     const flushPending = () => {
       if (pending.current && active.current) writeDraft(key, pending.current, Date.now());
     };
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') flushPending();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
     window.addEventListener('pagehide', flushPending);
     return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
       window.removeEventListener('pagehide', flushPending);
       flushPending();
     };

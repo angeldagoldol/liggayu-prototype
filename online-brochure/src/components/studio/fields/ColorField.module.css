@@ -61,7 +61,7 @@
   width: 100%;
   height: 40px;
   padding: 0 0.65rem;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-sm);
   background: var(--surface);
   font-family: var(--font-mono);

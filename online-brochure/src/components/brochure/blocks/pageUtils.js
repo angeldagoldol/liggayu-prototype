@@ -5,24 +5,13 @@
 import { PAGE_TYPES } from '../../../data/schema.js';
 import { ensureContrast, mix, normalizeTheme, readableOn } from '../art/color.js';
 import { pad } from '../../../lib/format.js';
+import { dict } from '../../../data/lookup.js';
 
-/** Japanese section names, set vertically in the page margin. */
-export const SECTION_JP = {
-  cover: '表紙',
-  intro: 'はじめに',
-  features: '見どころ',
-  gallery: '写真',
-  stats: '数字',
-  agenda: '旅程',
-  pricing: '料金',
-  phrases: '会話',
-  quote: 'お客様の声',
-  contact: 'お問い合わせ',
-  back: '裏表紙',
-};
+/** Japanese section names, set vertically in the page margin: PAGE_TYPES[type].jp. */
+export const SECTION_JP = dict(Object.fromEntries(Object.entries(PAGE_TYPES).map(([type, meta]) => [type, meta.jp])));
 
 /** English section names for the folio line. */
-export const SECTION_EN = {
+export const SECTION_EN = dict({
   cover: 'Cover',
   intro: 'Introduction',
   features: 'Highlights',
@@ -34,7 +23,7 @@ export const SECTION_EN = {
   quote: 'Voices',
   contact: 'Contact',
   back: 'Colophon',
-};
+});
 
 const KANJI_DIGITS = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
 
@@ -131,12 +120,15 @@ const FONTS = { serif: 'var(--font-display)', sans: 'var(--font-sans)', mono: 'v
 
 /**
  * CSS custom properties for a page root. Accent and muted text colours are
- * nudged toward the ink until they read at 4.5:1 on the paper, so any theme
- * (including user-made ones) stays legible.
+ * nudged toward the ink until they read at 4.5:1 on the paper (and on the
+ * tinted --b-soft), so any theme (including user-made ones) stays legible.
+ * Small accent-coloured text uses --b-accent-text; raw --b-accent is for
+ * rules, dots and type at 24px or more.
  */
 export function themeVars(theme) {
   const t = normalizeTheme(theme);
   const onAccent = readableOn(t.accent, [t.paper, t.ink, '#ffffff', '#16140f']);
+  const soft = mix(t.paper, t.accent, 0.12);
   return {
     '--b-paper': t.paper,
     '--b-ink': t.ink,
@@ -147,6 +139,8 @@ export function themeVars(theme) {
     '--b-accent-text': ensureContrast(t.accent, t.paper, 4.5, t.ink),
     '--b-muted-text': ensureContrast(t.muted, t.paper, 4.5, t.ink),
     '--b-on-accent': onAccent,
-    '--b-soft': mix(t.paper, t.accent, 0.12),
+    '--b-soft': soft,
+    // Accent text on the tinted --b-soft panels (the highlighted price).
+    '--b-accent-on-soft': ensureContrast(t.accent, soft, 4.5, t.ink),
   };
 }

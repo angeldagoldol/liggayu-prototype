@@ -13,7 +13,8 @@ import styles from './Field.module.css';
 export function Field({ label, hint, error, required = false, className, children, id: idProp, labelHidden = false }) {
   const autoId = useId();
   const id = idProp ?? autoId;
-  const hintId = hint ? `${id}-hint` : undefined;
+  // The error replaces the hint, so only what is rendered is referenced.
+  const hintId = hint && !error ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
 
@@ -37,7 +38,7 @@ export function Field({ label, hint, error, required = false, className, childre
         )}
       </label>
       {control}
-      {hint && !error && (
+      {hintId && (
         <p id={hintId} className={styles.hint}>
           {hint}
         </p>

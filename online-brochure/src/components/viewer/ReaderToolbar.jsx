@@ -2,8 +2,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, Heart, LayoutGrid, Maximize, Minimize, Printer, Share2, ZoomIn, ZoomOut } from 'lucide-react';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useMediaQuery } from '../../hooks/useMediaQuery.js';
+import { libraryPath } from '../../lib/librarySearch.js';
 import { ease, spring } from '../../lib/motion.js';
 import { Button, Hanko, IconButton } from '../ui/index.js';
+import { stepZoom } from './layout.js';
 import { MoreMenu } from './MoreMenu.jsx';
 import { sealText } from './pageMeta.js';
 import styles from './ReaderToolbar.module.css';
@@ -65,13 +67,15 @@ function FavoriteToggle({ brochure }) {
 export function ReaderToolbar({ brochure, indicator, onShare, overview, zoom, fullscreen, onPrint, onPlan }) {
   const roomy = useMediaQuery('(min-width: 1180px)');
   const tablet = useMediaQuery('(min-width: 760px)');
-  const zoomLabel = `${Math.round(zoom.value * 100)}%`;
+  const percent = (value) => `${Math.round(value * 100)}%`;
+  const zoomLabel = percent(zoom.value);
 
   const items = {
     overview: { id: 'overview', label: overview.open ? 'Close overview' : 'All pages', icon: <LayoutGrid />, onSelect: overview.onToggle, disabled: overview.disabled, hint: 'Grid' },
     share: { id: 'share', label: 'Share', icon: <Share2 />, onSelect: onShare },
-    zoomIn: { id: 'zoom-in', label: 'Zoom in', icon: <ZoomIn />, onSelect: zoom.onIn, disabled: !zoom.canIn, hint: zoomLabel },
-    zoomOut: { id: 'zoom-out', label: 'Zoom out', icon: <ZoomOut />, onSelect: zoom.onOut, disabled: !zoom.canOut },
+    // Hints name the level each item zooms to.
+    zoomIn: { id: 'zoom-in', label: 'Zoom in', icon: <ZoomIn />, onSelect: zoom.onIn, disabled: !zoom.canIn, hint: zoom.canIn ? percent(stepZoom(zoom.value, 1)) : undefined },
+    zoomOut: { id: 'zoom-out', label: 'Zoom out', icon: <ZoomOut />, onSelect: zoom.onOut, disabled: !zoom.canOut, hint: zoom.canOut ? percent(stepZoom(zoom.value, -1)) : undefined },
     fullscreen: {
       id: 'fullscreen',
       label: fullscreen.active ? 'Exit full screen' : 'Full screen',
@@ -90,7 +94,8 @@ export function ReaderToolbar({ brochure, indicator, onShare, overview, zoom, fu
   return (
     <header className={styles.toolbar}>
       <div className={styles.start}>
-        <Button variant="ghost" size="sm" to="/brochures" iconLeft={<ArrowLeft />} className={styles.back} aria-label="Back to the library">
+        {/* Back to the Library view the visitor came from, filters and all. */}
+        <Button variant="ghost" size="sm" to={libraryPath()} iconLeft={<ArrowLeft />} className={styles.back} aria-label="Back to the library">
           <span className={styles.backLabel}>Library</span>
         </Button>
         <span className={styles.rule} aria-hidden="true" />

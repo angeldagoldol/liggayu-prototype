@@ -26,12 +26,18 @@ export function ContactBlock({ page, brochure, index }) {
   const details = list(page.details, 4).filter((d) => text(d.value));
   const titleJp = text(brochure.titleJp) || '旅';
   const interactive = !isStatic && typeof onCta === 'function';
+  // 〒, the Japan Post mark, is a ghost in the open space above the ticket.
+  // It hangs off the ticket's top edge so the ticket (whose height depends on
+  // the details) never hides part of the glyph.
+  const postmark = (
+    <span className={`${type.watermark} ${styles.postmark}`} lang="ja" aria-hidden="true">
+      〒
+    </span>
+  );
 
   return (
     <div className={styles.contact}>
-      <span className={`${type.watermark} ${styles.postmark}`} lang="ja" aria-hidden="true">
-        〒
-      </span>
+      {details.length === 0 && postmark}
       <header className={type.header}>
         {heading && (
           <Reveal as="h2" className={`${type.heading} ${type.clamp}`} style={{ '--fs': `${fitSize(heading, { max: 7.4, min: 4.4, ideal: 22 })}cqw`, '--lines': 2 }}>
@@ -47,16 +53,20 @@ export function ContactBlock({ page, brochure, index }) {
 
       {details.length > 0 && (
         <Reveal className={styles.ticket}>
+          {postmark}
           <dl className={styles.details}>
             {details.map((detail, i) => {
               const value = text(detail.value);
               const href = isStatic ? null : hrefFor(value);
               return (
                 <div key={i} className={styles.row}>
-                  <span className={styles.icon}>
-                    <Icon name={detail.icon} />
-                  </span>
-                  <dt>{text(detail.label) || 'Detail'}</dt>
+                  {/* A dl group may only hold dt/dd, so the icon lives inside the term. */}
+                  <dt>
+                    <span className={styles.icon} aria-hidden="true">
+                      <Icon name={detail.icon} />
+                    </span>
+                    {text(detail.label) || 'Detail'}
+                  </dt>
                   <dd>{href ? <a href={href}>{value}</a> : value}</dd>
                 </div>
               );

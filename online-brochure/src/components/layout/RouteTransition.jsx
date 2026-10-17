@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useContext, useState } from 'react';
+import { motion, PresenceContext, useReducedMotion } from 'framer-motion';
 import { Hanko } from '../ui/index.js';
 import { ease } from '../../lib/motion.js';
 import styles from './RouteTransition.module.css';
@@ -44,10 +45,22 @@ const contentReduced = {
  */
 export function RoutePage({ children }) {
   const reduce = useReducedMotion();
+  // The curtain layers are promoted (will-change) only while they wipe; once
+  // parked off-screen they would hold two viewport-sized layers for nothing.
+  // The first route renders without a wipe (AnimatePresence initial={false}).
+  const presence = useContext(PresenceContext);
+  const [parked, setParked] = useState(presence?.initial === false);
   return (
-    <motion.div className={styles.page} initial="initial" animate="enter" exit="exit">
+    <motion.div
+      className={styles.page}
+      initial="initial"
+      animate="enter"
+      exit="exit"
+      onAnimationStart={(definition) => definition === 'exit' && setParked(false)}
+      onAnimationComplete={(definition) => definition === 'enter' && setParked(true)}
+    >
       {!reduce && (
-        <div className={styles.curtain} aria-hidden="true">
+        <div className={styles.curtain} data-parked={parked || undefined} aria-hidden="true">
           <motion.div className={styles.shu} variants={LAYERS[0]} />
           <motion.div className={styles.sumi} variants={LAYERS[1]}>
             <Hanko text="旅" size={68} />

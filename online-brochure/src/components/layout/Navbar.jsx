@@ -64,13 +64,26 @@ function SearchButton({ onClick }) {
 }
 
 /**
+ * Tool routes (the reader and the Studio editor) sit under full-bleed tool
+ * bars, so the navbar drops its centred container and shares their edges.
+ */
+function isToolRoute({ pathname, search }, immersive) {
+  if (immersive || pathname.startsWith('/studio/')) return true;
+  return pathname === '/studio' && new URLSearchParams(search).has('draft');
+}
+
+/**
  * Sticky site header. Transparent at the top, frosted washi once scrolled,
  * tucks away while scrolling down and returns on the way up (never while the
- * mobile menu or palette is open, and never in immersive mode).
+ * mobile menu or palette is open, and never in immersive mode). On tool
+ * routes it spans the full width, and the Studio CTA is hidden anywhere in
+ * the Studio.
  * Props: immersive — compact, always-visible bar for the brochure viewer.
  */
 export function Navbar({ immersive = false }) {
   const location = useLocation();
+  const onStudio = location.pathname === '/studio' || location.pathname.startsWith('/studio/');
+  const tool = isToolRoute(location, immersive);
   const palette = usePalette();
   const mobile = useMediaQuery('(max-width: 859.98px)');
   const headerRef = useRef(null);
@@ -109,6 +122,7 @@ export function Navbar({ immersive = false }) {
       data-scrolled={scrolled || immersive || undefined}
       data-menu-open={menuOpen || undefined}
       data-immersive={immersive || undefined}
+      data-tool={tool || undefined}
       data-print="hide"
       onFocus={() => setTucked(false)}
       onKeyDown={(event) => {
@@ -140,7 +154,7 @@ export function Navbar({ immersive = false }) {
           <div className={styles.actions}>
             <SearchButton onClick={palette.open} />
             <ThemeToggle className={styles.theme} />
-            {!immersive && (
+            {!immersive && !onStudio && (
               <span className={styles.cta}>
                 <Magnetic strength={0.25}>
                   <Button variant="accent" size="sm" to="/studio" iconRight={<ArrowUpRight />}>

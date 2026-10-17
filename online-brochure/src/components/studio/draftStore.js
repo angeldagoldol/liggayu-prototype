@@ -4,6 +4,7 @@
  *  - 'studio-edit:<id>'   unsaved changes to a brochure already in the library
  * A draft record is { doc, selectedId, savedAt }.
  */
+import { normalizeBrochure } from '../../data/sanitize.js';
 import { readStorage, removeStorage, writeStorage } from '../../lib/storage.js';
 
 export const DRAFT_KEY = 'studio-draft';
@@ -12,12 +13,18 @@ export function editDraftKey(id) {
   return `studio-edit:${id}`;
 }
 
-/** A stored draft, or null when missing or malformed. */
+/**
+ * A stored draft, or null when missing or malformed. The doc is normalised
+ * like a stored brochure (data/sanitize.js): unreadable pages are skipped and
+ * fields of the wrong type reset, so the editor never meets a null page.
+ */
 export function readDraft(key) {
   const value = readStorage(key, null);
   if (!value || typeof value !== 'object') return null;
-  const { doc, selectedId, savedAt } = value;
-  if (!doc || typeof doc !== 'object' || typeof doc.id !== 'string' || !Array.isArray(doc.pages)) return null;
+  const { selectedId, savedAt } = value;
+  if (!value.doc || typeof value.doc !== 'object' || typeof value.doc.id !== 'string' || !Array.isArray(value.doc.pages)) return null;
+  const doc = normalizeBrochure(value.doc);
+  if (!doc) return null;
   return { doc, selectedId: typeof selectedId === 'string' ? selectedId : null, savedAt: Number(savedAt) || 0 };
 }
 

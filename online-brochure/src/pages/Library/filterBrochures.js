@@ -14,6 +14,7 @@
 import { CATEGORY_MAP, getCategory } from '../../data/categories.js';
 import { REGION_MAP, getRegion } from '../../data/regions.js';
 import { SEASONS, SEASON_MAP } from '../../data/seasons.js';
+import { brochureKana } from '../../data/kana.js';
 import { foldQuery } from '../../components/layout/search.js';
 
 export const SORTS = [
@@ -36,18 +37,13 @@ export const DEFAULT_FILTERS = Object.freeze({
 });
 
 /**
- * Fold text for matching, exactly like the ⌘K palette (shared search.js):
- * lower-case, strip Latin diacritics ("Tōhoku" → "tohoku"), fold full-width
- * and half-width forms ("ＫＹＯＴＯ" → "kyoto"), treat katakana as hiragana,
- * collapse whitespace. Kana keep their dakuten, so "か" never matches "が".
+ * Split a query into folded terms, dropping stray punctuation ("kyoto," → "kyoto").
+ * Text is folded exactly like the ⌘K palette (search.js foldQuery): lower-case,
+ * no Latin diacritics, full/half width unified, katakana as hiragana, kana
+ * keep their dakuten.
  */
-export function foldText(value) {
-  return foldQuery(value);
-}
-
-/** Split a query into folded terms, dropping stray punctuation ("kyoto," → "kyoto"). */
 export function queryTerms(query) {
-  return foldText(query)
+  return foldQuery(query)
     .split(' ')
     .map((term) => term.replace(/^[\p{P}\p{S}]+|[\p{P}\p{S}]+$/gu, ''))
     .filter(Boolean);
@@ -57,6 +53,7 @@ export function queryTerms(query) {
 const FIELD_WEIGHTS = {
   title: 8,
   titleJp: 8,
+  kana: 7, // hiragana readings: title, region, category, seasons (data/kana.js)
   tags: 5,
   category: 4,
   region: 4,
@@ -79,15 +76,16 @@ function searchIndex(brochure) {
     .filter(Boolean)
     .map((s) => `${s.label} ${s.jp} ${s.romaji}`);
   const index = {
-    title: foldText(brochure.title),
-    titleJp: foldText(brochure.titleJp),
-    tags: foldText(Array.isArray(brochure.tags) ? brochure.tags.join(' · ') : ''),
-    category: foldText([category.label, category.jp].filter(Boolean).join(' ')),
-    region: foldText([region.label, region.jp].filter(Boolean).join(' ')),
-    seasons: foldText(seasons.join(' · ')),
-    subtitle: foldText(brochure.subtitle),
-    organization: foldText(brochure.organization),
-    summary: foldText(brochure.summary),
+    title: foldQuery(brochure.title),
+    titleJp: foldQuery(brochure.titleJp),
+    kana: foldQuery(brochureKana(brochure)),
+    tags: foldQuery(Array.isArray(brochure.tags) ? brochure.tags.join(' · ') : ''),
+    category: foldQuery([category.label, category.jp].filter(Boolean).join(' ')),
+    region: foldQuery([region.label, region.jp].filter(Boolean).join(' ')),
+    seasons: foldQuery(seasons.join(' · ')),
+    subtitle: foldQuery(brochure.subtitle),
+    organization: foldQuery(brochure.organization),
+    summary: foldQuery(brochure.summary),
   };
   indexCache.set(brochure, index);
   return index;

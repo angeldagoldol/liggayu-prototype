@@ -4,6 +4,7 @@ import { Check } from 'lucide-react';
 import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
 import { ART_LABELS } from '../../../data/schema.js';
 import { spring } from '../../../lib/motion.js';
+import { useStill } from '../homeMotion.js';
 import { useTicker } from './useTicker.js';
 import styles from './CreateSketch.module.css';
 
@@ -22,13 +23,14 @@ const LOOKS = [
  * Illustration for step 03 "Create": a miniature Studio where a title types
  * itself, a palette and motif get picked and a 作 seal stamps the cover.
  * Decorative; loops only while on screen, shows the finished state under
- * reduced motion.
+ * reduced motion and freezes on the page's "Pause motion".
  */
 export function CreateSketch() {
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.4 });
   const reduce = useReducedMotion();
-  const tick = useTicker(inView && !reduce, 260);
+  const still = useStill();
+  const tick = useTicker(inView && !still, 260);
   const phase = reduce ? TICKS_PER_LOOP - 1 : tick % TICKS_PER_LOOP;
   const look = Math.floor(tick / TICKS_PER_LOOP) % LOOKS.length;
   const { art, theme } = LOOKS[look];

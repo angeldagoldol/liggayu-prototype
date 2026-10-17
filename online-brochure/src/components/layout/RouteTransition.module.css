@@ -23,6 +23,12 @@
   will-change: transform;
 }
 
+/* Parked off-screen between wipes (RoutePage): drop the layer promotion. */
+.curtain[data-parked] .shu,
+.curtain[data-parked] .sumi {
+  will-change: auto;
+}
+
 .shu {
   background: var(--wa-shu);
 }

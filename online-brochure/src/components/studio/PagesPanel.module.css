@@ -195,6 +195,21 @@
   .row:focus-within .actions > * {
     pointer-events: auto;
   }
+
+  /* Compact Tab order: tabbing past another row's title leaves it readable,
+     since that row's actions are not tab stops (hover still shows them). */
+  .list[data-compact] .row:not([data-selected], :hover) .actions:not(:focus-within) {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+}
+
+/* Touch screens have no hover: the selected row keeps its actions and the
+   others show their full titles (one tap selects; the grip still drags). */
+@media (hover: none) {
+  .row:not([data-selected]) .actions {
+    display: none;
+  }
 }
 
 .hint {

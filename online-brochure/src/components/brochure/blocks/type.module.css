@@ -7,7 +7,7 @@
   gap: 1.3cqw;
   margin: 0 0 2.2cqw;
   font-family: var(--font-mono);
-  font-size: 1.55cqw;
+  font-size: 1.75cqw;
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: 0.2em;
@@ -40,14 +40,18 @@
   color: var(--b-ink);
 }
 
+/* The opened word gaps of h1–h6 (base.css) are for the serif's narrow
+   space; Geist's space is wide enough, and a monospace one is a full cell. */
 [data-typeface='sans'] .heading {
   font-weight: 650;
   letter-spacing: -0.045em;
+  word-spacing: 0;
 }
 
 [data-typeface='mono'] .heading {
   font-weight: 500;
   letter-spacing: -0.06em;
+  word-spacing: 0;
   line-height: 1.06;
 }
 

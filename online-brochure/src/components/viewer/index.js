@@ -7,7 +7,7 @@ export { Scrubber } from './Scrubber.jsx';
 export { ThumbRail } from './ThumbRail.jsx';
 export { useElementSize } from './useElementSize.js';
 export { useFullscreen } from './useFullscreen.js';
-export { PAGE_RATIO, ZOOM_LEVELS, clampPan, computeBookLayout, stepZoom } from './layout.js';
+export { PAGE_RATIO, READABLE_PAGE_WIDTH, ZOOM_LEVELS, clampPan, computeBookLayout, stepZoom } from './layout.js';
 export { spreadCaption } from './pageMeta.js';
 export {
   buildBook,

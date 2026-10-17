@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, PenLine } from 'lucide-react';
@@ -24,10 +24,15 @@ const tileIn = {
   show: (i) => ({ opacity: 1, scale: 1, transition: { duration: 0.7, ease: ease.out, delay: 0.15 + i * 0.06 } }),
 };
 
-/** The open region's card: vertical kanji, blurb, count and its brochures. */
-function RegionDetail({ region, count, brochures, index }) {
+/**
+ * The open region's card: vertical kanji, blurb, count and its brochures.
+ * Not a live region: the focused tile already says "Kantō, 2 brochures", and
+ * re-reading the whole card on every arrow key drowned that out. The tiles
+ * point here with aria-controls, and the card is next in the tab order.
+ */
+function RegionDetail({ id, region, count, brochures, index }) {
   return (
-    <div className={styles.detail} aria-live="polite">
+    <div id={id} className={styles.detail}>
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={region.id}
@@ -88,6 +93,7 @@ export function Regions() {
   const counts = useMemo(() => countBy(brochures, 'region'), [brochures]);
   const [activeId, setActiveId] = useState(() => busiestId(counts, REGIONS.map((r) => r.id)));
   const tiles = useRef({});
+  const detailId = `${useId()}-region-detail`;
   const region = REGION_MAP[activeId] ?? REGIONS[0];
   const regionIndex = REGIONS.findIndex((r) => r.id === region.id);
   const inRegion = useMemo(() => brochuresWith(brochures, 'region', region.id, 3), [brochures, region.id]);
@@ -162,6 +168,7 @@ export function Regions() {
                     viewport={viewportOnce}
                     tabIndex={active ? 0 : -1}
                     aria-pressed={active}
+                    aria-controls={detailId}
                     aria-label={`${r.label}, ${count > 0 ? pluralize(count, 'brochure') : 'no brochures yet'}`}
                     onPointerEnter={(event) => event.pointerType === 'mouse' && setActiveId(r.id)}
                     onFocus={() => setActiveId(r.id)}
@@ -192,7 +199,7 @@ export function Regions() {
             </figcaption>
           </motion.figure>
 
-          <RegionDetail region={region} index={regionIndex} count={counts[region.id] ?? 0} brochures={inRegion} />
+          <RegionDetail id={detailId} region={region} index={regionIndex} count={counts[region.id] ?? 0} brochures={inRegion} />
         </div>
       </div>
     </section>

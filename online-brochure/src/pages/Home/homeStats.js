@@ -1,6 +1,6 @@
 /**
  * Pure helpers that turn the brochure library into what the Home page shows:
- * per-season / per-region counts and the featured shelf.
+ * per-season / per-region counts, the featured shelf and compact labels.
  */
 
 /**
@@ -52,4 +52,12 @@ export function brochuresWith(brochures, field, id, limit = 3) {
       return Array.isArray(value) ? value.includes(id) : value === id;
     })
     .slice(0, limit);
+}
+
+/**
+ * A month range set tight for narrow columns, so it never breaks after the
+ * dash: 'Mar – May' → 'Mar–May' (a closed-up en dash, as in print).
+ */
+export function tightRange(range) {
+  return String(range ?? '').replace(/\s*[–—]\s*|\s+-\s+/g, '–');
 }

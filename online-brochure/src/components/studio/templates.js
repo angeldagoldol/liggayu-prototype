@@ -96,7 +96,7 @@ export const TEMPLATES = [
           cta: 'Request a plan',
           details: [
             { icon: 'Mail', label: 'Email', value: 'weekend@machi.example' },
-            { icon: 'Phone', label: 'Phone', value: '+81 3-5550-0148' },
+            { icon: 'Clock', label: 'Hours', value: 'Daily 10:00–19:00 JST' },
             { icon: 'MapPin', label: 'Desk', value: 'Jinnan, Shibuya-ku, Tokyo' },
           ],
         },
@@ -295,7 +295,7 @@ export const TEMPLATES = [
           cta: 'Reserve a place',
           details: [
             { icon: 'Mail', label: 'Email', value: 'matsuri@natsu-lantern.example' },
-            { icon: 'Phone', label: 'Phone', value: '+81 75-555-0177' },
+            { icon: 'Clock', label: 'Walks', value: 'From 18:30, about two hours' },
             { icon: 'Calendar', label: 'Evenings', value: '14 – 16 & 21 – 23 July' },
           ],
         },
@@ -399,7 +399,7 @@ export const TEMPLATES = [
         {
           type: 'quote',
           quote: 'We sat elbow to elbow with an office worker, a nurse and a retired fisherman. By the ramen stall we were all ordering for each other.',
-          author: 'Priya S.',
+          author: 'Noor S.',
           role: 'Food crawl guest, October 2025',
         },
         {
@@ -463,7 +463,7 @@ export const TEMPLATES = [
           heading: 'How to visit with respect',
           items: [
             { icon: 'Leaf', title: 'Purify first', text: 'At the water basin, rinse your left hand, then your right, then your mouth from a cupped palm.' },
-            { icon: 'Footprints', title: 'Shoes off', text: 'Before stepping onto tatami, leave your shoes at the edge and follow the slippers.' },
+            { icon: 'Footprints', title: 'Shoes off', text: 'Leave your shoes at the entrance. Slippers are for corridors — never wear them on tatami.' },
             { icon: 'Camera', title: 'Mind the signs', text: 'Some halls don’t allow photographs. When in doubt, ask — or simply look.' },
             { icon: 'Scroll', title: 'Collect goshuin', text: 'Bring a stamp book: temples brush a calligraphy seal for a small offering.' },
           ],
@@ -495,7 +495,7 @@ export const TEMPLATES = [
           cta: 'Book a walk',
           details: [
             { icon: 'Mail', label: 'Email', value: 'walks@koro-guides.example' },
-            { icon: 'Phone', label: 'Phone', value: '+81 467-55-0123' },
+            { icon: 'Footprints', label: 'Walk', value: 'About 6 km, four hours' },
             { icon: 'TrainFront', label: 'Meet', value: 'Kita-Kamakura Station, 08:15' },
           ],
         },

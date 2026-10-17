@@ -1,24 +1,26 @@
 import { useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { Search } from 'lucide-react';
 import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
 import { getRegion } from '../../../data/regions.js';
 import { spring } from '../../../lib/motion.js';
+import { useStill } from '../homeMotion.js';
 import { useTicker } from './useTicker.js';
 import styles from './BrowseSketch.module.css';
 
 /**
  * Illustration for step 01 "Browse": a mini library whose filter chips and
- * covers take turns being picked. Decorative; loops only while on screen.
+ * covers take turns being picked. Decorative; loops only while on screen and
+ * holds still under reduced motion or the page's "Pause motion".
  */
 export function BrowseSketch() {
   const { builtins } = useBrochures();
   const picks = builtins.slice(0, 3);
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.4 });
-  const reduce = useReducedMotion();
-  const tick = useTicker(inView && !reduce, 1900);
+  const still = useStill();
+  const tick = useTicker(inView && !still, 1900);
   const active = picks.length ? tick % picks.length : 0;
 
   return (

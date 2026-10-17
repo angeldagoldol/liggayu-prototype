@@ -16,6 +16,9 @@ export function StatsBlock({ page }) {
     .filter((item) => item.number !== null || text(item.label));
   const shown = items.map((item) => `${item.prefix}${item.number === null ? '—' : formatNumber(item.number)}${item.suffix}`);
   const longest = shown.reduce((a, b) => (b.length > a.length ? b : a), '');
+  // The prefix (~, +, ≈…) is set small and raised, like an editor's "c.", so
+  // it qualifies the figure instead of reading as a stray full-size glyph.
+  const figures = items.map((item) => (item.number === null ? '—' : `${formatNumber(item.number)}${item.suffix}`));
   const size = fitSize(longest, { max: items.length > 3 ? 11 : 13, min: 6, ideal: 5 });
 
   return (
@@ -41,10 +44,11 @@ export function StatsBlock({ page }) {
           {items.map((item, i) => (
             <Reveal as="li" key={i} className={styles.item}>
               <span className={styles.value}>
+                {item.prefix && item.number !== null && <span className={styles.affix}>{item.prefix}</span>}
                 {item.number !== null && active && !isStatic ? (
-                  <Counter value={item.number} prefix={item.prefix} suffix={item.suffix} duration={1.6} />
+                  <Counter value={item.number} suffix={item.suffix} duration={1.6} />
                 ) : (
-                  shown[i]
+                  figures[i]
                 )}
               </span>
               <span className={styles.label}>

@@ -50,7 +50,11 @@ describe('templates', () => {
         expect(list.length).toBeLessThanOrEqual(limit.max);
       }
       for (const item of page.items ?? []) if (item.icon) expect(ICON_NAMES).toContain(item.icon);
-      for (const item of page.details ?? []) expect(ICON_NAMES).toContain(item.icon);
+      for (const item of page.details ?? []) {
+        expect(ICON_NAMES).toContain(item.icon);
+        // Japan has no fictional phone range: never print a dialable number.
+        expect(item.value).not.toMatch(/\+81|^\+?[\d\s().-]{7,}$/);
+      }
       if (page.type === 'gallery') for (const item of page.items) expect(ART_STYLES).toContain(item.art);
       if (page.type === 'stats') for (const item of page.items) expect(Number.isFinite(item.value)).toBe(true);
       if (page.type === 'phrases') {

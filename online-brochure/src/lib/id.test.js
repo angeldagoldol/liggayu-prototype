@@ -20,10 +20,23 @@ describe('slugify', () => {
     expect(slugify('  --Kyoto & Nara--  ')).toBe('kyoto-nara');
   });
 
-  it('drops scripts it cannot spell and caps the length', () => {
-    expect(slugify('京都')).toBe('');
+  it('keeps Japanese and other scripts (regression: 京都の秋 used to become "")', () => {
+    expect(slugify('京都の秋')).toBe('京都の秋');
+    expect(slugify('京都 · 秋の旅！')).toBe('京都-秋の旅');
+    expect(slugify('ガイド')).toBe('ガイド'); // voicing marks survive the accent fold
+    expect(slugify('ｶﾞｲﾄﾞ')).toBe('ガイド'); // half-width katakana → full width
+    expect(slugify('ＫＹＯＴＯ　２０２６')).toBe('kyoto-2026');
+    expect(slugify('Tōkyō 東京')).toBe('tokyo-東京');
+  });
+
+  it('drops emoji and punctuation and caps the length without splitting characters', () => {
+    expect(slugify('🗻 !!')).toBe('');
     expect(slugify(null)).toBe('');
     expect(slugify('a'.repeat(100))).toHaveLength(64);
+    const kanji = slugify('𠮷'.repeat(70)); // outside the BMP: two UTF-16 units each
+    expect(Array.from(kanji)).toHaveLength(64);
+    expect(() => encodeURIComponent(kanji)).not.toThrow();
+    expect(slugify(`${'a'.repeat(63)} b`)).toBe('a'.repeat(63));
   });
 });
 
@@ -34,8 +47,10 @@ describe('uniqueSlug', () => {
     expect(uniqueSlug('Kyoto', new Set(['kyoto', 'kyoto-2']))).toBe('kyoto-3');
   });
 
-  it('falls back to "untitled" for titles without Latin letters', () => {
-    expect(uniqueSlug('京都', [])).toBe('untitled');
+  it('keeps Japanese titles and falls back to "untitled" only when nothing is spellable', () => {
+    expect(uniqueSlug('京都の秋', [])).toBe('京都の秋');
+    expect(uniqueSlug('京都の秋', ['京都の秋'])).toBe('京都の秋-2');
+    expect(uniqueSlug('🍵', [])).toBe('untitled');
     expect(uniqueSlug('', ['untitled'])).toBe('untitled-2');
   });
 });

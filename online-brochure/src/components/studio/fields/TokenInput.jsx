@@ -101,6 +101,8 @@ export function TokenInput({ label, value, onChange, max = 12, placeholder = 'Ad
           placeholder={full ? `${max} tags — the maximum` : placeholder}
           aria-describedby={`${id}-hint`}
           autoComplete="off"
+          // While a tag is half-typed ⌘Z edits that text; on an empty field it undoes the last tag change.
+          data-native-undo={text ? '' : undefined}
           enterKeyHint="done"
         />
       </div>

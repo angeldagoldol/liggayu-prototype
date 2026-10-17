@@ -25,6 +25,8 @@ export function CrossfadeBook({ brochure, book, position, onNavigate, layout, on
   const onPointerDown = (event) => {
     if (!interactive || event.button !== 0 || event.target.closest?.(INTERACTIVE)) return;
     press.current = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    // A swipe may end outside the book (past its edge): keep receiving it. Released on pointerup.
+    ref.current?.setPointerCapture?.(event.pointerId);
   };
 
   const onPointerUp = (event) => {

@@ -12,14 +12,17 @@ account. Everything a visitor makes is stored in their own browser.
 | Route | What you get |
 | --- | --- |
 | `#/` **Home** | A 3D tri-fold hero that unfolds and follows the pointer, a live Tokyo clock, a bilingual word marquee, a featured-brochure carousel, the four seasons (opening on the current season in Japan), a keyboard-navigable schematic map of the eight regions, "how it works" sketches, Japan in numbers, reader postcards and a Studio call to action. |
-| `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones. |
-| `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones: drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber, a thumbnail rail, an all-pages overview, zoom with pan, fullscreen, print to A4 (one page per sheet), share/deep link (`?p=` is the page index), favourites, a "Plan this trip" inquiry form and "More like this". |
+| `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones, where "Continue reading" reopens the page you left off on. |
+| `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones: drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet), share/deep link (`?p=` is the page index), favourites, a "Plan this trip" inquiry form and "More like this". |
 | `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview, change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
 | **⌘K / Ctrl K** | The command palette searches brochures, places, seasons, library filters and actions from anywhere. |
 | `#/anything-else` | A 404 page ("迷子 — maigo, lost") with a suggested brochure. |
 
 Light ("washi") and dark ("sumi ink") themes follow the system and can be
-toggled. All motion respects `prefers-reduced-motion`.
+toggled; the footer's Washi / Sumi / Auto switch goes back to following the
+system, and the choice syncs across open tabs. All motion respects
+`prefers-reduced-motion`. A page that fails to load shows a "This page tore"
+screen with Reload, while the rest of the app keeps working.
 
 ## Tech stack
 
@@ -121,8 +124,10 @@ static states (the flipbook becomes a cross-fade).
 **Accessibility.**
 - Semantics: landmarks, one `h1` per route, labelled controls and visible focus rings.
 - Focus: focus moves to `<main>` after every route change. Modals, drawers, the palette and the mobile menu trap and restore focus.
-- Keyboard: every gesture has a key, and the palette and region map are keyboard-first.
+- Keyboard: every gesture has a key, and the palette and region map are keyboard-first. The reader's keys switch off once it is scrolled out of view, so PageDown, Home and End scroll the rest of the page again.
+- Zoom: brochure pages stop shrinking at a readable width (the stage scrolls instead), so 200% browser zoom makes their text larger, not smaller; the reader's own zoom goes to 400%.
 - Live regions: result counts and the current page are announced through `aria-live`.
+- Pausing: the Home hero's "Pause motion" button stops every looping animation on the page (marquee, petals, sketches, postcard autoplay) and is remembered; the OS reduced-motion setting turns them off outright.
 - Static thumbnails are fully inert.
 - Contrast: brochure themes are nudged to AA contrast automatically, so even user-made palettes stay legible.
 - Layout: it works from 360px to 1920px+ with no horizontal scroll.
@@ -165,8 +170,9 @@ static states (the flipbook becomes a cross-fade).
    with a `back`, and aim for 9–12 pages. Icons are names from the registry in
    `src/components/ui/Icon.jsx`.
 3. Run `npm test`. `src/data/brochures.test.js` checks the schema, unique ids
-   and slugs, cover/back placement, icon names, `.example` contact domains and
-   palette contrast (ink ≥ 7:1, muted ≥ 4.5:1, accent ≥ 3:1 on the paper).
+   and slugs, cover/back placement, icon names, `.example` contact domains, no
+   dialable phone numbers (Japan has no fictional number range) and palette
+   contrast (ink ≥ 7:1, muted ≥ 4.5:1, accent ≥ 3:1 on the paper).
 4. Look at it in `/playground.html?section=pages&b=<slug>` and in the viewer.
 
 Renderers never crash on missing or empty fields, because user-made
@@ -194,7 +200,7 @@ Recipes:
 
 The production bundle is split into a small entry chunk, two long-lived
 vendor chunks (`react`, `motion`) and one lazy chunk per route. The command
-palette and cover-art generator are loaded on demand.
+palette, the cover-art generator and the icon registry are loaded on demand.
 
 ## Credits
 
@@ -208,5 +214,5 @@ palette and cover-art generator are loaded on demand.
 - Facts about Japan are real and deliberately conservative: rounded figures,
   official sources such as the Geospatial Information Authority of Japan and
   the Japan Meteorological Agency, dated where they can change. Organisations,
-  people, prices and contact details are fictional, and every email address
-  uses an `.example` domain.
+  people, prices and contact details are fictional, every email address
+  uses an `.example` domain, and no brochure prints a phone number.

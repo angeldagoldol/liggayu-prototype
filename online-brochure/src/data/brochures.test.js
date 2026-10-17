@@ -6,6 +6,8 @@ import { CATEGORIES } from './categories.js';
 import { REGIONS } from './regions.js';
 import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
 import { SEASONS } from './seasons.js';
+import { TEMPLATES } from '../components/studio/templates.js';
+import { VOICES } from '../pages/Home/homeContent.js';
 
 const REQUIRED = ['id', 'slug', 'title', 'titleJp', 'subtitle', 'category', 'region', 'seasons', 'organization', 'summary', 'tags', 'format', 'updatedAt', 'readMinutes', 'source', 'theme', 'cover', 'pages'];
 const HEX = /^#[0-9a-f]{6}$/i;
@@ -71,6 +73,8 @@ describe('built-in brochures', () => {
         for (const d of page.details) {
           expect(ICON_NAMES).toContain(d.icon);
           if (d.value.includes('@')) expect(d.value).toMatch(/\.example$/);
+          // Japan has no fictional phone range: a printed number could ring a real subscriber.
+          expect(d.value).not.toMatch(/\+81|^\+?[\d\s().-]{7,}$/);
         }
       }
     }
@@ -89,5 +93,15 @@ describe('built-in brochures', () => {
     expect(new Set(BROCHURES.map((b) => b.cover.art))).toEqual(new Set(ART_STYLES));
     const dark = BROCHURES.filter((b) => contrast(b.theme.paper, '#000000') < 2);
     expect(dark.length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe('fictional readers', () => {
+  it('never reuse a first name across Home letters, brochure and template testimonials (regression)', () => {
+    const quotes = [...BROCHURES, ...TEMPLATES.map((t) => t.brochure)].flatMap((b) => b.pages.filter((p) => p.type === 'quote').map((p) => p.author));
+    const people = [...VOICES.map((v) => v.name), ...quotes].flatMap((name) => name.split(/\s*&\s*/));
+    const firstNames = people.map((person) => person.trim().split(/\s+/)[0]);
+    expect(firstNames.length).toBeGreaterThan(10);
+    expect(firstNames.filter((name, i) => firstNames.indexOf(name) !== i)).toEqual([]);
   });
 });

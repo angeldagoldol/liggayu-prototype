@@ -137,6 +137,10 @@
   animation: caret-blink 1s steps(1) infinite;
 }
 
+:global([data-motion='paused']) .caret {
+  animation: none;
+}
+
 .sub {
   display: block;
   height: 0.9cqi;

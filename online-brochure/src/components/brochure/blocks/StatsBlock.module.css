@@ -43,6 +43,16 @@
   color: var(--b-ink);
 }
 
+/* A small raised qualifier before the figure: ~1,600, +7 yrs. */
+.affix {
+  margin-right: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0;
+  vertical-align: 0.95em;
+}
+
 .item:first-child .value {
   color: var(--b-accent-text);
 }

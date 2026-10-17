@@ -17,7 +17,9 @@
 }
 
 .num {
-  color: var(--accent);
+  /* A touch of ink keeps this 12px figure at 4.5:1 on the Seasons tints too
+     (4.7:1 on summer's indigo wash, the darkest); in dark mode it lightens. */
+  color: color-mix(in srgb, var(--accent) 85%, var(--ink));
 }
 
 .num::after {
@@ -66,8 +68,11 @@
   letter-spacing: -0.045em;
 }
 
+/* Section headlines keep their italic word in ink. The vermilion italic is
+   saved for the page's bookends (the hero's "folded", the Studio band's
+   "Japan"), so it lands as an accent rather than a template. */
 .title :global(.serif-italic) {
-  color: var(--accent);
+  color: inherit;
 }
 
 .aside {

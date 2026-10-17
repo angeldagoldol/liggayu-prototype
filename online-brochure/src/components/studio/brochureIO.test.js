@@ -18,7 +18,8 @@ describe('export', () => {
 
   it('names files after the title', () => {
     expect(exportFileName({ title: 'Tokyo in 48 Hours' })).toBe('tokyo-in-48-hours.tabi.json');
-    expect(exportFileName({ title: '東京' })).toBe('brochure.tabi.json');
+    expect(exportFileName({ title: '東京' })).toBe('東京.tabi.json');
+    expect(exportFileName({ title: '🗻' })).toBe('brochure.tabi.json');
   });
 });
 
@@ -64,6 +65,30 @@ describe('import', () => {
     expect(doc.cover).toEqual({ art: 'hinomaru', seed: 1 });
     expect(dropped).toBe(1);
     expect(new Set(doc.pages.map((p) => p.id)).size).toBe(2);
+  });
+
+  it('treats Object.prototype names as unknown ids (regression)', () => {
+    const raw = JSON.stringify({
+      title: 'x',
+      category: 'toString',
+      region: '__proto__',
+      seasons: ['constructor', 'hasOwnProperty', 'winter'],
+      pages: [{ type: 'constructor' }, { type: 'cover' }, { type: 'features', items: [{ icon: 'constructor', title: 'Hi' }] }],
+    });
+    const { ok, doc, dropped } = parseBrochureJson(raw, { makeId, now });
+    expect(ok).toBe(true);
+    expect(doc).toMatchObject({ category: 'heritage', region: 'kansai', seasons: ['winter'] });
+    expect(doc.pages.map((p) => p.type)).toEqual(['cover', 'features']);
+    expect(dropped).toBe(1);
+  });
+
+  it('never lets a "__proto__" key re-parent imported content (regression)', () => {
+    const raw = '{"pages":[{"type":"features","items":[{"text":"Hi","__proto__":{"title":"inherited"}}]}]}';
+    const { doc } = parseBrochureJson(raw, { makeId, now });
+    const [item] = doc.pages[0].items;
+    expect(Object.getPrototypeOf(item)).toBe(Object.prototype);
+    expect(item.title).toBeUndefined();
+    expect(item).toEqual({ text: 'Hi' });
   });
 
   it('explains what went wrong', () => {

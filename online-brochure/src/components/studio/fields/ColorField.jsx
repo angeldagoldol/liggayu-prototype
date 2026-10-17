@@ -47,6 +47,8 @@ export function ColorField({ label, jp, value, onChange }) {
         maxLength={7}
         spellCheck={false}
         autoComplete="off"
+        // A half-typed hex lives only here, so ⌘Z edits it rather than the document.
+        data-native-undo=""
         aria-invalid={invalid || undefined}
         onFocus={() => setDraft(value ?? '')}
         onBlur={() => setDraft(null)}

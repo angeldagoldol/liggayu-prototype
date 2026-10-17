@@ -1,11 +1,12 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import { InquiryDrawer, PrintPages } from '../../components/viewer/index.js';
 import { Button } from '../../components/ui/index.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { AboutBrochure } from './AboutBrochure.jsx';
+import { findBySlug } from './findBySlug.js';
 import { MoreLikeThis } from './MoreLikeThis.jsx';
 import { Reader } from './Reader.jsx';
 import { ViewerNotFound } from './ViewerNotFound.jsx';
@@ -13,8 +14,9 @@ import styles from './Viewer.module.css';
 
 /**
  * One brochure: the reader, its story, related reading and the inquiry
- * drawer. Memoised: turning a page changes the URL, and only the reader
- * (which reads ?p= itself) needs to re-render for it.
+ * drawer. Memoised so router-visible ?p= changes (links, back/forward) only
+ * re-render the reader, which reads ?p= itself. Page turns never reach the
+ * router: they rewrite the URL with history.replaceState.
  */
 const BrochureViewer = memo(function BrochureViewer({ brochure }) {
   const [planOpen, setPlanOpen] = useState(false);
@@ -52,17 +54,30 @@ const BrochureViewer = memo(function BrochureViewer({ brochure }) {
 /**
  * Route #/brochures/:slug — reads a brochure in the flipbook (page in ?p=).
  * Marks it as recently viewed; unknown slugs get a friendly not-found page.
+ * A slug typed in another letter case still opens the brochure, and the
+ * address bar is corrected to the real slug (no route transition).
  */
 export default function Viewer() {
   const { slug = '' } = useParams();
-  const { getBySlug, markViewed } = useBrochures();
-  const brochure = getBySlug(slug);
+  const { brochures, markViewed } = useBrochures();
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const brochure = findBySlug(brochures, slug);
   const id = brochure?.id;
+  const canonical = brochure && brochure.slug !== slug ? brochure.slug : null;
   useDocumentTitle(brochure ? brochure.title || 'Untitled brochure' : 'Brochure not found');
 
   useEffect(() => {
     if (id) markViewed(id);
   }, [id, markViewed]);
+
+  useEffect(() => {
+    if (!canonical) return;
+    // ?p= as the reader last wrote it (turns use replaceState, which the router does not see).
+    const at = window.location.hash.indexOf('?');
+    const current = at === -1 ? search : window.location.hash.slice(at);
+    navigate(`/brochures/${encodeURIComponent(canonical)}${current}`, { replace: true, state: { shellTransition: false } });
+  }, [canonical, navigate, search]);
 
   if (!brochure) return <ViewerNotFound slug={slug} />;
   return <BrochureViewer key={brochure.id} brochure={brochure} />;

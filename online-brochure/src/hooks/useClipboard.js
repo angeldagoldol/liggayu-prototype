@@ -1,6 +1,34 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-/** Copy text to the clipboard; `copied` flips true for `resetMs`. */
+/**
+ * Copy through a hidden textarea and execCommand: for browsers without the
+ * async Clipboard API, and for embeds and permission policies that refuse
+ * it. The textarea goes into the fullscreen element while one is active
+ * (everything else is inert then), and focus is put back afterwards.
+ * Returns whether the browser says it copied.
+ */
+function legacyCopy(text) {
+  if (typeof document === 'undefined' || typeof document.execCommand !== 'function') return false;
+  const active = document.activeElement;
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.setAttribute('readonly', '');
+  area.setAttribute('aria-hidden', 'true');
+  area.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none';
+  (document.fullscreenElement ?? document.body).appendChild(area);
+  area.select();
+  let ok = false;
+  try {
+    ok = document.execCommand('copy') === true;
+  } catch {
+    ok = false;
+  }
+  area.remove();
+  if (active instanceof HTMLElement && active !== document.body && active.isConnected) active.focus({ preventScroll: true });
+  return ok;
+}
+
+/** Copy text to the clipboard; `copied` flips true for `resetMs`. `copy` resolves to whether it worked. */
 export function useClipboard(resetMs = 1800) {
   const [copied, setCopied] = useState(false);
   const timer = useRef();
@@ -9,24 +37,22 @@ export function useClipboard(resetMs = 1800) {
 
   const copy = useCallback(
     async (text) => {
-      try {
-        if (navigator.clipboard?.writeText) {
+      let ok = false;
+      if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+        try {
           await navigator.clipboard.writeText(text);
-        } else {
-          const area = Object.assign(document.createElement('textarea'), { value: text });
-          area.style.cssText = 'position:fixed;opacity:0';
-          document.body.appendChild(area);
-          area.select();
-          document.execCommand('copy');
-          area.remove();
+          ok = true;
+        } catch {
+          ok = legacyCopy(text);
         }
-        setCopied(true);
-        clearTimeout(timer.current);
-        timer.current = setTimeout(() => setCopied(false), resetMs);
-        return true;
-      } catch {
-        return false;
+      } else {
+        ok = legacyCopy(text);
       }
+      if (!ok) return false;
+      setCopied(true);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), resetMs);
+      return true;
     },
     [resetMs],
   );

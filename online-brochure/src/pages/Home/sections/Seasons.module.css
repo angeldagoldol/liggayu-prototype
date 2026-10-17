@@ -25,6 +25,16 @@
   background: var(--c);
   color: var(--fg);
   cursor: pointer;
+  container-type: inline-size;
+}
+
+/* A collapsed column narrower than this (tablets and small laptops) has no
+   room for the kana beside the kanji, so it shows the kanji alone; the
+   reading appears as the season opens. */
+@container (max-width: 9.5rem) {
+  .kana {
+    display: none;
+  }
 }
 
 .panel[data-active] {
@@ -52,6 +62,10 @@
 .panel[data-active] .motif {
   opacity: 0.26;
   animation: motif-turn 60s linear infinite;
+}
+
+:global([data-motion='paused']) .panel[data-active] .motif {
+  animation-play-state: paused;
 }
 
 @keyframes motif-turn {
@@ -114,6 +128,11 @@
 
 .label {
   font-weight: 600;
+}
+
+/* 'MAR–MAY' stays on one line, even in a collapsed panel. */
+.months {
+  white-space: nowrap;
 }
 
 .now {
@@ -202,6 +221,7 @@
     font-size: var(--fs-lg);
   }
 }
+
 
 @media (max-width: 760px) {
   .panels {

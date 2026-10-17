@@ -44,7 +44,7 @@ export function FeaturesBlock({ page }) {
                   </h3>
                 )}
                 {text(item.text) && (
-                  <p className={`${styles.text} ${type.clamp}`} style={{ '--lines': items.length > 4 ? 3 : 4 }}>
+                  <p className={`${styles.text} ${type.clamp}`} style={{ '--lines': items.length > 4 ? 4 : 5 }}>
                     {text(item.text)}
                   </p>
                 )}

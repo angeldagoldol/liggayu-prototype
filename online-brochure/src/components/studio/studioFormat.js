@@ -1,4 +1,7 @@
 /** Small pure helpers for Studio labels and preview layout. */
+import { buildBook, positionOfPage } from '../viewer/spreads.js';
+
+export { BLANK } from '../viewer/spreads.js';
 
 /** "just now", "1 min ago", "12 min ago", "at 14:05", or "on Oct 3" for older saves. */
 export function relativeSaved(savedAt, now) {
@@ -15,20 +18,57 @@ export function relativeSaved(savedAt, now) {
 }
 
 /**
- * Booklet spreads as page-index groups: the cover sits alone, then facing
- * pairs, and a final odd page alone. 6 pages → [[0], [1, 2], [3, 4], [5]].
+ * Booklet spreads as [left, right] faces, bound exactly as the published
+ * flipbook binds them (viewer/spreads.js): the cover alone on the right,
+ * facing pairs, a blank endpaper (BLANK, 見返し) before the back cover when
+ * the page count is odd, and the back cover alone on the left. A face is a
+ * page index, BLANK or null (nothing there).
+ *   6 pages → [[null, 0], [1, 2], [3, 4], [5, null]]
+ *   5 pages → [[null, 0], [1, 2], [3, BLANK], [4, null]]
+ * Spreads without a real page (a one-page book's endpaper) are left out.
  */
 export function buildSpreads(count) {
-  if (count <= 0) return [];
-  const spreads = [[0]];
-  for (let i = 1; i < count; i += 2) spreads.push(i + 1 < count ? [i, i + 1] : [i]);
-  return spreads;
+  if (!(count > 0)) return [];
+  return buildBook(count, 'double')
+    .spreads.filter((spread) => spread.pages.length > 0)
+    .map((spread) => [spread.left, spread.right]);
 }
 
-/** Index of the spread that contains `pageIndex`. */
+/** Index (into buildSpreads) of the spread that shows `pageIndex`. */
 export function spreadOf(pageIndex, count) {
-  if (pageIndex <= 0 || count <= 0) return 0;
-  return Math.ceil(Math.min(pageIndex, count - 1) / 2);
+  return count > 0 ? positionOfPage(buildBook(count, 'double'), pageIndex) : 0;
+}
+
+/** True for a face that holds a real page (not BLANK, not null). */
+export function isPageFace(face) {
+  return Number.isInteger(face) && face >= 0;
+}
+
+/** The real page indices on a spread, in reading order: [3, BLANK] → [3]. */
+export function spreadPages(faces) {
+  return (faces ?? []).filter(isPageFace);
+}
+
+/**
+ * What a number field should store for the text typed so far: a number
+ * (clamped to ±limit), '' when the field is empty, or undefined to wait,
+ * because the text is a partial number such as "-" or "1e" (`badInput`).
+ */
+export function numberFromDraft(raw, { badInput = false, limit = 1e12 } = {}) {
+  if (badInput) return undefined;
+  const text = String(raw ?? '').trim();
+  if (text === '') return '';
+  const n = Number(text);
+  if (!Number.isFinite(n)) return undefined;
+  return Math.min(limit, Math.max(-limit, n));
+}
+
+/** Does the typed `draft` already stand for `value`? ("0.50" shows 0.5, "" shows ''.) */
+export function draftShows(draft, value) {
+  const text = String(draft ?? '').trim();
+  const empty = value === '' || value == null;
+  if (text === '' || empty) return text === '' && empty;
+  return Number(text) === value;
 }
 
 /** Keep `value` within `max` characters for counters: { count, over, near }. */

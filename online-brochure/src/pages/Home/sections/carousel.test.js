@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { indexForSlide, nearestIndex, snapPoints, trackProgress } from './carousel.js';
+import { indexForSlide, nearestIndex, shelfIndex, snapPoints, trackProgress } from './carousel.js';
 
 describe('snapPoints', () => {
   it('lines slides up with the left edge and clamps to the end of the track', () => {
@@ -44,5 +44,24 @@ describe('trackProgress', () => {
     expect(trackProgress(-900, 600)).toBe(1);
     expect(trackProgress(40, 600)).toBe(0);
     expect(trackProgress(0, 0)).toBe(1);
+  });
+});
+
+describe('shelfIndex', () => {
+  const points = [0, -300, -600, -700];
+
+  it('holds the committed target while the spring is still near the old point (no 02 → 01 → 02 flicker)', () => {
+    // Next from 1 → 2: the first frames of the spring are still nearest point 0.
+    const frames = [0, -12, -60, -140, -220, -290, -300];
+    expect(frames.map((x) => shelfIndex(points, x, 1))).toEqual([1, 1, 1, 1, 1, 1, 1]);
+    // Without a target the same frames would flick back to the old index.
+    expect(frames.map((x) => nearestIndex(points, x))).toContain(0);
+  });
+
+  it('follows x when nothing is pending (dragging) and ignores an out-of-range target', () => {
+    expect(shelfIndex(points, -420, null)).toBe(1);
+    expect(shelfIndex(points, -680, undefined)).toBe(3);
+    expect(shelfIndex(points, -10, 9)).toBe(0);
+    expect(shelfIndex(undefined, 0, null)).toBe(0);
   });
 });

@@ -234,6 +234,14 @@
   display: none;
 }
 
+/* --- Tool routes (reader, Studio editor): full bleed --------------------
+   The tool bar underneath spans the window, so the navbar shares its edges
+   instead of sitting in the 1320px container. Two classes beat .container. */
+.header[data-tool] .inner {
+  max-width: none;
+  padding-inline: var(--tool-gutter);
+}
+
 /* --- Responsive --------------------------------------------------------- */
 @media (max-width: 1179.98px) {
   .search {

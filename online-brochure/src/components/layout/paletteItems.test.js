@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { BROCHURES } from '../../data/brochures.js';
 import { actionItems, brochureItem, createPaletteIndex, pageItems, queryPalette } from './paletteItems.js';
 
 const make = (id, extra = {}) => ({
@@ -64,6 +65,33 @@ describe('createPaletteIndex / queryPalette', () => {
     expect(studio.groups[0].id).toBe('pages');
     expect(studio.flat[0].to).toBe('/studio');
     expect(studio.groups.map((g) => g.id)).toContain('brochures');
+  });
+
+  it('finds brochures and library shortcuts by their hiragana reading', () => {
+    const real = createPaletteIndex({ brochures: BROCHURES });
+    const kyoto = queryPalette(real, 'きょうと');
+    expect(kyoto.flat[0].brochure?.slug).toBe('kyoto-thousand-gates');
+    expect(queryPalette(real, 'とうきょう').flat[0].brochure?.slug).toBe('tokyo-after-dark');
+    // Readings are a hidden field: nothing visible gets a highlight from them.
+    expect(Object.keys(kyoto.flat[0].matches)).toEqual(['kana']);
+    expect(queryPalette(real, 'ほっかいどう').flat.map((i) => i.to)).toContain('/brochures?region=hokkaido');
+    expect(queryPalette(real, 'おんせん').flat.map((i) => i.to)).toContain('/brochures?category=onsen');
+    expect(queryPalette(real, 'ふゆ').flat.map((i) => i.to)).toContain('/brochures?season=winter');
+  });
+
+  it('finds the theme action by what people call it ("toggle theme")', () => {
+    for (const query of ['toggle theme', 'switch theme', 'theme', 'night mode', 'change appearance']) {
+      expect(queryPalette(palette, query).flat[0]?.id, query).toBe('action:theme');
+    }
+  });
+
+  it('offers "Match system appearance" only after an explicit light or dark choice', () => {
+    expect(actionItems('light', 'system').map((a) => a.id)).not.toContain('action:theme-system');
+    expect(actionItems('dark', 'dark').map((a) => a.id)).toContain('action:theme-system');
+    const chosen = createPaletteIndex({ brochures, theme: 'dark', preference: 'dark' });
+    expect(queryPalette(chosen, 'system').flat[0].action).toBe('theme-system');
+    expect(queryPalette(chosen, 'auto theme').flat[0].action).toBe('theme-system');
+    expect(queryPalette(palette, 'system').flat.some((i) => i.action === 'theme-system')).toBe(false);
   });
 
   it('returns no groups when nothing matches', () => {

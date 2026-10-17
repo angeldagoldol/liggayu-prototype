@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { spring } from '../../lib/motion.js';
 import { MiniPage } from './MiniPage.jsx';
@@ -12,9 +12,12 @@ const BUBBLE_HALF = 84; // keeps the preview bubble inside the track
  * Progress track with a tick per spread and a draggable handle. Dragging
  * (or clicking) riffles the book to that spread; hovering previews it.
  * Keyboard: it is a slider — ←/→ ↑/↓ step, Home/End jump.
- * Props: brochure, book (spreads.js), position, onChange(position).
+ * Props: brochure, book (spreads.js), position, onChange(position);
+ * bubble (default true) shows the hovered spread in a bubble above the
+ * track; onPreview(position | null) reports the hovered or dragged spread,
+ * for hosts that show the preview elsewhere (the reader's filmstrip).
  */
-export function Scrubber({ brochure, book, position, onChange }) {
+export function Scrubber({ brochure, book, position, onChange, bubble = true, onPreview }) {
   const trackRef = useRef(null);
   const drag = useRef(null);
   const [preview, setPreview] = useState(null);
@@ -68,7 +71,12 @@ export function Scrubber({ brochure, book, position, onChange }) {
     if (next !== position) onChange(next);
   };
 
-  const shown = preview ? book.spreads[preview.at] : null;
+  const previewAt = preview ? preview.at : null;
+  useEffect(() => {
+    onPreview?.(previewAt);
+  }, [previewAt, onPreview]);
+
+  const shown = bubble && preview ? book.spreads[preview.at] : null;
 
   return (
     <div className={styles.scrubber}>

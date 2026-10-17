@@ -39,6 +39,12 @@
   animation: clock-blink 2s steps(1) infinite;
 }
 
+/* Paused by the visitor: a steady dot and a steady colon. */
+:global([data-motion='paused']) .live::after,
+:global([data-motion='paused']) .colon {
+  animation: none;
+}
+
 .zone {
   text-decoration: none;
   cursor: help;

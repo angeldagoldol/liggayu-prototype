@@ -1,31 +1,15 @@
-import { useEffect, useState } from 'react';
 import { cn } from '../../lib/cn.js';
-import { japanNow, msUntilNextMinute } from './japanTime.js';
+import { useMinuteClock } from '../../hooks/useMinuteClock.js';
+import { japanNow } from './japanTime.js';
 import styles from './NowInJapan.module.css';
-
-/** Japan's season and Tokyo time, re-read on every minute boundary. */
-function useJapanClock() {
-  const [now, setNow] = useState(() => japanNow());
-  useEffect(() => {
-    let interval;
-    const timeout = setTimeout(() => {
-      setNow(japanNow());
-      interval = setInterval(() => setNow(japanNow()), 60000);
-    }, msUntilNextMinute());
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
-    };
-  }, []);
-  return now;
-}
 
 /**
  * "Now in Japan: 秋 Autumn — maple season · 21:04 JST" — a live strip with
  * the current Japanese season and Tokyo time. Props: className.
  */
 export function NowInJapan({ className }) {
-  const now = useJapanClock();
+  const date = useMinuteClock();
+  const now = japanNow(date);
   return (
     <p className={cn(styles.now, className)}>
       <span className={styles.label}>

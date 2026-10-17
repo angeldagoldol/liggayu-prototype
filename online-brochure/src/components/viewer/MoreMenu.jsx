@@ -54,7 +54,14 @@ export function MoreMenu({ items, label = 'More actions' }) {
       Tab: () => close(false),
     };
     const action = keys[event.key];
-    if (!action) return;
+    if (!action) {
+      // Keys a page behind the menu listens for (the reader turns on them) stay in the menu.
+      if (['ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown'].includes(event.key)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      return;
+    }
     if (event.key !== 'Tab') event.preventDefault();
     event.stopPropagation();
     action();

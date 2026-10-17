@@ -141,12 +141,24 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.spreadPage[data-side='right'] {
+.spreadPage[data-side='right'],
+.spreadBlank[data-side='right'] {
   grid-column: 2;
 }
 
-.spreadPage[data-side='left'] {
+.spreadPage[data-side='left'],
+.spreadBlank[data-side='left'] {
   grid-column: 1;
+}
+
+/* The cover and the back cover sit alone, as in the reader: only the sheet
+   casts a shadow, not the empty half beside it. */
+.spread[data-half] {
+  box-shadow: none;
+}
+
+.spread[data-half] > [data-side] {
+  box-shadow: var(--shadow-page);
 }
 
 .spreadPage::after {

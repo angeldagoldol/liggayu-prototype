@@ -6,6 +6,7 @@
 import { CATEGORIES, getCategory } from '../../data/categories.js';
 import { REGIONS, getRegion } from '../../data/regions.js';
 import { SEASONS, SEASON_MAP } from '../../data/seasons.js';
+import { brochureKana } from '../../data/kana.js';
 import { createSearchIndex, search } from './search.js';
 
 export const PALETTE_GROUPS = {
@@ -47,6 +48,8 @@ function brochureFields(item) {
   return [
     { key: 'title', text: item.title },
     { key: 'titleJp', text: item.titleJp },
+    // Hidden field: hiragana readings (きょうと finds 京都); never highlighted.
+    { key: 'kana', text: brochureKana(b), weight: 0.9, fuzzy: false },
     { key: 'tags', text: (Array.isArray(b.tags) ? b.tags : []).join(' · '), weight: 0.75 },
     { key: 'region', text: `${region.label} ${region.jp}`, weight: 0.75 },
     { key: 'category', text: `${category.label} ${category.jp}`, weight: 0.65 },
@@ -95,7 +98,7 @@ export function pageItems() {
         meta: 'Library · Category',
         icon: c.icon,
         to: `/brochures?category=${c.id}`,
-        keywords: 'category',
+        keywords: `category ${c.kana ?? ''}`,
       }),
     ),
     ...SEASONS.map((s) =>
@@ -105,7 +108,7 @@ export function pageItems() {
         meta: `Library · Season · ${s.months}`,
         icon: SEASON_ICONS[s.id] ?? 'Sparkles',
         to: `/brochures?season=${s.id}`,
-        keywords: `${s.romaji} ${s.motif} season`,
+        keywords: `${s.romaji} ${s.kana ?? ''} ${s.motif} season`,
       }),
     ),
     ...REGIONS.map((r) =>
@@ -115,14 +118,18 @@ export function pageItems() {
         meta: 'Library · Region',
         icon: 'MapPin',
         to: `/brochures?region=${r.id}`,
-        keywords: `region ${r.blurb}`,
+        keywords: `region ${r.kana ?? ''} ${r.blurb}`,
       }),
     ),
   ];
 }
 
-/** Commands. The theme row describes what it will switch TO. */
-export function actionItems(theme = 'light') {
+/**
+ * Commands. The theme row describes what it will switch TO; once the visitor
+ * has picked light or dark, a second row offers going back to the system
+ * setting (`preference` 'system' hides it).
+ */
+export function actionItems(theme = 'light', preference = 'system') {
   const dark = theme === 'dark';
   const action = (id, fields) => ({ id: `action:${id}`, kind: 'action', group: 'actions', ...fields });
   return [
@@ -132,8 +139,17 @@ export function actionItems(theme = 'light') {
       meta: dark ? 'Washi paper' : 'Sumi ink',
       icon: dark ? 'Sun' : 'Moon',
       action: 'toggle-theme',
-      keywords: 'theme dark light mode appearance colour color paper ink night',
+      keywords: 'theme toggle switch change dark light mode appearance colour color paper ink night day',
     }),
+    preference !== 'system' &&
+      action('theme-system', {
+        title: 'Match system appearance',
+        titleJp: '自動',
+        meta: 'Follow your device’s light or dark setting',
+        icon: 'Smartphone',
+        action: 'theme-system',
+        keywords: 'theme system auto automatic os device default appearance reset follow dark light mode',
+      }),
     action('create', {
       title: 'Create a new brochure',
       titleJp: '新しいパンフレット',
@@ -150,7 +166,7 @@ export function actionItems(theme = 'light') {
       action: 'random-brochure',
       keywords: 'random surprise shuffle lucky omakase',
     }),
-  ];
+  ].filter(Boolean);
 }
 
 function staticFields(item) {
@@ -163,9 +179,9 @@ function staticFields(item) {
 }
 
 /** Build the searchable universe once per brochure list / theme. */
-export function createPaletteIndex({ brochures = [], theme = 'light' } = {}) {
+export function createPaletteIndex({ brochures = [], theme = 'light', preference = 'system' } = {}) {
   const brochureRows = brochures.filter((b) => b && b.slug).map((b) => brochureItem(b));
-  const items = [...brochureRows, ...pageItems(), ...actionItems(theme)];
+  const items = [...brochureRows, ...pageItems(), ...actionItems(theme, preference)];
   const index = createSearchIndex(items, (item) => (item.kind === 'brochure' ? brochureFields(item) : staticFields(item)));
   const byId = new Map(brochureRows.map((row) => [row.brochure.id, row.brochure]));
   return { index, byId };

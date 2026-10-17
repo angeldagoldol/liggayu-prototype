@@ -17,6 +17,40 @@ import styles from './PalettePanel.module.css';
 const SUGGESTIONS = ['Kyoto', 'Onsen', 'Autumn', 'Hokkaidō', 'Ramen', '京都'];
 const JAPANESE = /[\u3040-\u30ff\u3400-\u9fff]/;
 
+const point = (cx, cy, radius, degrees) => {
+  const a = (degrees * Math.PI) / 180;
+  return [cx + Math.cos(a) * radius, cy + Math.sin(a) * radius];
+};
+const toPath = (points) => points.map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join(' L');
+
+/**
+ * 円相 ensō, drawn as one filled brush stroke rather than a stroked arc (an
+ * even ring with a gap is what a loading spinner looks like): the brush lands
+ * heavy at about one o'clock, runs clockwise and thins out as the ink dries,
+ * stopping just short of where it began. A few dry hairs trail off the tail.
+ */
+function brushEnso({ cx = 32, cy = 32, r = 23, start = -58, sweep = 334, steps = 56 } = {}) {
+  const outer = [];
+  const inner = [];
+  for (let i = 0; i <= steps; i += 1) {
+    const t = i / steps;
+    const width = 0.9 + 5.6 * (1 - t) ** 0.75 * Math.min(1, t * 9);
+    const wobble = Math.sin(t * 11) * 0.45;
+    outer.push(point(cx, cy, r + wobble + width / 2, start + sweep * t));
+    inner.push(point(cx, cy, r + wobble - width / 2, start + sweep * t));
+  }
+  const body = `M${toPath([...outer, ...inner.reverse()])} Z`;
+  const hairs = [-1.7, 0.4, 1.9].map((offset, k) => {
+    const from = start + sweep * (0.74 + k * 0.03);
+    const to = start + sweep * (0.95 - k * 0.04);
+    const arc = Array.from({ length: 9 }, (_, j) => point(cx, cy, r + offset, from + ((to - from) * j) / 8));
+    return `M${toPath(arc)}`;
+  });
+  return { body, hairs };
+}
+
+const ENSO = brushEnso();
+
 const panel = {
   hidden: { opacity: 0, scale: 0.96, y: -12 },
   show: { opacity: 1, scale: 1, y: 0, transition: spring.snappy },
@@ -64,6 +98,7 @@ function Row({ item, id, active, onRun, onHover }) {
       role="option"
       aria-selected={active}
       className={styles.row}
+      data-kind={item.kind}
       data-active={active || undefined}
       onClick={() => onRun(item)}
       onPointerMove={() => !active && onHover(item.index)}
@@ -91,8 +126,14 @@ function Row({ item, id, active, onRun, onHover }) {
 function EmptyState({ query, onPick, onBrowse }) {
   return (
     <div className={styles.empty}>
-      <svg className={styles.emptyEnso} viewBox="0 0 64 64" aria-hidden="true">
-        <path d="M49 15a24 24 0 1 0 6 17" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" />
+      <svg className={styles.emptyEnso} viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path d={ENSO.body} fill="currentColor" />
+        {ENSO.hairs.map((d) => (
+          <path key={d} d={d} className={styles.emptyHair} />
+        ))}
+        <text x="32" y="33" lang="ja" className={styles.emptyMu} textAnchor="middle" dominantBaseline="central">
+          無
+        </text>
       </svg>
       <p className={styles.emptyTitle}>
         Nothing found for <q>{query}</q>
@@ -127,7 +168,7 @@ function EmptyState({ query, onPick, onBrowse }) {
  */
 export default function PalettePanel({ onClose }) {
   const navigate = useNavigate();
-  const { theme, toggle } = useTheme();
+  const { theme, preference, toggle, setPreference } = useTheme();
   const { brochures, builtins, recentIds } = useBrochures();
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
@@ -139,7 +180,7 @@ export default function PalettePanel({ onClose }) {
   useFocusTrap(panelRef, true, inputRef);
   useLockBodyScroll(true);
 
-  const paletteIndex = useMemo(() => createPaletteIndex({ brochures, theme }), [brochures, theme]);
+  const paletteIndex = useMemo(() => createPaletteIndex({ brochures, theme, preference }), [brochures, theme, preference]);
   const { groups, flat } = useMemo(() => queryPalette(paletteIndex, query, recentIds), [paletteIndex, query, recentIds]);
   const activeIndex = flat.length ? Math.min(active, flat.length - 1) : -1;
   const activeItem = flat[activeIndex];
@@ -153,6 +194,7 @@ export default function PalettePanel({ onClose }) {
   const run = (item) => {
     onClose();
     if (item.action === 'toggle-theme') toggle();
+    else if (item.action === 'theme-system') setPreference('system');
     else if (item.action === 'random-brochure') {
       const pool = builtins.length ? builtins : brochures;
       const pick = pool[Math.floor(Math.random() * pool.length)];
@@ -285,7 +327,8 @@ export default function PalettePanel({ onClose }) {
           )}
         </motion.div>
 
-        <footer className={styles.footer}>
+        {/* A div: a <footer> portalled to <body> would be a second contentinfo landmark. */}
+        <div className={styles.footer}>
           <span className={styles.hint}>
             <Kbd className={styles.kbd}>↑</Kbd>
             <Kbd className={styles.kbd}>↓</Kbd> Navigate
@@ -305,7 +348,7 @@ export default function PalettePanel({ onClose }) {
           <span lang="ja" className={styles.brand} aria-hidden="true">
             旅
           </span>
-        </footer>
+        </div>
       </motion.div>
     </div>
   );

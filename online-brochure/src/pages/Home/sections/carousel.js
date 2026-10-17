@@ -30,6 +30,18 @@ export function nearestIndex(points, x) {
   return best;
 }
 
+/**
+ * The index the shelf shows while the track moves. A button or key press
+ * commits to `target` at once; until the spring lands, `x` is still nearest
+ * the old point, so following `x` alone would flick the counter back
+ * (02 → 01 → 02) and re-announce it. With no target (drag, fling, resize) the
+ * index follows `x`.
+ */
+export function shelfIndex(points, x, target) {
+  if (Number.isInteger(target) && target >= 0 && target < (points?.length ?? 0)) return target;
+  return nearestIndex(points ?? [0], x);
+}
+
 /** Index of the slide group containing slide `slideIndex` (for focus-follow). */
 export function indexForSlide(points, starts, slideIndex) {
   const start = starts?.[slideIndex];

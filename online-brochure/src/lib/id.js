@@ -7,18 +7,30 @@ export function createId(prefix = 'id') {
   return `${prefix}_${random}`;
 }
 
-/** "Hello, Wörld!" -> "hello-world" */
+const SLUG_LENGTH = 64;
+
+/**
+ * URL-safe slug that keeps every script, not just Latin:
+ * "Hello, Wörld!" -> "hello-world", "Tōhoku" -> "tohoku", "京都の秋" -> "京都の秋".
+ * Latin accents are folded, width variants unified (ＫＹＯＴＯ -> kyoto) and
+ * kana keep their voicing marks; anything that is not a letter, mark or digit
+ * becomes a hyphen. Capped at 64 characters (never splitting a character).
+ */
 export function slugify(input) {
-  return String(input ?? '')
-    .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
+  const slug = String(input ?? '')
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 64);
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .normalize('NFC')
+    .replace(/[^\p{L}\p{M}\p{N}]+/gu, '-')
+    .replace(/^-+|-+$/g, '');
+  return Array.from(slug).slice(0, SLUG_LENGTH).join('').replace(/-+$/, '');
 }
 
-/** Make `base` unique against a set/array of taken slugs by appending -2, -3… */
+/**
+ * Make `base` unique against a set/array of taken slugs by appending -2, -3…
+ * Titles with nothing to spell (only emoji or punctuation) become "untitled".
+ */
 export function uniqueSlug(base, taken) {
   const takenSet = taken instanceof Set ? taken : new Set(taken);
   const root = slugify(base) || 'untitled';

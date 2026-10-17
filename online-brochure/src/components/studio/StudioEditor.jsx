@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FileText, LayoutList, PenLine, Palette, RotateCcw } from 'lucide-react';
@@ -9,7 +9,7 @@ import { useHotkey } from '../../hooks/useHotkey.js';
 import { useMediaQuery } from '../../hooks/useMediaQuery.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { ease } from '../../lib/motion.js';
-import { isEditableTarget, tabPanelProps } from './a11y.js';
+import { tabPanelProps, wantsStudioUndo } from './a11y.js';
 import { exportFileName, MAX_IMPORT_BYTES, parseBrochureJson, serializeBrochure } from './brochureIO.js';
 import { DesignPanel } from './DesignPanel.jsx';
 import { DetailsPanel } from './DetailsPanel.jsx';
@@ -46,6 +46,12 @@ function download(filename, text) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/** "3 min ago" for the restored-changes notice; ticks on its own, so the editor doesn't re-render. */
+function RestoredAgo({ savedAt }) {
+  const now = useNow();
+  return relativeSaved(savedAt, now);
+}
+
 /**
  * The brochure editor. Desktop (≥ 1100px): settings tabs | live preview |
  * page inspector. Tablet: tabs (with the page form as a tab) | preview.
@@ -56,6 +62,7 @@ function download(filename, text) {
  */
 export function StudioEditor({ mode, initial, baseline, storageKey, restored = false }) {
   const id = useId();
+  const headingRef = useRef(null);
   const navigate = useNavigate();
   const toast = useToast();
   const { saveBrochure, deleteBrochure } = useBrochures();
@@ -79,13 +86,17 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
   const [finished, setFinished] = useState(false);
   const [base, setBase] = useState(baseline);
   const [restoredNotice, setRestoredNotice] = useState(restored);
-  const now = useNow();
 
   useDocumentTitle(doc.title ? `${doc.title} · Studio` : 'Studio');
 
-  // Entering from the start screen keeps the same route, so the shell does not reset the scroll.
+  // Entering from the start screen keeps the same route, so the shell neither
+  // resets the scroll nor moves focus: the button that was pressed is gone.
+  // Land on the editor's heading so screen readers hear where they are. A real
+  // route change has already focused <main>, which is left alone.
   useEffect(() => {
     window.scrollTo(0, 0);
+    const active = document.activeElement;
+    if (!active || active === document.body) headingRef.current?.focus({ preventScroll: true });
   }, []);
 
   const dirty = useMemo(() => mode === 'edit' && contentSignature(doc) !== contentSignature(base), [mode, doc, base]);
@@ -146,13 +157,16 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
       return;
     }
     const imported = { ...result.doc, id: doc.id, slug: doc.slug, source: 'user' };
+    // The toast's Undo restores exactly this document, even after more edits
+    // (a plain undo would only take back the latest of those).
+    const before = { doc, selectedId };
     dispatch(A.replaceDoc(imported, imported.pages[0].id));
     const skipped = result.dropped ? ` ${result.dropped} unknown page${result.dropped === 1 ? ' was' : 's were'} skipped.` : '';
     toast({
       title: 'Imported',
       description: `“${imported.title || 'Untitled'}” replaced this draft.${skipped}`,
       tone: 'success',
-      action: { label: 'Undo', onClick: () => dispatch(A.undo()) },
+      action: { label: 'Undo import', onClick: () => dispatch(A.replaceDoc(before.doc, before.selectedId)) },
     });
   };
 
@@ -160,6 +174,16 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
   const commit = (finalDoc) => {
     if (finalDoc !== doc) dispatch(A.replaceDoc(finalDoc));
     const saved = saveBrochure(finalDoc);
+    if (!saved) {
+      // Storage refused the write (usually a full quota): keep the draft and say so.
+      toast({
+        title: mode === 'new' ? 'Couldn’t publish' : 'Couldn’t save changes',
+        description: 'Your browser’s storage is full. Your draft is safe — export it to keep a copy.',
+        tone: 'error',
+        action: { label: 'Export JSON', onClick: () => download(exportFileName(finalDoc), serializeBrochure(finalDoc)) },
+      });
+      return;
+    }
     clearDraft(storageKey);
     if (mode === 'new') {
       autosave.discard();
@@ -198,12 +222,15 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
   };
 
   const confirmDelete = () => {
+    setDeleteOpen(false);
+    if (!deleteBrochure(doc.id)) {
+      toast({ title: 'Couldn’t delete', description: 'Your browser’s storage isn’t accepting changes right now.', tone: 'error' });
+      return;
+    }
     autosave.discard();
     clearDraft(storageKey);
     setFinished(true);
-    setDeleteOpen(false);
     navigate('/brochures');
-    deleteBrochure(doc.id);
     toast({ title: 'Brochure deleted', description: `“${doc.title || 'Untitled'}” was removed from your shelf.` });
   };
 
@@ -215,11 +242,17 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
 
   /* --- Keyboard ------------------------------------------------------------ */
   const overlayOpen = Boolean(publishCheck?.open || stamp || previewOpen || deleteOpen);
-  // Inside text fields the browser's own undo / redo applies, so leave those keys alone there.
+  // ⌘Z also works in the editor's own fields, on the Studio history, which
+  // groups a burst of typing into one step (the browser's undo goes a letter
+  // at a time on controlled inputs). Fields outside the editor (palette,
+  // popovers) and ones holding text not yet in the document
+  // ([data-native-undo]) keep the browser's undo.
   const historyKey = (redoKey) => (event) => {
-    if (isEditableTarget(event.target)) return;
+    if (!wantsStudioUndo(event.target, event.target?.closest?.('[data-studio-editor]'))) return;
+    const redo = redoKey || event.shiftKey;
+    if (redo ? state.future.length === 0 : state.past.length === 0) return;
     event.preventDefault();
-    dispatch(redoKey || event.shiftKey ? A.redo() : A.undo());
+    dispatch(redo ? A.redo() : A.undo());
   };
   useHotkey('mod+z', historyKey(false), { preventDefault: false, enabled: !overlayOpen });
   useHotkey('mod+y', historyKey(true), { preventDefault: false, enabled: !overlayOpen });
@@ -241,7 +274,9 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
         >
           {activeTab === 'details' && <DetailsPanel brochure={doc} dispatch={dispatch} />}
           {activeTab === 'design' && <DesignPanel brochure={doc} dispatch={dispatch} />}
-          {activeTab === 'pages' && <PagesPanel brochure={doc} selectedId={selectedId} dispatch={dispatch} onOpenPage={openPage} />}
+          {activeTab === 'pages' && (
+            <PagesPanel brochure={doc} selectedId={selectedId} dispatch={dispatch} onOpenPage={openPage} compact={layout === 'desktop'} />
+          )}
           {activeTab === 'page' && (
             <PageEditor brochure={doc} page={page} index={selectedIndex} total={pages.length} dispatch={dispatch} onEditDesign={editDesign} />
           )}
@@ -257,8 +292,10 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
   );
 
   return (
-    <div className={styles.studio} data-layout={layout} data-nav-hidden={navHidden || undefined}>
-      <h1 className="sr-only">{mode === 'edit' ? 'Studio: edit your brochure' : 'Studio: design a new brochure'}</h1>
+    <div className={styles.studio} data-studio-editor="" data-layout={layout} data-nav-hidden={navHidden || undefined}>
+      <h1 ref={headingRef} tabIndex={-1} className="sr-only">
+        {`${mode === 'edit' ? 'Studio: editing' : 'Studio: designing'} “${doc.title?.trim() || 'Untitled brochure'}”`}
+      </h1>
       <StudioTopBar
         mode={mode}
         layout={layout}
@@ -290,7 +327,7 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
           >
             <p>
               <RotateCcw size={15} aria-hidden="true" />
-              Restored the unsaved changes you made {relativeSaved(initial.savedAt, now)}.
+              Restored the unsaved changes you made <RestoredAgo savedAt={initial.savedAt} />.
             </p>
             <div className={styles.noticeActions}>
               <Button size="sm" variant="ghost" onClick={() => setRestoredNotice(false)}>

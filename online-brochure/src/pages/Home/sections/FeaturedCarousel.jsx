@@ -7,7 +7,7 @@ import { Hanko, IconButton } from '../../../components/ui/index.js';
 import { useFinePointer } from '../../../hooks/useMediaQuery.js';
 import { pad } from '../../../lib/format.js';
 import { ease, spring } from '../../../lib/motion.js';
-import { indexForSlide, nearestIndex, snapPoints, trackProgress } from './carousel.js';
+import { indexForSlide, nearestIndex, shelfIndex, snapPoints, trackProgress } from './carousel.js';
 import styles from './FeaturedCarousel.module.css';
 
 const slideIn = {
@@ -44,6 +44,8 @@ export function FeaturedCarousel({ brochures }) {
   const viewportRef = useRef(null);
   const trackRef = useRef(null);
   const dragged = useRef(false);
+  // The snap point a button/key press is springing to; null while dragging.
+  const target = useRef(null);
   const reduce = useReducedMotion();
   const finePointer = useFinePointer();
   const x = useMotionValue(0);
@@ -76,18 +78,28 @@ export function FeaturedCarousel({ brochures }) {
   }, [brochures.length, x, maxScroll, visible]);
 
   useMotionValueEvent(x, 'change', (value) => {
-    const next = nearestIndex(points, value);
+    const next = shelfIndex(points, value, target.current);
     setIndex((current) => (current === next ? current : next));
   });
 
   // Progress rule: starts at the visible share of the shelf, ends full.
   const fill = useTransform([x, maxScroll, visible], ([value, m, v]) => v + (1 - v) * trackProgress(value, m));
 
-  const goTo = (target) => {
-    const i = Math.min(points.length - 1, Math.max(0, target));
+  const goTo = (wanted) => {
+    const i = Math.min(points.length - 1, Math.max(0, wanted));
+    target.current = i;
     setIndex(i);
-    if (reduce) x.set(points[i]);
-    else animate(x, points[i], spring.gentle);
+    if (reduce) {
+      x.set(points[i]);
+      target.current = null;
+      return;
+    }
+    animate(x, points[i], {
+      ...spring.gentle,
+      onComplete: () => {
+        if (target.current === i) target.current = null;
+      },
+    });
   };
 
   const onKeyDown = (event) => {
@@ -117,6 +129,8 @@ export function FeaturedCarousel({ brochures }) {
         className={styles.viewport}
         onPointerDownCapture={() => {
           dragged.current = false;
+          // A drag interrupts the spring: the index follows the track again.
+          target.current = null;
         }}
         onClickCapture={(event) => {
           if (!dragged.current) return;
@@ -136,7 +150,7 @@ export function FeaturedCarousel({ brochures }) {
           dragTransition={{
             power: 0.28,
             timeConstant: 260,
-            modifyTarget: (target) => points[nearestIndex(points, target)],
+            modifyTarget: (end) => points[nearestIndex(points, end)],
             bounceStiffness: 260,
             bounceDamping: 32,
           }}
@@ -207,7 +221,7 @@ export function FeaturedCarousel({ brochures }) {
             icon={<ArrowRight />}
             variant="outline"
             size="lg"
-            tooltipSide="left"
+            tooltipSide="top"
             onClick={() => goTo(index + 1)}
             disabled={index >= points.length - 1}
           />

@@ -122,3 +122,52 @@
     border-left: 0;
   }
 }
+
+/* Where the visitor left off: folio-style page count over a hairline. */
+.progress {
+  display: grid;
+  gap: 0.45rem;
+  width: min(100%, 15rem);
+  margin-bottom: var(--space-2);
+}
+
+.progressText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.progressOf {
+  color: var(--ink-3);
+}
+
+.progressBar {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.progressBar > span {
+  display: block;
+  width: var(--done, 0%);
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  animation: progress-in 0.9s var(--ease-out) 0.35s both;
+}
+
+@keyframes progress-in {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressBar > span {
+    animation: none;
+  }
+}

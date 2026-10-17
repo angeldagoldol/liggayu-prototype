@@ -1,15 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useNavHidden } from '../../components/layout/navState.js';
-
-/**
- * True while the site navbar is tucked away, so the sticky toolbar can slide
- * up into the bar's place and back down when it returns. Reads the Navbar's
- * own published state (focus inside the bar, the palette and the mobile menu
- * all keep it visible), rather than re-deriving it from the scroll position.
- */
-export function useNavTucked() {
-  return useNavHidden();
-}
 
 /**
  * True once a sticky element has stuck. Watches a zero-height sentinel placed

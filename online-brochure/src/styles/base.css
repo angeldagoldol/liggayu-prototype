@@ -78,6 +78,7 @@ select {
   font: inherit;
   color: inherit;
   letter-spacing: inherit;
+  word-spacing: inherit; /* the UA resets it, which would undo a heading's */
 }
 
 button {
@@ -114,6 +115,7 @@ h6 {
   font-weight: 500;
   line-height: var(--lh-snug);
   letter-spacing: var(--tracking-tight);
+  word-spacing: var(--word-space-heading);
   font-variation-settings:
     'opsz' 144,
     'SOFT' 30,
@@ -211,6 +213,7 @@ i {
   font-weight: 400;
   line-height: var(--lh-tight);
   letter-spacing: -0.045em;
+  word-spacing: var(--word-space-display);
 }
 
 .serif-italic {

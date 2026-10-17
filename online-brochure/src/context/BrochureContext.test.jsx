@@ -105,6 +105,66 @@ describe('BrochureContext', () => {
     });
   });
 
+  describe('when storage refuses the write (full quota)', () => {
+    const failBrochureWrites = () => {
+      const original = Storage.prototype.setItem;
+      return vi.spyOn(Storage.prototype, 'setItem').mockImplementation(function setItem(key, value) {
+        if (key === 'tabi:brochures') throw new DOMException('Quota exceeded', 'QuotaExceededError');
+        return original.call(this, key, value);
+      });
+    };
+
+    it('saveBrochure returns null and changes nothing (regression: it claimed success)', () => {
+      const { result } = setup();
+      const spy = failBrochureWrites();
+      let saved;
+      act(() => {
+        saved = result.current.saveBrochure(draft());
+      });
+      spy.mockRestore();
+      expect(saved).toBeNull();
+      expect(result.current.userBrochures).toEqual([]);
+      expect(window.localStorage.getItem('tabi:brochures')).toBeNull();
+    });
+
+    it('deleteBrochure returns false and keeps the brochure, its favourite and its history', () => {
+      const { result } = setup();
+      let saved;
+      act(() => {
+        saved = result.current.saveBrochure(draft());
+      });
+      act(() => {
+        result.current.toggleFavorite(saved.id);
+        result.current.markViewed(saved.id);
+      });
+      const spy = failBrochureWrites();
+      let deleted;
+      act(() => {
+        deleted = result.current.deleteBrochure(saved.id);
+      });
+      spy.mockRestore();
+      expect(deleted).toBe(false);
+      expect(result.current.getById(saved.id)).toEqual(saved);
+      expect(result.current.favoriteIds).toEqual([saved.id]);
+      expect(result.current.recentIds).toEqual([saved.id]);
+      expect(stored('brochures')).toEqual([saved]);
+    });
+  });
+
+  it('keeps back-to-back saves in the same tick distinct and both persisted', () => {
+    const { result } = setup();
+    let a;
+    let b;
+    act(() => {
+      a = result.current.saveBrochure(draft());
+      b = result.current.saveBrochure(draft());
+    });
+    expect(a.slug).toBe('slow-weekend-in-kinosaki');
+    expect(b.slug).toBe('slow-weekend-in-kinosaki-2');
+    expect(result.current.userBrochures.map((x) => x.id)).toEqual([b.id, a.id]);
+    expect(stored('brochures').map((x) => x.id)).toEqual([b.id, a.id]);
+  });
+
   it('deleteBrochure removes the brochure and forgets it in favourites and history', () => {
     const { result } = setup();
     let saved;
@@ -116,8 +176,12 @@ describe('BrochureContext', () => {
       result.current.markViewed(saved.id);
       result.current.markViewed(BROCHURES[0].id);
     });
-    act(() => result.current.deleteBrochure(saved.id));
+    let deleted;
+    act(() => {
+      deleted = result.current.deleteBrochure(saved.id);
+    });
 
+    expect(deleted).toBe(true);
     expect(result.current.userBrochures).toEqual([]);
     expect(result.current.favoriteIds).toEqual([]);
     expect(result.current.recentIds).toEqual([BROCHURES[0].id]);
@@ -161,9 +225,18 @@ describe('BrochureContext', () => {
     expect(result.current.isFavorite('x')).toBe(false);
   });
 
+  it('sanitises brochures read from storage before anything renders them', () => {
+    const bad = { id: 'b_null', slug: 'nullpage', source: 'user', title: 'Null', seasons: ['constructor'], pages: [null, { id: 'x', type: 'intro' }] };
+    window.localStorage.setItem('tabi:brochures', JSON.stringify([bad]));
+    const { result } = setup();
+    const [loaded] = result.current.userBrochures;
+    expect(loaded.pages).toEqual([{ id: 'x', type: 'intro' }]);
+    expect(loaded.seasons).toEqual([]);
+  });
+
   it('picks up changes made in another tab', () => {
     const { result } = setup();
-    const other = { id: 'b_other', slug: 'from-another-tab', title: 'Elsewhere', pages: [], source: 'user' };
+    const other = { id: 'b_other', slug: 'from-another-tab', title: 'Elsewhere', pages: [{ id: 'p1', type: 'cover' }], source: 'user' };
     window.localStorage.setItem('tabi:brochures', JSON.stringify([other]));
     window.localStorage.setItem('tabi:favorites', JSON.stringify(['b_other']));
     act(() => {
@@ -176,10 +249,36 @@ describe('BrochureContext', () => {
 });
 
 describe('storage sanitizers', () => {
-  it('keeps only brochure-shaped records', () => {
-    const ok = { id: 'b_1', slug: 'ok', pages: [] };
-    expect(sanitizeUserBrochures([ok, null, { id: 1, slug: 's', pages: [] }, { id: 'b_2', slug: 'x' }, 'junk'])).toEqual([ok]);
+  it('keeps only brochure-shaped records with at least one readable page', () => {
+    const ok = { id: 'b_1', slug: 'ok', pages: [{ id: 'p', type: 'cover' }] };
+    const page = [{ id: 'p', type: 'cover' }];
+    const junk = [null, { id: 1, slug: 's', pages: page }, { id: 'b_2', slug: 'x' }, { id: 'b_3', slug: 'empty', pages: [] }, 'junk'];
+    expect(sanitizeUserBrochures([ok, ...junk])).toEqual([ok]);
     expect(sanitizeUserBrochures('nope')).toEqual([]);
+  });
+
+  it('returns valid records unchanged, key order included', () => {
+    const [kyoto] = BROCHURES;
+    const record = { ...kyoto, id: 'b_mine', slug: 'mine', source: 'user' };
+    const [clean] = sanitizeUserBrochures([record]);
+    expect(JSON.stringify(clean)).toBe(JSON.stringify(record));
+  });
+
+  it('normalises records that would crash the Library, Viewer or Studio (regression)', () => {
+    const [clean] = sanitizeUserBrochures([
+      {
+        id: 'b_bad',
+        slug: 'bad',
+        title: { en: 'x' },
+        seasons: ['constructor', 'winter', 'toString'],
+        category: '__proto__',
+        pages: [null, { id: 'x', type: 'intro' }, { id: 'y', type: 'constructor' }, { type: 'back' }],
+      },
+    ]);
+    expect(clean.title).toBe('');
+    expect(clean.seasons).toEqual(['winter']);
+    expect(clean.category).toBe('heritage');
+    expect(clean.pages).toEqual([{ id: 'x', type: 'intro' }]);
   });
 
   it('keeps unique, non-empty string ids', () => {

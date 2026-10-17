@@ -418,6 +418,11 @@
   margin-inline: 0.6em;
 }
 
+/* "5 min read", or "5 min" where space is tight. */
+.factShort {
+  display: none;
+}
+
 .seasons {
   display: inline-flex;
   flex: none;
@@ -547,6 +552,41 @@
   .kickerShort {
     display: inline;
   }
+
+  /* One line of facts, so two cards side by side end level: the reading time
+     shortens and stays whole, and a long region ("Kyūshū & Okinawa")
+     truncates. The separator moves onto the following fact, so the ellipsis
+     can't eat it. */
+  .facts {
+    flex-wrap: nowrap;
+  }
+
+  .factLong {
+    display: none;
+  }
+
+  .factShort {
+    display: inline;
+  }
+
+  .fact[data-fact='region'] {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .fact[data-fact='minutes'] {
+    flex: none;
+  }
+
+  .fact:has(+ .fact)::after {
+    content: none;
+  }
+
+  .fact + .fact::before {
+    content: '·';
+    margin-inline: 0.5em;
+  }
 }
 
 /* Narrow list rows (phones). */
@@ -587,6 +627,9 @@
 }
 
 .feature .title {
+  /* Two lines reserved, so a one-line title keeps the publisher and summary
+     on the same baseline as its neighbours on the shelf. */
+  min-height: calc(2 * 1.02em);
   font-size: var(--fs-xl);
   line-height: 1.02;
   letter-spacing: -0.035em;

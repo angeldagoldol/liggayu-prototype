@@ -21,35 +21,13 @@ export const spring = {
   magnetic: { type: 'spring', stiffness: 220, damping: 16, mass: 0.4 },
 };
 
-export const duration = { fast: 0.2, base: 0.45, slow: 0.8, slower: 1.2 };
-
 /** Shared `whileInView` viewport options: animate once, when ~25% visible. */
 export const viewportOnce = { once: true, amount: 0.25 };
 
-export const fade = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: duration.slow, ease: ease.out } },
-};
-
+/** Rise and fade in: the default entrance for blocks of content. */
 export const fadeUp = {
   hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: duration.slow, ease: ease.out } },
-};
-
-export const fadeDown = {
-  hidden: { opacity: 0, y: -16 },
-  show: { opacity: 1, y: 0, transition: { duration: duration.base, ease: ease.out } },
-};
-
-export const scaleIn = {
-  hidden: { opacity: 0, scale: 0.92 },
-  show: { opacity: 1, scale: 1, transition: { duration: duration.slow, ease: ease.out } },
-};
-
-/** Text line rising out of an overflow-hidden mask. */
-export const lineReveal = {
-  hidden: { y: '110%' },
-  show: { y: '0%', transition: { duration: 1, ease: ease.out } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: ease.out } },
 };
 
 /** Parent variant that staggers its children. */

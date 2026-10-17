@@ -58,6 +58,10 @@
   letter-spacing: 0.22em;
 }
 
+:global([data-motion='paused']) .ring {
+  animation-play-state: paused;
+}
+
 @keyframes ring-turn {
   to {
     transform: rotate(360deg);

@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { BROCHURES } from '../../data/brochures.js';
+import { foldQuery } from '../../components/layout/search.js';
 import {
   DEFAULT_FILTERS,
   countActiveFilters,
   describeFilters,
   facetCounts,
   filterBrochures,
-  foldText,
   hasActiveFilters,
   queryTerms,
   scoreBrochure,
@@ -40,19 +40,19 @@ const FIXTURES = [
 
 const slugs = (list) => list.map((b) => b.slug);
 
-describe('foldText / queryTerms', () => {
+describe('folding (search.js foldQuery) / queryTerms', () => {
   it('folds case, macrons and full-width forms', () => {
-    expect(foldText('Tōhoku')).toBe('tohoku');
-    expect(foldText('KYŪSHŪ')).toBe('kyushu');
-    expect(foldText('ＫＹＯＴＯ')).toBe('kyoto');
-    expect(foldText('  many   spaces ')).toBe('many spaces');
+    expect(foldQuery('Tōhoku')).toBe('tohoku');
+    expect(foldQuery('KYŪSHŪ')).toBe('kyushu');
+    expect(foldQuery('ＫＹＯＴＯ')).toBe('kyoto');
+    expect(foldQuery('  many   spaces ')).toBe('many spaces');
   });
 
   it('keeps kana voicing marks intact', () => {
-    expect(foldText('が')).toBe('が');
-    expect(foldText('ｶﾞ')).toBe('が'); // half-width katakana → full-width → hiragana, still voiced
-    expect(foldText('カ')).not.toBe(foldText('ガ'));
-    expect(foldText('キョウト')).toBe(foldText('きょうと')); // same folding as the ⌘K palette
+    expect(foldQuery('が')).toBe('が');
+    expect(foldQuery('ｶﾞ')).toBe('が'); // half-width katakana → full-width → hiragana, still voiced
+    expect(foldQuery('カ')).not.toBe(foldQuery('ガ'));
+    expect(foldQuery('キョウト')).toBe(foldQuery('きょうと')); // same folding as the ⌘K palette
   });
 
   it('splits terms and drops stray punctuation', () => {
@@ -111,6 +111,31 @@ describe('filterBrochures — search', () => {
     expect(slugs(filterBrochures(BROCHURES, { q: 'tohoku' }))).toContain('tohoku-summer-festivals');
     expect(slugs(filterBrochures(BROCHURES, { q: 'Kyoto' }))[0]).toBe('kyoto-thousand-gates');
     expect(filterBrochures(BROCHURES, { q: 'onsen' }).length).toBeGreaterThan(0);
+  });
+});
+
+describe('filterBrochures — kana readings', () => {
+  const found = (q, list = BROCHURES) => filterBrochures(list, { q }).map((b) => b.slug);
+
+  it('finds built-ins by the hiragana (or katakana) reading of their title', () => {
+    expect(found('きょうと')).toEqual(['kyoto-thousand-gates']);
+    expect(found('キョウト')).toEqual(['kyoto-thousand-gates']);
+    expect(found('とうきょう')).toEqual(['tokyo-after-dark']);
+    expect(found('ほっかいどう')).toEqual(['hokkaido-powder-snow']);
+  });
+
+  it('finds category, region and season readings, and partial input while an IME composes', () => {
+    expect(found('おんせん')).toEqual(['hakone-onsen-ryokan']);
+    expect(found('まつり')).toEqual(['tohoku-summer-festivals']);
+    expect(found('かんさい').length).toBeGreaterThan(1);
+    expect(found('きょ')).toContain('kyoto-thousand-gates');
+    expect(found('ふゆ')).toEqual(found('winter'));
+  });
+
+  it('ignores a remixed copy’s inherited title reading', () => {
+    const remix = make({ slug: 'mine', title: 'My Osaka', titleJp: '大阪', titleKana: 'きょうと', source: 'user', region: 'kansai' });
+    expect(found('きょうと', [remix])).toEqual([]);
+    expect(found('かんさい', [remix])).toEqual(['mine']);
   });
 });
 
@@ -195,6 +220,12 @@ describe('active filter helpers', () => {
     expect(pills.map((p) => p.label)).toEqual(['“onsen”', 'Food & Drink', 'Spring', 'Winter', 'Kansai', 'Saved only']);
     expect(pills.find((p) => p.key === 'season:spring').patch).toEqual({ seasons: ['winter'] });
     expect(pills.find((p) => p.key === 'region').jp).toBe('関西');
+  });
+
+  it('never builds blank pills from prototype-named ids', () => {
+    const pills = describeFilters({ category: 'constructor', seasons: ['__proto__', 'toString'], region: 'toString' });
+    expect(pills.map((p) => p.key)).toEqual(['category', 'region']);
+    expect(pills.every((p) => typeof p.label === 'string' && p.label.length > 0)).toBe(true);
   });
 
   it('toggles seasons in calendar order', () => {

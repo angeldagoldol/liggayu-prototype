@@ -9,13 +9,15 @@ import {
   Ticket, TrainFront, TramFront, TreeDeciduous, TreePine, Umbrella, Users, Utensils, Wallet, Waves, Wheat, Wifi,
   Wind, Wine, Zap,
 } from 'lucide-react';
+import { dict } from '../../data/lookup.js';
 
 /**
  * Named icon registry. Brochure data stores icons by name (e.g. "Landmark") so
  * it stays JSON-serialisable; this maps names to components. Only icons listed
- * here end up in the bundle.
+ * here end up in the bundle. The registry has no prototype, so a stored name
+ * like "constructor" falls back to the sparkle instead of finding Object.
  */
-export const ICONS = {
+export const ICONS = dict({
   ArrowLeft, ArrowRight, ArrowUpRight, Award, Banknote, Bath, Bed, Beer, Bike, Bird, Bookmark, BookOpen, Briefcase,
   Brush, Building2, Bus, Calendar, Camera, Castle, Check, ChevronDown, ChevronLeft, ChevronRight, Cloud, CloudRain,
   Clock, Coffee, Compass, Copy, CreditCard, Download, Drama, Eye, Fan, Fish, Flame, Flower, Flower2, Footprints,
@@ -25,7 +27,7 @@ export const ICONS = {
   Signpost, Smartphone, Snowflake, Soup, Sparkles, Sprout, Star, Store, Sun, Sunrise, Sunset, Swords, Tent,
   Ticket, TrainFront, TramFront, TreeDeciduous, TreePine, Umbrella, Users, Utensils, Wallet, Waves, Wheat, Wifi,
   Wind, Wine, Zap,
-};
+});
 
 export const ICON_NAMES = Object.keys(ICONS);
 

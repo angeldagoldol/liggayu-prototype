@@ -206,13 +206,22 @@
   animation: cue-bob 2.2s var(--ease-in-out) infinite;
 }
 
+:global([data-motion='paused']) .cueIcon svg {
+  animation: none;
+}
+
 .cueJp {
   font-family: var(--font-jp);
   letter-spacing: 0.2em;
   color: var(--ink-3);
 }
 
-.clock {
+.metaEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-5);
   justify-self: end;
 }
 
@@ -300,8 +309,15 @@
     letter-spacing: 0.06em;
   }
 
-  .clock {
-    justify-self: start;
+  .metaEnd {
+    justify-content: space-between;
+    justify-self: stretch;
+    column-gap: var(--space-3);
+  }
+
+  /* Line the control's disc up with the facts above it. */
+  .motion {
+    margin-left: -0.4rem;
   }
 
   .ctas > * {

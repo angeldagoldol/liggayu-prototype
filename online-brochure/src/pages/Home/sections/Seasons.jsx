@@ -9,7 +9,7 @@ import { SEASONS, SEASON_MAP } from '../../../data/seasons.js';
 import { pluralize } from '../../../lib/format.js';
 import { ease } from '../../../lib/motion.js';
 import { SEASON_LINES, SEASON_SWATCH, SECTIONS } from '../homeContent.js';
-import { countBy } from '../homeStats.js';
+import { countBy, tightRange } from '../homeStats.js';
 import { SeasonMotif } from './SeasonMotif.jsx';
 import { SectionHead } from './SectionHead.jsx';
 import styles from './Seasons.module.css';
@@ -60,7 +60,7 @@ function SeasonPanel({ season, count, active, isNow, ids, onChoose, onHover, onK
           </motion.span>
           <motion.span layout="position" transition={LAYOUT} className={styles.name}>
             <span className={styles.label}>{season.label}</span>
-            <span className={styles.months}>{season.months}</span>
+            <span className={styles.months}>{tightRange(season.months)}</span>
           </motion.span>
         </button>
       </h3>

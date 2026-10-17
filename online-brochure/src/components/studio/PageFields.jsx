@@ -7,6 +7,7 @@ import { Note } from './Note.jsx';
 import { DiceButton } from './fields/DiceButton.jsx';
 import { IconPicker } from './fields/IconPicker.jsx';
 import { ListEditor } from './fields/ListEditor.jsx';
+import { NumberField } from './fields/NumberField.jsx';
 import { StringList } from './fields/StringList.jsx';
 import { TextField } from './fields/TextField.jsx';
 import { listLimit } from './pageLimits.js';
@@ -170,16 +171,7 @@ function StatsFields({ api, page }) {
           <>
             <div className={styles.statRow}>
               <Text api={api} path={[...path, 'prefix']} label="Before" max={4} placeholder="~" />
-              <TextField
-                label="Number"
-                type="number"
-                inputMode="decimal"
-                value={item?.value ?? ''}
-                onChange={(raw) => {
-                  const number = Number(raw);
-                  api.set([...path, 'value'], raw === '' || !Number.isFinite(number) ? '' : number, true);
-                }}
-              />
+              <NumberField label="Number" value={item?.value ?? ''} onChange={(value) => api.set([...path, 'value'], value, true)} />
               <Text api={api} path={[...path, 'suffix']} label="After" max={6} placeholder="%" />
             </div>
             <Text api={api} path={[...path, 'label']} label="Label" max={48} />

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { brochuresWith, busiestId, countBy, pickFeatured } from './homeStats.js';
+import { brochuresWith, busiestId, countBy, pickFeatured, tightRange } from './homeStats.js';
+import { SEASONS } from '../../data/seasons.js';
 
 const list = [
   { slug: 'a', region: 'kansai', seasons: ['spring', 'autumn'], featured: true, source: 'builtin', updatedAt: '2026-01-01' },
@@ -47,5 +48,22 @@ describe('brochuresWith', () => {
   it('matches scalar and array fields', () => {
     expect(brochuresWith(list, 'region', 'kansai').map((b) => b.slug)).toEqual(['a', 'c']);
     expect(brochuresWith(list, 'seasons', 'spring', 1).map((b) => b.slug)).toEqual(['a']);
+  });
+});
+
+describe('tightRange', () => {
+  it('closes up the dash so a range cannot wrap as "Mar – / May"', () => {
+    expect(tightRange('Mar – May')).toBe('Mar–May');
+    expect(tightRange('Dec—Feb')).toBe('Dec–Feb');
+    expect(tightRange('Jun - Aug')).toBe('Jun–Aug');
+  });
+
+  it('leaves hyphenated words and empty values alone', () => {
+    expect(tightRange('Mid-May')).toBe('Mid-May');
+    expect(tightRange(undefined)).toBe('');
+  });
+
+  it('gives every season a range without spaces', () => {
+    for (const season of SEASONS) expect(tightRange(season.months)).not.toMatch(/\s/);
   });
 });

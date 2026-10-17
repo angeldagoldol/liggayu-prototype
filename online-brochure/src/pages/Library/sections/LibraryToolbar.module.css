@@ -17,14 +17,15 @@
   transition: top 0.4s var(--ease-in-out);
 }
 
-/* Frosted washi once stuck. */
+/* Frosted washi once stuck: dense enough that dark covers scrolling under
+   the chip row don't show through as grey bands. */
 .toolbar::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   opacity: 0;
@@ -33,6 +34,7 @@
 
 .toolbar[data-stuck]::before {
   opacity: 1;
+  box-shadow: var(--shadow-xs), 0 10px 24px -18px rgb(var(--shadow-color) / 0.35);
 }
 
 /* --- Full (desktop) layout ---------------------------------------------- */

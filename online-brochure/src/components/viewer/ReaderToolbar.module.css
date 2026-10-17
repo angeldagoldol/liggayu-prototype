@@ -6,7 +6,7 @@
   align-items: center;
   gap: var(--space-3);
   min-height: 60px;
-  padding: 8px max(12px, calc(var(--gutter) * 0.6));
+  padding: 8px var(--tool-gutter);
   border-bottom: 1px solid var(--line);
   background: var(--bg-elevated);
 }
@@ -16,6 +16,15 @@
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     gap: var(--space-5);
     min-height: 64px;
+  }
+}
+
+/* Tablets: the action group is wide, so a centred counter would leave the
+   title a sliver. Let the title column take the free space instead. */
+@media (min-width: 760px) and (max-width: 1099.98px) {
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: var(--space-4);
   }
 }
 
@@ -41,7 +50,7 @@
   }
 }
 
-@media (max-width: 759.98px) {
+@media (max-width: 1099.98px) {
   .back {
     width: 40px;
     height: 40px;
@@ -116,7 +125,8 @@
   color: var(--accent);
 }
 
-@media (max-width: 479.98px) {
+/* Below 1100px the seal already carries the kanji: give the title its room. */
+@media (max-width: 1099.98px) {
   .titleJp {
     display: none;
   }

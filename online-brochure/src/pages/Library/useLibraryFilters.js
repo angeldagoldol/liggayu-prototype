@@ -1,5 +1,7 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useIsPresent } from 'framer-motion';
 import { useSearchParams } from 'react-router-dom';
+import { rememberLibrarySearch } from '../../lib/librarySearch.js';
 import { parseFilters, toSearchParams } from './libraryParams.js';
 
 /**
@@ -12,6 +14,13 @@ import { parseFilters, toSearchParams } from './libraryParams.js';
 export function useLibraryFilters() {
   const [params, setParams] = useSearchParams();
   const filters = useMemo(() => parseFilters(params), [params]);
+
+  // The reader's "Library" link returns to this view (lib/librarySearch.js).
+  // Not while the page animates out: the router already holds the next URL.
+  const present = useIsPresent();
+  useEffect(() => {
+    if (present) rememberLibrarySearch(toSearchParams(filters).toString());
+  }, [filters, present]);
 
   const update = useCallback(
     (patch, { replace = false } = {}) => {

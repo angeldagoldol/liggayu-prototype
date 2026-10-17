@@ -28,6 +28,8 @@
  * @property {string} slug                 used in the URL: #/brochures/:slug
  * @property {string} title
  * @property {string} titleJp              Japanese title, shown in vertical type (e.g. "京都")
+ * @property {string} [titleKana]          hiragana reading of titleJp (e.g. "きょうと"), so kana
+ *                                         search finds it; built-ins only (data/kana.js)
  * @property {string} subtitle
  * @property {string} category             id from data/categories.js
  * @property {string} region               id from data/regions.js
@@ -47,10 +49,12 @@
  * Page = { id: string, type: PageType, ...fields } — fields per type below.
  */
 
+import { dict } from './lookup.js';
+
 /** Cover art styles understood by <CoverArt>. */
 export const ART_STYLES = ['seigaiha', 'asanoha', 'hinomaru', 'fuji', 'sakura', 'torii', 'shippo', 'enso', 'kumo', 'ichimatsu'];
 
-export const ART_LABELS = {
+export const ART_LABELS = dict({
   seigaiha: { label: 'Seigaiha waves', jp: '青海波' },
   asanoha: { label: 'Asanoha star', jp: '麻の葉' },
   hinomaru: { label: 'Rising sun', jp: '日の丸' },
@@ -61,7 +65,7 @@ export const ART_LABELS = {
   enso: { label: 'Ensō circle', jp: '円相' },
   kumo: { label: 'Clouds', jp: '雲' },
   ichimatsu: { label: 'Ichimatsu check', jp: '市松' },
-};
+});
 
 export const FORMATS = [
   { id: 'booklet', label: 'Booklet' },
@@ -70,9 +74,11 @@ export const FORMATS = [
 ];
 
 /**
- * Every page type, its human label, and a factory for a fresh page with
- * sensible placeholder content. The Studio builds its "Add page" menu and
- * its field editors from this table.
+ * Every page type, its human label, its Japanese section name (`jp`, printed
+ * in the page margin and shown by the Studio and the reader alike) and a
+ * factory for a fresh page with sensible placeholder content. The Studio
+ * builds its "Add page" menu and its field editors from this table. It has no prototype, so
+ * `PAGE_TYPES[page.type]` is only truthy for a real page type.
  *
  * Field shapes:
  *  cover:    { eyebrow, title, titleJp, subtitle }               titleJp falls back to brochure.titleJp
@@ -87,15 +93,17 @@ export const FORMATS = [
  *  contact:  { heading, body, cta, details: [{ icon, label, value }] }    2–4 details
  *  back:     { title, body, tagline }
  */
-export const PAGE_TYPES = {
+export const PAGE_TYPES = dict({
   cover: {
     label: 'Cover',
+    jp: '表紙',
     description: 'Front cover with artwork',
     icon: 'BookOpen',
     create: () => ({ eyebrow: 'Volume 01', title: 'Your headline here', titleJp: '旅', subtitle: 'A short line that makes people want to turn the page.' }),
   },
   intro: {
     label: 'Introduction',
+    jp: 'はじめに',
     description: 'Opening story with a pull quote',
     icon: 'PenLine',
     create: () => ({
@@ -107,21 +115,23 @@ export const PAGE_TYPES = {
   },
   features: {
     label: 'Features',
+    jp: '見どころ',
     description: 'Icon grid of highlights',
     icon: 'LayoutGrid',
     create: () => ({
       kicker: 'Highlights',
-      heading: 'What you get',
+      heading: 'What makes it special',
       items: [
-        { icon: 'Sparkles', title: 'Highlight one', text: 'A short benefit, written for the reader.' },
-        { icon: 'Shield', title: 'Highlight two', text: 'Another reason to say yes.' },
-        { icon: 'Heart', title: 'Highlight three', text: 'Something people love about you.' },
-        { icon: 'Zap', title: 'Highlight four', text: 'The detail that seals the deal.' },
+        { icon: 'Landmark', title: 'A dawn temple visit', text: 'Before the crowds, with only the monks and the raked gravel.' },
+        { icon: 'Leaf', title: 'A garden at its peak', text: 'Moss, maples or blossom — timed to the season.' },
+        { icon: 'Coffee', title: 'Tea with a host', text: 'A quiet bowl of matcha in an old town house.' },
+        { icon: 'Heart', title: 'Dinner at the counter', text: 'Seasonal courses, made in front of you.' },
       ],
     }),
   },
   gallery: {
     label: 'Gallery',
+    jp: '写真',
     description: 'Artwork tiles with captions',
     icon: 'Camera',
     create: () => ({
@@ -135,20 +145,22 @@ export const PAGE_TYPES = {
   },
   stats: {
     label: 'Numbers',
+    jp: '数字',
     description: 'Big animated figures',
     icon: 'Award',
     create: () => ({
       heading: 'By the numbers',
-      body: 'Proof, in figures.',
+      body: 'Japan, in figures.',
       items: [
-        { value: 120, prefix: '', suffix: '+', label: 'Happy clients' },
-        { value: 98, prefix: '', suffix: '%', label: 'Would recommend' },
-        { value: 12, prefix: '', suffix: '', label: 'Years in business' },
+        { value: 47, prefix: '', suffix: '', label: 'prefectures to explore' },
+        { value: 4, prefix: '', suffix: '', label: 'distinct seasons' },
+        { value: 3776, prefix: '', suffix: ' m', label: 'to the summit of Mount Fuji' },
       ],
     }),
   },
   agenda: {
     label: 'Schedule',
+    jp: '旅程',
     description: 'Timeline or itinerary',
     icon: 'Calendar',
     create: () => ({
@@ -162,19 +174,27 @@ export const PAGE_TYPES = {
   },
   pricing: {
     label: 'Pricing',
+    jp: '料金',
     description: 'Plans or packages',
     icon: 'Gem',
     create: () => ({
-      heading: 'Choose your plan',
-      note: 'Prices include tax.',
+      heading: 'Choose your journey',
+      note: 'Per person, two sharing. Tax included.',
       plans: [
-        { name: 'Starter', price: '$29', period: 'per month', features: ['Core features', 'Email support'], highlight: false },
-        { name: 'Studio', price: '$79', period: 'per month', features: ['Everything in Starter', 'Priority support', 'Custom branding'], highlight: true },
+        { name: 'Ryokan Night', price: '¥38,000', period: '1 night', features: ['Tatami room', 'Kaiseki dinner & breakfast'], highlight: false },
+        {
+          name: 'Slow Weekend',
+          price: '¥72,000',
+          period: '2 nights',
+          features: ['Everything in Ryokan Night', 'Private onsen', 'Guided morning walk'],
+          highlight: true,
+        },
       ],
     }),
   },
   phrases: {
     label: 'Phrasebook',
+    jp: '会話',
     description: 'Useful Japanese phrases',
     icon: 'Languages',
     create: () => ({
@@ -189,12 +209,14 @@ export const PAGE_TYPES = {
   },
   quote: {
     label: 'Testimonial',
+    jp: 'お客様の声',
     description: 'A large quote',
     icon: 'Star',
     create: () => ({ quote: 'The quietest, most beautiful week we have ever spent anywhere.', author: 'Alex Rivera', role: 'Traveller, spring 2026' }),
   },
   contact: {
     label: 'Contact',
+    jp: 'お問い合わせ',
     description: 'How to reach you',
     icon: 'Mail',
     create: () => ({
@@ -202,18 +224,19 @@ export const PAGE_TYPES = {
       body: 'We reply within one business day.',
       cta: 'Get in touch',
       details: [
-        { icon: 'Mail', label: 'Email', value: 'hello@example.com' },
-        { icon: 'Phone', label: 'Phone', value: '+81 3-5550-0100' },
+        { icon: 'Mail', label: 'Email', value: 'hello@your-studio.example' },
+        { icon: 'Clock', label: 'Hours', value: 'Mon–Fri 10:00–18:00 JST' },
         { icon: 'MapPin', label: 'Visit', value: '1-2-3 Example-chō, Kyoto' },
       ],
     }),
   },
   back: {
     label: 'Back cover',
+    jp: '裏表紙',
     description: 'Closing page',
     icon: 'Bookmark',
     create: () => ({ title: 'Mata ne — see you soon', body: 'Thank you for reading.', tagline: 'Made with Tabi 旅' }),
   },
-};
+});
 
 export const PAGE_TYPE_IDS = Object.keys(PAGE_TYPES);

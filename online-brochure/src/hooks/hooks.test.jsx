@@ -5,6 +5,7 @@ import { useDocumentTitle } from './useDocumentTitle.js';
 import { useFocusTrap } from './useFocusTrap.js';
 import { useLockBodyScroll } from './useLockBodyScroll.js';
 import { useMediaQuery } from './useMediaQuery.js';
+import { useMinuteClock } from './useMinuteClock.js';
 
 describe('useDocumentTitle', () => {
   it('sets a page title and restores the previous one', () => {
@@ -67,6 +68,46 @@ describe('useClipboard', () => {
     expect(result.current.copied).toBe(false);
     delete navigator.clipboard;
   });
+
+  it('falls back to execCommand when the Clipboard API refuses, and gives focus back', async () => {
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: vi.fn().mockRejectedValue(new Error('Write permission denied')) },
+      configurable: true,
+    });
+    let copiedText = null;
+    document.execCommand = vi.fn(() => {
+      copiedText = document.querySelector('textarea')?.value ?? null;
+      return true;
+    });
+    const button = document.createElement('button');
+    document.body.appendChild(button);
+    button.focus();
+    const { result } = renderHook(() => useClipboard());
+    let ok;
+    await act(async () => {
+      ok = await result.current.copy('https://tabi.example/#/brochures/hakone?p=9');
+    });
+    expect(ok).toBe(true);
+    expect(copiedText).toBe('https://tabi.example/#/brochures/hakone?p=9');
+    expect(result.current.copied).toBe(true);
+    expect(document.querySelector('textarea')).toBeNull();
+    expect(document.activeElement).toBe(button);
+    button.remove();
+    delete document.execCommand;
+    delete navigator.clipboard;
+  });
+
+  it('reports failure when execCommand copies nothing', async () => {
+    document.execCommand = vi.fn(() => false);
+    const { result } = renderHook(() => useClipboard());
+    let ok;
+    await act(async () => {
+      ok = await result.current.copy('x');
+    });
+    expect(ok).toBe(false);
+    expect(document.execCommand).toHaveBeenCalledWith('copy');
+    delete document.execCommand;
+  });
 });
 
 function Trap({ active }) {
@@ -103,5 +144,30 @@ describe('useFocusTrap', () => {
     expect(document.activeElement).toBe(opener);
     spy.mockRestore();
     opener.remove();
+  });
+});
+
+describe('useMinuteClock', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('ticks on each minute boundary without drifting, and on returning to the tab', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-10-17T12:04:59.250Z'));
+    const { result, unmount } = renderHook(() => useMinuteClock());
+    expect(result.current.toISOString()).toBe('2026-10-17T12:04:59.250Z');
+    act(() => vi.advanceTimersByTime(750));
+    expect(result.current.toISOString()).toBe('2026-10-17T12:05:00.000Z');
+    act(() => vi.advanceTimersByTime(60_000 * 3));
+    expect(result.current.toISOString()).toBe('2026-10-17T12:08:00.000Z');
+    // A throttled background tab catches up as soon as it is visible again.
+    vi.setSystemTime(new Date('2026-10-17T12:30:10.000Z'));
+    act(() => document.dispatchEvent(new Event('visibilitychange')));
+    expect(result.current.toISOString()).toBe('2026-10-17T12:30:10.000Z');
+    act(() => vi.advanceTimersByTime(50_000));
+    expect(result.current.toISOString()).toBe('2026-10-17T12:31:00.000Z');
+    unmount();
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

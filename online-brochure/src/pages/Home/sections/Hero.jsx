@@ -5,7 +5,9 @@ import { Button, Magnetic, RevealText, VerticalText } from '../../../components/
 import { useFinePointer } from '../../../hooks/useMediaQuery.js';
 import { ease } from '../../../lib/motion.js';
 import { SECTIONS } from '../homeContent.js';
+import { useMotionPaused } from '../homeMotion.js';
 import { HeroStage } from './HeroStage.jsx';
+import { MotionToggle } from './MotionToggle.jsx';
 import { Petals } from './Petals.jsx';
 import { TokyoClock } from './TokyoClock.jsx';
 import styles from './Hero.module.css';
@@ -34,8 +36,8 @@ function Spine() {
 /**
  * The first impression: masthead headline, pitch and CTAs beside an
  * interactive tri-fold brochure under a rising sun, with drifting sakura and
- * a meta strip (counts + live Tokyo clock). The brochure follows the pointer
- * and folds shut as the hero scrolls away.
+ * a meta strip (counts, the page's "Pause motion" control, live Tokyo clock).
+ * The brochure follows the pointer and folds shut as the hero scrolls away.
  *
  * - `brochureCount` number of brochures in the library (meta strip).
  */
@@ -44,6 +46,7 @@ export function Hero({ brochureCount = 0 }) {
   const reduce = useReducedMotion();
   const finePointer = useFinePointer();
   const inView = useInView(ref);
+  const motionPaused = useMotionPaused();
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
@@ -66,7 +69,7 @@ export function Hero({ brochureCount = 0 }) {
 
   return (
     <section ref={ref} className={styles.hero} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
-      <Petals paused={!inView} />
+      <Petals paused={!inView || motionPaused} />
 
       <div className={`container ${styles.inner}`}>
         <div className={styles.copy}>
@@ -128,7 +131,10 @@ export function Hero({ brochureCount = 0 }) {
             </span>
           </button>
 
-          <TokyoClock className={styles.clock} />
+          <div className={styles.metaEnd}>
+            <MotionToggle className={styles.motion} />
+            <TokyoClock />
+          </div>
         </div>
       </motion.div>
     </section>

@@ -60,11 +60,36 @@ describe('<BrochurePage>', () => {
     expect(container.querySelector('li p[lang="ja"]')).toHaveTextContent(phrases.items[0].jp);
   });
 
-  it('shows final figures on static stats pages', () => {
+  it('shows final figures on static stats pages, with the prefix as a small affix', () => {
     const stats = kyoto.pages.find((p) => p.type === 'stats');
     render(<BrochurePage brochure={kyoto} page={stats} index={5} total={11} isStatic />);
     expect(screen.getByText('1,074')).toBeInTheDocument();
-    expect(screen.getByText('~1,600')).toBeInTheDocument();
+    const figure = screen.getByText('1,600');
+    expect(figure).toHaveTextContent('~1,600');
+    expect(screen.getByText('~').parentElement).toBe(figure);
+  });
+
+  it('keeps the whole figure, prefix included, in the text of a live counter', () => {
+    const stats = kyoto.pages.find((p) => p.type === 'stats');
+    const { container } = render(<BrochurePage brochure={kyoto} page={stats} index={5} total={11} active />);
+    expect(container.textContent).toContain('~1,600');
+  });
+
+  it('builds a valid definition list on the contact page and hangs the 〒 off the ticket', () => {
+    const contact = kyoto.pages.find((p) => p.type === 'contact');
+    const { container } = render(<BrochurePage brochure={kyoto} page={contact} index={9} total={11} isStatic />);
+    const groups = container.querySelectorAll('dl > div');
+    expect(groups).toHaveLength(contact.details.length);
+    for (const group of groups) expect([...group.children].map((el) => el.tagName)).toEqual(['DT', 'DD']);
+    const postmark = [...container.querySelectorAll('[aria-hidden="true"]')].find((el) => el.textContent === '〒');
+    expect(postmark.parentElement.querySelector('dl')).not.toBeNull();
+  });
+
+  it('survives Object.prototype names as page types and icon names (regression)', () => {
+    const features = { id: 'f', type: 'features', heading: 'Hi', items: [{ icon: 'constructor', title: 'A' }, { icon: '__proto__', title: 'B' }] };
+    expect(() => render(<BrochurePage brochure={kyoto} page={features} index={2} total={3} active />)).not.toThrow();
+    render(<BrochurePage brochure={kyoto} page={{ id: 'c', type: 'constructor', heading: 'Odd page' }} index={1} total={3} />);
+    expect(screen.getByRole('heading', { name: 'Odd page' })).toBeInTheDocument();
   });
 });
 

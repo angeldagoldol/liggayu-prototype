@@ -1,5 +1,5 @@
-import { Suspense, useCallback, useMemo, useRef, useState } from 'react';
-import { useLocation, useNavigationType, useOutlet } from 'react-router-dom';
+import { Suspense, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { UNSAFE_LocationContext as LocationContext, useLocation, useOutlet } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useHotkey } from '../../hooks/useHotkey.js';
 import { PaletteContext } from './palette.js';
@@ -9,13 +9,8 @@ import { Footer } from './Footer.jsx';
 import { PageLoader } from './PageLoader.jsx';
 import { CommandPalette } from './CommandPalette.jsx';
 import { RoutePage } from './RouteTransition.jsx';
+import { RouteErrorBoundary } from './RouteErrorBoundary.jsx';
 import styles from './AppShell.module.css';
-
-/** True when `next` only appends segments to `prev` (/studio → /studio/b_12). */
-function extendsPath(prev, next) {
-  const base = prev.replace(/\/+$/, '');
-  return base !== '' && next.startsWith(`${base}/`);
-}
 
 /**
  * Persistent chrome (navbar, footer, command palette, grain) around animated
@@ -23,14 +18,24 @@ function extendsPath(prev, next) {
  *
  * The outlet is captured per render, so AnimatePresence keeps rendering the
  * *old* page while it animates out. Routes animate when their pathname
- * changes, except "bookkeeping" URL updates that keep the page mounted: a
- * REPLACE navigation that only appends a segment (Studio's first save,
- * /studio → /studio/:id), or any navigation with
- * `state: { shellTransition: false }`.
+ * changes, except "bookkeeping" URL updates that pass
+ * `state: { shellTransition: false }` and keep the page mounted (the viewer
+ * correcting a slug's letter case in place).
+ *
+ * Each page is also pinned to the location it was rendered at. React Router's
+ * hooks read the *current* URL, so without the pin a page that is animating
+ * out re-renders for the next URL: the Library, losing its ?q=, would remount
+ * its "Your brochures" shelf mid-exit, and those freshly mounted exit-animated
+ * cards kept the curtain waiting forever. The exiting element AnimatePresence
+ * holds on to carries the location context it last rendered with.
+ *
+ * Each route renders inside its own error boundary: a page that crashes, or
+ * whose chunk cannot be downloaded, shows <RouteError> while the navbar,
+ * footer and palette keep working, and navigating away clears it.
  */
 export function AppShell() {
   const location = useLocation();
-  const navigationType = useNavigationType();
+  const locationContext = useContext(LocationContext);
   const outlet = useOutlet();
   const mainRef = useRef(null);
   const immersive = isImmersivePath(location.pathname);
@@ -38,9 +43,7 @@ export function AppShell() {
   // Derived during render (React's "adjust state on prop change" pattern).
   const [route, setRoute] = useState({ pathname: location.pathname, key: location.pathname });
   if (route.pathname !== location.pathname) {
-    const keep =
-      location.state?.shellTransition === false ||
-      (navigationType === 'REPLACE' && extendsPath(route.pathname, location.pathname));
+    const keep = location.state?.shellTransition === false;
     setRoute({ pathname: location.pathname, key: keep ? route.key : location.pathname });
   }
 
@@ -83,7 +86,11 @@ export function AppShell() {
         <main id="main" ref={mainRef} tabIndex={-1} className={styles.main}>
           <AnimatePresence mode="wait" initial={false} onExitComplete={onExitComplete}>
             <RoutePage key={route.key}>
-              <Suspense fallback={<PageLoader />}>{outlet}</Suspense>
+              <LocationContext.Provider value={locationContext}>
+                <RouteErrorBoundary>
+                  <Suspense fallback={<PageLoader />}>{outlet}</Suspense>
+                </RouteErrorBoundary>
+              </LocationContext.Provider>
             </RoutePage>
           </AnimatePresence>
         </main>

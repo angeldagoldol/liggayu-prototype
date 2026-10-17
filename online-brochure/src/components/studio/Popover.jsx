@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ease } from '../../lib/motion.js';
 import { cn } from '../../lib/cn.js';
+import { nextTabbable, tabbablesIn } from './a11y.js';
 import styles from './Popover.module.css';
 
 const MARGIN = 8;
@@ -56,16 +57,34 @@ function PopoverPanel({ anchorRef, onClose, placement, offset, label, role, clas
     };
   }, [anchorRef, initialFocusRef]);
 
-  // Close on outside press and on Escape.
+  // Close on outside press and on Escape. Tab past either end of the panel
+  // closes it too and carries on from the trigger, as if the panel sat right
+  // after it in the page (it is portalled to the end of <body>, so the
+  // browser alone would send focus out of the document).
   useEffect(() => {
     const onPointerDown = (event) => {
       if (wrapRef.current?.contains(event.target) || anchorRef.current?.contains(event.target)) return;
+      onClose();
+    };
+    const onTab = (event) => {
+      const panel = panelRef.current;
+      const active = document.activeElement;
+      if (!panel || !wrapRef.current?.contains(active)) return;
+      const stops = tabbablesIn(panel);
+      const leaving = event.shiftKey ? active === panel || active === stops[0] : stops.length === 0 || active === stops[stops.length - 1];
+      if (!leaving) return;
+      event.preventDefault();
+      const anchor = anchorRef.current;
+      // Move focus before closing, so the close doesn't hand it back to the trigger.
+      (event.shiftKey ? anchor : (nextTabbable(anchor, wrapRef.current) ?? anchor))?.focus();
       onClose();
     };
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
         event.stopPropagation();
         onClose();
+      } else if (event.key === 'Tab' && !event.altKey && !event.ctrlKey && !event.metaKey) {
+        onTab(event);
       }
     };
     document.addEventListener('pointerdown', onPointerDown, true);

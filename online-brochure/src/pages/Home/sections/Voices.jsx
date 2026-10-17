@@ -5,6 +5,7 @@ import { IconButton } from '../../../components/ui/index.js';
 import { pad } from '../../../lib/format.js';
 import { ease } from '../../../lib/motion.js';
 import { SECTIONS, VOICES } from '../homeContent.js';
+import { useMotionPaused } from '../homeMotion.js';
 import { Postcard } from './Postcard.jsx';
 import { SectionHead } from './SectionHead.jsx';
 import styles from './Voices.module.css';
@@ -21,20 +22,29 @@ const deal = {
 /**
  * 08 声 — letters from readers as a deck of postcards. Advances on its own
  * every few seconds while visible, pausing on hover, while keyboard focus is
- * inside, when the visitor presses pause, and by default under reduced motion.
+ * inside, when the visitor presses pause, and by default under reduced motion
+ * or the hero's "Pause motion" (this deck's own Play still overrides it).
  */
 export function Voices() {
   const sectionRef = useRef(null);
   const shownIndex = useRef(0);
   const inView = useInView(sectionRef, { amount: 0.35 });
   const reduce = useReducedMotion();
+  const motionPaused = useMotionPaused();
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [userPaused, setUserPaused] = useState(null);
+  // Flipping the hero's "Pause motion" takes over from this deck's own
+  // Pause/Play (adjusting state while rendering, as React recommends).
+  const [motionSetting, setMotionSetting] = useState(motionPaused);
+  if (motionSetting !== motionPaused) {
+    setMotionSetting(motionPaused);
+    setUserPaused(null);
+  }
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const progress = useMotionValue(0);
-  const paused = userPaused ?? Boolean(reduce);
+  const paused = userPaused ?? (Boolean(reduce) || motionPaused);
   const running = inView && !paused && !hovered && !focused;
   const count = VOICES.length;
   const voice = VOICES[index];

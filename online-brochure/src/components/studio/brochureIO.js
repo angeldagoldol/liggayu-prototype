@@ -8,6 +8,7 @@ import { ART_STYLES, FORMATS, PAGE_TYPES } from '../../data/schema.js';
 import { CATEGORY_MAP } from '../../data/categories.js';
 import { REGION_MAP } from '../../data/regions.js';
 import { SEASON_MAP } from '../../data/seasons.js';
+import { hasKey } from '../../data/lookup.js';
 import { createId, slugify } from '../../lib/id.js';
 import { isHex } from '../brochure/art/color.js';
 import { PALETTE_MAP } from './palettes.js';
@@ -54,6 +55,8 @@ function plain(value, depth = 0) {
   if (value && typeof value === 'object') {
     const out = {};
     for (const [key, v] of Object.entries(value)) {
+      // An own "__proto__" key (JSON.parse creates one) would re-parent `out`.
+      if (key === '__proto__') continue;
       const clean = plain(v, depth + 1);
       if (clean !== undefined) out[key] = clean;
     }
@@ -82,7 +85,7 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
     return { ok: false, error: 'This doesn’t look like a Tabi brochure — it has no pages.' };
   }
 
-  const known = source.pages.filter((p) => p && typeof p === 'object' && PAGE_TYPES[p.type]);
+  const known = source.pages.filter((p) => p && typeof p === 'object' && hasKey(PAGE_TYPES, p.type));
   const pages = known.slice(0, MAX_PAGES).map((p) => ({ ...plain(p), id: makeId('pg'), type: p.type }));
   if (pages.length === 0) return { ok: false, error: 'None of the pages in that file could be read.' };
 
@@ -96,9 +99,9 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
     title: str(source.title, 120).trim(),
     titleJp: str(source.titleJp, 12).trim() || '旅',
     subtitle: str(source.subtitle, 200),
-    category: CATEGORY_MAP[source.category] ? source.category : 'heritage',
-    region: REGION_MAP[source.region] ? source.region : 'kansai',
-    seasons: Array.isArray(source.seasons) ? [...new Set(source.seasons.filter((s) => SEASON_MAP[s]))] : [],
+    category: hasKey(CATEGORY_MAP, source.category) ? source.category : 'heritage',
+    region: hasKey(REGION_MAP, source.region) ? source.region : 'kansai',
+    seasons: Array.isArray(source.seasons) ? [...new Set(source.seasons.filter((s) => hasKey(SEASON_MAP, s)))] : [],
     organization: str(source.organization, 80),
     summary: str(source.summary, 400),
     tags: [...new Set(tags.map((t) => t.trim().toLowerCase().slice(0, 32)))].slice(0, MAX_TAGS),

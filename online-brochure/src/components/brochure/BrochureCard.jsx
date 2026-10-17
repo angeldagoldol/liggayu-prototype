@@ -10,7 +10,7 @@ import { FORMATS } from '../../data/schema.js';
 import { SEASON_MAP } from '../../data/seasons.js';
 import { cn } from '../../lib/cn.js';
 import { ease, spring } from '../../lib/motion.js';
-import { pad, pluralize } from '../../lib/format.js';
+import { pad, pluralize, sealChars } from '../../lib/format.js';
 import { CoverArt } from './CoverArt.jsx';
 import styles from './BrochureCard.module.css';
 
@@ -50,7 +50,7 @@ function describe(brochure) {
   return {
     title: String(brochure.title ?? '').trim() || 'Untitled brochure',
     titleJp,
-    seal: Array.from(titleJp.replace(/[・\s]/g, '') || '旅').slice(0, 2).join(''),
+    seal: sealChars(titleJp),
     summary: String(brochure.summary ?? '').trim(),
     organization: String(brochure.organization ?? '').trim(),
     category: lookup(getCategory, brochure.category, NO_CATEGORY),
@@ -210,7 +210,7 @@ export function BrochureCard({ brochure, index, variant = 'grid', layout = false
   const facts = [
     { key: 'region', text: data.region.label },
     data.pages > 0 && { key: 'pages', text: pluralize(data.pages, 'page') },
-    data.minutes != null && { key: 'minutes', text: `${data.minutes} min read` },
+    data.minutes != null && { key: 'minutes', text: `${data.minutes} min read`, short: `${data.minutes} min` },
   ].filter(Boolean);
 
   return (
@@ -290,7 +290,14 @@ export function BrochureCard({ brochure, index, variant = 'grid', layout = false
             </span>
             {facts.map((fact) => (
               <span key={fact.key} className={styles.fact} data-fact={fact.key}>
-                {fact.text}
+                {fact.short ? (
+                  <>
+                    <span className={styles.factLong}>{fact.text}</span>
+                    <span className={styles.factShort}>{fact.short}</span>
+                  </>
+                ) : (
+                  fact.text
+                )}
               </span>
             ))}
             {isList && <SeasonMarks seasons={data.seasons} />}

@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
 import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
 import { Hanko } from '../../../components/ui/index.js';
+import { resumePath } from '../../../lib/progress.js';
 import styles from './Spine.module.css';
 
 /**
  * A brochure seen from its spine, standing on a shelf: a slice of the cover
  * art, the Japanese and English titles set vertically, a seal at the foot.
  * Height and thickness follow the page count, so the shelf looks lived-in.
+ * `page`: where the visitor left off; the link reopens the brochure there.
  */
-export function Spine({ brochure }) {
+export function Spine({ brochure, page = 0 }) {
   const theme = brochure.theme ?? {};
   const pages = Array.isArray(brochure.pages) ? brochure.pages.length : 6;
   const titleJp = String(brochure.titleJp ?? '').trim() || '旅';
@@ -18,7 +20,7 @@ export function Spine({ brochure }) {
 
   return (
     <Link
-      to={`/brochures/${encodeURIComponent(brochure.slug ?? '')}`}
+      to={resumePath(brochure, page)}
       className={styles.spine}
       style={{
         '--b-paper': theme.paper || 'var(--page-paper)',
@@ -38,7 +40,7 @@ export function Spine({ brochure }) {
         <span className={styles.en}>{title}</span>
       </span>
       <Hanko text={seal} size={22} className={styles.seal} />
-      <span className="sr-only"> — continue reading</span>
+      <span className="sr-only"> — continue reading{page > 0 ? ` at page ${page + 1}` : ''}</span>
     </Link>
   );
 }

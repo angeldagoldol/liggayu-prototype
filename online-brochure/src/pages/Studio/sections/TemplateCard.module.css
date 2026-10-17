@@ -60,7 +60,11 @@
   place-items: center;
   width: 30px;
   height: 30px;
+  /* A paper disc with an ink ring on every card, like the title plate:
+     the template's paper alone vanishes into art of the same colour. */
+  border: 1px solid currentColor;
   border-radius: 50%;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
   font-family: var(--font-jp);
   font-size: 0.95rem;
   font-weight: 600;

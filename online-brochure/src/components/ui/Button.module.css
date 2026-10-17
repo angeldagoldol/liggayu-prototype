@@ -144,8 +144,12 @@
   transition: transform 0.5s var(--ease-out);
 }
 
+/* The rolled-in copy is decoration: the empty alt text keeps it out of the
+   accessible name (otherwise every button reads "Publish Publish"). The
+   first declaration is the fallback for engines without alt-text support. */
 .roll::after {
   content: attr(data-text);
+  content: attr(data-text) / '';
   position: absolute;
   inset: 100% 0 auto;
 }

@@ -19,6 +19,9 @@ export function ListEditor({ title, noun, items, limit, onAdd, onRemove, onMove,
   const rootRef = useRef(null);
   const [message, setMessage] = useState('');
   const [flash, setFlash] = useState(null);
+  // Rows are keyed by position, so only a row that was just added plays the
+  // entrance; one restored by undo or shifted by a move/remove just appears.
+  const [added, setAdded] = useState(null);
   const list = Array.isArray(items) ? items : [];
   const canAdd = list.length < limit.max;
   const canRemove = list.length > limit.min;
@@ -29,6 +32,7 @@ export function ListEditor({ title, noun, items, limit, onAdd, onRemove, onMove,
 
   const move = (from, to) => {
     onMove(from, to);
+    setAdded(null);
     setFlash((last) => ({ index: to, key: (last?.key ?? 0) + 1 }));
     setMessage(`Moved ${noun} to position ${to + 1} of ${list.length}`);
     const direction = to < from ? 'up' : 'down';
@@ -38,12 +42,14 @@ export function ListEditor({ title, noun, items, limit, onAdd, onRemove, onMove,
 
   const remove = (index) => {
     onRemove(index);
+    setAdded(null);
     setMessage(`Removed ${noun} ${index + 1}`);
     focusLater(`[data-item="${Math.max(0, index - 1)}"] [data-action="remove"]`);
   };
 
   const add = () => {
     onAdd();
+    setAdded(list.length);
     setMessage(`Added ${noun} ${list.length + 1}`);
     focusLater(`[data-item="${list.length}"] :is(input:not([type="color"]), textarea)`);
   };
@@ -66,8 +72,9 @@ export function ListEditor({ title, noun, items, limit, onAdd, onRemove, onMove,
               key={index}
               className={styles.item}
               data-item={index}
-              initial={{ opacity: 0, y: -8 }}
+              initial={index === added ? { opacity: 0, y: -8 } : false}
               animate={{ opacity: 1, y: 0, transition: { duration: 0.35, ease: ease.out } }}
+              onAnimationComplete={() => index === added && setAdded(null)}
             >
               {flash?.index === index && <span key={flash.key} className={styles.flash} aria-hidden="true" />}
               <div className={styles.itemHead}>

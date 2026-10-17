@@ -8,9 +8,10 @@ import { ease } from '../../lib/motion.js';
 import { cn } from '../../lib/cn.js';
 import { pad } from '../../lib/format.js';
 import { pageHeading, SECTION_JP } from '../brochure/blocks/pageUtils.js';
+import { Endpaper } from './Endpaper.jsx';
 import { PageThumb } from './PageThumb.jsx';
 import { SegmentedControl } from './SegmentedControl.jsx';
-import { buildSpreads, spreadOf } from './studioFormat.js';
+import { BLANK, buildSpreads, isPageFace, spreadOf, spreadPages } from './studioFormat.js';
 import styles from './PreviewStage.module.css';
 
 const VIEWS = [
@@ -47,7 +48,7 @@ export function PreviewStage({ brochure, pages, selectedIndex, onSelect, view, o
   const canPrev = view === 'spread' ? spreadIndex > 0 : index > 0;
   const canNext = view === 'spread' ? spreadIndex < spreads.length - 1 : index < total - 1;
   const go = (delta) => {
-    const target = view === 'spread' ? spreads[spreadIndex + delta]?.[0] : index + delta;
+    const target = view === 'spread' ? spreadPages(spreads[spreadIndex + delta])[0] : index + delta;
     if (pages[target]) onSelect(pages[target].id);
   };
 
@@ -61,7 +62,8 @@ export function PreviewStage({ brochure, pages, selectedIndex, onSelect, view, o
 
   if (!page) return null;
   const meta = PAGE_TYPES[page.type];
-  const spread = spreads[spreadIndex] ?? [index];
+  const spread = spreads[spreadIndex] ?? [null, index];
+  const half = spread.some((face) => face === null);
 
   return (
     <section className={styles.stage} aria-label="Live preview">
@@ -94,26 +96,33 @@ export function PreviewStage({ brochure, pages, selectedIndex, onSelect, view, o
               <motion.div
                 key={`spread-${spreadIndex}`}
                 className={styles.spread}
+                data-half={half || undefined}
                 custom={nav.dir}
                 variants={turn}
                 initial="enter"
                 animate="center"
                 exit="exit"
               >
-                {spread.map((i) => (
-                  <button
-                    key={pages[i].id}
-                    type="button"
-                    className={styles.spreadPage}
-                    data-side={i === 0 || i % 2 === 0 ? 'right' : 'left'}
-                    aria-current={i === index ? 'page' : undefined}
-                    aria-label={`Edit page ${i + 1}: ${pageHeading(pages[i], brochure)}`}
-                    onClick={() => onSelect(pages[i].id)}
-                  >
-                    <BrochurePage brochure={brochure} page={pages[i]} index={i} total={total} isStatic />
-                  </button>
-                ))}
-                <span className={styles.gutter} aria-hidden="true" />
+                {/* Faces sit by slot, as the reader binds them: [left, right]. */}
+                {spread.map((face, slot) => {
+                  const side = slot === 0 ? 'left' : 'right';
+                  if (face === BLANK) return <Endpaper key="endpaper" brochure={brochure} className={styles.spreadBlank} data-side={side} />;
+                  if (!isPageFace(face) || !pages[face]) return null;
+                  return (
+                    <button
+                      key={pages[face].id}
+                      type="button"
+                      className={styles.spreadPage}
+                      data-side={side}
+                      aria-current={face === index ? 'page' : undefined}
+                      aria-label={`Edit page ${face + 1}: ${pageHeading(pages[face], brochure)}`}
+                      onClick={() => onSelect(pages[face].id)}
+                    >
+                      <BrochurePage brochure={brochure} page={pages[face]} index={face} total={total} isStatic />
+                    </button>
+                  );
+                })}
+                {!half && <span className={styles.gutter} aria-hidden="true" />}
               </motion.div>
             ) : (
               <motion.div key={page.id} className={styles.frame} custom={nav.dir} variants={turn} initial="enter" animate="center" exit="exit">

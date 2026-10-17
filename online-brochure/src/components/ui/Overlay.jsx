@@ -70,8 +70,10 @@ function OverlayPanel({ onClose, title, description, hideHeader, placement, size
           }
         }}
       >
+        {/* Divs, not <header>/<footer>: portalled to <body>, those would become
+            page-level banner and contentinfo landmarks next to the site's. */}
         {!hideHeader && (
-          <header className={styles.header}>
+          <div className={styles.header}>
             <div className={styles.heading}>
               {title && (
                 <h2 id={titleId} className={styles.title}>
@@ -85,10 +87,10 @@ function OverlayPanel({ onClose, title, description, hideHeader, placement, size
               )}
             </div>
             <IconButton label="Close" icon={<X />} onClick={onClose} variant="outline" size="sm" tooltip={false} />
-          </header>
+          </div>
         )}
         <div className={styles.body}>{children}</div>
-        {footer && <footer className={styles.footer}>{footer}</footer>}
+        {footer && <div className={styles.footer}>{footer}</div>}
       </motion.div>
     </div>
   );

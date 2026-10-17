@@ -97,6 +97,16 @@ describe('themeVars', () => {
     expect(contrast(vars['--b-on-accent'], '#f2a7b8')).toBeGreaterThanOrEqual(4.5);
   });
 
+  it('keeps accent text readable on the tinted --b-soft panel too (regression: Osaka price)', () => {
+    // Osaka: the paper-tuned accent text reads 4.35:1 on the 12% accent tint.
+    const vars = themeVars({ paper: '#fbefd9', ink: '#22160f', accent: '#c93a22', accent2: '#e9a21a', muted: '#6b5442', typeface: 'sans' });
+    expect(contrast(vars['--b-accent-text'], vars['--b-soft'])).toBeLessThan(4.5);
+    expect(contrast(vars['--b-accent-on-soft'], vars['--b-soft'])).toBeGreaterThanOrEqual(4.5);
+    // A theme that already passes keeps its own accent.
+    const deep = themeVars({ paper: '#ffffff', ink: '#000000', accent: '#7a1a10' });
+    expect(deep['--b-accent-on-soft']).toBe('#7a1a10');
+  });
+
   it('falls back to the default theme for missing input', () => {
     expect(themeVars(undefined)['--b-font']).toBe('var(--font-display)');
   });

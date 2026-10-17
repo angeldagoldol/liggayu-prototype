@@ -18,7 +18,9 @@
   animation-direction: reverse;
 }
 
-.pausable:hover .track {
+.marquee[data-paused] .track,
+.pausable:hover .track,
+.pausable:focus-within .track {
   animation-play-state: paused;
 }
 
@@ -36,11 +38,19 @@
   }
 }
 
+/* Reduced motion: a still strip the visitor scrolls through by hand. The
+   host must give the marquee a definite width (in a grid, a minmax(0, 1fr)
+   column) or it grows to the track and there is nothing to scroll. */
 @media (prefers-reduced-motion: reduce) {
   .track {
     animation: none;
   }
   .marquee {
     overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  .group[aria-hidden='true'] {
+    display: none;
   }
 }

@@ -3,13 +3,14 @@ import { MiniPage } from './MiniPage.jsx';
 import { spreadLabel, spreadName } from './spreads.js';
 import styles from './ThumbRail.module.css';
 
-const Thumb = memo(function Thumb({ brochure, spread, double, current, onSelect }) {
+const Thumb = memo(function Thumb({ brochure, spread, double, current, previewed, onSelect }) {
   return (
     <li className={styles.item}>
       <button
         type="button"
         className={styles.thumb}
         aria-current={current || undefined}
+        data-preview={previewed || undefined}
         aria-label={`Go to ${spreadName(spread).toLowerCase()}`}
         onClick={() => onSelect(spread.index)}
       >
@@ -33,18 +34,21 @@ const Thumb = memo(function Thumb({ brochure, spread, double, current, onSelect 
 /**
  * Strip of spread thumbnails under the book. The current spread is
  * highlighted and kept centred in the strip as the reader turns pages.
- * Props: brochure, book, position, onSelect(position), smooth (scroll behaviour).
+ * Props: brochure, book, position, onSelect(position), smooth (scroll
+ * behaviour); preview (a spread index or null) marks the spread the reader
+ * is pointing at on the scrubber and brings it into view.
  */
-export function ThumbRail({ brochure, book, position, onSelect, smooth = true }) {
+export function ThumbRail({ brochure, book, position, onSelect, smooth = true, preview = null }) {
   const listRef = useRef(null);
+  const focus = preview ?? position;
 
   useEffect(() => {
     const list = listRef.current;
-    const el = list?.querySelector('[aria-current="true"]')?.parentElement;
-    if (!list || !el) return;
+    const el = list?.children[focus];
+    if (!list || !el || list.scrollWidth <= list.clientWidth) return;
     const left = el.offsetLeft - (list.clientWidth - el.offsetWidth) / 2;
     list.scrollTo({ left: Math.max(0, left), behavior: smooth ? 'smooth' : 'auto' });
-  }, [position, smooth, book]);
+  }, [focus, smooth, book]);
 
   return (
     <nav className={styles.rail} aria-label="Page thumbnails">
@@ -56,6 +60,7 @@ export function ThumbRail({ brochure, book, position, onSelect, smooth = true })
             spread={spread}
             double={book.mode === 'double'}
             current={spread.index === position}
+            previewed={spread.index === preview && preview !== position}
             onSelect={onSelect}
           />
         ))}

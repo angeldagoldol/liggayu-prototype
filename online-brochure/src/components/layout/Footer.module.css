@@ -232,6 +232,18 @@
   color: var(--ink-3);
 }
 
+/* Small print, appearance, back to top: the switch takes the middle. */
+.appearance {
+  margin-left: auto;
+}
+
+/* Phones: small print on its own line, then the switch and "Back to top". */
+@media (max-width: 599.98px) {
+  .appearance {
+    margin-left: 0;
+  }
+}
+
 .toTop {
   display: inline-flex;
   align-items: center;

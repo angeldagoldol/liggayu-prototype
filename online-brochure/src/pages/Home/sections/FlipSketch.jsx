@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
+import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { BrochurePage } from '../../../components/brochure/BrochurePage.jsx';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
 import { spring } from '../../../lib/motion.js';
+import { useStill } from '../homeMotion.js';
 import { FIRST_SPREAD, canFlip, nextSpread, spreadPages } from './flipLoop.js';
 import styles from './FlipSketch.module.css';
 
@@ -18,7 +19,7 @@ function Sheet({ brochure, index }) {
 /**
  * Illustration for step 02 "Flip": a real brochure spread whose right page
  * keeps turning with a paper spring. Decorative; loops only while on screen,
- * rests on one spread under reduced motion.
+ * rests on one spread under reduced motion or the page's "Pause motion".
  */
 export function FlipSketch() {
   const { builtins } = useBrochures();
@@ -26,11 +27,11 @@ export function FlipSketch() {
   const total = brochure?.pages.length ?? 0;
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.4 });
-  const reduce = useReducedMotion();
+  const still = useStill();
   const [spread, setSpread] = useState(FIRST_SPREAD);
   const turn = useMotionValue(0);
   const shadow = useTransform(turn, [0, -90, -180], [0, 0.32, 0]);
-  const running = Boolean(brochure) && inView && !reduce;
+  const running = Boolean(brochure) && inView && !still;
 
   // Swap page content and lay the leaf flat in the same frame.
   useLayoutEffect(() => {

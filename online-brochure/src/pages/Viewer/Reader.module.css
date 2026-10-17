@@ -69,6 +69,13 @@
   white-space: nowrap;
 }
 
+/* Narrow stages put the page right where the margin note sits. */
+@media (max-width: 899.98px) {
+  .watermark {
+    display: none;
+  }
+}
+
 /* Registration marks at the stage corners, like a print bed. */
 .crop {
   position: absolute;
@@ -88,9 +95,30 @@
   }
 }
 
+/* Holds the book. On a short stage the page keeps a readable width
+   (layout.js READABLE_PAGE_WIDTH) and this scrolls instead (data-scroll),
+   chaining to the page once it reaches either end. */
+.viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.viewport[data-scroll] {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
 .pan {
   position: absolute;
   inset: 0;
+}
+
+/* The book's own height (set inline) gives the scroller its length. */
+.viewport[data-scroll] .pan {
+  position: relative;
+  inset: auto;
 }
 
 .center {
@@ -214,6 +242,64 @@
   align-items: center;
   gap: var(--space-3);
   padding: 6px max(12px, calc(var(--gutter) * 0.6)) 0;
+}
+
+/* The filmstrip scrolls inside its own track: never let it widen the bar. */
+.rail,
+.dock {
+  min-width: 0;
+}
+
+/* Peek (760px+): the bar rests at the scrub row, and the filmstrip is a
+   floating dock that rises over the foot of the stage while the bar is
+   hovered, holds keyboard focus or is being scrubbed. The stage never changes size,
+   so the book does not re-fit. */
+.bottom[data-peek] .scrubRow {
+  padding-block: 4px;
+}
+
+.bottom[data-peek] .rail {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--gutter));
+  /* A transparent bridge, so the pointer can travel from the bar to the dock. */
+  padding-bottom: 10px;
+  translate: -50% 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(0.97);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  /* Leaving: a short grace period, then fade, then hide from focus. */
+  transition:
+    opacity var(--dur-2) var(--ease-out) 140ms,
+    transform var(--dur-3) var(--ease-out) 140ms,
+    visibility 0s linear calc(var(--dur-3) + 140ms);
+}
+
+/* Keyboard focus only (:focus-visible): a mouse click on the scrubber must
+   not pin the dock over the book once the pointer has left the bar. */
+.bottom[data-peek]:hover .rail,
+.bottom[data-peek]:has(:focus-visible) .rail,
+.bottom[data-peek]:has([data-dragging]) .rail {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    transform var(--dur-3) var(--ease-spring),
+    visibility 0s;
+}
+
+.bottom[data-peek] .dock {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-lg);
 }
 
 .counter {

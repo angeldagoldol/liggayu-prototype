@@ -29,6 +29,15 @@
   width: min(100cqw, 100cqh / 1.414);
 }
 
+/* The cover and the back cover sit alone: only the sheet casts a shadow. */
+.spread[data-half] {
+  box-shadow: none;
+}
+
+.spread[data-half] > .page {
+  box-shadow: var(--shadow-page);
+}
+
 .page {
   position: relative;
 }

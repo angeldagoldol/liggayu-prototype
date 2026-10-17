@@ -105,10 +105,10 @@ export default function NotFound() {
             Nothing lives at <code className={styles.code}>{location.pathname}</code>
           </motion.p>
           <motion.div className={styles.actions} variants={fadeUp}>
-            <Button to="/" iconLeft={<ArrowLeft />}>
+            <Button to="/" size="lg" iconLeft={<ArrowLeft />}>
               Back to Home
             </Button>
-            <Button to="/brochures" variant="secondary">
+            <Button to="/brochures" size="lg" variant="secondary">
               Browse brochures
             </Button>
           </motion.div>

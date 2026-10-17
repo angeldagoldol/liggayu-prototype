@@ -2,6 +2,7 @@
  * "Plan this trip" inquiry: options, sensible defaults, validation and the
  * record saved to localStorage. Pure, so the form stays a thin view.
  */
+import { isEmail } from '../../lib/format.js';
 
 export const MAX_TRAVELLERS = 12;
 export const MESSAGE_LIMIT = 1000;
@@ -72,8 +73,6 @@ export function initialInquiry(brochure, months) {
   };
 }
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
 /** Field errors keyed by field name; an empty object means valid. */
 export function validateInquiry(values, months) {
   const errors = {};
@@ -86,7 +85,7 @@ export function validateInquiry(values, months) {
   else if (name.length < 2) errors.name = 'That name looks a little short.';
 
   if (email.length === 0) errors.email = 'We need an email to send your itinerary to.';
-  else if (!EMAIL.test(email)) errors.email = 'That email address doesn’t look right — check for typos.';
+  else if (!isEmail(email)) errors.email = 'That email address doesn’t look right — check for typos.';
 
   if (!months.some((m) => m.value === values.month)) errors.month = 'Choose the month you would like to travel.';
 

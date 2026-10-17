@@ -29,6 +29,14 @@ describe('parseFilters', () => {
     });
   });
 
+  it('drops prototype-named ids (constructor, __proto__, toString…)', () => {
+    expect(parse('category=constructor&region=__proto__&season=toString,hasOwnProperty')).toEqual({
+      ...DEFAULT_FILTERS,
+      seasons: [],
+    });
+    expect(parse('category=__proto__&region=constructor&sort=constructor').sort).toBe('featured');
+  });
+
   it('keeps Japanese queries and caps their length', () => {
     expect(parse(`q=${encodeURIComponent('祭')}`).q).toBe('祭');
     expect(parse(`q=${'a'.repeat(500)}`).q).toHaveLength(120);

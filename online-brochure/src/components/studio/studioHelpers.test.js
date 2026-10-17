@@ -1,9 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { gridIndex, isEditableTarget, nextIndex, tabPanelProps } from './a11y.js';
+import { gridIndex, isEditableTarget, nextIndex, nextTabbable, tabbablesIn, tabPanelProps, wantsStudioUndo } from './a11y.js';
 import { humanizeIcon, searchIcons } from './iconSearch.js';
 import { DRAFT_KEY, clearDraft, contentSignature, editDraftKey, readDraft, writeDraft } from './draftStore.js';
 import { LIST_LIMITS, listLimit, newListItem, randomSeed } from './pageLimits.js';
-import { buildSpreads, charCount, normalizeTag, relativeSaved, spreadOf } from './studioFormat.js';
+import {
+  BLANK,
+  buildSpreads,
+  charCount,
+  draftShows,
+  isPageFace,
+  normalizeTag,
+  numberFromDraft,
+  relativeSaved,
+  spreadOf,
+  spreadPages,
+} from './studioFormat.js';
+import { buildBook } from '../viewer/spreads.js';
 
 describe('pageLimits', () => {
   it('resolves limits from the last key of a path', () => {
@@ -44,6 +56,13 @@ describe('draftStore', () => {
     expect(readDraft(DRAFT_KEY)).toBeNull();
   });
 
+  it('skips unreadable pages so the editor never meets a null page (regression)', () => {
+    window.localStorage.setItem('tabi:studio-draft', JSON.stringify({ doc: { id: 'b_n', title: 7, pages: [null, { id: 'x', type: 'intro' }] }, selectedId: 'x' }));
+    expect(readDraft(DRAFT_KEY).doc).toEqual({ id: 'b_n', title: '', pages: [{ id: 'x', type: 'intro' }] });
+    window.localStorage.setItem('tabi:studio-draft', JSON.stringify({ doc: { id: 'b_n', pages: [null, { type: 'constructor', id: 'y' }] } }));
+    expect(readDraft(DRAFT_KEY)).toBeNull();
+  });
+
   it('keys edit drafts per brochure', () => {
     expect(editDraftKey('b_9')).toBe('studio-edit:b_9');
   });
@@ -69,17 +88,56 @@ describe('studioFormat', () => {
     expect(relativeSaved(t0 - 5 * 86_400_000, t0)).toBe('on Sep 26');
   });
 
-  it('groups pages into booklet spreads', () => {
+  it('groups pages into booklet spreads, by side', () => {
     expect(buildSpreads(0)).toEqual([]);
-    expect(buildSpreads(1)).toEqual([[0]]);
-    expect(buildSpreads(6)).toEqual([[0], [1, 2], [3, 4], [5]]);
-    expect(buildSpreads(5)).toEqual([[0], [1, 2], [3, 4]]);
+    expect(buildSpreads(1)).toEqual([[null, 0]]);
+    expect(buildSpreads(2)).toEqual([[null, 0], [1, null]]);
+    expect(buildSpreads(6)).toEqual([[null, 0], [1, 2], [3, 4], [5, null]]);
+  });
+
+  it('puts an endpaper before the back cover of an odd book, as the reader does (regression)', () => {
+    expect(buildSpreads(5)).toEqual([[null, 0], [1, 2], [3, BLANK], [4, null]]);
+    // The Studio proof and the published flipbook pair every page the same way.
+    for (const count of [1, 2, 5, 9, 11, 12]) {
+      const reader = buildBook(count, 'double').spreads.filter((s) => s.pages.length).map((s) => [s.left, s.right]);
+      expect(buildSpreads(count)).toEqual(reader);
+    }
+    const eleven = buildSpreads(11);
+    expect(eleven.at(-2)).toEqual([9, BLANK]);
+    expect(eleven.at(-1)).toEqual([10, null]);
   });
 
   it('finds the spread holding a page', () => {
     expect([0, 1, 2, 3, 4, 5].map((i) => spreadOf(i, 6))).toEqual([0, 1, 1, 2, 2, 3]);
-    expect(spreadOf(99, 5)).toBe(2);
+    expect([0, 1, 2, 3, 4].map((i) => spreadOf(i, 5))).toEqual([0, 1, 1, 2, 3]);
+    expect(spreadOf(99, 5)).toBe(3);
     expect(spreadOf(3, 0)).toBe(0);
+  });
+
+  it('lists the real pages on a spread', () => {
+    expect(spreadPages([null, 0])).toEqual([0]);
+    expect(spreadPages([3, BLANK])).toEqual([3]);
+    expect(spreadPages([1, 2])).toEqual([1, 2]);
+    expect(spreadPages(undefined)).toEqual([]);
+    expect([0, 4, BLANK, null, undefined, 1.5].map(isPageFace)).toEqual([true, true, false, false, false, false]);
+  });
+
+  it('keeps half-typed numbers as drafts (regression: 0.05 typed as 5)', () => {
+    expect(numberFromDraft('0.05')).toBe(0.05);
+    expect(numberFromDraft('0.0')).toBe(0);
+    expect(numberFromDraft(' 12 ')).toBe(12);
+    expect(numberFromDraft('')).toBe('');
+    expect(numberFromDraft('', { badInput: true })).toBeUndefined();
+    expect(numberFromDraft('abc')).toBeUndefined();
+    expect(numberFromDraft('99999999999999999999')).toBe(1e12);
+    expect(numberFromDraft('-99999999999999999999')).toBe(-1e12);
+    // The draft "0.0" already shows 0, so it isn't replaced by "0" mid-typing.
+    expect(draftShows('0.0', 0)).toBe(true);
+    expect(draftShows('1.', 1)).toBe(true);
+    expect(draftShows('0.05', 5)).toBe(false);
+    expect(draftShows('', '')).toBe(true);
+    expect(draftShows('', 3)).toBe(false);
+    expect(draftShows('3', '')).toBe(false);
   });
 
   it('counts characters, including Japanese', () => {
@@ -120,6 +178,42 @@ describe('a11y helpers', () => {
     expect(isEditableTarget(make('input', 'color'))).toBe(false);
     expect(isEditableTarget(make('button'))).toBe(false);
     expect(isEditableTarget(null)).toBe(false);
+  });
+
+  it('sends ⌘Z to the Studio history only from the editor’s own fields', () => {
+    const root = document.createElement('div');
+    const title = Object.assign(document.createElement('input'), { type: 'text' });
+    const draftBox = document.createElement('div');
+    draftBox.setAttribute('data-native-undo', '');
+    const hex = document.createElement('input');
+    draftBox.append(hex);
+    root.append(title, draftBox);
+    const outside = document.createElement('input');
+    document.body.append(root, outside);
+    expect(wantsStudioUndo(title, root)).toBe(true);
+    expect(wantsStudioUndo(hex, root)).toBe(false);
+    expect(wantsStudioUndo(outside, root)).toBe(false);
+    expect(wantsStudioUndo(document.createElement('button'), root)).toBe(true);
+    expect(wantsStudioUndo(document.body, root)).toBe(true);
+    expect(wantsStudioUndo(title, null)).toBe(false);
+    root.remove();
+    outside.remove();
+  });
+
+  it('finds Tab stops, skipping roving cells and anything excluded', () => {
+    document.body.innerHTML = `
+      <button id="trigger">Icon</button>
+      <button id="off" disabled>Off</button>
+      <input id="title" />
+      <div inert><button id="inert">No</button></div>
+      <div id="pop"><input id="search" /><button tabindex="0" id="cell0">a</button><button tabindex="-1" id="cell1">b</button></div>`;
+    const ids = (els) => els.map((el) => el.id);
+    expect(ids(tabbablesIn(document.getElementById('pop')))).toEqual(['search', 'cell0']);
+    expect(nextTabbable(document.getElementById('trigger'), null)?.id).toBe('title');
+    expect(nextTabbable(document.getElementById('title'), document.getElementById('pop'))).toBeNull();
+    expect(nextTabbable(document.getElementById('title'), null)?.id).toBe('search');
+    expect(tabbablesIn(null)).toEqual([]);
+    document.body.innerHTML = '';
   });
 
   it('links tab panels to their tabs', () => {

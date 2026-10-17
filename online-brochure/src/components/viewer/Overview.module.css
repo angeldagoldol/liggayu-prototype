@@ -95,10 +95,16 @@
 
 .caption {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.6em;
+  gap: 0 0.6em;
   min-width: 0;
+  /* One line: when the Japanese name doesn't fit beside the English one it
+     wraps onto a second, clipped line, so the label is never cut short. */
+  height: 1.6em;
+  overflow: hidden;
   font-size: var(--fs-xs);
+  line-height: 1.6;
   color: var(--ink-2);
 }
 

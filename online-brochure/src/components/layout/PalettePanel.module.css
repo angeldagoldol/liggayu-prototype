@@ -308,11 +308,42 @@
   text-align: center;
 }
 
+/* A brushed ensō around 無 ("nothing"), in ink: a mark, not a spinner. */
 .emptyEnso {
-  width: 52px;
-  height: 52px;
-  margin-bottom: 0.4rem;
-  color: var(--accent);
+  width: 64px;
+  height: 64px;
+  margin-bottom: 0.25rem;
+  overflow: visible;
+  color: var(--ink-3);
+  animation: ink-in 0.7s var(--ease-out) both;
+}
+
+.emptyHair {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 0.55;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.emptyMu {
+  fill: var(--ink-2);
+  font-family: var(--font-jp);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+@keyframes ink-in {
+  from {
+    opacity: 0;
+    transform: rotate(-14deg) scale(0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emptyEnso {
+    animation: none;
+  }
 }
 
 .emptyTitle {
@@ -452,5 +483,12 @@
 
   .row {
     gap: 0.75rem;
+  }
+
+  /* Long glosses (パンフレット一覧, ダークモード…) would be cut mid-word
+     here; brochure rows keep their short kanji titles. */
+  .row[data-kind='page'] .titleJp,
+  .row[data-kind='action'] .titleJp {
+    display: none;
   }
 }

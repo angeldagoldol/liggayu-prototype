@@ -84,5 +84,7 @@
   border-left: var(--hair) solid var(--b-rule);
   font-size: 2cqw;
   line-height: 1.4;
+  /* Even lines: no opening quote or single word left alone at a line end. */
+  text-wrap: balance;
   color: var(--b-body);
 }

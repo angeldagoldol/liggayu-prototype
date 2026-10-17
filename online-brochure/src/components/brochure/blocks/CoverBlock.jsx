@@ -1,6 +1,7 @@
 import { Hanko, VerticalText } from '../../ui/index.js';
 import { CoverArt } from '../CoverArt.jsx';
 import { usePage } from './pageContext.js';
+import { sealChars } from '../../../lib/format.js';
 import { fitSize, text } from './pageUtils.js';
 import { Reveal } from './Reveal.jsx';
 import styles from './CoverBlock.module.css';
@@ -18,7 +19,7 @@ export function CoverBlock({ page, brochure }) {
   const eyebrow = text(page.eyebrow);
   const subtitle = text(page.subtitle);
   const organization = text(brochure.organization);
-  const seal = Array.from(titleJp || '旅').slice(0, 2).join('');
+  const seal = sealChars(titleJp);
   const cover = brochure.cover ?? {};
 
   return (

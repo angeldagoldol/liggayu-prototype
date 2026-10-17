@@ -3,7 +3,8 @@ import { ArrowDownUp, Heart, MapPin, SlidersHorizontal } from 'lucide-react';
 import { Button, Chip } from '../../../components/ui/index.js';
 import { cn } from '../../../lib/cn.js';
 import { countActiveFilters, toggleSeason } from '../filterBrochures.js';
-import { useNavTucked, useStuck } from '../useStickyState.js';
+import { useNavHidden } from '../../../components/layout/navState.js';
+import { useStuck } from '../useStuck.js';
 import { CategoryChips } from '../components/CategoryChips.jsx';
 import { SearchBox } from '../components/SearchBox.jsx';
 import { SeasonToggles } from '../components/SeasonToggles.jsx';
@@ -18,7 +19,8 @@ import styles from './LibraryToolbar.module.css';
  * while the navbar is tucked away). Desktop shows every control; below
  * 860px it collapses to search + "Filters (n)", which opens a bottom drawer.
  * - `filters`, `facets` (facetCounts), `resultCount`, `favoritesCount`
- * - `onChange(patch, { replace })` update the URL; `onClear()`
+ * - `onChange(patch, { replace })` update the URL (filters push; a search pushes
+ *   once, then replaces while typing); `onClear()`
  * - `searchRef` focus target for the "/" shortcut; `toolbarRef` the sticky bar
  * - `compact` mobile layout
  */
@@ -35,16 +37,20 @@ export function LibraryToolbar({
 }) {
   const sentinelRef = useRef(null);
   const stuck = useStuck(sentinelRef);
-  const tucked = useNavTucked();
+  // While the navbar is tucked away the bar slides up into its place. The
+  // Navbar publishes this (focus, the palette and the mobile menu keep it shown).
+  const tucked = useNavHidden();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const activeCount = countActiveFilters(filters);
 
+  // The first query of a search pushes one history entry, so Back returns to
+  // the view before it; later keystrokes (and clearing) replace that entry.
   const search = (
     <SearchBox
       className={styles.search}
       value={filters.q}
       inputRef={searchRef}
-      onCommit={(q) => onChange({ q }, { replace: true })}
+      onCommit={(q) => onChange({ q }, { replace: Boolean(filters.q.trim() || !q.trim()) })}
     />
   );
 

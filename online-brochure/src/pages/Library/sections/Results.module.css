@@ -55,3 +55,8 @@
 .cards > * {
   scroll-margin-top: calc(var(--nav-h) + 9rem);
 }
+
+/* The "fold your own" tile that fills the grid's last row. */
+.createItem {
+  min-width: 0;
+}

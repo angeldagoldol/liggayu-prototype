@@ -7,6 +7,7 @@ import { REGIONS } from '../../data/regions.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { VerticalText } from '../ui/index.js';
 import { cn } from '../../lib/cn.js';
+import { AppearanceSwitch } from './AppearanceSwitch.jsx';
 import { NewsletterForm } from './NewsletterForm.jsx';
 import { NowInJapan } from './NowInJapan.jsx';
 import styles from './Footer.module.css';
@@ -152,6 +153,7 @@ export function Footer() {
         <p className={styles.small}>
           © {YEAR} Tabi <span lang="ja">旅</span>. Demo project. Brochure publishers are fictional.
         </p>
+        <AppearanceSwitch className={styles.appearance} />
         <button type="button" className={styles.toTop} onClick={backToTop}>
           <span>Back to top</span>
           <span lang="ja" className={styles.toTopJp} aria-hidden="true">

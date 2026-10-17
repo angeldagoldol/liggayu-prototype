@@ -4,14 +4,25 @@ import { readStorage, writeStorage } from '../lib/storage.js';
 
 const ThemeContext = createContext(null);
 const THEME_COLORS = { light: '#f3eee4', dark: '#0d0c0a' };
+const STORAGE_KEY = 'theme';
+const PREFERENCES = ['light', 'dark', 'system'];
+
+/** A stored or requested preference, or 'system' for anything unexpected. */
+export function normalizePreference(value) {
+  return PREFERENCES.includes(value) ? value : 'system';
+}
+
+const readPreference = () => normalizePreference(readStorage(STORAGE_KEY, 'system'));
 
 /**
  * Light / dark / system theme. The resolved theme is written to
  * <html data-theme="…"> so CSS tokens in tokens.css switch instantly.
- * index.html applies the saved value before React boots (no flash).
+ * index.html applies the saved value before React boots (no flash), and a
+ * change made in another tab is picked up here (the `storage` event), like
+ * favourites and brochures.
  */
 export function ThemeProvider({ children }) {
-  const [preference, setPreferenceState] = useState(() => readStorage('theme', 'system'));
+  const [preference, setPreferenceState] = useState(readPreference);
   const systemDark = useMediaQuery('(prefers-color-scheme: dark)');
   const theme = preference === 'system' ? (systemDark ? 'dark' : 'light') : preference;
 
@@ -23,9 +34,20 @@ export function ThemeProvider({ children }) {
     });
   }, [theme]);
 
+  // Another tab changed (or cleared) the preference.
+  useEffect(() => {
+    const onStorage = (event) => {
+      if (event.storageArea !== window.localStorage) return;
+      if (event.key === null || event.key === `tabi:${STORAGE_KEY}`) setPreferenceState(readPreference());
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const setPreference = useCallback((next) => {
-    setPreferenceState(next);
-    writeStorage('theme', next);
+    const value = normalizePreference(next);
+    setPreferenceState(value);
+    writeStorage(STORAGE_KEY, value);
   }, []);
 
   const toggle = useCallback(() => {

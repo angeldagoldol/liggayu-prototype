@@ -7,7 +7,8 @@ import { useHotkey } from '../../hooks/useHotkey.js';
 import { useMediaQuery } from '../../hooks/useMediaQuery.js';
 import { ease } from '../../lib/motion.js';
 import { pad } from '../../lib/format.js';
-import { buildSpreads, spreadOf } from './studioFormat.js';
+import { Endpaper } from './Endpaper.jsx';
+import { BLANK, buildSpreads, isPageFace, spreadOf, spreadPages } from './studioFormat.js';
 import styles from './PreviewModal.module.css';
 
 const slide = {
@@ -19,14 +20,17 @@ const slide = {
 function Reader({ brochure, startIndex }) {
   const single = useMediaQuery('(max-width: 759.98px)');
   const pages = brochure.pages;
+  // Spreads are bound exactly as the published flipbook binds them: [left, right] faces.
   const groups = single ? pages.map((_, i) => [i]) : buildSpreads(pages.length);
   const [position, setPosition] = useState(() => ({ page: startIndex, dir: 1 }));
   const current = single ? Math.min(position.page, pages.length - 1) : spreadOf(position.page, pages.length);
   const group = groups[current] ?? [0];
+  const shown = spreadPages(group);
+  const half = !single && group.some((face) => face === null);
 
   const go = (delta) => {
-    const target = groups[current + delta];
-    if (target) setPosition({ page: target[0], dir: delta });
+    const target = spreadPages(groups[current + delta])[0];
+    if (target !== undefined) setPosition({ page: target, dir: delta });
   };
   useHotkey('ArrowLeft', () => go(-1));
   useHotkey('ArrowRight', () => go(1));
@@ -35,19 +39,39 @@ function Reader({ brochure, startIndex }) {
     <div className={styles.reader}>
       <div className={styles.book} data-single={single || undefined}>
         <AnimatePresence initial={false} custom={position.dir} mode="popLayout">
-          <motion.div key={group.join('-')} className={styles.spread} custom={position.dir} variants={slide} initial="enter" animate="center" exit="exit">
-            {group.map((i) => (
-              <div key={pages[i].id} className={styles.page} data-side={single ? 'single' : i === 0 || i % 2 === 0 ? 'right' : 'left'}>
-                <BrochurePage brochure={brochure} page={pages[i]} index={i} total={pages.length} active />
-              </div>
-            ))}
+          <motion.div
+            key={group.join('-')}
+            className={styles.spread}
+            data-half={half || undefined}
+            custom={position.dir}
+            variants={slide}
+            initial="enter"
+            animate="center"
+            exit="exit"
+          >
+            {group.map((face, slot) => {
+              const side = single ? 'single' : slot === 0 ? 'left' : 'right';
+              if (face === BLANK) {
+                return (
+                  <div key="endpaper" className={styles.page} data-side={side}>
+                    <Endpaper brochure={brochure} />
+                  </div>
+                );
+              }
+              if (!isPageFace(face) || !pages[face]) return null;
+              return (
+                <div key={pages[face].id} className={styles.page} data-side={side}>
+                  <BrochurePage brochure={brochure} page={pages[face]} index={face} total={pages.length} active />
+                </div>
+              );
+            })}
           </motion.div>
         </AnimatePresence>
       </div>
       <div className={styles.controls}>
         <IconButton label="Previous" icon={<ChevronLeft />} variant="outline" disabled={current === 0} onClick={() => go(-1)} />
         <p className={styles.counter} aria-live="polite">
-          {group.length > 1 ? `Pages ${pad(group[0] + 1)}–${pad(group[1] + 1)}` : `Page ${pad(group[0] + 1)}`}
+          {shown.length > 1 ? `Pages ${pad(shown[0] + 1)}–${pad(shown[1] + 1)}` : `Page ${pad((shown[0] ?? 0) + 1)}`}
           <span> of {pad(pages.length)}</span>
         </p>
         <IconButton label="Next" icon={<ChevronRight />} variant="outline" disabled={current === groups.length - 1} onClick={() => go(1)} />

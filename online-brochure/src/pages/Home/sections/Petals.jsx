@@ -8,8 +8,9 @@ const FIELD = petalField(16, 11);
 
 /**
  * A light drift of sakura petals (16 small SVGs, CSS-animated transforms only).
- * Fills its positioned parent; `paused` freezes them while off-screen.
- * Renders nothing under reduced motion.
+ * Fills its positioned parent; `paused` freezes them mid-fall (the hero
+ * passes it while off-screen and after "Pause motion"). Renders nothing
+ * under reduced motion.
  */
 export function Petals({ paused = false }) {
   const reduce = useReducedMotion();
