@@ -33,7 +33,7 @@ export default {
   ],
   factsChecked: 'October 2026',
   summary:
-    'A respectful two-day journey: the Atomic Bomb Dome and the Peace Memorial Museum in Hiroshima, then Miyajima, where Itsukushima Shrine and its great torii stand in the sea — with hours, fees, tides and the island’s visitor tax.',
+    'A respectful two-day journey: the Atomic Bomb Dome and Peace Memorial Museum in Hiroshima, then Miyajima, where Itsukushima Shrine and its great torii stand in the sea — with hours, fees, tides and the visitor tax.',
   tags: ['hiroshima', 'miyajima', 'peace memorial', 'atomic bomb dome', 'itsukushima', 'unesco', 'mount misen', 'okonomiyaki', 'history'],
   format: 'booklet',
   updatedAt: '2026-10-17T00:00:00.000Z',
@@ -100,7 +100,7 @@ export default {
       nameJp: '広島平和記念資料館',
       photo: 'hiroshima-peace-museum',
       body:
-        'Kenzō Tange laid out the park on a single axis: from the museum, through the arched Cenotaph and the Flame of Peace, to the Dome across the river. Inside, victims’ belongings, photographs and survivors’ testimony tell what happened to the people beneath the bomb. Some exhibits are hard to look at. Take your time, then walk to the Children’s Peace Monument, where visitors leave garlands of paper cranes.',
+        'Kenzō Tange laid out the park on a single axis: from the museum, through the arched Cenotaph and the Flame of Peace, to the Dome across the river. Inside, victims’ belongings, photographs and survivors’ testimony tell what happened to the people beneath the bomb. Some exhibits are hard to look at. Take your time, then walk to the Children’s Peace Monument, where visitors leave paper cranes.',
       facts: [
         { label: 'Hours', value: 'From 7:30; closes 17:00–19:00 by season' },
         { label: 'Admission', value: 'Adults ¥200; high-school students ¥100' },
@@ -150,7 +150,7 @@ export default {
         {
           icon: 'Mountain',
           title: 'Mount Misen',
-          text: 'Miyajima’s sacred 535-metre peak, with views across the Inland Sea. A ropeway climbs most of the way (check it is running); on foot, about two hours.',
+          text: 'Miyajima’s sacred 535-metre peak above the Inland Sea. Ride the ropeway most of the way (check it is running) or hike for about two hours.',
         },
         {
           icon: 'Landmark',

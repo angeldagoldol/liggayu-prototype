@@ -9,7 +9,7 @@
         "File:Mount Fuji from Lake Ashi 20211202-2.jpg",
         "File:View of Mount Fuji from Lake Ashi.jpg"
       ],
-      "alt": "The snow-capped cone of Mount Fuji rising beyond Lake Ashi and its wooded shores",
+      "alt": "The cone of Mount Fuji rising beyond Lake Ashi and its wooded shores",
       "caption": "Mount Fuji from Lake Ashi, Hakone",
       "place": "Lake Ashi, Hakone",
       "focus": "50% 40%"
@@ -22,7 +22,7 @@
         "File:Double torii path at Fushimi Inari Taisha Shrine, Kyoto, Japan.jpg",
         "File:Fushimi Inari-taisha senbon-torii, August 2019.jpg"
       ],
-      "alt": "A tunnel of vermilion torii gates curving along a forest path",
+      "alt": "A tunnel of vermilion torii gates along a forest path",
       "caption": "Senbon Torii at Fushimi Inari Taisha, Kyoto",
       "place": "Fushimi Inari Taisha",
       "focus": "50% 50%"
@@ -62,8 +62,8 @@
         "File:富良野のラベンダー畑.jpg"
       ],
       "alt": "Rows of purple lavender in bloom running across a gentle hillside under a summer sky",
-      "caption": "Lavender fields in the Furano area, Hokkaidō, in July",
-      "place": "Furano, Hokkaidō",
+      "caption": "Lavender fields in the Furano area, Hokkaidō, in summer",
+      "place": "Furano area, Hokkaidō",
       "focus": "50% 55%"
     },
     {
@@ -191,7 +191,7 @@
         "File:Sakurajima from Shiroyama.jpg",
         "File:Sakurajima and Kagoshima.jpg"
       ],
-      "alt": "A broad volcano rising from the bay beyond a city",
+      "alt": "A broad volcano rising beyond the waters of a wide bay",
       "caption": "Sakurajima across Kagoshima Bay",
       "place": "Sakurajima, Kagoshima",
       "focus": "50% 50%"
@@ -282,8 +282,8 @@
         "File:Gion Matsuri Yamaboko Junko.jpg",
         "File:祇園祭 長刀鉾.jpg"
       ],
-      "alt": "A towering wooden festival float hung with rich tapestries, pulled along a city street",
-      "caption": "A hoko float in the Gion Matsuri procession, Kyoto, July",
+      "alt": "A towering wooden festival float hung with rich tapestries in a city street",
+      "caption": "A Gion Matsuri float, Kyoto, in July",
       "place": "Gion Matsuri, Kyoto",
       "focus": "50% 40%"
     },
