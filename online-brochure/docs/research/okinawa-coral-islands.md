@@ -1,101 +1,111 @@
 # Research log — Okinawa: Islands of Coral (`okinawa-coral-islands`)
 
-Written 17 October 2026 (`factsChecked: "October 2026"`). Existing brochure, rewritten from scratch.
+Written 17 October 2026 (`factsChecked: "October 2026"`). Existing brochure, rewritten from scratch,
+then **live-verified on 17 October 2026** with 35 web searches (the session's search budget for this pair
+of brochures, shared with the Naoshima brochure). WebFetch/curl cannot reach outside sites, so evidence
+is the search results (titles, URLs and the snippets the search tool returned), not full pages read.
 
-> **Status: NOT YET WEB-VERIFIED.** The shared web-search budget for this workflow turn was
-> already exhausted when this research step started (the very first query was refused), and
-> WebFetch/curl cannot reach outside sites from the sandbox. Every claim below therefore comes
-> from the editor's own knowledge (training data to mid-2026), **not** from pages read this
-> session. The "Verify against" column lists the official pages a reviewer should check; the
-> "Confidence" column says how sure the editor is. Numbers with lower confidence were left out of
-> the copy rather than guessed. The URLs themselves are believed correct but were not opened this
-> session (check that each resolves, including the ones printed in the brochure). **Run a verification pass (two sources per claim, per
-> docs/REAL_CONTENT.md §1) before this brochure is treated as fact-checked** — in particular the
-> rows marked ⚠.
+**Status legend:** **VERIFIED** = backed by at least one current source found this session (two or
+more for anything surprising; official sources preferred) · **HEDGED** = wording softened or number
+dropped because the sources were thin or conflicting · **REMOVED** = taken out of the copy ·
+**UNSEARCHED** = descriptive, non-numeric copy (no price, hour, date or access detail) kept from the
+editor's knowledge and the earlier independent review, not re-searched for lack of budget.
 
-> **Fact-check pass — 17 October 2026 (independent reviewer): still NOT web-verified.** The
-> reviewer's WebSearch calls were refused as well (shared per-turn budget of 200 searches already used
-> up), and WebFetch/curl are blocked, so no page was opened and no claim has the two independent
-> sources §1 requires. The reviewer instead (a) re-checked every claim against their own knowledge
-> (to mid-2026) with deliberate skepticism, (b) checked internal consistency, Japanese, romaji and
-> the Studio length limits, and (c) checked pins against the repo's Natural Earth geometry
-> (`src/data/geo/japan.js`, ~0.7 km resolution — enough to confirm Shuri, the airport, Kokusai-dōri
-> and Mabuni fall on Okinawa Island, too coarse for coastal points). Copy that could not be
-> confirmed was softened ("about", "usually", "due to") or caveated. The **Fact-check** column
-> records the outcome: ✔ = agrees with the reviewer's independent knowledge (still needs a web
-> source), ✎ = corrected (old → new), ⚠ = doubtful; verify before release.
+**`factsChecked` decision:** every price, hour, date and access detail now printed is VERIFIED (or
+hedged to what a source supports), so `factsChecked: "October 2026"` and the tagline "Facts checked
+October 2026 · Tabi Guides" stay. The biggest change: **Shuri Castle's Seiden reopens on 23 November
+2026 and the adult fee rises from ¥400 to ¥1,000 that day**, with timed tickets for the hall's interior.
+
+## Searches (17 October 2026)
+
+| # | Query (abridged) | Key result |
+| --- | --- | --- |
+| S1 | 首里城 正殿 復元 完成 2026 公開 | Completion ceremony 22 Nov 2026 (Chief Cabinet Secretary, press conference 2 Jun 2026); public opening 23 Nov; scaffolding roof removed Oct 2025; fire 31 Oct 2019; works began Nov 2022 |
+| S2 | 首里城公園 入場料 400円 … 正殿 一般公開 11月23日 | Fee ¥400 → ¥1,000 adult from 23 Nov 2026; advance booking for the Seiden |
+| S3 | 首里城 入場料 1000円 改定 … 事前予約 開館時間 | ¥1,000 / HS ¥760 / child ¥370 / under 6 free; Seiden interior by 30-minute timed booking; rest of paid area no booking; paid area opens 8:30 (Oct–Nov 8:30–19:00 during the works) |
+| S4 | 沖縄美ら海水族館 入館料 … 営業時間 2026 | Adult ¥2,180; usually 8:30–18:30 (last entry 17:30); longer in peak periods (e.g. to 20:00 late Apr–early May and late Jul; 21:00 in August) |
+| S5 | churaumi.okinawa admission … after 4 … hours | Official fee table ¥2,180 / ¥1,440 / ¥710; discounted tickets after 16:00 (Veltra, Japantravel Centre); Mar–Sep to 20:00 (Veltra) |
+| S6 | 座間味村 クイーンざまみ フェリーざまみ 運賃 所要時間 | Zamami fares rose 1 Jan 2026 (ferry ≈ +34 %, high-speed ≈ +23 %); Queen Zamami ≈ 50 min direct, Ferry Zamami ≈ 2 h |
+| S7 | 渡嘉敷村 マリンライナーとかしき … 所要時間 | Nothing usable |
+| S8 | Tokashiki Marine Liner … 35 minutes ferry 70 minutes | High-speed ≈ 35 min, ferry ≈ 70 min from Tomari; fares conflict between sources (not printed) |
+| S9 | 斎場御嶽 入場料 300円 休息日 2026 | Adult ¥300 (one listing: "¥300 or ¥600 depending on the period"); tickets at 南城市地域物産館 (Nanjō City regional products centre), not at the gate; closed for rites on lunar 5/1–3 and 10/1–3 |
+| S10 | Sefa-utaki admission fee 2026 | Newer listings ¥300 (older ¥200); tickets not sold at the entrance; hours 9:00–18:00 Mar–Oct |
+| S28 | 美ら海水族館 黒潮の海 7,500m3 8.2m 22.5m 2002年開館 | Tank 7,500 m³ (also quoted as 7,500 t); acrylic panel 8.2 m × 22.5 m × 60 cm; opened 1 Nov 2002; whale sharks |
+| S29 | 平和の礎 刻銘者数 2026年 | 242,659 names as of 23 Jun 2026 (Okinawa Prefecture; Ryukyu Shimpo), incl. Okinawa, other prefectures, US and other nationalities |
+| S30 | Kokusai-dori 1.6 km Miracle Mile; Makishi; Tsuboya 1682 | "Miracle Mile" ✓; length conflicts (1.6 km vs "almost 2 km"); nothing on the Makishi rebuild |
+| S31 | 壺屋 1682年 …; 第一牧志公設市場 2023年 | Kilns gathered at Tsuboya by the royal government in 1682 (two sources); 20-odd workshops still working; nothing on Makishi |
+| S32 | ゆいレール 首里駅 首里城 徒歩15分 空港から27分 | Shuri Station → Shureimon ≈ 15 min uphill walk; airport → Shuri 27 min (one source 29 min) |
+| S33 | 万国津梁の鐘 1458年 銘文 | Bell dated 1458 (天順2年), Important Cultural Property, Okinawa Prefectural Museum & Art Museum; meaning of the inscription confirmed; full 書き下し not shown |
+| S34 | 首里城 歴史 1429 1879 1945 1992 2000 | 1429 unification; 1879 end of the kingdom; destroyed 1945; reopened 3 Nov 1992; UNESCO Dec 2000; fire 31 Oct 2019 |
+| S35 | 慶良間諸島国立公園 2014年3月5日 … ザトウクジラ | Designated 5 Mar 2014; "Kerama blue"; humpbacks come to breed in winter–spring; whale-watching late Dec–early Apr, most sightings mid-Jan–mid-Mar |
+
+(S11–S27 were spent on the Naoshima brochure — see `docs/research/naoshima-art-islands.md`.)
 
 ## Facts
 
-| Claim (page) | Value used | Verify against | Confidence | Notes | Fact-check (17 Oct 2026) |
-| --- | --- | --- | --- | --- | --- |
-| ⚠ **Shuri Castle main hall rebuild** (cover, Shuri place) | Seiden burned 31 Oct 2019; rebuild carried out in view of visitors ("mieru fukkō"); completion scheduled for autumn 2026 | https://oki-park.jp/shurijo/ ; Okinawa Prefecture / Cabinet Office Shuri Castle reconstruction pages ; Ryukyu Shimpo / Okinawa Times news | Medium | Government timetable (2020) targeted 2026 for the Seiden; ground-breaking Nov 2022. **As of October 2026 it may have just been completed, or the opening may have slipped — check and reword ("rebuilt in 2026" / "reopens …").** Number of buildings lost deliberately not stated. | ⚠ Target "autumn 2026" matches the reviewer's knowledge (ground-breaking Nov 2022); whether it has opened by Oct 2026 is unknown. ✎ "is scheduled to finish in autumn 2026" → "is due to be completed in autumn 2026"; pricing note now warns the fee may change on reopening. |
-| Shuri Castle: palace of the Ryūkyū kings ~450 years | "some 450 years" | https://oki-park.jp/shurijo/ ; https://en.wikipedia.org/wiki/Shuri_Castle | High | Royal seat from the early 15th c. to 1879. | ✔ |
-| Seiden blends Chinese and Japanese styles; vermilion lacquer | — | https://oki-park.jp/shurijo/ | High | | ✔ |
-| Destroyed 1945, rebuilt 1992 | 1945 (Battle of Okinawa), 1992 (park opened on the 20th anniversary of reversion) | https://oki-park.jp/shurijo/ ; https://en.wikipedia.org/wiki/Shuri_Castle | High | | ✔ (fire 31 Oct 2019 ✔) |
-| Shureimon on the ¥2,000 note | — | https://www.boj.or.jp/ (2,000-yen note) ; https://en.wikipedia.org/wiki/Shureimon | High | Gate first built in the 16th c., rebuilt 1958; not damaged in 2019. | ✔ |
-| UNESCO: Gusuku Sites and Related Properties of the Kingdom of Ryukyu | inscribed 2000 (9 components) | https://whc.unesco.org/en/list/972/ | High | Strictly the listed property is the castle *site*/remains, not the rebuilt halls; copy says "Gusuku sites of Ryūkyū, listed 2000". | ✔ (property no. 972, inscribed Dec 2000) |
-| Shuri paid area admission | ¥400 adult; outer park (incl. Shureimon) free | https://oki-park.jp/shurijo/ (guide / fees page) | Medium-high | Long-standing fee; confirm it did not change with the 2026 reopening. | ⚠ ¥400 was the post-2019-fire fee as far as the reviewer knows; may rise when the rebuilt Seiden opens. ✎ fact row "Paid area ¥400" → "Paid area about ¥400" + caveat in Costs note. |
-| Shuri hours | "Paid area from 8:30; closing varies by season" | https://oki-park.jp/shurijo/ | Medium | Closing times (roughly 17:30–20:00 by season) not certain → only the opening time is printed. | ⚠ Post-fire hours not confirmed; seasonal closing may no longer apply. ✎ "Paid area from 8:30; closing varies by season" → "Paid area usually 8:30 to early evening". |
-| Shuri access | Yui Rail to Shuri station, ~15 min walk; airport → Shuri ~30 min | https://www.yui-rail.co.jp/ ; https://oki-park.jp/shurijo/ (access) | Medium-high | Line extended to Tedako-Uranishi in Oct 2019, so Shuri is no longer the terminus. Fare not printed. | ✔ (airport → Shuri ≈ 27 min) |
-| Ryūkyū Kingdom 1429–1879 (intro) | 1429 unification under Shō Hashi; annexed 1879 | https://en.wikipedia.org/wiki/Ryukyu_Kingdom ; https://visitokinawajapan.com/ (history) | High | | ✔ |
-| Okinawa: "some 160 islands" (intro) | ~160 | https://www.pref.okinawa.jp/ ; https://visitokinawajapan.com/ | Medium-high | Prefecture usually quoted as ~160 islands (≈ 40–50 inhabited — not printed). | ✔ |
-| Under three hours' flight Tokyo–Naha (cover) | — | Airline timetables (Haneda–Naha ≈ 2 h 30 – 2 h 50) | High | | ✔ (scheduled HND→OKA ≈ 2 h 30 – 2 h 55) |
-| Keramashotō National Park | designated 2014 | https://www.env.go.jp/park/kerama/ | High | Designated 5 March 2014 ("coral day"). Kerama reefs also a Ramsar site (2005) — not printed. | ✔ (5 Mar 2014) |
-| Kerama ~40 km west of Naha | "some 40 km" | https://www.env.go.jp/park/kerama/ ; https://www.vill.zamami.okinawa.jp/ | Medium-high | Commonly quoted 30–40 km. | ✔ |
-| "Kerama blue" | — | https://www.env.go.jp/park/kerama/ ; https://visitokinawajapan.com/ | High | | ✔ ✎ intro "an hour off Naha" → "under an hour from Naha by fast boat" (fast boats 35–70 min; ferries 70–120 min). |
-| Sea turtles at Ama / Furuzamami | Turtles graze seagrass off Ama beach | https://www.vill.zamami.okinawa.jp/ | Medium-high | Species not named in copy. | ✎ Copy implied turtles at both beaches; turtles are an Ama Beach speciality → "snorkel off Furuzamami Beach, look for sea turtles grazing the seagrass off Ama Beach". |
-| Humpback whales Jan–Mar | breeding season; whale watching from Zamami | https://www.vill.zamami.okinawa.jp/ (Zamami Whale Watching Association) | High | Season sometimes runs late Dec to early Apr. | ✔ (core season; tours run roughly late Dec–early Apr) |
-| Boats from Tomari Port, Naha | — | https://www.vill.zamami.okinawa.jp/ ; https://www.vill.tokashiki.okinawa.jp/ | High | | ✔ |
-| Boat times | High-speed ≈ 50 min to Zamami (≈ 70 via Aka), ≈ 35 min to Tokashiki; car ferry ≈ 2 h to Zamami, ≈ 70 min to Tokashiki | Zamami and Tokashiki village ferry pages | Medium | **Fares deliberately left out** (not confident of current values); pricing note sends readers to the village sites. | ✎ Queen Zamami takes ≈ 50 min direct but ≈ 70 min via Aka → "About 50–70 min to Zamami, 35 to Tokashiki". Car-ferry times ✔ (approximate). |
-| Churaumi opened 2002 in Ocean Expo Park | 2002 | https://churaumi.okinawa/en/ | High | Successor to the aquarium of the 1975 Ocean Expo. | ✔ (1 Nov 2002) |
-| Kuroshio Sea tank | 7,500 m³; acrylic window 8.2 m high × 22.5 m wide | https://churaumi.okinawa/en/ (Kuroshio Sea) | Medium-high | Panel is 60 cm thick (not printed). | ✔ (7,500 m³; 8.2 × 22.5 m; 60 cm) |
-| Whale sharks and manta rays | — | https://churaumi.okinawa/en/ | High | | ✔ |
-| Coral-reef tank open to sunlight, fresh seawater | — | https://churaumi.okinawa/en/ | Medium-high | | ✔ |
-| Emerald Beach in Ocean Expo Park; park grounds free | — | https://oki-park.jp/kaiyohaku/ | Medium-high | | ✔ |
-| ⚠ Churaumi hours | "Usually 8:30–18:30; longer in summer" | https://churaumi.okinawa/en/ (hours) | Medium | Summer (Mar–Sep) closing has been 20:00 in the past; last entry 1 h before closing. Closed early December for maintenance (not printed). | ✔ as hedged ("usually … longer in summer"). |
-| ⚠ Churaumi admission | ¥2,180 adult; cheaper "4 pm" tickets | https://churaumi.okinawa/en/ (fees) | Medium | Check for a 2025–26 price change. | ⚠ ¥2,180 and 4 pm tickets match the reviewer's knowledge of the post-2023 fee table; not re-confirmed for 2026. |
-| Churaumi from Naha | 2–3 h by car or express bus | https://churaumi.okinawa/en/ (access) | High | | ✔ |
-| Kokusai-dōri ~1.6 km, "Miracle Mile" | — | https://visitokinawajapan.com/ ; https://en.wikipedia.org/wiki/Kokusai_Street | Medium-high | | ✔ |
-| Makishi Public Market rebuilt; "mochiage" (buy fish downstairs, cooked upstairs) | — | https://kosetsu-ichiba.com/ (official, to confirm URL) ; https://visitokinawajapan.com/ | Medium-high | New building reopened March 2023 (date not printed). | ✔ (reopened 19 Mar 2023) |
-| Tsuboya kilns consolidated by royal order in 1682 | 1682 | https://www.edu.city.naha.okinawa.jp/tsuboya/ (Tsuboya Pottery Museum) ; https://visitokinawajapan.com/ | Medium-high | | ✔ |
-| Sēfa-utaki: kingdom's holiest site; Sangūi rock gap facing Kudaka Island; closes some days for rites | — | https://okinawa-nanjo.jp/sefa/ ; https://whc.unesco.org/en/list/972/ | High (facts) | Closure dates follow the lunar calendar (twice a year) — not printed. | ✎ "a rock gap frames sacred Kudaka Island" was inaccurate: Kudaka is seen from the worship spot beyond the Sangūi gap, not through it → "where, beyond the rock gap of Sangūi, you look out to sacred Kudaka Island". |
-| ⚠ Sēfa-utaki admission | ¥300 adult; tickets at the nearby visitor centre (Midori no Yakata・Sēfa) | https://okinawa-nanjo.jp/sefa/ | Medium | | ⚠ ¥300 matches the reviewer's knowledge; not re-confirmed for 2026. |
-| Okinawa soba = wheat noodles; gōyā champurū; awamori from Thai rice with black kōji | — | https://visitokinawajapan.com/ ; Okinawa Awamori Distillers Association | High | | ✔ |
-| Sanshin (snakeskin); eisā Bon dance in late summer | — | https://visitokinawajapan.com/ | High | | ✔ |
-| Cornerstone of Peace, Mabuni: > 240,000 names of all nationalities | "more than 240,000" | https://kouen.heiwa-irei-okinawa.jp/ (Peace Memorial Park) ; https://www.pref.okinawa.jp/ | Medium-high | Total ≈ 242,000 in 2024–25; names are added each June. | ✎ The monument also lists Okinawans who died in the wider war (1931–46), not only in the Battle of Okinawa → "bears more than 240,000 names: soldiers and civilians of every nationality, most lost in the Battle of Okinawa". |
-| Typhoon season July–October | — | Japan Meteorological Agency ; https://visitokinawajapan.com/ | High | Peak Aug–Sep. | ✔ |
-| Seasons chosen: spring, summer, autumn | — | JMA climate data | High | Rainy season ≈ mid-May to late June; sea warm enough to swim ≈ Apr–Oct. | ✔ |
-| Tourist information | Naha Airport arrivals hall; on Kokusai-dōri, Naha | https://visitokinawajapan.com/ ; Naha City tourism (https://naha-navi.or.jp/) | Medium-high | Exact Kokusai-dōri building not printed. Phone numbers omitted. | ✔ (OCVB desk at Naha Airport; Naha City Tourist Information Center on Kokusai-dōri). No phone numbers ✔. |
-| Bankoku Shinryō bell inscription (quote) | 1458, cast for Shuri Castle; 書き下し: 「琉球国は南海の勝地にして……舟楫を以て万国の津梁と為し、異産至宝は十方刹に充満せり」 | https://okimu.jp/ (Okinawa Prefectural Museum, which holds the bell) ; https://ja.wikipedia.org/wiki/万国津梁の鐘 | Medium-high | Original kanbun: 琉球國者南海勝地而鍾三韓之秀以大明為輔車以日域為脣齒在此二中間湧出之蓬萊嶋也以舟楫為萬國之津梁異産至寶充滿十方刹. Readings (書き下し) vary slightly between sources; the ellipsis skips the Korea/Ming/Japan lines. Translation: Tabi Guides. Important Cultural Property. | ✔ wording matches the standard 書き下し. ✎ translation "fill the land" → "fill every corner of the land" (十方刹 = all lands of the ten directions); role "Inscription, cast in 1458 for Shuri Castle · Translation: Tabi Guides" (69 chars) → "Inscription, Shuri Castle, 1458 · Translation: Tabi Guides" (58; Studio limit 60). |
-| Okinawan phrases | めんそーれ, はいさい/はいたい, にふぇーでーびる, まくとぅそーけー なんくるないさ | Okinawa Prefecture Uchināguchi resources ; https://visitokinawajapan.com/ | High | なんくるないさ is often quoted alone as "it'll be fine"; the full saying makes it conditional on doing right. | ✔ (はいさい/はいたい gendered use ✔; Japanese phrasebook lines natural and polite ✔) |
-| Coordinates | Shuri Castle 26.2169, 127.7194; Naha Airport 26.1956, 127.6458; Kokusai-dōri 26.2158, 127.6862 (mid-street); Zamami Port 26.2287, 127.3037; Churaumi 26.6942, 127.8781; Sēfa-utaki 26.1729, 127.8273; Peace Memorial Park 26.0958, 127.7264 | Wikipedia / OpenStreetMap | Medium | ⚠ From memory, believed within a few hundred metres; Shuri and Churaumi agree with the values in src/dev/Playground.jsx. Check each against OSM. | ✔ Shuri, airport, Churaumi, Sēfa-utaki agree with the reviewer's recollection of the Wikipedia coordinates (within ~50 m); Shuri, airport, Kokusai-dōri and Peace Park fall on Okinawa Island in the Natural Earth inset. ⚠ Zamami port and Kokusai-dōri still need an OSM check. |
+| Claim (page) | Value used | Source URLs (this session) | Status |
+| --- | --- | --- | --- |
+| **Seiden reopens** (cover, Shuri place) | Burned Oct 2019; rebuilt in view of visitors; reopens to the public 23 Nov 2026; interior by timed ticket | https://ryukyushimpo.jp/national/entry-5550312.html ; https://www.traicy.com/?p=379116 ; https://travel.watch.impress.co.jp/docs/news/2133105.html ; https://ryukyushimpo.jp/news/entry-1112791.html (ceremony 22 Nov) ; https://www.qab.co.jp/news/tag/令和の復元 | VERIFIED (4 sources). Old copy "due to be completed in autumn 2026" → "reopens on 23 November 2026, its interior seen by timed ticket"; cover subtitle "its great hall rising again in 2026". |
+| Shuri admission | ¥400 now; ¥1,000 adult from 23 Nov 2026 | https://travel.watch.impress.co.jp/docs/news/2133105.html ; https://www.traicy.com/?p=379116 ; https://ryukyushimpo.jp/prtimes/entry-5460622.html (Okinawa Churashima Foundation release) | VERIFIED (surprising → 3 sources). Fact row and Costs plan rewritten (¥1,000 headline; "¥400 until 22 November 2026"). |
+| Seiden timed tickets; rest of paid area no booking | 30-minute timed slots, booked ahead | https://ryukyushimpo.jp/national/entry-5550312.html ; https://travel.watch.impress.co.jp/docs/news/2133105.html | VERIFIED |
+| Shuri hours | "Paid area from 8:30; closing varies by season" | https://www.gltjp.com/ja/article/item/20342/ (Oct–Nov 8:30–19:00 during the works) | VERIFIED for opening time (1 source); closing deliberately not printed (may change after reopening). |
+| "Outer park and Shureimon: free" (old Costs bullet) | — | not found | REMOVED (unverified price claim) → "Rest of the paid area: no booking". |
+| Shureimon on the ¥2,000 note | — | not found this session | REMOVED (budget ran out before it could be checked) → "Walk up through Shureimon, the gate to the castle park" (gate = park entrance per https://www.princehotels.co.jp/nippon/article/002.html). |
+| Shuri access | Yui Rail to Shuri, ≈ 15 min walk; airport → Shuri ≈ 30 min | https://www.princehotels.co.jp/nippon/article/002.html ; https://travelist.jp/airport_OKA/guide/posts/p428 ; https://www.jeepe.jp/ja/articles/yui-rail-okinawa-guide-1686 | VERIFIED (27–29 min by train) |
+| Ryūkyū Kingdom 1429–1879; ~450 years; destroyed 1945; rebuilt 1992 | — | https://www.nippon.com/ja/japan-data/h00578/ ; https://www8.cao.go.jp/okinawa/5/52.html ; https://ryukyushimpo.jp/national/entry-4732486.html | VERIFIED (1992 = partial opening 3 Nov 1992) |
+| UNESCO, listed 2000 | Gusuku sites, Dec 2000 | https://www.nippon.com/ja/japan-data/h00578/ ; https://whc.unesco.org/en/list/972/ | VERIFIED |
+| Seiden style (Chinese/Japanese blend), vermilion | — | — | UNSEARCHED (descriptive) |
+| "Under three hours' flight from Tokyo" (old cover) | — | not searched | REMOVED |
+| Okinawa: "some 160 islands" (intro) | ~160 | not searched | HEDGED ("some"); not a price/hour/date/access detail |
+| Kerama "under an hour from Naha by fast boat" (intro) | 35–50 min | S6, S8 sources below | VERIFIED |
+| Keramashotō National Park, 2014; "Kerama blue" | 5 Mar 2014 | https://www.env.go.jp/nature/mankitsu-project/pdf/presskit/JP/presskit_34kerama-shotou_JP.pdf ; https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/feature/story/ ; https://tabi-mag.jp/kerama-nationalpark/ | VERIFIED. Place-page `website` and the source entry switched to the env.go.jp URL found this session. |
+| "40 km west of Naha" (old kicker, map body) | — | not searched | REMOVED → "By boat from Naha" / "lie west of Naha by boat" |
+| Boats from Tomari Port | — | https://tabi-mag.jp/on0410/ ; https://en.okinawatraveler.net/feature/0210_sp | VERIFIED |
+| Zamami times | High-speed ≈ 50 min direct (≈ 70 via Aka); ferry ≈ 2 h | https://tabi-mag.jp/on0410/ ; https://tabi-mag.jp/on0411/ ; https://skyticket.jp/guide/539827/ | VERIFIED ("About 50–70 min"; "About 2 h") |
+| Tokashiki times | High-speed ≈ 35 min; ferry ≈ 70 min | https://en.okinawatraveler.net/feature/0210_sp ; https://new.japantravel-centre.com/en/destination/okinawa/okinawa-island-main-island/tokashiki-island/ ; https://feeljapan.net/okinawa-en/article/2020-11-17-17173/ | VERIFIED |
+| Kerama fares | Zamami fares rose 1 Jan 2026 | https://ryukyushimpo.jp/tag/フェリー (Zamami Village fare rise) | VERIFIED; amounts still not printed (Tokashiki fares conflict between sources). Costs note now says Zamami's fares rose in January 2026. |
+| Humpback whales | Come to breed in winter; tours late Dec–early Apr; peak Jan–Mar | https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/feature/story/ ; https://www.env.go.jp/nature/mankitsu-project/pdf/presskit/JP/presskit_34kerama-shotou_JP.pdf ; https://www.arukikata.co.jp/webmagazine/235451/ | VERIFIED. ✎ "from January to March" → "in winter"; fact row "Late Dec to early Apr; peak Jan–Mar". |
+| Furuzamami snorkelling; turtles off Ama Beach | — | — | UNSEARCHED (descriptive; "look for") |
+| Churaumi opened 2002, Ocean Expo Park | 1 Nov 2002 | https://www.gov-online.go.jp/hlj/ja/september_2024/september_2024-07.html ; https://www.gltjp.com/ja/article/item/21171/ | VERIFIED |
+| Kuroshio Sea tank | 7,500 m³; window 8.2 m × 22.5 m | https://www.gltjp.com/ja/article/item/21171/ ; https://www.gov-online.go.jp/hlj/ja/september_2024/september_2024-07.html ; https://churaumi.okinawa/userfiles/files/premiumbook.pdf | VERIFIED |
+| Whale sharks ✓; manta rays, sunlit coral tank, Emerald Beach | — | whale sharks: S28 sources | VERIFIED (whale sharks); rest UNSEARCHED (descriptive) |
+| Churaumi admission | ¥2,180 adult | https://churaumi.okinawa/en/guide/info/ ; https://www.nta.co.jp/kokunai/okinawa/churaumi/ ; https://www.mapple.net/article/152717/ | VERIFIED (official + 2) |
+| Churaumi 16:00 tickets | "cheaper from 16:00" | https://www.veltra.com/en/travelguide/okinawa/churaumi-aquarium/ ; https://new.japantravel-centre.com/destination/okinawa/okinawa-island-main-island/churaumi-aquarium/ | VERIFIED (2 secondary sources; amount not printed) |
+| Churaumi hours | "Usually 8:30–18:30; longer in summer" | https://www.nta.co.jp/kokunai/okinawa/churaumi/ ; https://www.veltra.com/en/travelguide/okinawa/churaumi-aquarium/ | VERIFIED |
+| "Ocean Expo Park grounds: free" (old Costs bullet) | — | not searched | REMOVED → "Open later in summer" |
+| Churaumi access "2–3 h from Naha" (fact row, map body, agenda) | — | not searched | HEDGED → "Far north of Naha, by car or bus"; map "far to the north on the Motobu Peninsula"; agenda "A long drive north". No travel time printed. |
+| Kokusai-dōri "1.6 km Miracle Mile" | "Miracle Mile" | https://www.fun-japan.jp/id/articles/12392 ; https://japanactivity.com/kokusai-dori-naha-guide | HEDGED: nickname ✓, length conflicts (1.6 km vs ≈ 2 km) → dropped "1.6 km". |
+| Makishi Public Market "rebuilt"; buy fish downstairs, cooked upstairs | — | not found | "rebuilt" REMOVED (date not verified); the mochiage practice UNSEARCHED (descriptive). |
+| Tsuboya kilns gathered in 1682; working potteries | 1682; "some twenty working potteries" | https://tabi-mag.jp/on0485/ ; https://www.mlit.go.jp/tagengo-db/R1-01315.html | VERIFIED. ✎ "past potters, shīsā makers and the pottery museum" → "past some twenty working potteries and their shops". |
+| Sēfa-utaki closed some days for rites | lunar 5/1–3 and 10/1–3 | https://www.walkerplus.com/spot/ar1047s05558/data.html ; https://ryukyushimpo.jp/news/entry-1523972.html | VERIFIED |
+| Sēfa-utaki admission | ¥300 adult | https://www.walkerplus.com/spot/ar1047s05558/data.html ; https://www.jeepe.jp/en/articles/sefa-utaki-guide-2173 ; https://enjoyokinawa.cerulean-blue.co.jp/en/tourism/63 | VERIFIED (several current listings); ⚠ one listing says "¥300 or ¥600 depending on the period" — not corroborated; recheck on the Nanjō site. |
+| Sēfa-utaki tickets | At the Nanjō City regional products centre, not at the gate | https://www.walkerplus.com/spot/ar1047s05558/data.html ; https://www.jeepe.jp/en/articles/sefa-utaki-guide-2173 | VERIFIED. ✎ "visitor centre nearby" → "Nanjō products centre, not the gate". |
+| Sangūi / Kudaka Island; food; sanshin, eisā; Bise fukugi | — | — | UNSEARCHED (descriptive) |
+| Cornerstone of Peace names | "more than 242,000 … whatever their nationality" | https://www.pref.okinawa.jp/heiwakichi/jinken/1008269/1008287/1008288/1008292.html ; https://ryukyushimpo.jp/tag/追加刻銘 | VERIFIED (242,659 on 23 Jun 2026). ✎ "more than 240,000 … of every nationality, most lost in the Battle of Okinawa" → "more than 242,000 names of the war dead, soldiers and civilians, whatever their nationality". |
+| Typhoon months "July to October" (contact) | — | not searched | HEDGED → "In typhoon season" (no months). |
+| Tourist information (Naha Airport, Kokusai-dōri) | — | not searched | REMOVED (location not verified) → replaced by the Zamami Village site (Kerama boats). |
+| Bankoku Shinryō bell (quote) | 1458; 書き下し 「琉球国は南海の勝地にして……舟楫を以て万国の津梁と為し、異産至宝は十方刹に充満せり」 | https://lp.p.pia.jp/article/news/230438/index.html ; https://san-tatsu.jp/pressrelease/484978/ ; https://intojapanwaraku.com/rock/art-rock/199347/ ; https://okimu.jp/userfiles/files/autoupload/2025/10/PWcard01.pdf | VERIFIED for date, object and meaning; HEDGED for the exact 書き下し wording (standard reading; not shown verbatim in results — readings vary slightly between sources). Translation: Tabi Guides. |
+| Okinawan phrases | めんそーれ, はいさい/はいたい, にふぇーでーびる, まくとぅそーけー なんくるないさ | — | UNSEARCHED (language; checked in the earlier review) |
+| Coordinates | unchanged (Shuri 26.2169, 127.7194; airport 26.1956, 127.6458; Kokusai-dōri 26.2158, 127.6862; Zamami port 26.2287, 127.3037; Churaumi 26.6942, 127.8781; Sēfa-utaki 26.1729, 127.8273; Peace Park 26.0958, 127.7264) | — | UNSEARCHED; ⚠ Zamami port and Kokusai-dōri still want an OSM check. |
 
-## Fact-check pass, 17 October 2026: open items before release
+## Open items
 
-1. **Shuri Castle Seiden**: confirm whether the rebuilt hall has opened (autumn 2026 target), and
-   the paid-area fee and hours after reopening. Then update the place page, the Costs page and
-   `factsChecked`.
-2. **Fees**: Churaumi ¥2,180 (and the 16:00 ticket), Sēfa-utaki ¥300 and Shuri ¥400. Each needs
-   two sources dated 2026.
-3. **Coordinates**: check Zamami port (26.2287, 127.3037) and Kokusai-dōri (26.2158, 127.6862)
-   on OpenStreetMap.
-4. **Photos**: no candidate file title has been confirmed to exist on Commons (see below).
-5. **Test note**: `src/data/brochures.test.js` still expects 9–12 pages. This brochure has 14,
-   which is within the 12–14 outline in `docs/REAL_CONTENT.md` §3, so the test encodes the old
-   assumption and fails for every rewritten brochure.
+1. After 23 Nov 2026: check the reopened Seiden's hours and whether the paid area's closing times change; refresh the Shuri place page and Costs.
+2. Sēfa-utaki: confirm ¥300 against the Nanjō City site (one listing mentions ¥600 at some periods).
+3. Coordinates: Zamami port and Kokusai-dōri on OpenStreetMap.
+4. Photos: candidate titles still unconfirmed (see below); a post-23-Nov photo of the rebuilt Seiden would suit the Shuri slot.
 
 ## Changed vs the old brochure
 
 - Publisher changed from the fictional "Nirai Island Co." to **Tabi Guides**; invented packages (¥128,000 / ¥246,000), contact e-mail/office and the invented testimonial ("Lena K.") removed.
 - The quote is now a real, documented inscription (Bankoku Shinryō bell, 1458).
-- Old copy said Shuri's main hall was "rebuilt after the 2019 fire"; that was premature — the rebuild was still under way through 2025, with completion scheduled for autumn 2026.
+- Old copy said Shuri's main hall was "rebuilt after the 2019 fire"; that was premature. The completion ceremony is on 22 Nov 2026 and the public opening on 23 Nov 2026 (verified 17 Oct 2026).
 - Ishigaki, Taketomi and Iriomote were dropped (one brochure can't do them justice, and nothing about them could be verified this session); the focus is Naha, the Keramas, Churaumi and the south.
 - The stats page ("23 °C average", "450 years", "~160 islands") was replaced by place pages; the facts survive in the copy.
 
 ## Not verified / left out
 
-- Kerama boat fares, Yui Rail fares and day passes, Churaumi child prices and the December closure, Shuri closing times, Okinawa Memorial Day (23 June) details, eisā festival dates, Junglia Okinawa (new theme park, 2025) — left out.
+- Kerama boat fares (Zamami's rose 1 Jan 2026; Tokashiki's conflict between sources), Yui Rail fares and day passes, Churaumi child and 16:00 prices, Shuri closing times after reopening, Shuri's new high-school/child fees (¥760 / ¥370), Okinawa Memorial Day (23 June) details, eisā festival dates, Junglia Okinawa (new theme park, 2025) — left out.
 - Furuzamami Beach's Michelin Green Guide rating — not printed.
 
 ## Photos

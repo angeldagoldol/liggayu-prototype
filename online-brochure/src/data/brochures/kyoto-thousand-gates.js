@@ -101,7 +101,7 @@ export default {
       nameJp: '清水寺',
       photo: 'kyoto-kiyomizu-dera',
       body:
-        'Founded in 778 beside the Otowa waterfall, whose pure water gives the temple its name. The Main Hall was rebuilt in 1633; its stage juts some 13 metres above the slope on 18 zelkova pillars, joined without a single nail. Below, visitors drink from the waterfall’s three streams. In late November the maples turn, and the temple stays open until 21:30 from 21 to 30 November 2026.',
+        'Founded in 778 beside the Otowa waterfall, whose pure water gives the temple its name. The Main Hall was rebuilt in 1633; its stage juts some 13 metres above the slope on 18 zelkova pillars, joined without a single nail. Below, visitors drink from the waterfall’s three streams. In late November the maples turn, and the temple opens on autumn nights — check this year’s dates.',
       facts: [
         { label: 'Hours', value: '6:00–18:00 (18:30 in Jul–Aug)' },
         { label: 'Admission', value: '¥500 adults' },

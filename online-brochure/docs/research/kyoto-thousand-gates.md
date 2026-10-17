@@ -5,6 +5,12 @@ Checked 17 October 2026 (`factsChecked: "October 2026"`). Research was done with
 excerpts of the pages listed. Official sources first; every published number has at least two
 sources unless marked **single source** in the notes.
 
+> **Live check, 17 October 2026.** Every item the offline fact-check left as *needs live check*
+> was searched again (see *Live check* at the end). The fares and the Kiyomizu-dera fee are
+> confirmed; the autumn 2026 night-viewing dates could not be found, so the brochure no longer
+> prints them. `factsChecked: "October 2026"` stays: every remaining price, hour, date and access
+> detail is backed by at least one current source.
+
 ## Facts
 
 | Claim (page) | Value used | Sources | Notes |
@@ -22,22 +28,22 @@ sources unless marked **single source** in the notes.
 | Yotsutsuji | 30–45 min up; summit & back 2–3 h | https://www.japan-guide.com/e/e3915.html ; https://www.insidekyoto.com/fushimi-inari-hike-kyoto ; banzokubiology.com (JP) | Inside Kyoto says ~3 h full loop. |
 | Hours / admission | Grounds always open; free | https://www.japan-guide.com/e/e3915.html ; https://www.japan.travel/en/spot/1128/ ; blogs | Office/amulet hours (~8:30–16:30) only from blogs — left out. |
 | Access | JR Inari Station (Nara Line), 2 stops / 5 min from Kyoto; Keihan Fushimi-Inari 5 min walk | https://inari.jp/en/access/ ; https://kyoto.travel/en/info/transportation/fushimi_inari.html | kyoto.travel says ~9 min incl. waiting; official 5 min used. |
-| JR Kyoto–Inari fare | ¥150 | https://www.japan-guide.com/e/e3915.html ; funliday.com (JP) | JR West's April 2025 Kansai revision did not change this section as far as could be found. |
+| JR Kyoto–Inari fare | ¥150 | https://www.japan-guide.com/e/e3915.html ; funliday.com (JP) ; live check: https://mileasia.com/japan/kyoto-station-to-fushimi-inari/ (2026) ; https://www.kyotostation.com/jr-nara-line-for-tofukuji-inari-uji-nara/ | **VERIFIED** (live check). One older guide says ¥140. |
 | Kiyomizu-dera founded | 778 | https://www.kiyomizudera.or.jp/en/learn/ ; https://www.japan.travel/en/spot/2199/ | japan-guide says 780 — official date used. |
 | Name from Otowa waterfall's pure water | — | https://www.kiyomizudera.or.jp/en/learn/ ; https://www.japan-guide.com/e/e3901.html | Waterfall in three streams: official site. |
 | Main Hall rebuilt | 1633 | https://www.kiyomizudera.or.jp/en/learn/ ; https://muza-chan.net/japan/index.php/blog/kiyomizu-dera-main-hall | |
 | Stage height | ~13 m | https://www.japan-guide.com/e/e3901.html ; https://www.sunstar.com.ph/more-articles/in-kyoto-the-kiyomizu-dera-temple | |
 | 18 zelkova pillars, no nails | 18 | https://www.kiyomizudera.or.jp/en/learn/ ; sunstar.com.ph | 139 is the count for the whole Main Hall frame, not the stage — not a conflict (fact-check). |
 | Kiyomizu hours | 6:00–18:00; 18:30 in Jul–Aug (2026: 1 Jul–13 Aug, 17–31 Aug) | https://www.kiyomizudera.or.jp/news/open-hour.php ; https://www.japan-guide.com/e/e3901.html | |
-| Kiyomizu admission | ¥500 adults | https://www.japan-guide.com/e/e3901.html ; https://www.insidekyoto.com/kiyomizu-dera-temple ; Time Out | The official FAQ excerpt did not show the general fee; two blogs say ¥400 (old). Old brochure had no fee. |
-| Night openings 2026 | 27 Mar–5 Apr, 14–16 Aug, 21–30 Nov; to 21:30 (last entry 21:00) | https://www.kiyomizudera.or.jp/en/visit/special_night_viewing/ ; https://www.japan-guide.com/e/e3953.html | Brochure mentions only the upcoming 21–30 Nov 2026 dates. |
+| Kiyomizu admission | ¥500 adults | https://www.japan-guide.com/e/e3901.html ; https://www.insidekyoto.com/kiyomizu-dera-temple ; Time Out ; live check: https://kumanichi.com/articles/1973576 (Kyodo, spring 2026 night opening: 拝観料は大人500円) | **VERIFIED** (live check). The official FAQ excerpt did not show the general fee; two blogs say ¥400 (old). |
+| Night openings 2026 | Spring 27 Mar–5 Apr and summer 14–16 Aug 2026 confirmed; **autumn 2026 dates not printed** — copy now says "the temple opens on autumn nights — check this year’s dates" | https://www.kiyomizudera.or.jp/en/visit/special_night_viewing/ ; https://www.japan-guide.com/e/e3953.html ; live check: https://kiyomizudera.or.jp/ ; https://tabi-mag.jp/kiyomizu-autumn/ ; https://tabi-mag.jp/kiyomizu-springlightup/ | **HEDGED** (live check). Two live searches found no announcement of the autumn 2026 dates; the "21–30 Nov" from the first pass rests on one page and differs from the 2025 pattern (22 Nov–7 Dec, reception 17:30–21:00), so it was removed. |
 | Kiyomizu access | Bus 206/100 to Gojōzaka + 10 min; Keihan Kiyomizu-Gojō ~25 min walk | https://www.kiyomizudera.or.jp/en/location/ ; https://kyoto.travel/en/getting-around/comfortable-access-to-higashiyama-kiyomizu-dera-temple/ | japan-guide says ~20 min from Kiyomizu-Gojō; official 25 used. Brochure fact row says "Bus to Gojōzaka" without route numbers. |
 | Tenryū-ji founded | 1339, Ashikaga Takauji, for Emperor Go-Daigo; Musō Soseki founding abbot | https://www.tenryuji.com/en/about/ ; https://www.japan-guide.com/e/e3913.html | |
 | Sōgen pond garden by Musō Soseki; older than the buildings | — | https://www.tenryuji.com/en/precincts/ ; https://www.japan-guide.com/e/e3913.html (most buildings Meiji era; garden original) | |
 | Tenryū-ji garden fee/hours | ¥500; 8:30–17:00 (last entry 16:50); halls +¥300 | https://www.tenryuji.com/en/visit/ ; https://www.insidekyoto.com/tenryu-ji-temple-arashiyama | **Closed 29–30 Oct 2026** (official) — not in brochure, worth a note if the brochure is shown that week. |
 | North gate leads into bamboo grove | — | https://www.insidekyoto.com/arashiyama-bamboo-grove-guide-walking-tour ; https://www.japan-guide.com/e/e3950_arashiyama_full.html | |
 | Bamboo grove | free, open at all hours | https://www.tokyoweekender.com/?p=282713 ; https://www.jrailpass.com/blog/arashiyama-bamboo-forest ; https://japan-experience.com/city-kyoto/arashiyama-bamboo-grove | No official page found stating hours; three independent guides agree. |
-| JR Kyoto–Saga-Arashiyama | 15 min, ¥240; grove 10 min walk | https://www.japan-guide.com/e/e3912.html ; newt.net / funliday.com (JP) | Fare in Costs only. |
+| JR Kyoto–Saga-Arashiyama | 15 min, ¥240; grove 10 min walk | https://www.japan-guide.com/e/e3912.html ; newt.net / funliday.com (JP) ; live check: https://hiddenjapan-gems.com/kyoto-station-access-guide/ | **VERIFIED** (live check). Fare in Costs only. |
 | Kinkaku-ji | Yoshimitsu's villa, Zen temple after 1408; burned by arson 1950; rebuilt 1955 | https://www.shokoku-ji.jp/en/kinkakuji/about/ ; https://www.japan-guide.com/e/e3908.html ; https://kyoto.travel/en/destinations/kinkakuji-temple-the-golden-pavilion/ | Gold leaf on upper floors (official guide + japan-guide). |
 | Kinkaku-ji hours / fee | 9:00–17:00; ¥500 | https://www.shokoku-ji.jp/en/kinkakuji/faq/ ; https://www.shokoku-ji.jp/en/kinkakuji/access/ ; https://www.japan-guide.com/e/e3908.html | |
 | Gion etiquette | No photos of geiko/maiko without permission; private lanes signed (¥10,000 "fine" on signs since Oct 2019, not legally binding) | https://kyoto.travel/en/responsible-travel/gion-manner-message-from-southern-gionmachi/ ; https://kyoto.travel/en/travel-inspiration/things-to-keep-in-mind-while-exploring-kyoto-and-its-kiyomizu-arashiyama-and-gion-areas/ ; https://www.lonelyplanet.com/articles/kyoto-gion-photography-ban-geisha | The task brief's "2024" date was not confirmed; rule dates from 2019. Fine amount left out of the brochure. |
@@ -97,15 +103,15 @@ plausible and twice-sourced above but could not be confirmed independently in th
 | 794 Kanmu / Heian-kyō; capital to 1868; “more than a thousand years” | Confirmed | Standard dates; 794–1868 = 1,074 years. |
 | UNESCO: 16 temples/shrines + Nijō Castle, some in Uji and Ōtsu | Confirmed | 17 components (13 temples, 3 shrines, 1 castle); Byōdō-in and Ujigami in Uji, Enryaku-ji straddles Ōtsu. |
 | Fushimi Inari: 711; ~30,000 Inari shrines; ~10,000 torii; Rōmon given by Hideyoshi (1589); Mt Inari 233 m; Yotsutsuji 30–45 min; always open, free | Confirmed | Matches the shrine’s own history page as logged and the reviewer’s knowledge. |
-| JR Inari two stops / ~5 min from Kyoto; ¥150 | Confirmed (fare: *needs live check*) | Kyoto → Tōfukuji → Inari. No JR West fare revision for this section known to the reviewer, but JR fares were being revised region by region in 2025–26. |
+| JR Inari two stops / ~5 min from Kyoto; ¥150 | Confirmed (fare: **VERIFIED** in the live check) | Kyoto → Tōfukuji → Inari. No JR West fare revision for this section known to the reviewer, but JR fares were being revised region by region in 2025–26. |
 | Kiyomizu-dera: 778; Otowa waterfall, three streams; Main Hall 1633; ~13 m stage; 18 zelkova pillars, no nails | Confirmed | 139 = all pillars of the hall; 18 = the stage (no conflict). |
-| Kiyomizu hours 6:00–18:00 (18:30 Jul–Aug); ¥500 | Confirmed (*fee: needs live check*) | Hours match the temple’s standard notice. ¥500 matches japan-guide (two blogs’ ¥400 is the older fee). |
-| Kiyomizu autumn night viewing 21–30 Nov 2026, to 21:30 | *Needs live check* | Closing time 21:30 is the usual one; the 2026 dates rest on the logged official page only. |
+| Kiyomizu hours 6:00–18:00 (18:30 Jul–Aug); ¥500 | Confirmed (fee: **VERIFIED** in the live check) | Hours match the temple’s standard notice. ¥500 matches japan-guide (two blogs’ ¥400 is the older fee). |
+| Kiyomizu autumn night viewing 21–30 Nov 2026, to 21:30 | **Hedged** in the live check (dates removed) | Closing time 21:30 is the usual one; the 2026 dates rest on the logged official page only. |
 | Tenryū-ji: 1339, Ashikaga Takauji, for Go-Daigo; Sōgen garden by Musō Soseki, older than the buildings; ¥500, 8:30–17:00, last entry 16:50; north gate to the grove | Confirmed | Buildings mostly Meiji-era rebuilds; the garden is 14th-century. |
 | Bamboo grove free, always open; JR Saga-Arashiyama + ~10 min; ~15 min from Kyoto on the Sagano Line | Confirmed | No entry fee or gate existed as of mid-2026. |
 | Kinkaku-ji: Yoshimitsu; arson 1950; rebuilt 1955; 9:00–17:00; ¥500 | Confirmed | |
 | Gion etiquette; Ninenzaka/Sannenzaka; Gion Matsuri 17 & 24 July, seats from June | Confirmed | The local Gion council said in 2024 that tourists would be kept out of the private lanes off Hanamikōji; the copy gives no date, so it stays correct either way. |
-| City bus ¥230; Subway & Bus 1-Day Pass ¥1,100; JR Kyoto–Saga-Arashiyama ¥240 | Confirmed (JR fare: *needs live check*) | |
+| City bus ¥230; Subway & Bus 1-Day Pass ¥1,100; JR Kyoto–Saga-Arashiyama ¥240 | Confirmed (JR fare: **VERIFIED** in the live check) | |
 | Lodging tax tiers from 1 March 2026 (¥200 / 400 / 1,000 / 4,000 / 10,000) | Confirmed | Matches the approved ordinance as reported in 2025. |
 | Two-tier bus fares planned for 2027 | Confirmed as a plan | Copy says “plans”, which is right while the ordinance is pending. |
 | Kyoto Tourist Information Center, Kyoto Station Building 2F, 8:30–19:00 | Confirmed | No phone number printed. |
@@ -113,3 +119,24 @@ plausible and twice-sourced above but could not be confirmed independently in th
 | Phrasebook (6 entries) | Confirmed | Natural, polite Japanese; romaji with macrons is correct (Ohayō, Arigatō, Kiyomizu-dera). |
 | Publisher / people / businesses / phone numbers | Clean | Published by Tabi Guides; no invented people, businesses, testimonials or phone numbers. |
 | Copy length | Within limits | Every field is within the Studio editor’s limits; place bodies (373–379 chars) match the other brochures. |
+
+## Live check — 17 October 2026
+
+Live web searches (the shared budget allowed a handful per brochure; WebFetch/curl still cannot
+open outside pages, so values come from search-result extracts). Status: **VERIFIED** = confirmed
+by at least one current source in addition to the sources above; **HEDGED** = could not be
+confirmed, copy loosened; **REMOVED** = taken out of the brochure.
+
+| Claim (page) | Value used | Live-check sources | Status |
+| --- | --- | --- | --- |
+| Kiyomizu-dera admission (place p4, Costs) | ¥500 adults | https://kumanichi.com/articles/1973576 (Kyodo, March 2026: spring night opening, adults ¥500, children ¥200) · first-pass japan-guide / Inside Kyoto | VERIFIED |
+| Kiyomizu-dera night openings (place p4) | Spring 2026: 27 Mar–5 Apr, 18:00–21:30 (last entry 21:00); summer 14–16 Aug 2026; autumn 2026: **dates not printed** | https://kiyomizudera.or.jp/ (spring 2026 notice) · https://tabi-mag.jp/kiyomizu-springlightup/ · https://tabi-mag.jp/kiyomizu-autumn/ (autumn 2025 ran 22 Nov–7 Dec, reception 17:30–21:00) · https://ja.kyoto.travel/tourism/article/asakanko-yorukanko/post/single.php?id=472 · https://www.pref.kyoto.jp/furusatokifu/kiyomizu.html (20 Nov 2026 is a 30-person paid prefecture event, not the public opening) | HEDGED — the "21–30 November 2026, until 21:30" sentence was replaced by "In late November the maples turn, and the temple opens on autumn nights — check this year’s dates" (the Visitor information page already says to check the official sites for seasonal night openings) |
+| Maples in late November (place p4) | Late November | https://tabi-mag.jp/kiyomizu-autumn/ (見頃は例年11月下旬〜12月上旬) | VERIFIED |
+| JR Kyoto–Inari fare (Costs) | ¥150 | https://mileasia.com/japan/kyoto-station-to-fushimi-inari/ (2026: 5 min, ¥150) · https://www.kyotostation.com/jr-nara-line-for-tofukuji-inari-uji-nara/ · https://ekitan.com/ (2026 route search: JR Nara Line 1.1 km section ¥150) | VERIFIED. Outlier: https://japanuncharted.com/nara/train/nara-line-local-stops says ¥140 (older fare). |
+| JR Kyoto–Saga-Arashiyama fare and time (Costs, map) | ¥240, 15 min | https://hiddenjapan-gems.com/kyoto-station-access-guide/ ("JR Sagano Line (Rapid) 15 min ¥240") · first-pass japan-guide e3912 | VERIFIED |
+| Kyoto Station coordinates (map) | 34.9858, 135.7588 | Not searched (budget); matches the Wikipedia infobox (34°59′09″N 135°45′32″E) as known to the editor and passes the prefecture polygon test | Unchanged (not a price/hour/date) |
+
+**Decision on `factsChecked`:** kept as `"October 2026"` and the back-page tagline as "Facts checked
+October 2026 · Tabi Guides". After this pass every price, hour, date and access detail printed in
+the brochure is backed by at least one current source; the one unconfirmable date (autumn night
+viewing) is no longer printed.

@@ -1,10 +1,9 @@
 /**
  * Tōhoku: Lanterns of Summer — 東北の夏. Shape: see src/data/schema.js.
- * Real festivals, written October 2026. Neither the writer nor the fact-checker could reach the web
- * (shared search budget exhausted), so the fact-check was a second, independent review from memory
- * only: see docs/research/tohoku-summer-festivals.md. `factsChecked` stays unset and the tagline
- * says "Facts awaiting check" until a sourced pass. Prices and parade times are left out.
- * Photo slots: src/data/photos/manifest/tohoku-summer-festivals.json (no Commons candidates yet).
+ * Real festivals, written October 2026 and live-verified with web search on 17 October 2026: every
+ * price, hour, date and access detail is sourced in docs/research/tohoku-summer-festivals.md. Seat
+ * prices other than Nebuta's, the WA-RASSE fee and costume-rental prices could not be confirmed and
+ * are left out. Photo slots: src/data/photos/manifest/tohoku-summer-festivals.json (no candidates yet).
  */
 export default {
   id: 'b_tohoku-summer-festivals',
@@ -26,21 +25,26 @@ export default {
   },
   sources: [
     { label: 'Aomori Nebuta Matsuri official site', url: 'https://www.nebuta.jp/' },
+    { label: 'Aomori Nebuta Matsuri: schedule and route', url: 'https://www.nebuta.jp/info/schedule/schedule.html' },
     { label: 'Akita Kantō Matsuri official site', url: 'https://www.kantou.gr.jp/' },
     { label: 'Sendai Tanabata Matsuri official site', url: 'https://www.sendaitanabata.com/' },
-    { label: 'Yamagata Hanagasa Matsuri official site', url: 'https://www.hanagasa.jp/' },
+    { label: 'Walkerplus: Yamagata Hanagasa Matsuri', url: 'https://www.walkerplus.com/event/ar0206e04770/' },
     { label: 'Visit Tōhoku (Tōhoku Tourism Promotion Organization)', url: 'https://www.tohokukanko.jp/en/' },
     { label: 'JR East: trains and passes', url: 'https://www.jreast.co.jp/multi/en/' },
+    { label: 'TTG Asia: the new JR East Pass (2026)', url: 'https://www.ttgasia.com/?p=116449' },
+    { label: 'nippon.com: Akita Kantō Matsuri', url: 'https://www.nippon.com/en/guide-to-japan/gu008002/' },
+    { label: 'nippon.com: Sendai Tanabata Matsuri', url: 'https://www.nippon.com/en/guide-to-japan/gu008003/' },
+    { label: 'japan-guide.com: Yamadera', url: 'https://www.japan-guide.com/e/e7940.html' },
     { label: 'Wikipedia: Nebuta Matsuri', url: 'https://en.wikipedia.org/wiki/Nebuta_Matsuri' },
-    { label: 'Wikipedia: Tanabata', url: 'https://en.wikipedia.org/wiki/Tanabata' },
     { label: 'Wikipedia: Yamadera', url: 'https://en.wikipedia.org/wiki/Yamadera' },
   ],
+  factsChecked: 'October 2026',
   summary:
     'Ride the shinkansen through Tōhoku’s great August festivals: glowing Nebuta floats in Aomori, lantern poles in Akita, paper streamers in Sendai and flower-hat dancers in Yamagata, with a route that links them.',
   tags: ['tohoku', 'festivals', 'matsuri', 'nebuta', 'aomori', 'kanto', 'akita', 'tanabata', 'sendai', 'hanagasa', 'yamagata', 'yamadera', 'shinkansen', 'summer'],
   format: 'booklet',
   updatedAt: '2026-10-17T00:00:00.000Z',
-  readMinutes: 7,
+  readMinutes: 8,
   featured: false,
   source: 'builtin',
   theme: {
@@ -72,7 +76,7 @@ export default {
       kicker: 'Rasserā!',
       heading: 'The north comes alive in August',
       body:
-        'Tōhoku’s winters are long, so its short summer is celebrated with abandon. In the first week of August the biggest festivals overlap, city after city: Aomori’s Nebuta, Akita’s Kantō and Sendai’s Tanabata, known together as the three great festivals of Tōhoku, with Yamagata’s Hanagasa alongside.\n\nThe dates are the same every year, and the shinkansen links all four cities. Book rooms early: festival week fills up months ahead.',
+        'Tōhoku’s winters are long, so its short summer is celebrated with abandon. In the first week of August the biggest festivals overlap, city after city: Aomori’s Nebuta, Akita’s Kantō and Sendai’s Tanabata, known together as the three great festivals of Tōhoku, with Yamagata’s Hanagasa often added as a fourth.\n\nThe dates barely change from year to year, and the shinkansen links all four cities. Book rooms early: festival week fills up months ahead.',
       pullQuote: 'Nobody stays a spectator for long.',
       photo: 'tohoku-hanagasa',
     },
@@ -88,7 +92,7 @@ export default {
       facts: [
         { label: 'Dates', value: '2–7 August, every year' },
         { label: 'Parades', value: 'Evenings 2–6 Aug; by day on the 7th' },
-        { label: 'Watching', value: 'Free; paid seats sold in advance' },
+        { label: 'Watching', value: 'Free from the street; paid seats too' },
         { label: 'Getting there', value: 'About 3 h from Tokyo via Shin-Aomori' },
         { label: 'Year-round', value: 'WA-RASSE museum, by Aomori Station' },
       ],
@@ -104,12 +108,12 @@ export default {
       nameJp: '秋田竿燈まつり',
       photo: 'tohoku-kanto-poles',
       body:
-        'After dark some 280 bamboo poles rise over Kantō Ōdōri, each hung with rows of paper lanterns so that it looks like an ear of ripening rice — the festival is a prayer for a good harvest. The largest stand about 12 metres tall, carry 46 lanterns and weigh some 50 kilograms, yet performers balance them on a palm, a forehead, a shoulder or the small of the back.',
+        'After dark more than 270 bamboo poles rise over Kantō Ōdōri, each hung with rows of paper lanterns so that it looks like an ear of ripening rice — the festival is a prayer for a good harvest. The largest stand about 12 metres tall, carry 46 lanterns and weigh some 50 kilograms, yet performers balance them on a palm, a forehead, a shoulder or the small of the back.',
       facts: [
-        { label: 'Dates', value: '3–6 August, every year' },
+        { label: 'Dates', value: '3–6 August' },
         { label: 'Night parade', value: 'Every evening on Kantō Ōdōri' },
-        { label: 'Watching', value: 'Free; paid seats sold in advance' },
-        { label: 'Getting there', value: 'Akita Shinkansen, about 4 h from Tokyo' },
+        { label: 'Watching', value: 'Free; paid seats on sale' },
+        { label: 'Getting there', value: 'Akita Shinkansen, about 3¾ h from Tokyo' },
       ],
       lat: 39.7195,
       lng: 140.1205,
@@ -123,11 +127,12 @@ export default {
       nameJp: '仙台七夕まつり',
       photo: 'tohoku-tanabata-streamers',
       body:
-        'Tanabata celebrates the star-crossed lovers Orihime and Hikoboshi — Vega and Altair — who may meet once a year across the Milky Way. Sendai keeps the festival a month late, closer to the old calendar, and fills its shopping arcades with thousands of handmade washi streamers on tall bamboo poles. Among them, look for the seven traditional ornaments, from paper cranes to wish-strips.',
+        'Tanabata celebrates the star-crossed lovers Orihime and Hikoboshi — Vega and Altair — who may meet once a year across the Milky Way. Sendai keeps the festival a month late, closer to the old calendar, and hangs its shopping arcades with long handmade washi streamers on tall bamboo poles. Among them, look for the seven traditional ornaments, from paper cranes to wish-strips.',
       facts: [
-        { label: 'Dates', value: '6–8 August, every year' },
+        { label: 'Dates', value: '6–8 August' },
         { label: 'Where', value: 'Ichibanchō and Chūō-dōri arcades' },
-        { label: 'Admission', value: 'Free' },
+        { label: 'Hours (2026)', value: '10:00–22:00; to 20:00 on the 8th' },
+        { label: 'Fireworks', value: '5 August, the festival’s eve' },
         { label: 'Getting there', value: 'About 1½ h from Tokyo by shinkansen' },
       ],
       lat: 38.261,
@@ -143,7 +148,7 @@ export default {
         {
           icon: 'Flower2',
           title: 'Yamagata Hanagasa',
-          text: 'Thousands of dancers in straw hats decked with red safflowers parade through Yamagata to the call “Yassho, makasho!”. 5–7 August.',
+          text: 'More than 10,000 dancers in straw hats decked with red safflowers parade through Yamagata to the call “Yassho, makasho!”. 5–7 August.',
         },
         {
           icon: 'Lamp',
@@ -153,12 +158,12 @@ export default {
         {
           icon: 'Landmark',
           title: 'Goshogawara Tachineputa',
-          text: 'Standing floats over 20 metres tall tower above the street; see them all year at the Tachineputa no Yakata. 4–8 August.',
+          text: 'Standing floats some 20 metres tall tower over the street, taller than the buildings around them. 4–8 August.',
         },
         {
           icon: 'Music',
           title: 'Morioka Sansa Odori',
-          text: 'Thousands of taiko drummers and dancers fill Chūō-dōri in Morioka, Iwate. 1–4 August.',
+          text: 'More than 3,000 taiko drummers, a world record, fill Chūō-dōri in Morioka, Iwate, with dancers alongside. 1–4 August.',
         },
         {
           icon: 'Mountain',
@@ -182,7 +187,7 @@ export default {
       id: 'p8',
       type: 'map',
       heading: 'Festival week on the map',
-      body: 'Tokyo to Sendai is about 1½ hours by shinkansen, Sendai to Shin-Aomori about 1½ more; Akita and Yamagata have their own mini-shinkansen branches.',
+      body: 'Tokyo to Sendai is about 1½ hours by shinkansen and Tokyo to Shin-Aomori about 3; Akita and Yamagata have their own mini-shinkansen branches.',
       places: [
         { name: 'Aomori', nameJp: '青森', lat: 40.8287, lng: 140.7356, note: 'Nebuta, 2–7 August' },
         { name: 'Hirosaki', nameJp: '弘前', lat: 40.6078, lng: 140.4642, note: 'Neputa, 1–7 August' },
@@ -200,10 +205,39 @@ export default {
       heading: 'Festival week by shinkansen',
       items: [
         { time: '4 Aug', title: 'Aomori · Nebuta', text: 'WA-RASSE museum by day; the full float parade after dark.' },
-        { time: '5 Aug', title: 'Akita · Kantō', text: 'About 3 h via Morioka; lantern poles rise at dusk.' },
-        { time: '6 Aug', title: 'Sendai · Tanabata', text: 'Komachi shinkansen, about 2¼ h; streamers fill the arcades.' },
-        { time: '7 Aug', title: 'Yamadera & Yamagata', text: 'JR Senzan Line: temple steps by day, Hanagasa at night.' },
+        { time: '5 Aug', title: 'Akita · Kantō', text: 'Shinkansen, changing at Morioka; lantern poles rise at dusk.' },
+        { time: '6 Aug', title: 'Sendai · Tanabata', text: 'Komachi shinkansen back through Morioka; streamers fill the arcades.' },
+        { time: '7 Aug', title: 'Yamadera & Yamagata', text: 'Senzan Line, about 1 h to the temple; Hanagasa at night, 20 min on.' },
         { time: '8 Aug', title: 'Sendai · home', text: 'Last day of Tanabata; about 1½ h to Tokyo.' },
+      ],
+    },
+    {
+      id: 'p14',
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Adult prices, checked October 2026. Festival seat prices are set again each summer.',
+      plans: [
+        {
+          name: 'Rail pass',
+          price: '¥35,000',
+          period: 'JR East Pass, 5 days in a row',
+          features: ['New pass since 14 March 2026', 'Tōhoku, Nagano and Niigata areas', '10 days in a row: ¥50,000', 'Children 6–11: half price'],
+          highlight: true,
+        },
+        {
+          name: 'Festival viewing',
+          price: 'Free',
+          period: 'from the street',
+          features: ['Nebuta paid seats: about ¥3,500 and up (2026)', 'Kantō paid seats: see kantou.gr.jp', 'Hanagasa: free along the route'],
+          highlight: false,
+        },
+        {
+          name: 'Yamadera',
+          price: '¥500',
+          period: 'temple entry, adult',
+          features: ['Children 4 and over: ¥200', 'About 1,000 stone steps', 'About 20 min by JR from Yamagata'],
+          highlight: false,
+        },
       ],
     },
     {
@@ -225,7 +259,7 @@ export default {
       quote: 'Such stillness — / the cicadas’ cry / soaks into the rocks.',
       quoteJp: '閑さや岩にしみ入る蝉の声',
       author: 'Matsuo Bashō',
-      role: 'At Yamadera, 1689 (Oku no Hosomichi) · Translation: Tabi Guides',
+      role: 'Written at Yamadera · Oku no Hosomichi · Translation: Tabi Guides',
     },
     {
       id: 'p12',
@@ -246,7 +280,7 @@ export default {
       type: 'back',
       title: 'Mata rainen — see you next year',
       body: 'These festivals belong to the local teams who spend months on the floats and the poles. Keep the route clear, follow the stewards, and dance when invited.',
-      tagline: 'Facts awaiting check · Tabi Guides',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
     },
   ],
 };

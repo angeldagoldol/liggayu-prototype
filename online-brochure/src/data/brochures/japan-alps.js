@@ -1,32 +1,42 @@
-/** The Japan Alps — 日本アルプス. Shape: see src/data/schema.js. */
+/**
+ * The Japan Alps — 日本アルプス. Shape: see src/data/schema.js.
+ * Real places, facts checked October 2026; sources and notes in docs/research/japan-alps.md,
+ * photo slots in src/data/photos/manifest/japan-alps.json.
+ */
 export default {
   id: 'b_japan-alps',
   slug: 'japan-alps',
   title: 'The Japan Alps',
   titleJp: '日本アルプス',
   titleKana: 'にほん あるぷす',
-  subtitle: 'Takayama’s old town, the thatched farmhouses of Shirakawa-gō and the alpine valley of Kamikochi',
+  subtitle: 'Takayama’s old town, the thatched farmhouses of Shirakawa-gō, the alpine valley of Kamikochi and Matsumoto’s black castle',
   category: 'nature',
   region: 'chubu',
-  seasons: [
-    'spring',
-    'summer',
-    'autumn'
+  seasons: ['spring', 'summer', 'autumn'],
+  organization: 'Tabi Guides',
+  location: { name: 'Takayama', nameJp: '高山', prefecture: 'Gifu', lat: 36.141, lng: 137.2615 },
+  sources: [
+    { label: 'Takayama Jinya (Gifu Prefecture, official): hours and admission', url: 'https://jinya.gifu.jp/en/guide/info/' },
+    { label: 'Hida Takayama official travel guide', url: 'https://www.hida.jp/english/' },
+    { label: 'UNESCO World Heritage Centre: Historic Villages of Shirakawa-gō and Gokayama', url: 'https://whc.unesco.org/en/list/734' },
+    { label: 'Nagano Prefecture: Kamikochi traffic regulation (private-car ban), 2026', url: 'https://www.pref.nagano.lg.jp/shizenhogo/infra/doro/joho/kamikouti.html' },
+    { label: 'Ministry of the Environment: Kamikochi access leaflet, 2026 season', url: 'https://chubu.env.go.jp/shinetsu/content/000386720.pdf' },
+    { label: 'Kamikochi official site: by public transportation', url: 'https://www.kamikochi.org/?p=5475' },
+    { label: 'Go Nagano (Nagano Prefecture tourism): Matsumoto Castle', url: 'https://www.go-nagano.net/en/theme/id=18040' },
+    { label: 'Visit Matsumoto (city tourism)', url: 'https://visitmatsumoto.com/en/' },
+    { label: 'Shōryūdō (Central Japan tourism): Takayama Jinya', url: 'https://shoryudo.go-centraljapan.jp/en/?p=1288' },
+    { label: 'Shōryūdō (Central Japan tourism): Wada House, Shirakawa-gō', url: 'https://shoryudo.go-centraljapan.jp/en/wadakezyutaku/' },
+    { label: 'japan-guide.com: Takayama morning markets', url: 'https://www.japan-guide.com/e/e5907.html' },
+    { label: 'Wikipedia: Japanese Alps', url: 'https://en.wikipedia.org/wiki/Japanese_Alps' },
+    { label: 'Wikipedia: Historic Villages of Shirakawa-gō and Gokayama', url: 'https://en.wikipedia.org/wiki/Historic_Villages_of_Shirakawa-g%C5%8D_and_Gokayama' },
   ],
-  organization: 'Hida Trail Company',
-  summary: 'Mountain Japan: walk Takayama’s merchant streets, sleep under the thatch of a Shirakawa-gō farmhouse and follow the clear rivers of Kamikochi beneath the Hotaka peaks.',
-  tags: [
-    'japan alps',
-    'takayama',
-    'shirakawa-go',
-    'kamikochi',
-    'hiking',
-    'nakasendo',
-    'sake'
-  ],
+  factsChecked: 'October 2026',
+  summary:
+    'A real-world guide to the Japan Alps: Takayama’s morning markets and Edo-era Jinya, the UNESCO-listed farmhouses of Shirakawa-gō, car-free Kamikochi and Matsumoto Castle — facts checked October 2026.',
+  tags: ['japan alps', 'takayama', 'takayama jinya', 'morning market', 'shirakawa-go', 'gokayama', 'kamikochi', 'matsumoto castle', 'unesco', 'hiking'],
   format: 'booklet',
-  updatedAt: '2026-04-22T05:00:00.000Z',
-  readMinutes: 6,
+  updatedAt: '2026-10-17T00:00:00.000Z',
+  readMinutes: 7,
   featured: false,
   source: 'builtin',
   theme: {
@@ -35,242 +45,221 @@ export default {
     accent: '#f0a3b5',
     accent2: '#8fc4a8',
     muted: '#a5b3a8',
-    typeface: 'serif'
+    typeface: 'serif',
   },
   cover: {
+    photo: 'alps-shirakawago-ogimachi',
     art: 'sakura',
-    seed: 23
+    seed: 23,
   },
   pages: [
     {
       id: 'p1',
       type: 'cover',
-      eyebrow: 'Chūbu · Spring to autumn',
+      eyebrow: 'Chūbu · Gifu & Nagano',
       title: 'The Japan Alps',
       titleJp: '日本アルプス',
-      subtitle: 'Merchant streets, thatched villages and mountain rivers so clear they look like glass.'
+      subtitle: 'Merchant streets, thatched villages, a black castle and a mountain river so clear it looks like glass.',
+      photo: 'alps-shirakawago-ogimachi',
     },
     {
       id: 'p2',
       type: 'intro',
       kicker: 'Into the mountains',
-      heading: 'The roof of Japan',
-      body: 'Three ranges run down the middle of Honshū — the Hida, Kiso and Akaishi mountains. The English engineer William Gowland named them the Japan Alps, and the missionary-mountaineer Walter Weston made them famous.\n\nAt their feet lie some of Japan’s best-preserved towns: Takayama with its sake breweries and morning markets, and Shirakawa-gō, whose farmhouse roofs rise like hands joined in prayer. Come in April for blossom and the spring festival, in summer for the high trails, or in October for the maples.',
-      pullQuote: 'Cold rivers, warm sake, slow mornings.'
+      heading: 'The roof of Honshū',
+      body:
+        'Three ranges run down the middle of Honshū — the Hida, Kiso and Akaishi mountains, known today as the Northern, Central and Southern Alps. The English engineer William Gowland coined the name “Japanese Alps”; the missionary-mountaineer Walter Weston made it famous, and a memorial to him stands in Kamikochi.\n\nAt their feet lie some of Japan’s best-kept places: Takayama, with its morning markets and Edo-period government house; Shirakawa-gō, whose steep thatched roofs were built for deep snow; and Matsumoto, guarded by a black castle keep.',
+      pullQuote: 'Cold rivers, old timber, slow mornings.',
+      photo: 'alps-kamikochi-hotaka',
     },
     {
       id: 'p3',
-      type: 'features',
-      kicker: 'Highlights',
-      heading: 'Four ways into the mountains',
-      items: [
-        {
-          icon: 'Store',
-          title: 'Takayama',
-          text: 'Dark-timbered merchant houses, sake breweries marked by cedar balls and a morning market by the river.'
-        },
-        {
-          icon: 'House',
-          title: 'Shirakawa-gō',
-          text: 'Steep thatched gasshō farmhouses in a village on the UNESCO World Heritage List since 1995.'
-        },
-        {
-          icon: 'Mountain',
-          title: 'Kamikochi',
-          text: 'An alpine valley at about 1,500 m, closed to private cars and open from late April to mid-November.'
-        },
-        {
-          icon: 'Footprints',
-          title: 'The Nakasendō',
-          text: 'Walk the old post road from Magome to Tsumago — about 8 km of stone paths and cedar forest.'
-        }
-      ]
+      type: 'place',
+      kicker: 'The old town · 古い町並',
+      name: 'Takayama: Sanmachi & the morning markets',
+      nameJp: '高山 三町・朝市',
+      photo: 'alps-takayama-sanmachi',
+      body:
+        'East of the Miyagawa river, the dark-timbered merchant houses of Sanmachi form a nationally protected district of Edo-period streets. Sake breweries announce themselves with a ball of cedar, the sugidama, hung above the door. Come early: two morning markets, one along the Miyagawa and one in front of Takayama Jinya, sell local vegetables, pickles and crafts until about noon. Twice a year the Takayama Festival rolls out its towering yatai floats.',
+      facts: [
+        { label: 'Markets', value: 'Daily, early morning until about 12:00' },
+        { label: 'Admission', value: 'Free to wander' },
+        { label: 'Getting there', value: 'About 10 min walk from JR Takayama Station' },
+        { label: 'Festivals', value: '14–15 April and 9–10 October' },
+      ],
+      lat: 36.141,
+      lng: 137.2615,
+      website: 'https://www.hida.jp/english/',
     },
     {
       id: 'p4',
-      type: 'gallery',
-      heading: 'Seasons on the mountain',
-      items: [
-        {
-          art: 'sakura',
-          seed: 4,
-          caption: 'Blossom on the Miyagawa, April'
-        },
-        {
-          art: 'kumo',
-          seed: 2,
-          caption: 'A sea of clouds below the Hotaka peaks'
-        },
-        {
-          art: 'asanoha',
-          seed: 3,
-          caption: 'Kumiko lattice in a Takayama inn'
-        },
-        {
-          art: 'shippo',
-          seed: 18,
-          caption: 'Lacquer and brass on a festival float'
-        }
-      ]
+      type: 'place',
+      kicker: 'The government house · 陣屋',
+      name: 'Takayama Jinya',
+      nameJp: '高山陣屋',
+      photo: 'alps-takayama-jinya',
+      body:
+        'When the Edo shogunate ruled the Hida region directly, it governed from this compound of offices, tatami halls and storehouses. At the end of the Edo period Japan had some sixty such regional government houses; this is the only one still standing. Walk its long corridors and quiet courtyards slowly — and time your visit for the morning, when the Jinya-mae market sets up outside the gate.',
+      facts: [
+        { label: 'Hours', value: 'Apr–Oct 8:45–17:00 · Nov–Mar 8:45–16:30' },
+        { label: 'Admission', value: '¥440 adults · free to high-school age' },
+        { label: 'Closed', value: '29 December – 3 January' },
+        { label: 'Getting there', value: 'About 10 min walk from JR Takayama Station' },
+      ],
+      lat: 36.139,
+      lng: 137.258,
+      website: 'https://jinya.gifu.jp/en/guide/info/',
     },
     {
       id: 'p5',
-      type: 'agenda',
-      heading: 'Five days in the mountains',
-      items: [
-        {
-          time: 'Day 1',
-          title: 'Takayama',
-          text: 'Old town, sake tasting and a Hida beef supper.'
-        },
-        {
-          time: 'Day 2',
-          title: 'Shirakawa-gō',
-          text: 'Takayama’s morning market, then a night in a gasshō farmhouse.'
-        },
-        {
-          time: 'Day 3',
-          title: 'Kamikochi',
-          text: 'Walk from Taishō Pond to Kappa Bridge and on to Myōjin.'
-        },
-        {
-          time: 'Day 4',
-          title: 'Nakasendō',
-          text: 'Magome to Tsumago on foot; dinner at a post-town inn.'
-        },
-        {
-          time: 'Day 5',
-          title: 'Nagoya',
-          text: 'Limited express down the valley, with a last look at the peaks.'
-        }
-      ]
+      type: 'place',
+      kicker: 'The thatched village · 合掌造り',
+      name: 'Shirakawa-gō',
+      nameJp: '白川郷',
+      photo: 'alps-shirakawago-gassho',
+      body:
+        'In the snowy Shō river valley, farmhouses with steep thatched roofs — gasshō-zukuri, “hands joined in prayer” — shed the winter snow, while their airy attics once housed silkworms. Ogimachi in Shirakawa-gō, with Ainokura and Suganuma in neighbouring Gokayama, joined the UNESCO World Heritage List in 1995. Climb to the Shiroyama viewpoint for the view over the roofs, step inside the Wada House, and remember that most houses are private homes.',
+      facts: [
+        { label: 'Getting there', value: 'Nohi Bus from Takayama, 50–70 min · book ahead' },
+        { label: 'Wada House', value: '¥400 · about 9:00–17:00, some days closed' },
+        { label: 'Viewpoint', value: '20 min walk up, or shuttle bus ¥200' },
+      ],
+      lat: 36.2575,
+      lng: 136.9064,
+      website: 'https://shirakawa-go.gr.jp/en/',
     },
     {
       id: 'p6',
-      type: 'stats',
-      heading: 'The Alps in figures',
-      body: 'Thin air, deep snow, old wood.',
-      items: [
-        {
-          value: 3190,
-          prefix: '',
-          suffix: ' m',
-          label: 'Okuhotaka-dake, joint third-highest in Japan'
-        },
-        {
-          value: 1500,
-          prefix: '~',
-          suffix: ' m',
-          label: 'altitude of the Kamikochi valley'
-        },
-        {
-          value: 8,
-          prefix: '~',
-          suffix: ' km',
-          label: 'on the Nakasendō from Magome to Tsumago'
-        }
-      ]
+      type: 'place',
+      kicker: 'The alpine valley · 上高地',
+      name: 'Kamikochi',
+      nameJp: '上高地',
+      photo: 'alps-kamikochi-taisho-pond',
+      body:
+        'A high valley in Chūbu-Sangaku National Park, where the clear Azusa river runs beneath the Hotaka peaks. Private cars are banned: buses and taxis bring visitors in from Sawando on the Nagano side or Hirayu Onsen on the Gifu side. Start at Taishō Pond, made by an eruption of Mount Yakedake in 1915, its drowned trees still standing; follow the river to Kappa Bridge, then walk about an hour upstream to Myōjin Pond.',
+      facts: [
+        { label: 'Season 2026', value: '17 April – 15 November' },
+        { label: 'Getting there', value: 'Takayama → Hirayu Onsen 60 min, then 25 min by bus' },
+        { label: 'Shuttle bus', value: 'About ¥1,500–1,600 one way' },
+        { label: 'Walk', value: 'Kappa Bridge to Myōjin Pond, about 1 hour' },
+      ],
+      lat: 36.2489,
+      lng: 137.6378,
+      website: 'https://www.kamikochi.org/',
     },
     {
       id: 'p7',
-      type: 'phrases',
-      heading: 'Mountain Japanese',
-      items: [
-        {
-          jp: 'こんにちは',
-          romaji: 'Konnichiwa',
-          meaning: 'Hello — greet everyone on the trail'
-        },
-        {
-          jp: '熊鈴',
-          romaji: 'Kuma-suzu',
-          meaning: 'Bear bell — hang one on your pack'
-        },
-        {
-          jp: '道に迷いました',
-          romaji: 'Michi ni mayoimashita',
-          meaning: 'I’m lost'
-        },
-        {
-          jp: '雨が降りそうですね',
-          romaji: 'Ame ga furisō desu ne',
-          meaning: 'Looks like rain'
-        },
-        {
-          jp: '乾杯！',
-          romaji: 'Kanpai!',
-          meaning: 'Cheers — with local sake'
-        }
-      ]
+      type: 'place',
+      kicker: 'The black castle · 国宝',
+      name: 'Matsumoto Castle',
+      nameJp: '松本城',
+      photo: 'alps-matsumoto-castle',
+      body:
+        'Black walls above a wide moat, and a keep finished in the 1590s: five tiers on the outside, six floors within. The keep and four attached buildings are designated a National Treasure. Climb the steep wooden stairs to the top floor and look out across the city to the Northern Alps. Arrive at opening time, or buy a timed e-ticket, to avoid the longest queues.',
+      facts: [
+        { label: 'Hours', value: '8:30–17:00 (last entry 16:30) · closed 29–31 Dec' },
+        { label: 'Admission', value: '¥1,300 adults · ¥1,200 timed e-ticket' },
+        { label: 'Getting there', value: 'About 15 min walk from JR Matsumoto Station' },
+      ],
+      lat: 36.2386,
+      lng: 137.9689,
+      website: 'https://www.matsumoto-castle.jp/',
     },
     {
       id: 'p8',
-      type: 'pricing',
-      heading: 'Mountain journeys',
-      note: 'Per person, sharing. Rail and bus passes, luggage forwarding and breakfasts included.',
-      plans: [
-        {
-          name: 'Old Towns',
-          price: '¥142,000',
-          period: '4 nights',
-          features: [
-            'Takayama ryokan',
-            'A night in a gasshō farmhouse',
-            'Sake brewery visit'
-          ],
-          highlight: false
-        },
-        {
-          name: 'High Alps',
-          price: '¥228,000',
-          period: '6 nights',
-          features: [
-            'Everything in Old Towns',
-            'Two nights in Kamikochi',
-            'Guided Nakasendō walk',
-            'Luggage sent ahead each day'
-          ],
-          highlight: true
-        }
-      ]
+      type: 'map',
+      heading: 'The Alps, mapped',
+      body: 'The Hida limited express climbs from Nagoya to Takayama; buses link the valleys; Matsumoto lies on the far side of the Northern Alps.',
+      places: [
+        { name: 'Nagoya', nameJp: '名古屋', lat: 35.1709, lng: 136.8815, note: 'Hida limited express, about 2 h 20 min to Takayama' },
+        { name: 'Takayama', nameJp: '高山', lat: 36.141, lng: 137.2615, note: 'Sanmachi, morning markets, the Jinya' },
+        { name: 'Shirakawa-gō', nameJp: '白川郷', lat: 36.2575, lng: 136.9064, note: 'Gasshō farmhouses, UNESCO 1995' },
+        { name: 'Kamikochi', nameJp: '上高地', lat: 36.2489, lng: 137.6378, note: 'Kappa Bridge, car-free valley' },
+        { name: 'Matsumoto Castle', nameJp: '松本城', lat: 36.2386, lng: 137.9689, note: 'National Treasure keep' },
+      ],
     },
     {
       id: 'p9',
-      type: 'quote',
-      quote: 'We woke in Kamikochi to mist lifting off the river and a troop of monkeys crossing the bridge. I have never seen water so clear.',
-      author: 'Elise M.',
-      role: 'Traveller, October 2025'
+      type: 'agenda',
+      heading: 'Five days in the mountains',
+      items: [
+        { time: 'Day 1', title: 'Up to Takayama', text: 'Hida limited express from Nagoya, about 2 h 20 min. Evening in Sanmachi.' },
+        { time: 'Day 2', title: 'Markets, Jinya, thatch', text: 'Morning market, the Jinya from 8:45, then Nohi Bus to Shirakawa-gō and back.' },
+        { time: 'Day 3', title: 'Kamikochi', text: 'Bus via Hirayu, about 1 h 25 min. Taishō Pond to Kappa Bridge to Myōjin.' },
+        { time: 'Day 4', title: 'Down to Matsumoto', text: 'Bus to Shin-Shimashima and the Alpico train; the castle before 16:30.' },
+        { time: 'Day 5', title: 'Homeward', text: 'Castle moat at opening time, then a limited express to Nagoya or Tokyo.' },
+      ],
     },
     {
       id: 'p10',
-      type: 'contact',
-      heading: 'Plan your mountain days',
-      body: 'Kamikochi opens in late April and closes in mid-November. Tell us your season and pace, and we will plan the trails and the trains.',
-      cta: 'Plan my route',
-      details: [
+      type: 'pricing',
+      heading: 'What the Alps cost',
+      note: 'Adult prices, checked October 2026. Kamikochi is open 17 April – 15 November 2026; book Nohi Bus seats to Shirakawa-gō ahead.',
+      plans: [
         {
-          icon: 'Mail',
-          label: 'Email',
-          value: 'trails@hida-trail.example'
+          name: 'Takayama',
+          price: '¥440',
+          period: 'Takayama Jinya',
+          features: ['Free to high-school age', 'Sanmachi and morning markets: free', 'Closed 29 Dec – 3 Jan'],
+          highlight: false,
         },
         {
-          icon: 'Clock',
-          label: 'Hours',
-          value: 'Daily 08:00–17:00 JST'
+          name: 'Shirakawa-gō',
+          price: '¥400',
+          period: 'Wada House',
+          features: ['Shiroyama viewpoint shuttle ¥200', 'Village lanes free to walk', 'Most houses are private homes'],
+          highlight: false,
         },
         {
-          icon: 'MapPin',
-          label: 'Office',
-          value: 'Sanmachi, Takayama'
-        }
-      ]
+          name: 'Kamikochi & Matsumoto',
+          price: '¥1,300',
+          period: 'Matsumoto Castle',
+          features: ['¥1,200 with a timed e-ticket', 'Kamikochi shuttle about ¥1,500–1,600 one way', 'No private cars into Kamikochi'],
+          highlight: true,
+        },
+      ],
     },
     {
       id: 'p11',
+      type: 'phrases',
+      heading: 'Mountain Japanese',
+      items: [
+        { jp: '朝市は何時までですか？', romaji: 'Asaichi wa nanji made desu ka?', meaning: 'Until what time is the morning market on?' },
+        { jp: '試飲できますか？', romaji: 'Shiin dekimasu ka?', meaning: 'May I taste it? — at a sake brewery' },
+        { jp: '上高地行きのバスはどこですか？', romaji: 'Kamikōchi-yuki no basu wa doko desu ka?', meaning: 'Where is the bus to Kamikochi?' },
+        { jp: '写真を撮ってもいいですか？', romaji: 'Shashin o totte mo ii desu ka?', meaning: 'May I take a photo?' },
+        { jp: '熊に注意', romaji: 'Kuma ni chūi', meaning: 'Beware of bears — a sign you will see on trails' },
+        { jp: 'こんにちは', romaji: 'Konnichiwa', meaning: 'Hello — greet other walkers on the trail' },
+      ],
+    },
+    {
+      id: 'p12',
+      type: 'quote',
+      quote: 'The cliffside bridge — ivy twines around it, as we cling to life.',
+      quoteJp: '桟やいのちをからむつたかづら',
+      author: 'Matsuo Bashō',
+      role: 'Kiso no Kakehashi, on the road through the Kiso Valley, 1688 (Sarashina Kikō) · Translation: Tabi Guides',
+    },
+    {
+      id: 'p13',
+      type: 'contact',
+      heading: 'Visitor information',
+      body: 'Mountain buses run to seasonal timetables and fill up early. Check them, and the Kamikochi season, before you set off.',
+      cta: 'Open the Hida Takayama guide',
+      ctaUrl: 'https://www.hida.jp/english/',
+      details: [
+        { icon: 'Info', label: 'Hida Takayama tourist information', value: 'In front of JR Takayama Station', url: 'https://www.hida.jp/english/' },
+        { icon: 'House', label: 'Shirakawa-gō', value: 'shirakawa-go.gr.jp', url: 'https://shirakawa-go.gr.jp/en/' },
+        { icon: 'Mountain', label: 'Kamikochi', value: 'kamikochi.org · season and buses', url: 'https://www.kamikochi.org/' },
+        { icon: 'Castle', label: 'Matsumoto', value: 'visitmatsumoto.com', url: 'https://visitmatsumoto.com/en/' },
+      ],
+    },
+    {
+      id: 'p14',
       type: 'back',
       title: 'Yama de aimashō — see you in the mountains',
-      body: 'Hida Trail Company plans walking journeys through the Japan Alps.',
-      tagline: 'hida-trail.example'
-    }
-  ]
+      body: 'Pack a rain layer, catch the early bus, and let the mountains set the pace.',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
+    },
+  ],
 };

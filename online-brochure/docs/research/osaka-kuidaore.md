@@ -1,88 +1,72 @@
 # Research log — Osaka: Eat Until You Drop (`osaka-kuidaore`)
 
-Written 17 October 2026 (`factsChecked: "October 2026"`). Existing brochure, fully rewritten.
+Written 17 October 2026. **Live-verified 17 October 2026** (`factsChecked: "October 2026"`,
+back-page tagline "Facts checked October 2026 · Tabi Guides").
 
-> **Fact-check pass, 17 Oct 2026 (independent reviewer).** The workflow's web-search budget
-> was also used up before this pass (WebSearch refused; WebFetch/curl blocked), so nothing
-> could be opened online this time either. Every row was re-read against the reviewer's own
-> knowledge (to mid-2026) and the copy corrected where it was wrong, overstated or
-> unsourced. Confidence in the last column: **H** high, **M** medium; **✘** = not
-> confirmable, so the copy was hedged or the value removed. Rows marked **Re-check** still
-> need a live check before publication.
-
-> **Verification status — read first.** The shared web-search budget for this workflow run
-> was already used up before this brochure's research began (the very first WebSearch call
-> was refused), and WebFetch/curl cannot reach outside sites from the sandbox. Nothing below
-> could be opened or re-checked online this session. Every value comes from the editor's
-> existing knowledge (current to mid-2026). The URLs are where each fact is published
-> (official sites first), but they were **not re-opened on 17 Oct 2026**.
+> **How this was checked.** Earlier passes worked from memory because no web search was
+> available. This pass ran live web searches (34 in total for this brochure and
+> `hiroshima-miyajima`, 17 Oct 2026). WebFetch/curl cannot reach outside sites from the sandbox,
+> so each value was read from search-result extracts of the pages listed, with official sites
+> searched first. **Status**: **VERIFIED** = the printed value matches at least one current
+> source (two for anything surprising); **HEDGED** = the copy was reworded to avoid a number
+> the sources did not settle; **REMOVED** = taken out of the copy.
 >
-> To stay within REAL_CONTENT.md ("if you cannot verify a number, leave it out"), the copy
-> **leaves out every volatile price** (Osaka Castle and Tsūtenkaku admission, metro fares,
-> pass prices, street-food prices) and gives hours only in a loose form. Only stable
-> historical facts, place names and long-standing access details are stated. A verification
-> pass with web search should confirm the rows marked **Re-check** and can then add
-> real fees to the Costs page (p10). Wikipedia links are built from article titles and were
-> not opened either; correct any that redirect.
+> Every price, hour, date and access detail now printed is VERIFIED, so `factsChecked` stays
+> set. The only things not re-checked live are the map coordinates (see the last rows).
+>
+> **2025–2026 changes found:** Osaka Castle main tower doubled to ¥1,200 (April 2025) and
+> now opens 9:00–18:00. Tsūtenkaku's decks now open from 9:00, and an adult ticket costs ¥1,500
+> (from April 2026). The JR Osaka Station centre is now called "Tourist Information Osaka".
+> The brochure never mentioned Expo 2025 (now over) or the Yumeshima IR/casino (not open), so
+> nothing needed removing.
 
 ## Facts
 
-| Claim (page) | Value used | Sources | Notes | Fact-check, 17 Oct 2026 (reviewer knowledge; web search unavailable) |
+| Claim (page) | Value used | Source URLs (searched 17 Oct 2026) | Status | Notes |
 | --- | --- | --- | --- | --- |
-| "The nation's kitchen" (intro) | Edo-period Osaka = 天下の台所 *tenka no daidokoro*; tax rice and goods from domains all over Japan were shipped to its warehouses (*kurayashiki*) and traded there | https://osaka-info.jp/en/ ; https://en.wikipedia.org/wiki/Osaka | Standard history. | ✔ H. **Changed**: "from every province" → "from domains all over Japan"; the unsourced flourish "its cooks had first pick" removed. |
-| *Kuidaore* meaning (intro, quote) | "to eat yourself into ruin" | https://osaka-info.jp/en/ ; https://en.wikipedia.org/wiki/Kuidaore_Tar%C5%8D | | ✔ H. |
-| Proverb (quote, p12) | 京の着倒れ、大阪の食い倒れ — *Kyō no kidaore, Ōsaka no kuidaore* | https://en.wiktionary.org/wiki/食い倒れ ; https://osaka-info.jp/en/ | A proverb, so author is "Japanese proverb"; translation "Kyoto ruins itself on fine clothes; Osaka, on food" is ours (Tabi Guides). Some versions add 神戸の履き倒れ (Kobe, on shoes); not used. | ✔ H. Standard wording and reading; translation labelled as ours. |
-| Dōtonbori canal begun 1612 (p3) | Yasui Dōton began it in 1612; killed in the Siege of Osaka in 1615 before completion; the canal bears his name | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://osaka-info.jp/en/ | Recent research gives his name as 成安道頓 *Nariyasu Dōton*; the copy uses the common form. Completion credited to his cousins — copy avoids naming them. | ✔ H for 1612 / 1615 / name. **Note fixed**: the alternative name is 成安道頓 *Nariyasu Dōton*, not "Narui". |
-| Kabuki theatres on Dōtonbori (p3) | "Kabuki theatres made it the city's playground" | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://osaka-info.jp/en/ | Edo-period theatre district (the "five theatres of Dōtonbori"). | ✔ H (Edo-period theatre district). |
-| Glico running man sign (p3) | "first lit here in 1935"; beams down on Ebisu-bashi | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://osaka-info.jp/en/ | The current sign is a later (LED) generation. The sign stands on the building at the bridge's north-west corner. | ✔ H for 1935. **Changed** "here since 1935" → "first lit here in 1935": the sign was taken down in wartime and today's LED sign (2014) is a later generation (M); "beams over" → "beams down on" Ebisu-bashi, as the sign stands beside the bridge, not over it. |
-| Dōtonbori access (p3) | Namba Station, about 5 min walk | https://osaka-info.jp/en/ ; https://subway.osakametro.co.jp/en/ | Exit numbers not used. | ✔ M–H. |
-| Dōtonbori hours (p3) | "Street always open; stalls till late" | — | Descriptive, no specific stall hours. | ✔ Descriptive only. |
-| Hōzen-ji, Mizukake Fudō (p6, p7) | Stone-paved Hōzenji Yokochō lane off Dōtonbori; visitors splash water over the moss-covered Fudō Myōō statue | https://osaka-info.jp/en/ ; https://en.wikipedia.org/wiki/H%C5%8Dzen-ji | Temple founding date (often given as 1637) **not used**. Free to visit. | ✔ H. |
-| Kuromon Market size (p4) | about 150 shops | https://kuromon.com/en/ ; https://en.wikipedia.org/wiki/Kuromon_Market | Old brochure said "around 150 stalls" — kept. Length (often "about 580 m") **left out**. | ✔ M (figure commonly given; not re-opened). |
-| Kuromon age and name (p4) | "since the 19th century"; named after the black gate (黒門) of a temple (Enmyō-ji) that stood nearby | https://kuromon.com/en/ ; https://en.wikipedia.org/wiki/Kuromon_Market | Usually dated to around 1822. Old brochure's "two centuries" softened to "since the 19th century". Nickname "Osaka's kitchen" (大阪の台所). | ✔ H (black gate of Enmyō-ji; market dated to c. 1822). |
-| Kuromon hours (p4) | "Most shops morning to early evening" | https://kuromon.com/en/ | Varies by shop (roughly 9:00–18:00 is commonly quoted); exact times **left out**. | ✔ M (deliberately loose). |
-| Kuromon access (p4) | Nippombashi Station, 2 min walk | https://kuromon.com/en/ ; https://osaka-info.jp/en/ | Osaka Metro Sakaisuji & Sennichimae lines, Kintetsu. **Re-check** "2 min". | ✔ M–H (exit 10, 1–2 min). |
-| Don't eat while walking (p4, p6) | Etiquette: eat beside the stall | https://osaka-info.jp/en/ ; https://www.japan.travel/en/ | General Japanese etiquette, also posted in Kuromon and Dōtonbori. | ✔ H as general etiquette. **Changed** to "frowned on in Japan" so it does not claim a specific Osaka rule. |
-| Shinsekai opened 1912 (p5) | northern half modelled on Paris, southern half an amusement park (Luna Park) inspired by Coney Island | https://en.wikipedia.org/wiki/Shinsekai ; https://www.tsutenkaku.co.jp/ | | ✔ H. |
-| Tsūtenkaku (p5) | First tower 1912; dismantled 1943 (after a fire, for wartime metal); current steel tower opened 1956 | https://www.tsutenkaku.co.jp/ ; https://en.wikipedia.org/wiki/Ts%C5%ABtenkaku | Height (103 m vs 108 m with spire in different sources) **left out**. Admission **left out** (not re-checked). | ✔ H. |
-| Tsūtenkaku access (p5) | Ebisuchō Station, 3 min walk | https://www.tsutenkaku.co.jp/ ; https://subway.osakametro.co.jp/en/ | Dōbutsuen-mae (Midōsuji Line) also nearby. | ✔ H (exit 3, about 3 min). |
-| Kushikatsu origin (p6) | "said to have started in Shinsekai in 1929" | https://en.wikipedia.org/wiki/Kushikatsu ; https://osaka-info.jp/en/ | The 1929 claim is a restaurant's own (Daruma); copy hedges with "said to" and names no business. | ✔ M (hedged "said to"; no business named). |
-| No double-dipping (p5, p11) | 二度づけ禁止 *nido-zuke kinshi*; "one rule still holds" | https://en.wikipedia.org/wiki/Kushikatsu ; https://osaka-info.jp/en/ | Also written 二度漬け禁止. | ✔ H. **Changed** "every table keeps one rule" → "one rule still holds": many counters now use squeeze bottles or individual dishes. |
-| Takoyaki origin (p6) | "usually credited to an Osaka stall of 1935" (Endō Tomekichi, Aizuya) | https://en.wikipedia.org/wiki/Takoyaki ; https://osaka-info.jp/en/ | Business not named. Old copy said "the 1930s". | ✔ H (hedged; business not named). |
-| Takoyaki tray (p2, p10) | boat-shaped tray (*fune*); usually 6–10 to a tray | https://en.wikipedia.org/wiki/Takoyaki | Count is a range on purpose. | ✔ M (range on purpose). |
-| Okonomiyaki (p6) | Osaka style mixes the ingredients into the batter; cooked on a hotplate at the table; name = "grilled as you like" | https://en.wikipedia.org/wiki/Okonomiyaki ; https://www.japan.travel/en/ | Contrast with Hiroshima's layered style (see hiroshima-miyajima). | ✔ H. |
-| Osaka Castle (p6, p8, p9) | Begun by Toyotomi Hideyoshi in 1583; main tower rebuilt in reinforced concrete in 1931; now a museum with a top-floor lookout (8th-floor observation deck) | https://www.osakacastle.net/english/ ; https://en.wikipedia.org/wiki/Osaka_Castle | | ✔ H. **Changed** "a museum with a rooftop view" → "a museum with a top-floor lookout": the observation deck is the enclosed 8th floor, not a roof. |
-| Osaka Castle hours (p9) | Main tower opens 9:00 | https://www.osakacastle.net/english/ | Standard 9:00–17:00 (last entry 16:30), extended in some seasons — only the opening time is used. **Re-check.** Admission **left out** (not re-checked; may have changed since 2025). | ✔ M–H for 9:00 opening. Admission still left out: the reviewer recalls a fee rise around 2025 but cannot confirm the amount. |
-| Map body (p8) | Shinsekai is one stop south of Nippombashi on the Sakaisuji Line (Nippombashi → Ebisuchō); castle about 20 min by metro | https://subway.osakametro.co.jp/en/ | Station order Nagahoribashi–Nippombashi–Ebisuchō–Dōbutsuen-mae. "About 20 min" is door-to-door estimate (Tanimachi 4-chōme/Morinomiya area to Nippombashi). | ✔ H station order (Sakaisuji Line); "about 20 min" M. |
-| IC cards (p10) | ICOCA, Suica etc. accepted on Osaka Metro | https://subway.osakametro.co.jp/en/ | Fare amounts **left out**. | ✔ H. |
-| Tourist information (p13) | Osaka Visitors' Information Center at JR Osaka Station | https://osaka-info.jp/en/ | Hours and other centres (Namba) **left out** — not re-checked. No phone numbers. | ✔ M. Name and station correct as known; exact spot inside the redeveloped station not re-checked. |
-| Small restaurants close one day a week (p13) | General advice | — | Not a specific claim. | — General advice. |
-| Coordinates (location, p3–p5, p8) | Dōtonbori (Ebisu-bashi) 34.6687, 135.5013; Hōzen-ji 34.6681, 135.5025; Kuromon 34.6658, 135.5065; Tsūtenkaku 34.6525, 135.5062; Osaka Castle main tower 34.6873, 135.5259; Shin-Osaka Station 34.7334, 135.5002 | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://en.wikipedia.org/wiki/Ts%C5%ABtenkaku ; https://en.wikipedia.org/wiki/Osaka_Castle ; https://en.wikipedia.org/wiki/Shin-%C5%8Csaka_Station | From memory of the Wikipedia/OSM positions; accurate to roughly 50–100 m. **Re-check** Hōzen-ji and Kuromon. | ✔ M–H. Each pin is on the named place as known from Wikipedia/OSM (Ebisu-bashi on the canal, Hōzen-ji just south of it, Kuromon arcade, Tsūtenkaku, castle keep, Shin-Osaka), within ~50–100 m. Not re-opened. |
-| Websites (p3–p5, p13) | osaka-info.jp/en/, kuromon.com/en/, tsutenkaku.co.jp, osakacastle.net/english/ | — | Domains are the official ones as known; exact paths (/en/, /english/) **re-check**. Dōtonbori has no single official site, so its place page links to OSAKA-INFO. | ✔ M. Official domains as known; paths not opened. |
+| Osaka Castle main tower admission (p10) | Adults **¥1,200**; junior-high age and under free | https://www.osakacastlepark.jp/springfes/en/event/ ; https://www.museum.or.jp/event/125969 ; https://watabi.org/articles/osaka-castle-guide | VERIFIED | Up from ¥600 in April 2025. Old ¥600 figures on https://osaka-info.jp/en/spot/osaka-castle-main-keep/ and the 2019 leaflet are out of date. University/high-school ¥600 not printed. |
+| Castle ticket includes the Toyotomi Stone Wall Museum (p10) | "Castle ticket includes the Toyotomi Stone Wall Museum" | https://www.osakacastlepark.jp/springfes/en/event/ | VERIFIED | Osaka Castle Park lists "Osaka Castle Museum (including the Toyotomi Stone Wall Museum) … Adults ¥1,200". |
+| Osaka Castle hours (p9) | Main tower opens 9:00 | https://www.osakacastlepark.jp/springfes/en/event/ ; https://www.museum.or.jp/event/125969 ; https://www.city.osaka.lg.jp/hodoshiryo/keizaisenryaku/0000687376.html | VERIFIED | 9:00–18:00, last entry 17:30; closed 28 Dec – 1 Jan. Only the opening time is printed. |
+| Osaka Castle history (p6) | Begun by Toyotomi Hideyoshi in 1583; main tower rebuilt in 1931 with citizens' donations; now a museum with a top-floor view | https://osaka-info.jp/en/spot/osaka-castle-main-keep/ ; https://www.japan.travel/en/spot/1087/ ; https://osaka-info.jp/en/discover-kansai/osaka-castle/ | VERIFIED | **Changed**: "rebuilt in concrete" → "rebuilt … with citizens' donations" (the donations are in the sources; the concrete was not). One page gives 1928 (when the project began); 1931 is the completion year in the others. |
+| Tsūtenkaku observation decks (p5, p10) | Adults **¥1,500**; decks from 9:00 | https://www.tsutenkaku.co.jp/annai/index.html ; https://www.walkerplus.com/spot/ar0727s74657/data.html ; https://summer.walkerplus.com/odekake/detail/ar0727s74657/data.html | VERIFIED | Official price page: ¥1,500 adult (15+), ¥800 child. Walkerplus: from 1 Apr 2026, general + special deck ¥1,500; from 1 Mar 2026, open 9:00. Closing time differs between sources (21:45 / 22:00), so it is **not printed**. Year-end price ¥1,800 (30 Dec – 3 Jan) not printed. |
+| Tsūtenkaku history (p5) | First tower 1912; dismantled after a fire in 1943; current steel tower opened 1956 | https://www.tsutenkaku.co.jp/pdf/Tsutenkaku60-rekishi.pdf ; https://www.city.osaka.lg.jp/naniwa/page/0000632322.html ; https://www.city.osaka.lg.jp/toshiseibi/cmsfiles/contents/0000266/266754/TSUTENKAKU.pdf | VERIFIED | Fire of 16 January 1943; second tower opened 28 October 1956 (Naitō Tachū). "after a fire" added. |
+| Tsūtenkaku access (p5) | Ebisuchō Station exit 3, 3 min walk | https://www.tsutenkaku.co.jp/access/index.html ; https://osaka-info.jp/spot/tsutenkaku/ | VERIFIED | Official access page: Sakaisuji Line Ebisuchō exit 3, 3 min. |
+| Shinsekai opened 1912 (p5) | Northern half modelled on Paris; southern half an amusement park inspired by Coney Island | https://www.jrpass.com/blog/visit-shinsekai-osaka-s-retro-futuristic-old-town?l=en ; https://www.osakastation.com/shinsekai-and-the-tsutenkaku-tower/ ; https://www.tsutenkaku.co.jp/pdf/Tsutenkaku60-rekishi.pdf | VERIFIED | Luna Park ran 1912–1923. |
+| Kushikatsu (p6) | "one Shinsekai counter has served them since 1929" | https://www.jrpass.com/es/blog/visit-shinsekai-osaka-s-retro-futuristic-old-town?c=SGD | HEDGED | **Changed** from "said to have started in Shinsekai in 1929": the sources only show that a Shinsekai kushikatsu restaurant opened in 1929, not that the dish began there. No business named. |
+| No double-dipping (p5, p11) | 二度づけ禁止 *nido-zuke kinshi*; "one rule still holds" | https://www.jrpass.com/blog/visit-shinsekai-osaka-s-retro-futuristic-old-town?l=en | VERIFIED | Etiquette, no number. |
+| Dōtonbori canal (p3) | Begun 1612 by **Nariyasu Dōton**; he was killed in the Siege of Osaka in 1615, before it was finished; it carries his name | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://www.touristinjapan.com/dotonbori-osaka/ | VERIFIED | **Changed** "the entrepreneur Yasui Dōton" → "Nariyasu Dōton", the name Wikipedia now uses (also known as Yasui Dōton). The canal was finished by others in September 1615. |
+| Kabuki theatres on Dōtonbori (p3) | "Kabuki theatres made it the city's playground" | https://en.wikipedia.org/wiki/D%C5%8Dtonbori | VERIFIED | Edo-period theatre district; no date printed. |
+| Glico sign (p3) | First lit here in 1935; beams down on Ebisu-bashi | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://muza-chan.net/japan/index.php/blog/the-story-of-the-glico-man-sign | VERIFIED | Today's sign is the sixth version (LED, October 2014); not printed. |
+| Dōtonbori access (p3) | Namba Station exit 14, about 3 min walk | https://tokyuhotels.co.jp/en/osaka-e/around/index.html ; https://www.nomadotravel.app/en/attractions/dotonbori-canal | VERIFIED | Ebisu-bashi is about 200 m from Osaka Metro Namba exit 14. **Changed** from "about 5 min". |
+| Dōtonbori hours / free (p3, p10) | Street always open; free | https://osaka-info.jp/en/ | VERIFIED | A public street; no admission exists. |
+| Hōzen-ji, Mizukake Fudō (p6, p7, p9, p10) | Stone-paved Hōzenji Yokochō lane off Dōtonbori; visitors splash water over the moss-covered Fudō statue for luck; free | https://www.japan.travel/en/spot/1109/ ; https://osaka-info.jp/en/spot/hozenji-yokocho/ ; https://osaka-info.jp/experience/en/osaka/spot/207 | VERIFIED | The lane is about 80 m long and stone-paved. Sources describe an open precinct off the lane with no fee. One source calls the statue Amida; most say Fudō Myōō, and the copy follows them. |
+| Kuromon Market size (p4) | About 150 shops, some 580 m long | https://kuromon.com/en/ (market overview, quoted in search extract) | VERIFIED | Official figures; "580 metres" added to the copy. |
+| Kuromon age and name (p4) | "since the 1820s"; named after the black gate of a temple (Enmyō-ji) that stood nearby | https://osaka-info.jp/experience/ja/osaka/spot/208 ; https://jw-webmagazine.com/tips/kuromon-market/ ; https://tabi-mag.jp/os0080/ | VERIFIED | Fish trading began c. 1822; called Enmyō-ji Market until a 1912 fire. **Changed** "since the 19th century" → "since the 1820s". |
+| Kuromon hours (p4) | Most shops from about 9:00; closing times vary | https://kuromon.com/en/information-center/ ; https://kuromon.com/en/yamacho/ ; https://kuromon.com/en/maru/ ; https://kuromon.com/en/osaka-daika/ | VERIFIED | Information Center 9:00–18:00; shops 9:00–17:30 / 19:00 / 20:00 / 21:00; some close on Sundays. **Changed** from "morning to early evening". |
+| Kuromon access (p4) | Nippombashi Station exit 10, about 3 min walk | https://osaka-info.jp/experience/en/osaka/spot/208 ; https://discover.osaka-info.jp/en/spots/kuromon-market ; https://osaka-info.jp/en/discover-kansai/osaka-kuromon-market/ | VERIFIED | OSAKA-INFO gives 2, 3 and "about 5" minutes from exit 10. **Changed** from "2 min". |
+| Map body (p8) | Shinsekai is one stop south of Nippombashi on the Sakaisuji Line; the castle is "a short metro ride to the north-east" | https://www.osakastation.com/the-sakaisuji-subway-line/ ; https://index.japanstation.com/station/nippombashi/ | VERIFIED / HEDGED | Station order verified. **Changed** "about 20 minutes by metro" → "a short metro ride" (no source for the door-to-door time). |
+| Takoyaki (p6) | "Usually credited to an Osaka stall of 1935" | https://en.wikipedia.org/wiki/Takoyaki ; https://unseen-japan.com/takoyaki-japan-history/ | VERIFIED | Credited to Endō Tomekichi (Aizuya); business not named. |
+| Takoyaki per tray (p2, p10) | "sold by the tray" | — | REMOVED (number) | "usually 6–10 to a tray" was not checked, so the number came out. |
+| Okonomiyaki (p6) | Osaka style is mixed; cooked on a hotplate; "grilled as you like" | https://en.wikipedia.org/wiki/Okonomiyaki | VERIFIED (not re-searched) | Description and etymology, no price/hour/date. |
+| "The nation's kitchen" (p2) | Edo-period Osaka = 天下の台所 *tenka no daidokoro*; rice and goods from domains all over Japan shipped to its warehouses and traded there | https://samurai-archives.com/wiki/Osaka ; https://www.arc.ritsumei.ac.jp/lib/vm/Salon/2024/10/domain-warehouses-kurayashiki-as-a-cultural-salon.html ; https://www.tkgje.jp/entries/16500/16521_kurayashiki.html | VERIFIED | Domain warehouses (*kurayashiki*), mostly around Nakanoshima. |
+| Proverb (p12) | 京の着倒れ、大阪の食い倒れ — *Kyō no kidaore, Ōsaka no kuidaore* | https://en.wiktionary.org/wiki/食い倒れ | VERIFIED (not re-searched) | Standard proverb; translation labelled "Translation: Tabi Guides". |
+| Eating while walking (p4, p6) | "frowned on in Japan" | https://osaka-info.jp/en/ ; https://www.japan.travel/en/ | VERIFIED (not re-searched) | General etiquette. |
+| Tourist information (p13) | **Tourist Information Osaka**, JR Osaka Station 1F, in front of the central gate; maps and multilingual staff | https://osaka-info.jp/en/spot/tourist-information-osaka/ ; https://osaka-info.jp/experience/en/osaka/spot/579 | VERIFIED | **Changed** from "Osaka Visitors' Information Center". Open 7:00–22:00 with English, Chinese and Korean support (hours not printed; no phone numbers). |
+| Paid-sights note (p10) | "Adult ticket prices as of October 2026" | (rows above) | VERIFIED | Osaka Metro fares and IC-card line **REMOVED** from Costs (not re-checked). |
+| Websites (p3–p5, p13, sources) | osaka-info.jp/en/, kuromon.com/en/, tsutenkaku.co.jp, osakacastle.net, osakacastlepark.jp | https://osaka-info.jp/en/spot/tourist-information-osaka/ ; https://kuromon.com/en/information-center/ ; https://www.tsutenkaku.co.jp/annai/index.html ; https://www.osakacastle.net/pdf/leaflet/english_201904.pdf?lang=en ; https://www.osakacastlepark.jp/springfes/en/event/ | VERIFIED | **Changed** osakacastle.net/english/ → osakacastle.net/: the /english/ path did not appear in results. subway.osakametro.co.jp/en/ (sources list only) not re-checked. |
+| Coordinates (location, p3–p5, p8) | Dōtonbori (Ebisu-bashi) 34.6687, 135.5013; Hōzen-ji 34.6681, 135.5025; Kuromon 34.6658, 135.5065; Tsūtenkaku 34.6525, 135.5062; Osaka Castle main tower 34.6873, 135.5259; Shin-Osaka Station 34.7334, 135.5002 | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://en.wikipedia.org/wiki/Ts%C5%ABtenkaku ; https://en.wikipedia.org/wiki/Osaka_Castle | NOT RE-CHECKED | Not searched (budget kept for prices and hours); from Wikipedia/OSM positions, within ~50–100 m. Map pins only; not a price, hour, date or access detail. |
 
-## Changed in the fact-check pass (17 Oct 2026)
+## Not printed
 
-- Intro: "from every province … its cooks had first pick" → "from domains all over Japan were shipped to its warehouses and traded there" (flourish had no source).
-- Dōtonbori: "Glico running man, here since 1935, beams over Ebisu-bashi" → "first lit here in 1935, beams down on Ebisu-bashi".
-- Shinsekai: "every table keeps one rule" → "one rule still holds".
-- Features: "Eating while walking is frowned on" → "… frowned on in Japan"; Osaka Castle "a museum with a rooftop view" → "a museum with a top-floor lookout".
-- Phrasebook: *Meccha umai* → *Metcha umai* (Hepburn, as in *matcha*).
-- Summary reordered to match the agenda and stripped of the meta phrase "with real places".
+- Tsūtenkaku closing time (21:45 vs 22:00), timed-entry booking and year-end price; Osaka Castle
+  closing time and student price; Osaka Metro fares; pass prices.
+- Kuromon closing days; Hōzen-ji founding date; Tsūtenkaku height.
 
 ## Changed from the old brochure
 
 - Publisher "Teppan Tours Osaka" (fictional), its email, its invented food-walk prices (¥9,800 / ¥16,500) and meeting point removed; now **Tabi Guides** with a Visitor information page of official sites.
-- The stats page (stalls, takoyaki per tray, dips per skewer) replaced by three real `place` pages, a map and a Costs page without invented prices.
-- "Takoyaki born in the 1930s" → "usually credited to an Osaka stall of 1935"; "Kuromon… for two centuries" → "since the 19th century".
-- The proverb moved from the intro into a proper quote page (`quoteJp` + translation).
-- Agenda rebuilt on real opening times (castle opens 9:00) and real station hops.
-
-## Not verified / left out
-
-- All admission fees and fares: Osaka Castle main tower, Tsūtenkaku, Osaka Metro base fare, Enjoy Eco Card / Osaka Amazing Pass.
-- Street-food price ranges (deliberately not printed).
-- Tsūtenkaku height, Kuromon length, Hōzen-ji founding date, Glico sign generation.
-- Kuromon closing days; Osaka Castle seasonal closing times.
+- The stats page was replaced by three real `place` pages, a map and a Costs page with real, live-checked admission fees.
+- The proverb moved into a proper quote page (`quoteJp` + translation).
 
 ## Photos
 

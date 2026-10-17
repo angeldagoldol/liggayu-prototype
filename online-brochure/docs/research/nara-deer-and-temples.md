@@ -5,6 +5,11 @@ search only (WebFetch/curl cannot reach outside sites from the sandbox), so valu
 search-result excerpts of the pages listed. Official sources first; every published number has at
 least two sources unless marked **single source**.
 
+> **Live check, 17 October 2026.** Every item the offline fact-check left as *needs live check*
+> (deer count, injury figure, Tōdai-ji / Kōfuku-ji / Kasuga fees, Kintetsu and JR fares,
+> tourist-information hours) was searched again — see *Live check* at the end. All were
+> confirmed, so the brochure copy is unchanged and `factsChecked: "October 2026"` stays.
+
 ## Facts
 
 | Claim (page) | Value used | Sources | Notes |
@@ -89,21 +94,52 @@ plausible and twice-sourced above but could not be confirmed independently in th
 | 710 Heijō-kyō; capital for most of the 8th century | Confirmed | 710–784, with 740–745 elsewhere. |
 | UNESCO: 8 components, 1998 | Confirmed | Tōdai-ji, Kōfuku-ji, Kasuga Taisha, Kasugayama Primeval Forest, Gangō-ji, Yakushi-ji, Tōshōdai-ji, Heijō Palace Site. |
 | Deer: Kasuga’s divine messengers; Natural Monument; bowing | Confirmed | Designated Natural Monument in 1957. |
-| “Some 1,700” deer (1,687 in July 2026) | *Needs live check* | Reviewer can confirm 1,465 (July 2025 record); the July 2026 figure is after the reviewer’s knowledge and rests on the two news sources logged above. The arithmetic (+222) is consistent. |
-| 159 deer injuries in fiscal 2024 | *Needs live check* | Plausible and in line with the prefecture’s rising counts; two press sources logged. |
+| “Some 1,700” deer (1,687 in July 2026) | **VERIFIED** in the live check | Reviewer can confirm 1,465 (July 2025 record); the July 2026 figure is after the reviewer’s knowledge and rests on the two news sources logged above. The arithmetic (+222) is consistent. |
+| 159 deer injuries in fiscal 2024 | **VERIFIED** in the live check | Plausible and in line with the prefecture’s rising counts; two press sources logged. |
 | Shika senbei ¥200 per pack of ten | Confirmed | Price since October 2019. |
 | Tōdai-ji: 752 eye-opening; 14.98 m seated Vairocana; hall completed 1709; Nandai-mon guardians ~8.4 m, Unkei/Kaikei and workshop, 1203, 69 days | Confirmed | |
-| Tōdai-ji hours (Apr–Oct 7:30–17:30; Nov–Mar 8:00–17:00); ¥800; ¥1,200 with the museum | Confirmed (fees: *needs live check*) | Hours match the temple’s notice; fees match the logged official page. |
+| Tōdai-ji hours (Apr–Oct 7:30–17:30; Nov–Mar 8:00–17:00); ¥800; ¥1,200 with the museum | Confirmed (fees: **VERIFIED** in the live check) | Hours match the temple’s notice; fees match the logged official page. |
 | Kasuga Taisha: 768; Fujiwara; Mount Mikasa; Takemikazuchi on a white deer from Kashima (Ibaraki); ~3,000 lanterns; Mantōrō 3 Feb and 14–15 Aug | Confirmed | |
-| Kasuga hours (Mar–Oct 6:30–17:30; Nov–Feb 7:00–17:00); inner sanctuary ¥700 | Confirmed (fee: *needs live check*) | Older guides print ¥500. |
+| Kasuga hours (Mar–Oct 6:30–17:30; Nov–Feb 7:00–17:00); inner sanctuary ¥700 | Confirmed (fee: **VERIFIED** in the live check) | Older guides print ¥500. |
 | Kōfuku-ji: 669 (Yamashina-dera), moved 710; pagoda 50.1 m, Japan’s second-tallest wooden pagoda (after Tō-ji); ~120-year repair, under scaffolding; Central Golden Hall 2018; Ashura in the National Treasure Hall | Confirmed | Completion date conflict (2031 vs 2034) correctly handled as “into the 2030s”. |
-| Kōfuku-ji halls 9:00–17:00 (last entry 16:45); Treasure Hall ¥900; three halls ¥1,600 | *Needs live check* (fees) | Older guides print ¥700; the logged official page gives ¥900. |
+| Kōfuku-ji halls 9:00–17:00 (last entry 16:45); Treasure Hall ¥900; three halls ¥1,600 | Fees **VERIFIED** in the live check | Older guides print ¥700; the logged official page gives ¥900. |
 | Naramachi Kōshi-no-Ie: free, 9:00–17:00, closed Mondays | Confirmed | |
 | Ukimidō: hexagonal pavilion on Sagi-ike | Confirmed | |
-| Kintetsu Kyoto–Nara express ¥760, ~45 min; limited express ~35 min, ¥1,280; Osaka-Namba ¥680, ~40 min; JR Miyakoji Rapid ¥720, ~45 min; JR Pass not valid on Kintetsu | Confirmed (fares: *needs live check*) | Fares match the post-April-2023 Kintetsu tables; no later revision known to the reviewer. |
+| Kintetsu Kyoto–Nara express ¥760, ~45 min; limited express ~35 min, ¥1,280; Osaka-Namba ¥680, ~40 min; JR Miyakoji Rapid ¥720, ~45 min; JR Pass not valid on Kintetsu | Confirmed (fares: **VERIFIED** in the live check) | Fares match the post-April-2023 Kintetsu tables; no later revision known to the reviewer. |
 | JR Nara ↔ Kintetsu-Nara 15–20 min on foot | Plausible | About 1 km; single source. |
-| Tourist information 9:00–19:00 | *Needs live check* | Hours at Nara’s centres have changed several times since 2020; single official page. No phone numbers printed. |
+| Tourist information 9:00–19:00 | **VERIFIED** in the live check | Hours at Nara’s centres have changed several times since 2020; single official page. No phone numbers printed. |
 | Coordinates (4 places + location) | Confirmed | All fall inside Nara Prefecture in the polygon test; relative layout is right (Kōfuku-ji → Tōdai-ji ≈ 1 km NE; Gangō-ji ≈ 600 m south of Kōfuku-ji; Kasuga ≈ 1.6 km east of Kōfuku-ji). |
 | Phrasebook (5 entries) | Confirmed | Natural, polite Japanese; macrons correct (Tōdai-ji). |
 | Publisher / people / businesses / phone numbers | Clean | Published by Tabi Guides; no invented people, businesses, testimonials or phone numbers. Shika senbei vendors are mentioned generically. |
 | Copy length | Within limits | Every field is within the Studio editor’s limits; place bodies (340–389 chars) match the other brochures. |
+
+## Live check — 17 October 2026
+
+Live web searches (WebFetch/curl still cannot open outside pages, so values come from
+search-result extracts). Status: **VERIFIED** = confirmed by at least one current source in
+addition to the sources above; **HEDGED** = could not be confirmed, copy loosened; **REMOVED** =
+taken out of the brochure.
+
+| Claim (page) | Value used | Live-check sources | Status |
+| --- | --- | --- | --- |
+| Deer count (cover) | "some 1,700" (1,687 in the July 2026 count, a record, +222 on 2025) | https://kumanichi.com/articles/2014414 (Kyodo, 16 Jul 2026: Nara Deer Preservation Foundation count, 1,687, 過去最多) · https://www.nippon.com/ja/japan-data/h02496/ (July 2025: 1,465) · first-pass https://www.stheadline.com/realtime-world/3594963/ | VERIFIED |
+| Deer injuries (features) | 159 in fiscal 2024 (111 involving foreign visitors) | https://www.nownews.com/news/6727150 (Kyodo via NOWnews: FY2024 159, of which 111 foreigners) · https://www.pref.nara.jp/secure/278528/2-1.pdf (prefecture: 151 by 28 Feb 2025, interim) · first-pass sakigake.jp | VERIFIED |
+| Tōdai-ji Great Buddha Hall (place, Costs) | ¥800 adult | a Chinese-language 2026 guide among the results, apparently https://watabi.org/articles/nara-guide (citing the temple's notice: ¥800 since 1 Apr 2024) · https://www.tour.ne.jp/j_spot/129037/ (¥800) · official https://www.todaiji.or.jp/en/information/haikan/ (first pass) | VERIFIED |
+| Tōdai-ji hall + museum set ticket (place) | ¥1,200 | https://www.tour.ne.jp/j_spot/129037/ (大仏殿・東大寺ミュージアム セット券 1,200円) · official haikan page (first pass) | VERIFIED |
+| Kasuga Taisha inner sanctuary (place, Costs) | ¥700; grounds free | https://weathernews.jp/hatsumoude/spot/3803007/ (2026: 境内自由（御本殿前特別参拝700円）) · official https://www.kasugataisha.or.jp/en/guidance_en/modal-09/ (first pass) | VERIFIED |
+| Kōfuku-ji National Treasure Hall / three-hall ticket (place, Costs) | ¥900 / ¥1,600 | https://couplestravelstories.ca/kofuku-ji/ · https://japanactivity.com/attractions/nara/kofuku-ji · https://www.tripadvisor.com/319873 (April 2026 review: ¥1,600 combined ticket) · official https://www.kohfukuji.com/english/e009/ (first pass) | VERIFIED. Older figures (¥700 museum; nippon.com table "as of October 2023" https://www.nippon.com/en/japan-data/h01822/, veltra, rurubu) predate the rise. One guide gives Tōkondō ¥300 (not printed). |
+| Kintetsu Kyoto–Nara (agenda, Costs) | Express ¥760, about 45 min; limited express ¥1,280 in total (¥760 + ¥520), about 35 min | https://www.gltjp.com/en/article/item/20942/ (¥760 + ¥520 = ¥1,280; prices as of Feb 2025) · https://japanactivity.com/nara-to-kyoto-train-guide · https://todolist-japan.com/en/kyoto-to-nara/ | VERIFIED (no Kintetsu fare revision after April 2023 was found). Outlier: one blog's ¥1,130 total is inconsistent with the ¥760 base fare. |
+| Kintetsu Osaka-Namba–Nara (Costs) | ¥680 | https://ekitan.com/transit/fare/sf-5212/st-5429 (Aug 2026 route search: 近鉄奈良→大阪難波 きっぷ 680円) · official Kintetsu page (first pass) | VERIFIED |
+| JR Miyakoji Rapid Kyoto–Nara (Costs) | ¥720, about 45 min | https://www.kyotostation.com/jr-nara-line-for-tofukuji-inari-uji-nara/ · https://japanuncharted.com/nara/train/nara-line-local-stops · https://www.jrailpass.com/blog/de/kyoto-navigieren (fastest, ~45 min) | VERIFIED |
+| Tourist information hours (contact) | 9:00–19:00 (Nara City TIC by JR Nara; Kintetsu-Nara Station TIC) | https://narashikanko.or.jp/lsc/upfile/pamphlet/0000/0041/41_201_file.pdf (official Nara City Tourism pamphlet: both centres 9:00–19:00; undated) · https://narashikanko.or.jp/en/guide · first-pass visitnara.jp venue pages | VERIFIED. The luggage service at the JR Nara centre closes at 18:00 (not printed). |
+| Kōfuku-ji pagoda repair (place) | "into the 2030s" | The same Chinese-language 2026 guide gives 2023–2031 | Unchanged — wording already covers both 2031 and 2034. |
+
+Not printed but found: World Heritage night worship at Kasuga Taisha, Kōfuku-ji, Gangō-ji,
+Tōshōdai-ji and Yakushi-ji on Saturdays from 31 October to 28 November 2026
+(https://www.hokkaido-np.co.jp/article/1378583/ · https://kyodonewsprwire.jp/release/202609176175) —
+a single event announcement, so it was left out.
+
+**Decision on `factsChecked`:** kept as `"October 2026"` and the back-page tagline as "Facts checked
+October 2026 · Tabi Guides": every price, hour, date and access detail printed in the brochure is
+now backed by at least one current source (two for the surprising ones: the record deer count and
+the Kōfuku-ji price rise).

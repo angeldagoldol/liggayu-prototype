@@ -1,0 +1,77 @@
+{
+  "brochure": "mount-fuji-five-lakes",
+  "photos": [
+    {
+      "id": "fuji-chureito-pagoda",
+      "use": "cover",
+      "candidates": [],
+      "alt": "The red five-storey Chūreitō Pagoda on a wooded hillside, with snow-capped Mount Fuji rising behind it",
+      "caption": "Chūreitō Pagoda and Mount Fuji, Arakurayama Sengen Park",
+      "place": "Chūreitō Pagoda",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "fuji-from-kawaguchiko",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Snow-capped Mount Fuji rising above the calm water of Lake Kawaguchi on a clear morning",
+      "caption": "Mount Fuji from Lake Kawaguchi",
+      "place": "Lake Kawaguchi",
+      "focus": "50% 40%"
+    },
+    {
+      "id": "fuji-kawaguchiko-tenjoyama",
+      "use": "wide",
+      "candidates": [],
+      "alt": "View from a hillside over Lake Kawaguchi and the town towards Mount Fuji",
+      "caption": "Lake Kawaguchi and Mount Fuji from Tenjō-yama",
+      "place": "Lake Kawaguchi",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "fuji-chureito-sakura",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Cherry blossom framing the Chūreitō Pagoda, with Mount Fuji in the distance",
+      "caption": "Chūreitō Pagoda in cherry-blossom season, April",
+      "place": "Chūreitō Pagoda",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "fuji-oshino-hakkai",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A clear spring-fed pond beside thatched-roof houses, with Mount Fuji behind",
+      "caption": "Oshino Hakkai",
+      "place": "Oshino Hakkai",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "fuji-yoshida-trail",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A zigzag trail of reddish volcanic gravel climbing the bare upper slopes of Mount Fuji",
+      "caption": "Switchbacks on the Yoshida trail",
+      "place": "Mount Fuji",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "fuji-goraiko",
+      "use": "wide",
+      "candidates": [],
+      "alt": "The sun rising above a sea of clouds, seen from the summit of Mount Fuji",
+      "caption": "Goraikō: sunrise from the summit",
+      "place": "Mount Fuji",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "fuji-hokusai-red-fuji",
+      "use": "any",
+      "candidates": [],
+      "alt": "Hokusai’s woodblock print of a red Mount Fuji against a blue sky with rows of small clouds",
+      "caption": "Hokusai, “Fine Wind, Clear Morning” (Red Fuji)",
+      "place": "Mount Fuji",
+      "focus": "50% 50%"
+    }
+  ]
+}

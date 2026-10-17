@@ -1,6 +1,6 @@
 /**
  * Hiroshima & Miyajima — 広島・宮島. Shape: see src/data/schema.js.
- * Real places and facts (October 2026); sources and notes in
+ * Real places and facts, live-checked 17 October 2026; sources and notes in
  * docs/research/hiroshima-miyajima.md, photos in src/data/photos/manifest/hiroshima-miyajima.json.
  */
 export default {
@@ -26,7 +26,9 @@ export default {
     { label: 'Itsukushima Shrine official site', url: 'https://www.itsukushimajinja.jp/' },
     { label: 'Miyajima Tourist Association — sights and tide tables', url: 'https://www.miyajima.or.jp/english/' },
     { label: 'Hiroshima Navigator — Hiroshima City tourism', url: 'https://www.hiroshima-navi.or.jp/en/' },
-    { label: 'Hatsukaichi City — Miyajima Visitor Tax', url: 'https://www.city.hatsukaichi.hiroshima.jp/' },
+    { label: 'Hatsukaichi City — Miyajima Visitor Tax', url: 'https://www.city.hatsukaichi.hiroshima.jp/soshiki/110/59551.html' },
+    { label: 'JR West Miyajima Ferry — fares', url: 'https://jr-miyajimaferry.co.jp/en/fare/' },
+    { label: 'Hiroshima City — tourist information centres', url: 'https://city.hiroshima.lg.jp/site/english/120529.html' },
     { label: 'UNESCO — Hiroshima Peace Memorial (Genbaku Dome)', url: 'https://whc.unesco.org/en/list/775/' },
     { label: 'UNESCO — Itsukushima Shinto Shrine', url: 'https://whc.unesco.org/en/list/776/' },
     { label: 'Wikipedia — Itsukushima Shrine', url: 'https://en.wikipedia.org/wiki/Itsukushima_Shrine' },
@@ -60,7 +62,7 @@ export default {
       eyebrow: 'Chūgoku · Hiroshima Prefecture',
       title: 'Hiroshima & Miyajima',
       titleJp: '広島・宮島',
-      subtitle: 'A city that rebuilt itself for peace, and an island shrine that stands in the sea — two World Heritage Sites, about an hour apart.',
+      subtitle: 'A city that rebuilt itself for peace, and an island shrine that stands in the sea — two World Heritage Sites, a train and ferry ride apart.',
       photo: 'miyajima-otorii',
     },
     {
@@ -69,7 +71,7 @@ export default {
       kicker: 'Before you go',
       heading: 'Remembrance, then the tide',
       body:
-        'At 8:15 a.m. on 6 August 1945, the first atomic bomb used in war exploded over central Hiroshima. By the end of that year an estimated 140,000 people had died. The city rebuilt itself as a voice for peace, and the ruined dome at its heart, kept as it stood, is now a World Heritage Site.\n\nAbout an hour away by train and ferry, Miyajima offers another kind of quiet: a shrine built over the tide, deer in the lanes and forest paths up Mount Misen.',
+        'At 8:15 a.m. on 6 August 1945, the first atomic bomb used in war exploded over central Hiroshima. By the end of that year an estimated 140,000 people had died. The city rebuilt itself as a voice for peace, and the ruined dome at its heart, kept as it stood, is now a World Heritage Site.\n\nAbout an hour from Hiroshima Station by train and ferry, Miyajima offers another kind of quiet: a shrine built over the tide, deer in the lanes and forest paths up Mount Misen.',
       pullQuote: 'Allow time. Hiroshima asks to be listened to.',
       photo: 'hiroshima-cenotaph',
     },
@@ -102,11 +104,11 @@ export default {
       body:
         'Kenzō Tange laid out the park on a single axis: from the museum, through the arched Cenotaph and the Flame of Peace, to the Dome across the river. Inside, victims’ belongings, photographs and survivors’ testimony tell what happened to the people beneath the bomb. Some exhibits are hard to look at. Take your time, then walk to the Children’s Peace Monument, where visitors leave paper cranes.',
       facts: [
-        { label: 'Hours', value: 'From 7:30; closes 17:00–19:00 by season' },
+        { label: 'Hours', value: 'Walk-in from 8:30; closes 18:00–20:00 by season' },
+        { label: 'Early entry', value: '7:30–8:30, online booking only' },
         { label: 'Admission', value: 'Adults ¥200; high-school students ¥100' },
-        { label: 'Getting there', value: 'Genbaku Dome-mae tram stop, 10 min walk' },
+        { label: 'Getting there', value: 'Tram to Genbaku Dome-mae, then through the park' },
         { label: 'Time needed', value: 'At least two hours' },
-        { label: 'Best time', value: 'At opening, before the queues' },
       ],
       lat: 34.3917,
       lng: 132.4527,
@@ -120,11 +122,11 @@ export default {
       nameJp: '厳島神社',
       photo: 'miyajima-itsukushima-shrine',
       body:
-        'A shrine to three sea goddesses, founded by tradition in 593 and given its present form by Taira no Kiyomori in 1168. Its vermilion halls and corridors stand on piles over the tidal flats, so at high tide the whole shrine seems to float. The great torii, nearly 17 metres tall and held upright by its own weight, dates from 1875; its latest restoration ended in December 2022.',
+        'A shrine to three sea goddesses, founded by tradition in 593 and rebuilt on its present plan by Taira no Kiyomori in 1168. Its vermilion halls and corridors stand on piles over the tidal flats, so at high tide the whole shrine seems to float. The great torii, nearly 17 metres tall and held upright by its own weight, dates from 1875; its latest restoration ended in December 2022.',
       facts: [
         { label: 'Hours', value: 'From 6:30; closes 17:00–18:00 by season' },
         { label: 'Admission', value: 'Adults ¥300' },
-        { label: 'Getting there', value: 'Ferry to Miyajima, then 10–15 min walk' },
+        { label: 'Getting there', value: 'Ferry to Miyajima, then about 10 min on foot' },
         { label: 'Best time', value: 'High tide to see it float' },
       ],
       lat: 34.2959,
@@ -150,12 +152,12 @@ export default {
         {
           icon: 'Mountain',
           title: 'Mount Misen',
-          text: 'Miyajima’s sacred 535-metre peak above the Inland Sea. Ride the ropeway most of the way (check it is running) or hike for about two hours.',
+          text: 'Miyajima’s sacred 535-metre peak above the Inland Sea. Ride the ropeway most of the way (check it is running) or climb for 1½ to 2 hours.',
         },
         {
           icon: 'Landmark',
           title: 'Daishō-in',
-          text: 'An old Shingon temple at the foot of Misen: prayer wheels on the stair rails, hundreds of little stone statues and a quiet trailhead.',
+          text: 'An old Shingon temple at the foot of Misen: prayer wheels on the stair rails, the 500 little rakan statues and a quiet trailhead.',
         },
         {
           icon: 'Utensils',
@@ -184,7 +186,7 @@ export default {
       id: 'p8',
       type: 'map',
       heading: 'Where it all is',
-      body: 'Trams take about 15–20 minutes from Hiroshima Station to the Peace Memorial Park. For Miyajima, ride the JR Sanyō Line to Miyajimaguchi, about 30 minutes, then the ten-minute ferry.',
+      body: 'Trams (lines 2 and 6) take about 15 minutes from Hiroshima Station to the Peace Memorial Park. For Miyajima, ride the JR Sanyō Line to Miyajimaguchi, 25–30 minutes, then the ten-minute ferry.',
       places: [
         { name: 'Hiroshima Station', nameJp: '広島駅', lat: 34.3975, lng: 132.4753, note: 'Shinkansen, JR lines and trams' },
         { name: 'Atomic Bomb Dome', nameJp: '原爆ドーム', lat: 34.3955, lng: 132.4536, note: 'World Heritage Site' },
@@ -199,10 +201,10 @@ export default {
       type: 'agenda',
       heading: 'Two days, unhurried',
       items: [
-        { time: '07:30', title: 'Peace Memorial Museum', text: 'Come at opening; allow two hours.' },
+        { time: '07:30', title: 'Peace Memorial Museum', text: 'Book early entry online; allow two hours.' },
         { time: '10:00', title: 'Peace Memorial Park', text: 'The Cenotaph, the cranes, then the Dome.' },
         { time: '12:00', title: 'Okonomiyaki lunch', text: 'Hiroshima style, layered with noodles.' },
-        { time: '13:30', title: 'To Miyajima', text: 'Tram or train, then ferry: about an hour.' },
+        { time: '13:30', title: 'To Miyajima', text: 'Tram to the station, JR, then the ferry.' },
         { time: '15:00', title: 'Itsukushima Shrine', text: 'Time your visit to the tide.' },
         { time: 'Day 2', title: 'Mount Misen', text: 'Hike up early via Daishō-in.' },
       ],
@@ -222,16 +224,16 @@ export default {
         },
         {
           name: 'Crossing to Miyajima',
-          price: 'About ¥300',
-          period: 'one way: ferry + ¥100 visitor tax',
-          features: ['JR and Matsudai ferries, about 10 min', 'Ferry about ¥200 each way; fares at the pier', 'Tax: ¥100 a visit, or ¥500 a year', 'Japan Rail Pass covers the JR ferry, not the tax'],
+          price: '¥300',
+          period: 'going over: ¥200 ferry + ¥100 tax',
+          features: ['JR and Matsudai ferries, about 10 min', 'Ferry ¥200 each way; the tax is paid going over', 'Tax: ¥100 a visit, or ¥500 a year', 'Japan Rail Pass covers the JR ferry, not the tax'],
           highlight: true,
         },
         {
           name: 'Itsukushima Shrine',
           price: '¥300',
           period: 'adult entry',
-          features: ['Torii, streets and pagoda: free to see', 'Mount Misen trails: free', 'Ropeway: separate fare'],
+          features: ['High-school students ¥200; younger pupils ¥100', 'Torii, streets and pagoda: free to see', 'Mount Misen trails: free; ropeway extra'],
           highlight: false,
         },
       ],
@@ -265,7 +267,7 @@ export default {
       cta: 'Open the official Hiroshima guide',
       ctaUrl: 'https://www.hiroshima-navi.or.jp/en/',
       details: [
-        { icon: 'MapPin', label: 'Tourist information', value: 'Hiroshima Station · Peace Park Rest House · Miyajima ferry terminal' },
+        { icon: 'MapPin', label: 'Tourist information', value: 'Hiroshima Station · Peace Park Rest House · Miyajima Pier' },
         { icon: 'Globe', label: 'Hiroshima City tourism', value: 'hiroshima-navi.or.jp', url: 'https://www.hiroshima-navi.or.jp/en/' },
         { icon: 'Waves', label: 'Miyajima & tide tables', value: 'miyajima.or.jp', url: 'https://www.miyajima.or.jp/english/' },
         { icon: 'Landmark', label: 'Peace Memorial Museum', value: 'hpmmuseum.jp', url: 'https://hpmmuseum.jp/?lang=eng' },

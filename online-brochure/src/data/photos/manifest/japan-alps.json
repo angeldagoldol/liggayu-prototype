@@ -1,0 +1,68 @@
+{
+  "brochure": "japan-alps",
+  "photos": [
+    {
+      "id": "alps-shirakawago-ogimachi",
+      "use": "cover",
+      "candidates": [],
+      "alt": "Steep thatched gasshō-zukuri farmhouses of Ogimachi seen from above, among rice fields and forested mountains",
+      "caption": "Ogimachi, Shirakawa-gō, from the Shiroyama viewpoint",
+      "place": "Shirakawa-gō",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "alps-kamikochi-hotaka",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Kappa Bridge crossing the clear Azusa river, with the jagged Hotaka peaks behind",
+      "caption": "Kappa Bridge and the Hotaka range, Kamikochi",
+      "place": "Kamikochi",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "alps-takayama-sanmachi",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A narrow street of dark wooden merchant houses with latticed fronts in Takayama’s old town",
+      "caption": "Sanmachi, Takayama’s old town",
+      "place": "Takayama",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "alps-takayama-jinya",
+      "use": "wide",
+      "candidates": [],
+      "alt": "The gate and grey-tiled roofs of the Takayama Jinya government house",
+      "caption": "Takayama Jinya",
+      "place": "Takayama Jinya",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "alps-shirakawago-gassho",
+      "use": "wide",
+      "candidates": [],
+      "alt": "A gasshō-zukuri farmhouse with a steep, thick thatched roof beside a small field",
+      "caption": "Gasshō-zukuri farmhouse, Ogimachi",
+      "place": "Shirakawa-gō",
+      "focus": "50% 45%"
+    },
+    {
+      "id": "alps-kamikochi-taisho-pond",
+      "use": "wide",
+      "candidates": [],
+      "alt": "Bare dead trees standing in the still water of Taishō Pond, with forested mountains behind",
+      "caption": "Taishō Pond, Kamikochi",
+      "place": "Kamikochi",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "alps-matsumoto-castle",
+      "use": "wide",
+      "candidates": [],
+      "alt": "The black, five-tiered keep of Matsumoto Castle reflected in its moat",
+      "caption": "Matsumoto Castle",
+      "place": "Matsumoto Castle",
+      "focus": "50% 45%"
+    }
+  ]
+}

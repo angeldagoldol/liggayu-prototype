@@ -13,6 +13,7 @@ import hiroshimaMiyajima from './hiroshima-miyajima.js';
 import tohokuSummerFestivals from './tohoku-summer-festivals.js';
 import japanAlps from './japan-alps.js';
 import naraDeerAndTemples from './nara-deer-and-temples.js';
+import mountFujiFiveLakes from './mount-fuji-five-lakes.js';
 
 export const BROCHURES = [
   kyotoThousandGates,
@@ -26,6 +27,7 @@ export const BROCHURES = [
   tohokuSummerFestivals,
   japanAlps,
   naraDeerAndTemples,
+  mountFujiFiveLakes,
 ];
 
 export const FEATURED_BROCHURES = BROCHURES.filter((b) => b.featured);

@@ -12,6 +12,11 @@ pages listed). `factsChecked: "October 2026"`.
 > sources' internal consistency and REAL_CONTENT.md, corrected or loosened five items
 > (see *Independent fact-check* at the end) and marks the values that still rest only on
 > the first researcher's search extracts as **Re-check** — chiefly the 2026 prices.
+>
+> **Live check, 17 October 2026 (update).** Both **Re-check** rows (3: Shibuya Sky prices;
+> 21: Tokyo Subway Ticket) were searched live and confirmed — the subway-ticket rise against
+> the operators' own notices. See *Live check* at the end. Copy unchanged; `factsChecked:
+> "October 2026"` stays.
 
 Everything from the old brochure that was invented has been removed: the fictional
 publisher "Yoru Walks Tokyo", its tour prices, e-mail address, meeting point and the
@@ -112,7 +117,7 @@ researcher, but the checker could neither confirm nor refute it without web acce
 |---|---|---|
 | 1 Shibuya Sky 229 m | ✎ ✔ | Wording fixed (above). |
 | 2 Shibuya Sky hours 10:00–22:30, last entry 21:20 | ✔ | Matches the checker's knowledge. |
-| 3 Shibuya Sky prices ¥2,700 / ¥3,400, counter ¥3,000 / ¥3,700 | **Re-check** | The checker remembers lower 2023–24 prices (web about ¥2,000–2,200) and cannot confirm the 2026 time-band prices offline. Rests on GO TOKYO (updated Apr 2026) + one blog. Under-5s line removed (above). |
+| 3 Shibuya Sky prices ¥2,700 / ¥3,400, counter ¥3,000 / ¥3,700 | **VERIFIED** (live check) | The checker remembers lower 2023–24 prices (web about ¥2,000–2,200) and cannot confirm the 2026 time-band prices offline. Rests on GO TOKYO (updated Apr 2026) + one blog. Under-5s line removed (above). |
 | 4 Lockers, weather closures | ✔ | Matches the operator's long-standing rooftop rules. |
 | 5 Up to 3,000 per green | ✔ | Widely cited figure (Wikipedia). |
 | 6–12 Golden Gai | ✔ | Six lanes, around 200 bars, Hanazono Shrine, postwar black-market origin, cover charges, private-property photo etiquette all agree. |
@@ -124,7 +129,7 @@ researcher, but the checker could neither confirm nor refute it without web acce
 | 18 Main hall 6:00–17:00 (Oct–Mar 6:30) | ✔ | Matches the temple's own published hours as the checker knows them. |
 | 19 Illumination sunset to about 23:00 | ✔ | |
 | 20 Asakusa Culture Tourist Information Center, 8F terrace to 22:00 | ✔ | Matches the checker's knowledge (terrace 9:00–22:00, desk to 20:00). |
-| 21 Tokyo Subway Ticket ¥1,000 / ¥1,500 / ¥2,000 from 14 Mar 2026 | **Re-check** | Plausible (a March timetable-change date; the old ¥800 / ¥1,200 / ¥1,500 matches the checker's knowledge), but the new prices could not be confirmed offline and the two official URLs were not re-opened. |
+| 21 Tokyo Subway Ticket ¥1,000 / ¥1,500 / ¥2,000 from 14 Mar 2026 | **VERIFIED** (live check) | Plausible (a March timetable-change date; the old ¥800 / ¥1,200 / ¥1,500 matches the checker's knowledge), but the new prices could not be confirmed offline and the two official URLs were not re-opened. |
 | 22 Last/first trains | ✔ | Kept approximate. |
 | 23 Tokyo Tourist Information Center, Metropolitan Govt. Bldg No. 1, 9:30–18:30 | ✔ | |
 | 24 Takuboku tanka | ✔ | Text, collection (一握の砂, 1910) and section agree with the checker's knowledge; the translation reads faithfully. |
@@ -133,3 +138,20 @@ researcher, but the checker could neither confirm nor refute it without web acce
 | Japanese & phrasebook | ✔ | Kanji, kana and romaji correct; phrases are natural and polite. |
 | Publisher / contacts | ✔ | Tabi Guides only; no phone numbers, no invented businesses or testimonials. |
 | Photo candidates | Not re-checked | Commons titles could not be opened. All 9 ids are referenced and unique across manifests. |
+
+## Live check (17 Oct 2026)
+
+Live web searches (WebFetch/curl still cannot open outside pages, so values come from
+search-result extracts). **VERIFIED** = confirmed by at least one current source in addition to
+the sources above; **HEDGED** = could not be confirmed, copy loosened; **REMOVED** = taken out.
+
+| Claim (where used) | Value used | Live-check sources | Status |
+|---|---|---|---|
+| Shibuya Sky adult tickets (place p3, costs p10) | Online ¥2,700 before 15:00, ¥3,400 from 15:00; counter ¥3,000 / ¥3,700 | https://savorjapan.com/contents/discover-oishii-japan/tokyo-best-night-views-observation-decks-restaurants-dinner (same tiers; online saves ¥300) · https://www.trvlogue.com/en/shibuya-sky-tokyo-tickets-guide · https://todolist-japan.com/en/shibuya-sky-guide/ (counter tickets only while online allocation remains) · https://japanactivity.com/shibuya-sky-observation-deck-guide · first-pass GO TOKYO (updated Apr 2026) | VERIFIED. Lower figures (¥2,000–2,500 online) on https://mileasia.com/japan/shibuya-sky/, https://www.japan-travel-kit.com/guides/attractions/shibuya-sky-tickets and citiesinsider.com are older prices. Children's prices (elementary ¥1,200 at the counter; under-5s free per two guides) still not printed. |
+| Tokyo Subway Ticket (costs p10) | 24 h ¥1,000 · 48 h ¥1,500 · 72 h ¥2,000; up from ¥800 / ¥1,200 / ¥1,500 on 14 March 2026; Tokyo Metro + Toei, not JR | Official: https://www.metro.tokyo.lg.jp/ja/information/press/2026/01/2026013016 (Tokyo Metropolitan Government, 30 Jan 2026) · https://www.kotsu.metro.tokyo.jp/pickup_information/news/pdf/2026/sub_p_2026013012379_h_01.pdf (Toei: 24-hour ticket 800円 → 1,000円) · https://www.tokyometro.jp/news/2026/223061.html (Tokyo Metro) · press: https://travel.watch.impress.co.jp/docs/news/2082454.html · https://tabiris.com/?p=61034 · guide: https://www.trvlogue.com/en/tokyo-subway-ticket-discount-2026 ("as of June 2026") | VERIFIED. Same notice: Metro–Toei 1-Day Pass ¥900 → ¥1,100; QR-code tickets on smartphones from 25 Mar 2026 (not printed). No October 2026 change found — the blog hint in row 21 is unsupported. Coverage (Tokyo Metro 9 lines + Toei 4 lines; not JR, incl. the Yamanote Line) confirmed by https://www.tokyotourism.org/tokyo-subway-passes/ and https://www.tokyometro.jp/tst/kr/. |
+| Shibuya Sky hours, last entry 21:20 (place, agenda, costs) | 10:00–22:30, last entry 21:20 | Not re-searched (budget); GO TOKYO page updated Apr 2026 (first pass) | Unchanged — backed by a current official tourism source |
+
+**Decision on `factsChecked`:** kept as `"October 2026"` and the back-page tagline as "Facts checked
+October 2026 · Tabi Guides": the two prices that rested only on first-pass extracts are now
+confirmed live (the subway rise by the operators' own notices), and every other price, hour,
+date and access detail in the brochure already had current sources (rows 1–25).

@@ -12,6 +12,11 @@ pages listed). `factsChecked: "October 2026"`.
 > sources' internal consistency and REAL_CONTENT.md, made two corrections (see
 > *Independent fact-check* at the end) and marks the values that still rest only on the
 > first researcher's search extracts as **Re-check** — chiefly the October 2025 fares.
+>
+> **Live check, 17 October 2026 (update).** Every **Re-check** row was searched live: the
+> Freepass, cruise, Romancecar and Open-Air Museum prices are confirmed; the black-egg price
+> could not be confirmed beyond the first-pass sources, so it stays hedged ("about ¥500 for
+> four"). See *Live check* at the end. Copy unchanged; `factsChecked: "October 2026"` stays.
 
 Removed from the old brochure: the fictional publisher "Yuge Travel Atelier", its invented
 ryokan packages (¥48,000 / ¥89,000 / ¥136,000), e-mail, office and the made-up guest
@@ -112,12 +117,12 @@ researcher, but the checker could neither confirm nor refute it without web acce
 | 2 Hakone Jūshichi-yu, 17 hot-spring areas | ✔ | 箱根十七湯; romaji correct. |
 | 3 Ōwakudani / Lake Ashi about 3,000 years ago | ✎ ✔ | Wording tied together (above). |
 | 4 Black eggs, seven-year legend | ✔ | |
-| 5 Black eggs about ¥500 for four | **Re-check** | Matches the checker's 2023–24 knowledge (fewer eggs per ¥500 over the years). Printed as "about". |
+| 5 Black eggs about ¥500 for four | **HEDGED** (live check: pack of four confirmed, price not) | Matches the checker's 2023–24 knowledge (fewer eggs per ¥500 over the years). Printed as "about". |
 | 6 Gas advice | ✎ ✔ | Infants added (above). |
 | 7 Ropeway hours Feb–Nov 9:00–16:45, Dec–Jan 9:00–16:15 | ✔ | Matches the operator's long-standing timetable. |
 | 8 Sōunzan / Gōra access | ✔ | |
 | 9 Cruise Tōgendai–Moto-Hakone about 40 min | ✔ | About 25 min to Hakone-machi plus about 10 min on. |
-| 10 Cruise ¥1,700 one way (from 1 Oct 2025) | **Re-check** | The old ¥1,200 matches the checker's knowledge, but a +¥500 rise is steep and could not be confirmed offline. If the fee page shows a different figure, correct p4 facts. |
+| 10 Cruise ¥1,700 one way (from 1 Oct 2025) | **VERIFIED** (live check) | The old ¥1,200 matches the checker's knowledge, but a +¥500 rise is steep and could not be confirmed offline. If the fee page shows a different figure, correct p4 facts. |
 | 11 Shrine founded by tradition in 757 | ✔ | Mangan Shōnin, Tenpyō-hōji 1. |
 | 12 Peace Torii, 1952 | ✔ | Built for the San Francisco Peace Treaty (in force April 1952). |
 | 13 Grounds free; Treasure Hall ¥500, about 9:00–16:30 | ✔ | |
@@ -125,11 +130,11 @@ researcher, but the checker could neither confirm nor refute it without web acce
 | 15–16 Early photo queue; Fuji on clear days | ✔ | Advice, kept qualitative. |
 | 17–18 Open-Air Museum: Japan's first, 1969; about 120 sculptures, 70,000 m²; Picasso Pavilion; footbath | ✔ | |
 | 19 Open-Air Museum 9:00–17:00, last entry 16:30; ¥2,000 | ✔ | |
-| 19 Open-Air Museum online price ¥1,800 | **Re-check** | The checker could not confirm the online discount offline. |
+| 19 Open-Air Museum online price ¥1,800 | **VERIFIED** (live check) | The checker could not confirm the online discount offline. |
 | 20 Chōkoku-no-Mori Station, 2 min walk | ✔ | The museum's own access page. |
-| 21 Freepass ¥7,100 / ¥7,500; from Odawara ¥6,000 / ¥6,400 | **Re-check** | The old prices (¥6,100 / ¥6,500 / ¥5,000 / ¥5,400) match the checker's knowledge; the new prices are a consistent +¥1,000 but could not be confirmed offline. |
+| 21 Freepass ¥7,100 / ¥7,500; from Odawara ¥6,000 / ¥6,400 | **VERIFIED** (live check) | The old prices (¥6,100 / ¥6,500 / ¥5,000 / ¥5,400) match the checker's knowledge; the new prices are a consistent +¥1,000 but could not be confirmed offline. |
 | 22 Freepass coverage, about 70 discount sights, seat ticket extra | ✔ | |
-| 23 Romancecar ¥2,470 (¥1,270 + ¥1,200), 75–90 min | **Re-check** | Matches the 2024–25 fares the checker knows. No later Odakyu change could be ruled out offline. |
+| 23 Romancecar ¥2,470 (¥1,270 + ¥1,200), 75–90 min | **VERIFIED** (live check) | Matches the 2024–25 fares the checker knows. No later Odakyu change could be ruled out offline. |
 | 24 Tozan Railway, three switchbacks, 80‰ | ✔ | |
 | 25 Hakone Checkpoint ¥500, Edo-era, rebuilt | ✔ | |
 | 26 Onsen etiquette, yukata left over right | ✔ | Standard etiquette. Right-over-left is for dressing the dead. |
@@ -140,3 +145,24 @@ researcher, but the checker could neither confirm nor refute it without web acce
 | Japanese & phrasebook | ✔ | Kanji, kana and romaji correct; phrases are natural and polite. |
 | Publisher / contacts | ✔ | Tabi Guides only; no phone numbers, no ryokan named or promoted, no invented testimonials. |
 | Photo candidates | Not re-checked | Commons titles could not be opened. All 8 ids are referenced and unique across manifests. The cover slot has only 2 candidates (minimum met). |
+
+## Live check (17 Oct 2026)
+
+Live web searches (WebFetch/curl still cannot open outside pages, so values come from
+search-result extracts). **VERIFIED** = confirmed by at least one current source in addition to
+the sources above; **HEDGED** = could not be confirmed, kept approximate; **REMOVED** = taken out.
+
+| Claim (where used) | Value used | Live-check sources | Status |
+|---|---|---|---|
+| Hakone Freepass from Shinjuku (costs p10) | 2 days ¥7,100 · 3 days ¥7,500 (adults, from 1 Oct 2025; was ¥6,100 / ¥6,500) | Official: https://www.odakyu.jp/news/h3de760000005kuv-att/h3de760000005kv2.pdf (Odakyu: all Freepass prices +¥1,000 adult / +¥500 child, digital too) · https://www.hakonenavi.jp/transportation/ticket/freepass · press: https://tabi-mag.jp/priceincrease-hakone/ · https://www.pricey.jp/web/articles/4978 · 2026 guides among https://tabiris.com/?p=45517, https://skyticket.jp/guide/518898/ | VERIFIED |
+| Hakone Freepass from Odawara (costs p10) | ¥6,000 / ¥6,400 | Odakyu press release above (uniform +¥1,000 for adults on the pre-revision ¥5,000 / ¥5,400) · first-pass https://couplestravelstories.ca/hakone-freepass/ | VERIFIED (by the official uniform increase; no live extract printed the Odawara figures directly) |
+| Hakone Sightseeing Cruise Tōgendai–Moto-Hakone (place p4) | ¥1,700 one way, adult (was ¥1,200) | Official: https://www.hakonenavi.jp/transportation/ticket/ship/ (from 1 Oct 2025: 元箱根港 大人片道 1,700円, child ¥850) · https://www.hakonenavi.jp/hakone-kankosen/ · Odakyu press release above · https://www.gltjp.com/ja/directory/item/11663/ | VERIFIED. Same revision: return ¥2,220 → ¥3,000; Hakone-machi–Moto-Hakone ¥420 → ¥600 (not printed). |
+| Hakone Ropeway fares rose 1 Oct 2025 (costs note) | "rose on 1 October 2025" | https://tabi-mag.jp/priceincrease-hakone/ (flat adult fare ¥1,500 → ¥2,000) | VERIFIED (fare itself not printed) |
+| Romancecar Shinjuku → Hakone-Yumoto (costs p10, agenda, cover) | ¥2,470 = fare ¥1,270 + seat ticket ¥1,200; about 75–90 min | https://livejapan.com/ja/in-tokyo/in-pref-kanagawa/in-hakone_odawara/article-a0003297/ · https://tabiris.com/?p=45517 · https://skyticket.jp/guide/518898/ · https://lifestyle.assist-all.co.jp/?p=41601 | VERIFIED. Seat ticket booked online is ¥1,150 (total ¥2,420; not printed). Since the 14 Mar 2026 timetable the fastest Shinjuku–Odawara run is 59 min; to Hakone-Yumoto usually about 1 h 20 min — inside the printed 75–90 min. |
+| Open-Air Museum admission (place p5, costs p10) | ¥2,000; ¥1,800 online | Official: https://www.hakone-oam.or.jp/en/info (adults ¥2,000 same day / ¥1,800 online) · https://www.hakone-oam.or.jp/en/about/discount · https://onedayawaytravel.com/?p=1151 (June 2026) · https://www.walkerplus.com/event/ar0314e549795/data.html (¥2,000) | VERIFIED |
+| Black eggs (place p3, costs p10) | "About ¥500 for four" | https://www.hakonenavi.jp/area/owakudani/ (official: sold in packs of four; no price) · https://www.kanaloco.jp/news/economy/article-987139.html (2023: costs doubled, pack unlikely to return to five) · first-pass https://japanactivity.com/hakone-kuro-tamago-black-eggs (Apr 2026: ¥500) | HEDGED — pack size verified; price rests on one current third-party source, so it stays "about ¥500". |
+
+**Decision on `factsChecked`:** kept as `"October 2026"` and the back-page tagline as "Facts checked
+October 2026 · Tabi Guides": every printed fare and admission is now confirmed by a current
+official or press source, and the only unconfirmed figure (black eggs) is printed as an
+approximation backed by a 2026 source.

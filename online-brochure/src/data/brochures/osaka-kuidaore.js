@@ -1,6 +1,6 @@
 /**
  * Osaka: Eat Until You Drop — 大阪. Shape: see src/data/schema.js.
- * Real places and facts (October 2026); sources and notes in
+ * Real places and facts, live-checked 17 October 2026; sources and notes in
  * docs/research/osaka-kuidaore.md, photos in src/data/photos/manifest/osaka-kuidaore.json.
  */
 export default {
@@ -23,7 +23,8 @@ export default {
   },
   sources: [
     { label: 'OSAKA-INFO — Osaka Convention & Tourism Bureau', url: 'https://osaka-info.jp/en/' },
-    { label: 'Osaka Castle Main Tower official site', url: 'https://www.osakacastle.net/english/' },
+    { label: 'Osaka Castle Main Tower official site', url: 'https://www.osakacastle.net/' },
+    { label: 'Osaka Castle Park official site — admission and hours', url: 'https://www.osakacastlepark.jp/' },
     { label: 'Kuromon Market official site', url: 'https://kuromon.com/en/' },
     { label: 'Tsūtenkaku official site', url: 'https://www.tsutenkaku.co.jp/' },
     { label: 'Osaka Metro — routes and stations', url: 'https://subway.osakametro.co.jp/en/' },
@@ -81,11 +82,11 @@ export default {
       nameJp: '道頓堀',
       photo: 'osaka-dotonbori-canal',
       body:
-        'In 1612 the entrepreneur Yasui Dōton began digging a canal here; he was killed in the Siege of Osaka in 1615 before it was finished, but it still carries his name. Kabuki theatres made it the city’s playground. Today the Glico running man, first lit here in 1935, beams down on Ebisu-bashi bridge, and takoyaki stands keep their griddles busy late into the night.',
+        'In 1612 Nariyasu Dōton began digging a canal here; he was killed in the Siege of Osaka in 1615, before it was finished, but it still carries his name. Kabuki theatres made it the city’s playground. Today the Glico running man, first lit here in 1935, beams down on Ebisu-bashi bridge, and takoyaki stands keep their griddles busy late into the night.',
       facts: [
         { label: 'Hours', value: 'Street always open; stalls till late' },
         { label: 'Admission', value: 'Free' },
-        { label: 'Getting there', value: 'Namba Station, about 5 min walk' },
+        { label: 'Getting there', value: 'Namba Station exit 14, about 3 min walk' },
         { label: 'Best time', value: 'Dusk, as the signs light up' },
       ],
       lat: 34.6687,
@@ -100,11 +101,11 @@ export default {
       nameJp: '黒門市場',
       photo: 'osaka-kuromon-market',
       body:
-        'Osaka’s kitchen: a covered street of about 150 shops that has fed the city since the 19th century, named after the black gate of a temple that once stood nearby. Come before lunch and graze — grilled scallops, tuna by the slice, wagyu skewers, fat strawberries — and eat each one at the stall rather than on the move.',
+        'Osaka’s kitchen: a covered street some 580 metres long, with about 150 shops, that has fed the city since the 1820s. It is named after the black gate of a temple that once stood nearby. Come before lunch and graze — grilled scallops, tuna by the slice, wagyu skewers, fat strawberries — and eat each one at the stall rather than on the move.',
       facts: [
-        { label: 'Hours', value: 'Most shops morning to early evening' },
+        { label: 'Hours', value: 'Most shops from about 9:00; closing times vary' },
         { label: 'Admission', value: 'Free; pay per dish' },
-        { label: 'Getting there', value: 'Nippombashi Station, 2 min walk' },
+        { label: 'Getting there', value: 'Nippombashi Station exit 10, about 3 min walk' },
         { label: 'Best time', value: 'Late morning, before stalls sell out' },
       ],
       lat: 34.6658,
@@ -119,11 +120,11 @@ export default {
       nameJp: '新世界・通天閣',
       photo: 'osaka-shinsekai-tsutenkaku',
       body:
-        'The “New World” opened in 1912, its northern half modelled on Paris, its southern half an amusement park inspired by Coney Island. The first Tsūtenkaku tower was dismantled in 1943; today’s steel tower opened in 1956. Beneath its neon, counters fry kushikatsu — beef, lotus root, quail egg — and one rule still holds: dip once in the shared sauce, never twice.',
+        'The “New World” opened in 1912, its northern half modelled on Paris, its southern half an amusement park inspired by Coney Island. The first Tsūtenkaku tower was dismantled after a fire in 1943; today’s steel tower opened in 1956. Beneath its neon, counters fry kushikatsu — beef, lotus root, quail egg — and one rule still holds: dip once in the shared sauce, never twice.',
       facts: [
         { label: 'Streets', value: 'Free, day and night' },
-        { label: 'Tower', value: 'Observation decks, paid entry' },
-        { label: 'Getting there', value: 'Ebisuchō Station, 3 min walk' },
+        { label: 'Tower', value: 'Decks from 9:00; adults ¥1,500' },
+        { label: 'Getting there', value: 'Ebisuchō Station exit 3, 3 min walk' },
         { label: 'Best time', value: 'Early evening, as the neon comes on' },
       ],
       lat: 34.6525,
@@ -149,7 +150,7 @@ export default {
         {
           icon: 'Beer',
           title: 'Kushikatsu',
-          text: 'Breaded skewers fried to order, said to have started in Shinsekai in 1929. Dip once in the shared sauce.',
+          text: 'Breaded skewers fried to order; one Shinsekai counter has served them since 1929. Dip once in the shared sauce.',
         },
         {
           icon: 'Store',
@@ -164,7 +165,7 @@ export default {
         {
           icon: 'Castle',
           title: 'Osaka Castle',
-          text: 'Toyotomi Hideyoshi began it in 1583. The main tower, rebuilt in concrete in 1931, is a museum with a top-floor lookout.',
+          text: 'Toyotomi Hideyoshi began it in 1583. The main tower, rebuilt in 1931 with citizens’ donations, is a museum with a top-floor view.',
         },
       ],
     },
@@ -183,7 +184,7 @@ export default {
       id: 'p8',
       type: 'map',
       heading: 'Where to eat',
-      body: 'Dōtonbori, Hōzen-ji and Kuromon Market are a short walk apart in Minami. Shinsekai is one stop south of Nippombashi on the Sakaisuji Line; the castle is about 20 minutes north-east by metro.',
+      body: 'Dōtonbori, Hōzen-ji and Kuromon Market are a short walk apart in Minami. Shinsekai is one stop south of Nippombashi on the Sakaisuji Line; the castle is a short metro ride to the north-east.',
       places: [
         { name: 'Osaka Castle', nameJp: '大阪城', lat: 34.6873, lng: 135.5259, note: 'Main tower and park' },
         { name: 'Dōtonbori', nameJp: '道頓堀', lat: 34.6687, lng: 135.5013, note: 'Canal, neon and takoyaki' },
@@ -198,7 +199,7 @@ export default {
       type: 'agenda',
       heading: 'A day of eating',
       items: [
-        { time: '09:00', title: 'Osaka Castle', text: 'The keep opens at 9:00. Go early.' },
+        { time: '09:00', title: 'Osaka Castle', text: 'The main tower opens at 9:00. Go early.' },
         { time: '11:00', title: 'Kuromon Market', text: 'Graze: scallops, tuna, strawberries.' },
         { time: '13:30', title: 'Shinsekai', text: 'Kushikatsu lunch under Tsūtenkaku.' },
         { time: '16:00', title: 'Hōzenji Yokochō', text: 'Splash the mossy Fudō for luck.' },
@@ -210,7 +211,7 @@ export default {
       id: 'p10',
       type: 'pricing',
       heading: 'What it costs',
-      note: 'Street-food prices vary by stall and change often; paid sights publish current fees on their official sites. Carry some cash for small stands.',
+      note: 'Adult ticket prices as of October 2026; check the official sites before you go. Street-food prices vary by stall and change often, so carry some cash for small stands.',
       plans: [
         {
           name: 'Wandering',
@@ -223,14 +224,14 @@ export default {
           name: 'Eating',
           price: 'Per dish',
           period: 'pay as you go',
-          features: ['Takoyaki: usually 6–10 to a tray', 'Kushikatsu: priced by the skewer', 'Okonomiyaki: one makes a meal', 'Kuromon seafood and wagyu cost more'],
+          features: ['Takoyaki: sold by the tray', 'Kushikatsu: priced by the skewer', 'Okonomiyaki: one makes a meal', 'Kuromon seafood and wagyu cost more'],
           highlight: true,
         },
         {
           name: 'Paid sights',
-          price: 'Tickets',
-          period: 'check current fees',
-          features: ['Osaka Castle main tower museum', 'Tsūtenkaku observation decks', 'Osaka Metro: fares by distance; IC cards work'],
+          price: 'From ¥1,200',
+          period: 'adult tickets',
+          features: ['Osaka Castle main tower: ¥1,200', 'Junior-high age and under: free at the castle', 'Castle ticket includes the Toyotomi Stone Wall Museum', 'Tsūtenkaku observation decks: ¥1,500'],
           highlight: false,
         },
       ],
@@ -260,13 +261,13 @@ export default {
       id: 'p13',
       type: 'contact',
       heading: 'Visitor information',
-      body: 'Stall hours vary and many small restaurants close one day a week, so check before you cross town. The tourist information centre at JR Osaka Station has maps and multilingual staff.',
+      body: 'Stall hours vary and many small restaurants close one day a week, so check before you cross town. The tourist information centre inside JR Osaka Station has maps and multilingual staff.',
       cta: 'Open the official Osaka guide',
       ctaUrl: 'https://osaka-info.jp/en/',
       details: [
-        { icon: 'MapPin', label: 'Tourist information', value: 'Osaka Visitors’ Information Center, JR Osaka Station' },
+        { icon: 'MapPin', label: 'Tourist information', value: 'Tourist Information Osaka, JR Osaka Station 1F, central gate' },
         { icon: 'Globe', label: 'Osaka tourism', value: 'osaka-info.jp', url: 'https://osaka-info.jp/en/' },
-        { icon: 'Castle', label: 'Osaka Castle', value: 'osakacastle.net', url: 'https://www.osakacastle.net/english/' },
+        { icon: 'Castle', label: 'Osaka Castle', value: 'osakacastle.net', url: 'https://www.osakacastle.net/' },
         { icon: 'Store', label: 'Kuromon Market', value: 'kuromon.com', url: 'https://kuromon.com/en/' },
       ],
     },

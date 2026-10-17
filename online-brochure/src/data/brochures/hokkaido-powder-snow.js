@@ -1,9 +1,8 @@
 /**
  * Hokkaidō: Powder & Ice — 北海道. Shape: see src/data/schema.js.
- * Real places, written October 2026. Neither the writer nor the fact-checker could reach the web
- * (shared search budget exhausted), so the fact-check was a second, independent review from memory
- * only: see docs/research/hokkaido-powder-snow.md. `factsChecked` stays unset and the tagline says
- * "Facts awaiting check" until a sourced pass. Prices, hours and 2027 dates are left out.
+ * Real places, written October 2026 and live-verified with web search on 17 October 2026: every
+ * price, hour, date and access detail is sourced in docs/research/hokkaido-powder-snow.md. The Aurora
+ * icebreaker's 2027 fares were not yet confirmed, so the Costs page gives the 2026 fares as a range.
  * Photo slots: src/data/photos/manifest/hokkaido-powder-snow.json (no Commons candidates yet).
  */
 export default {
@@ -26,22 +25,25 @@ export default {
   },
   sources: [
     { label: 'Sapporo Snow Festival official site', url: 'https://www.snowfes.com/' },
-    { label: 'Sapporo Travel (official city guide)', url: 'https://www.sapporo.travel/en/' },
+    { label: 'Sapporo Travel: Sapporo Snow Festival 2027', url: 'https://www.sapporo.travel/en/event/event-list/sapporo_snow_festival/' },
+    { label: 'Sapporo Travel: Otaru Snow Light Path', url: 'https://www.sapporo.travel/en/event/event-list/otaru-snow-light-path/' },
+    { label: 'Upopoy, National Ainu Museum and Park: visitor information', url: 'https://ainu-upopoy.go.jp/en/guide/' },
+    { label: 'Abashiri icebreaker Aurora: fares and timetable', url: 'https://www.ms-aurora.com/abashiri/prices/' },
+    { label: 'Visit Abashiri: access', url: 'https://visit-abashiri.jp/en/access/' },
+    { label: 'Niseko United: Niseko Rules', url: 'https://www.niseko.ne.jp/en/niseko/niseko-rules/' },
+    { label: 'Wild Bird Society of Japan: Tsurui-Itō Tancho Sanctuary', url: 'https://mobile.wbsj.org/en/tsurui/' },
+    { label: 'Japan National Parks: Shiretoko drift-ice walk', url: 'https://www.japan.travel/national-parks/parks/shiretoko/see-and-do/walk-drift-ice' },
     { label: 'Visit Hokkaido (Hokkaido Tourism Organization)', url: 'https://www.visit-hokkaido.jp/en/' },
-    { label: 'Otaru Tourism Association', url: 'https://otaru.gr.jp/' },
-    { label: 'Upopoy, National Ainu Museum and Park', url: 'https://ainu-upopoy.jp/en/' },
-    { label: 'Abashiri icebreaker Aurora', url: 'https://www.ms-aurora.com/abashiri/' },
-    { label: 'Niseko United', url: 'https://www.niseko.ne.jp/en/' },
-    { label: 'UNESCO: Shiretoko', url: 'https://whc.unesco.org/en/list/1193/' },
     { label: 'Wikipedia: Sapporo Snow Festival', url: 'https://en.wikipedia.org/wiki/Sapporo_Snow_Festival' },
     { label: 'Wikipedia: Red-crowned crane', url: 'https://en.wikipedia.org/wiki/Red-crowned_crane' },
   ],
+  factsChecked: 'October 2026',
   summary:
     'A winter guide to Hokkaidō’s real highlights: the snow and ice sculptures of the Sapporo Snow Festival, Otaru’s lantern-lit canal, drift ice off Abashiri, dancing red-crowned cranes and Ainu culture at Upopoy.',
   tags: ['hokkaido', 'sapporo', 'snow festival', 'otaru', 'drift ice', 'abashiri', 'shiretoko', 'niseko', 'red-crowned crane', 'ainu', 'upopoy', 'winter'],
   format: 'booklet',
   updatedAt: '2026-10-17T00:00:00.000Z',
-  readMinutes: 7,
+  readMinutes: 8,
   featured: true,
   source: 'builtin',
   theme: {
@@ -85,9 +87,9 @@ export default {
       nameJp: 'さっぽろ雪まつり',
       photo: 'hokkaido-sapporo-snow-festival',
       body:
-        'It began in 1950, when local secondary-school students built six snow statues in Ōdōri Park. Now, for about a week in early February, the park fills with snow sculptures — the biggest as large as buildings, lit up until late — while Susukino shows carved ice and the Tsudome site has snow slides for children. More than two million people visit in a typical year.',
+        'It began in 1950, when local secondary-school students built six snow statues in Ōdōri Park. Now, for about a week in early February, the park fills with snow sculptures — the biggest as large as buildings, lit up after dark — while Susukino shows carved ice and the Tsudome site has snow slides for children. Around two million people come each year.',
       facts: [
-        { label: 'When', value: 'About a week in early February' },
+        { label: 'When', value: '4–11 February 2027' },
         { label: 'Admission', value: 'Free to enter' },
         { label: 'Getting there', value: 'Subway to Ōdōri Station' },
         { label: 'Best time', value: 'After dark, when the sculptures are lit' },
@@ -104,16 +106,16 @@ export default {
       nameJp: '小樽運河',
       photo: 'hokkaido-otaru-canal',
       body:
-        'Otaru was one of Hokkaidō’s great trading ports, and in 1923 it completed a canal so barges could unload beside its stone warehouses. When a road plan threatened to fill it in, residents campaigned for years. In the end half its width was kept, and in 1986 it became a stone promenade lit by old-style gas lamps. In February the Snow Light Path lines it with snow lanterns and candles.',
+        'Otaru was one of Hokkaidō’s great trading ports, and in 1923 it completed a canal so barges could carry cargo between ships in the bay and its stone warehouses. When a road plan threatened to fill it in, residents campaigned for years. In the end part of it became road, and in the 1980s the rest became a stone promenade lit by 63 gas lamps. In February the Snow Light Path lines it with snow lanterns and candles.',
       facts: [
-        { label: 'Admission', value: 'Free to walk' },
-        { label: 'Getting there', value: 'About 40 min by JR from Sapporo' },
-        { label: 'Snow Light Path', value: 'About a week in February' },
-        { label: 'Best time', value: 'Dusk, when the lamps come on' },
+        { label: 'Snow Light Path', value: '6–13 February 2027, evenings' },
+        { label: 'Getting there', value: 'JR rapid from Sapporo, 30–40 min' },
+        { label: 'From the station', value: '10–15 min on foot' },
+        { label: 'Best time', value: 'Dusk, when the gas lamps come on' },
       ],
       lat: 43.199,
       lng: 141.001,
-      website: 'https://otaru.gr.jp/',
+      website: 'https://www.sapporo.travel/en/event/event-list/otaru-snow-light-path/',
     },
     {
       id: 'p5',
@@ -123,9 +125,9 @@ export default {
       nameJp: '網走の流氷',
       photo: 'hokkaido-abashiri-drift-ice',
       body:
-        'Sea ice that forms far to the north, where the Amur River freshens the Sea of Okhotsk, drifts south each winter until it presses against Hokkaidō’s coast, level with the south of France. From Abashiri the icebreaker Aurora noses out into the floes on cruises of about an hour. The ice is never guaranteed: February to early March is the safest bet.',
+        'Sea ice that forms far to the north, where the Amur River freshens the Sea of Okhotsk, drifts south each winter until it presses against Hokkaidō’s coast, level with the south of France. From Abashiri the icebreaker Aurora noses out into the floes on cruises of about an hour. The ice is never guaranteed, and some winters bring none: February is the safest bet.',
       facts: [
-        { label: 'Season', value: 'Late Jan–Mar; best Feb to early Mar' },
+        { label: 'Season', value: 'Late Jan–Mar; most reliable in Feb' },
         { label: 'Cruise', value: 'About 1 h on the icebreaker Aurora' },
         { label: 'Getting there', value: 'Fly to Memanbetsu, or 5½ h by train' },
         { label: 'Ice all year', value: 'Okhotsk Ryūhyō Museum, Mount Tento' },
@@ -143,27 +145,27 @@ export default {
         {
           icon: 'MountainSnow',
           title: 'Niseko powder',
-          text: 'Four linked resorts on Mount Niseko Annupuri face 1,898-metre Mount Yōtei. Leave the pistes only through the official gates.',
+          text: 'Four resorts on Mount Niseko Annupuri share one lift pass and face 1,898-metre Mount Yōtei. Go off-piste only through the official gates.',
         },
         {
           icon: 'Bird',
           title: 'Red-crowned cranes',
-          text: 'Once thought extinct in Japan, tanchō now gather by the hundreds at winter feeding grounds near Kushiro and Tsurui.',
+          text: 'Once thought extinct, tanchō were rediscovered in the Kushiro Marsh in 1924. Now hundreds gather each winter at feeding grounds near Tsurui.',
         },
         {
           icon: 'Landmark',
           title: 'Upopoy',
-          text: 'Japan’s National Ainu Museum and Park, opened 2020 in Shiraoi: Ainu history, dance and craft, told from an Ainu point of view.',
+          text: 'Ainu history, dance and craft at the National Ainu Museum and Park, opened in July 2020 in Shiraoi. Upopoy means “singing together”.',
         },
         {
           icon: 'Snowflake',
           title: 'Shiretoko',
-          text: 'A UNESCO World Heritage peninsula since 2005. In February, guided walks in dry suits float you among the drift ice at Utoro.',
+          text: 'A UNESCO World Heritage site since 2005. From February into March, guided walks in dry suits float you among the drift ice at Utoro.',
         },
         {
           icon: 'Soup',
           title: 'Miso ramen',
-          text: 'Sapporo is the home of miso ramen — rich, often topped with butter and corn. Thaw out in Susukino’s noodle alleys.',
+          text: 'Sapporo is famous for miso ramen — rich, sometimes topped with butter and corn. Thaw out in Susukino’s noodle alleys.',
         },
       ],
     },
@@ -182,15 +184,15 @@ export default {
       id: 'p8',
       type: 'map',
       heading: 'Where it all is',
-      body: 'Sapporo is the hub, about 40 minutes by JR from New Chitose Airport. Abashiri, Shiretoko and the crane country lie a short flight east.',
+      body: 'Sapporo is the hub, about 40 minutes by JR from New Chitose Airport. For Abashiri and Shiretoko, fly east to Memanbetsu or allow 5½ hours by train.',
       places: [
-        { name: 'Ōdōri Park, Sapporo', nameJp: '大通公園', lat: 43.06, lng: 141.348, note: 'Snow Festival, early February' },
-        { name: 'Otaru Canal', nameJp: '小樽運河', lat: 43.199, lng: 141.001, note: 'Snow Light Path in February' },
+        { name: 'Ōdōri Park, Sapporo', nameJp: '大通公園', lat: 43.06, lng: 141.348, note: 'Snow Festival, 4–11 Feb 2027' },
+        { name: 'Otaru Canal', nameJp: '小樽運河', lat: 43.199, lng: 141.001, note: 'Snow Light Path, 6–13 Feb 2027' },
         { name: 'Niseko Hirafu', nameJp: 'ニセコひらふ', lat: 42.86, lng: 140.7, note: 'Powder, facing Mount Yōtei' },
         { name: 'Upopoy, Shiraoi', nameJp: 'ウポポイ', lat: 42.556, lng: 141.361, note: 'National Ainu Museum and Park' },
         { name: 'Abashiri', nameJp: '網走', lat: 44.017, lng: 144.283, note: 'Icebreaker cruises into the drift ice' },
-        { name: 'Utoro, Shiretoko', nameJp: 'ウトロ', lat: 44.068, lng: 144.988, note: 'Guided drift-ice walks' },
-        { name: 'Tsurui-Itō Tanchō Sanctuary', nameJp: '鶴居・伊藤タンチョウサンクチュアリ', lat: 43.23, lng: 144.32, note: 'Red-crowned cranes in winter' },
+        { name: 'Utoro, Shiretoko', nameJp: 'ウトロ', lat: 44.068, lng: 144.988, note: 'Guided drift-ice walks, Feb–Mar' },
+        { name: 'Tsurui-Itō Tanchō Sanctuary', nameJp: '鶴居・伊藤タンチョウサンクチュアリ', lat: 43.23, lng: 144.32, note: 'Cranes in winter; free, Oct–Mar' },
         { name: 'New Chitose Airport', nameJp: '新千歳空港', lat: 42.7753, lng: 141.6922, note: 'Main gateway to Hokkaidō' },
       ],
     },
@@ -200,11 +202,40 @@ export default {
       heading: 'Six days in February',
       items: [
         { time: 'Day 1', title: 'Sapporo', text: 'Ōdōri Park’s snow sculptures; Susukino ice and ramen at night.' },
-        { time: 'Day 2', title: 'Otaru', text: 'JR, about 40 min; canal walk and Snow Light Path at dusk.' },
-        { time: 'Day 3', title: 'Shiraoi · Upopoy', text: 'Limited express, about 1 h; Ainu museum, dance and crafts.' },
-        { time: 'Day 4', title: 'Abashiri', text: 'Fly from New Chitose to Memanbetsu; ice museum on Mount Tento.' },
-        { time: 'Day 5', title: 'Sea of Okhotsk', text: 'Morning icebreaker cruise among the floes.' },
-        { time: 'Day 6', title: 'Kushiro · Tsurui', text: 'Train south to Kushiro; cranes at the Tsurui sanctuary.' },
+        { time: 'Day 2', title: 'Otaru', text: 'JR rapid, 30–40 min; canal walk and Snow Light Path at dusk.' },
+        { time: 'Day 3', title: 'Shiraoi · Upopoy', text: 'JR to Shiraoi, then 10 min on foot. Closed on Mondays.' },
+        { time: 'Day 4', title: 'Abashiri', text: 'Fly to Memanbetsu, 35 min by bus to town; ice museum on Mount Tento.' },
+        { time: 'Day 5', title: 'Sea of Okhotsk', text: 'Morning icebreaker cruise among the floes, about 1 h.' },
+        { time: 'Day 6', title: 'Kushiro · Tsurui', text: 'South to Kushiro; cranes at the free Tsurui-Itō sanctuary.' },
+      ],
+    },
+    {
+      id: 'p14',
+      type: 'pricing',
+      heading: 'What it costs',
+      note: 'Adult prices, checked October 2026. The Aurora had not yet confirmed its 2027 fares.',
+      plans: [
+        {
+          name: 'Upopoy',
+          price: '¥1,200',
+          period: 'adult entry, museum and park',
+          features: ['High-school students: ¥600', 'Winter hours 9:00–17:00', 'Closed Mondays, 28 Dec–4 Jan and 27 Feb–8 Mar'],
+          highlight: false,
+        },
+        {
+          name: 'Icebreaker Aurora',
+          price: '¥5,000–7,000',
+          period: 'adult, about 1 hour',
+          features: ['2026: ¥6,000 in Feb, ¥5,000 in Jan & Mar', 'Children: half price', 'Check the 2027 fares before you go'],
+          highlight: true,
+        },
+        {
+          name: 'Free to enjoy',
+          price: '¥0',
+          period: 'no ticket needed',
+          features: ['Sapporo Snow Festival, all three sites', 'Tsurui-Itō crane sanctuary, Oct–Mar', 'Pay only for food and some Tsudome activities'],
+          highlight: false,
+        },
       ],
     },
     {
@@ -236,9 +267,9 @@ export default {
       cta: 'Open Visit Hokkaido',
       ctaUrl: 'https://www.visit-hokkaido.jp/en/',
       details: [
-        { icon: 'MapPin', label: 'Tourist information', value: 'Hokkaidō-Sapporo Tourist Information Center, JR Sapporo Station' },
         { icon: 'Snowflake', label: 'Snow Festival', value: 'snowfes.com', url: 'https://www.snowfes.com/' },
-        { icon: 'Landmark', label: 'Upopoy', value: 'ainu-upopoy.jp', url: 'https://ainu-upopoy.jp/en/' },
+        { icon: 'Landmark', label: 'Upopoy', value: 'ainu-upopoy.go.jp', url: 'https://ainu-upopoy.go.jp/en/guide/' },
+        { icon: 'Ship', label: 'Icebreaker Aurora', value: 'ms-aurora.com', url: 'https://www.ms-aurora.com/abashiri/' },
         { icon: 'Globe', label: 'Sapporo city guide', value: 'sapporo.travel', url: 'https://www.sapporo.travel/en/' },
       ],
     },
@@ -247,7 +278,7 @@ export default {
       type: 'back',
       title: 'Mata ne — see you next winter',
       body: 'Winter here is beautiful and serious: dress in layers, leave the pistes only by the gates, never walk on sea ice unguided, and give the cranes room.',
-      tagline: 'Facts awaiting check · Tabi Guides',
+      tagline: 'Facts checked October 2026 · Tabi Guides',
     },
   ],
 };

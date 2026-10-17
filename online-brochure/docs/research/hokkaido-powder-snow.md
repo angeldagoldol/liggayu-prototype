@@ -1,126 +1,135 @@
 # Research log — Hokkaidō: Powder & Ice (`hokkaido-powder-snow`)
 
-Written 17 October 2026. Fact-check pass 17 October 2026.
-**Status: UNVERIFIED AGAINST SOURCES — reviewed twice from memory.**
+Written 17 October 2026 from memory (search budget exhausted at the time); **live-verified 17 October 2026**
+with web search (this brochure shared a 40-search budget with `tohoku-summer-festivals`). WebFetch/curl cannot
+reach outside sites, so values come from search-result excerpts of the pages listed. Official sources first.
 
-The shared web-search budget for this workflow turn was used up before this brochure's research began, and was
-still used up when the fact-checker started (WebSearch returned "budget is used up"; WebFetch/curl cannot reach
-outside sites). **No source has been consulted for this brochure.** The writer's claims come from prior
-knowledge (training data to mid-2026); the fact-checker then reviewed every claim independently, also from
-memory, and corrected what was wrong or loosely worded (column "Fact-check"). Two memories agreeing is not a
-source check, so:
+**Result:** every price, opening hour, date and access detail now printed is backed by at least one current
+source (two for anything surprising), so `factsChecked: "October 2026"` is set and the back-page tagline reads
+"Facts checked October 2026 · Tabi Guides". The one open number, the Aurora icebreaker's **2027** fare, is printed
+as a hedged range with "check before you go" (see below). A **Costs page** was added (14 pages in total).
 
-- `factsChecked` is **left unset** in the brochure, and the back-page tagline reads
-  "Facts awaiting check · Tabi Guides" instead of "Facts checked October 2026 · Tabi Guides".
-- Every price, opening hour and 2027 date is **left out**: Snow Festival 2027 dates, Snow Light Path 2027
-  dates, Aurora fares and timetable, Upopoy admission and hours, Niseko lift-pass prices, JR fares and
-  Hokkaido Rail Pass. That's why there is **no Costs (pricing) page**, so the brochure has 13 pages.
-- Coordinates are from memory and approximate (±~0.5 km); the place pages and map need checking.
+Status: **VERIFIED** = backed by the source(s) listed · **HEDGED** = kept, but worded loosely or not re-checked
+in this pass (descriptive / historical copy, no price, hour, date or access detail) · **REMOVED** = taken off the
+page because it could not be verified · **CHANGED** = value corrected after checking.
 
-Confidence: **H** = well established, very unlikely to be wrong; **M** = believed correct, check;
-**L** = uncertain, check before publishing. Fact-check: **OK** = reviewer agrees (memory),
-**FIXED** = copy corrected in this pass, **DOUBT** = reviewer unsure, check first.
+## Prices, hours, dates and access
 
-## Facts
+| Claim (page) | Value used | Sources | Status |
+| --- | --- | --- | --- |
+| Snow Festival 2027 dates (place, map) | 4–11 February 2027 | https://www.sapporo.travel/en/event/event-list/sapporo_snow_festival/ (official city guide: "2027年2月4日(木)～11日(木・祝)") ; https://www.visit-hokkaido.jp/event/detail_11001.html ; https://blog.wego.com/sapporo-snow-festival/ ; https://selfguidejapan.com/blog/sapporo-snow-festival-2027 | VERIFIED (was "about a week in early February"). Edition number left out: Visit Hokkaido says 77th, one third-party guide says 78th. Venue programmes are published from mid-December 2026. |
+| Three sites: Ōdōri (snow), Susukino (ice), Tsudome (family, slides) (place) | — | https://www.visit-hokkaido.jp/event/detail_11001.html ; https://watabi.org/en/winter ; https://blog.wego.com/sapporo-snow-festival/ | VERIFIED (Tsudome 大型のすべり台; Susukino on Ekimae-dōri, Minami 4–6). Tsudome has its own, shorter hours (closes 16:00 per one guide): not printed. |
+| Free admission (place, Costs) | "Free to enter"; pay only for food and some Tsudome activities | https://blog.wego.com/sapporo-snow-festival/ ; https://watabi.org/en/winter | VERIFIED (two independent guides; official FAQ page exists at https://www.snowfes.com/faq/ but its text was not in the excerpt). |
+| Getting there (place) | Subway to Ōdōri Station | https://www.visit-hokkaido.jp/event/detail_11001.html ; https://www.snowfes.com/access/ | VERIFIED |
+| Lit after dark (place) | "lit up after dark" | https://watabi.org/en/articles/sapporo-snow-festival-guide | CHANGED from "lit up until late": the closing hour was not confirmed for 2027, so no time is implied. |
+| Otaru Snow Light Path 2027 dates (place, map) | 6–13 February 2027, evenings | https://www.sapporo.travel/en/event/event-list/otaru-snow-light-path/ (2027 dates) ; 2026 pattern: https://www.sapporo.travel/?p=101445 , https://rurubu.jp/andmore/spot/20001098 (7–14 Feb 2026, 17:00–21:00) | VERIFIED (2027 dates from one official page; consistent with the 8-day, early-evening pattern of 2026 in two sources). A blog said on 6 Oct 2026 that 2027 dates were not yet out — the official page is newer. |
+| Sapporo → Otaru by JR (place, agenda) | JR rapid, 30–40 min | https://www.visit-hokkaido.jp/en/feature/day-trip ; https://asocialnomad.com/japan/sapporo-to-otaru/ ; https://www.pelago.com/en-AU/articles/best-day-trips-from-sapporo/ | VERIFIED (30, 30–35 and 32–40 min). Was "about 40 min". Fare **not printed**: JR Hokkaido revised fares in April 2025 and no current Sapporo–Otaru fare was found. |
+| Otaru Station → canal on foot (place) | 10–15 min | https://hokkaido-labo.com/en/otaru-canal-438 ("ten minute walk … about 15 minutes in winter") | VERIFIED (single source; low-risk). Replaced the old "Admission: Free to walk" row, which had no source. |
+| New Chitose Airport → Sapporo by JR (map) | about 40 min | https://www.sapporo.travel/learn/transportation/ ("40分弱") ; https://tabiris.com/archives/airport201909 (fastest 33–37 min) | VERIFIED. Fare (¥1,230 in one article) not printed: unclear whether it predates the April 2025 revision. |
+| Drift-ice season (place) | Late Jan–Mar; most reliable in Feb | https://www.gltjp.com/en/article/item/20070/ ; https://index.japanstation.com/city/abashiri/ ; https://gov-online.go.jp/eng/publicity/book/hlj/html/202401/202401_01_en.html | VERIFIED. Sources add that some winters bring no ice at all — now said in the copy. Was "best Feb to early Mar". |
+| Aurora cruise length (place, agenda, Costs) | about 1 h | https://watabi.org/articles/hokkaido-drift-ice-guide ; https://www.gltjp.com/en/directory/item/16027/ ; https://www.hokkaido-np.co.jp/movies/detail/6389268453112/ | VERIFIED (large ship ≈1 h; the small Aurora 3 runs ≈2 h only when ice is ashore — not printed). |
+| Aurora 2026 season | ran 20 Jan–31 Mar 2026 | https://www.hokkaido-np.co.jp/movies/detail/6389268453112/ (to 31 Mar) ; https://watabi.org/articles/hokkaido-drift-ice-guide (20 Jan–31 Mar) | VERIFIED; not printed (2027 season not announced). |
+| Aurora adult fare (Costs) | "¥5,000–7,000"; "2026: ¥6,000 in Feb, ¥5,000 in Jan & Mar"; "Check the 2027 fares" | 2026: https://www.gltjp.com/en/directory/item/16027/ ; https://watabi.org/en/articles/hokkaido-drift-ice-guide . Official price page https://www.ms-aurora.com/abashiri/prices/ excerpt: "大人7,000円 (1～3月・個人)". 2025 (older): https://visit-abashiri.jp/en/newsletter/37311ebeff086875811505913c68e92331ed6a06.html (March ¥4,500) | **HEDGED.** The two 2026 sources agree; the official page now shows ¥7,000, probably the 2027 list, but a second search (hankyu-travel results only) could not confirm it. Printed as a range with the 2026 split and "check the 2027 fares". |
+| Aurora child fare (Costs) | half price | https://www.gltjp.com/en/directory/item/16027/ (elementary ¥3,000 in Feb) | VERIFIED (single source; same page as the adult fare). |
+| Getting to Abashiri (place, map, agenda) | Fly to Memanbetsu (35 min by bus to town), or 5½ h by train from Sapporo | https://visit-abashiri.jp/en/access/ (official: ≈5 h 30 min by limited express; bus ≈35 min from Abashiri Bus Terminal to Memanbetsu Airport) ; https://jprail.com/trains/okhotsk.html (5 h 30 min) | VERIFIED. **REMOVED** "from New Chitose": no flight route was confirmed, so the agenda just says "Fly to Memanbetsu". |
+| Okhotsk Ryūhyō Museum on Mount Tento (place, agenda) | — | https://www.mapple.net/region/a0101010000_g04020500/spot/ ; https://www.jal.co.jp/jp/ja/domtour/jaldp/hok/ohotsuku-ryuhyo-kiko/index03.html | VERIFIED (exists; 12 min by bus from JR Abashiri). Fee **not printed**: one listing gives ¥990, another ¥550 (possibly another facility). |
+| Upopoy adult admission (Costs) | ¥1,200; high-school students ¥600 | https://ainu-upopoy.go.jp/en/guide/ (official) ; https://nam.go.jp/wp/wp-content/uploads/2025/12/5210f85b49db298ab2b634b22877cf63.pdf (official fare sheet) | VERIFIED. Covers museum and park, not special exhibitions or hands-on activities. Free day 3 Nov 2026 (https://www.haveagood-holiday.com/en/articles/upopoy-free-admission-day-november-3-2026) not printed. |
+| Upopoy winter hours (Costs) | 9:00–17:00 (1 Nov 2026–31 Mar 2027) | https://ainu-upopoy.go.jp/en/guide/ | VERIFIED (official). Last entry 1 h before closing (museum 30 min): not printed. |
+| Upopoy closing days (agenda, Costs) | Closed Mondays (next weekday if Monday is a holiday), 28 Dec–4 Jan and 27 Feb–8 Mar | https://ainu-upopoy.go.jp/en/guide/ ; https://www.triptojapan.com/zh/places/upopoy-national-ainu-museum-and-park-shiraoi/dDDwL2aaQuuaU9JfKYNpOw (Mondays) | VERIFIED. Agenda Day 3 now says "Closed on Mondays". |
+| JR Shiraoi → Upopoy (agenda) | 10 min on foot | https://ainu-upopoy.go.jp/en/?p=19 (official access: ≈500 m, ≈10 min from the North Exit) | VERIFIED. **REMOVED** "Limited express, about 1 h" from Sapporo: no running time was found. |
+| Tsurui-Itō Tancho Sanctuary (map, agenda, Costs) | Free; open Oct–Mar; feeding Nov–Mar | https://mobile.wbsj.org/en/tsurui/ (Wild Bird Society of Japan) ; https://en.kushiro-lakeakan.com/things_to_do/3785/ ; https://hokkaido-labo.com/en/tsurui-ito-white-crane-sanctuary-16236 | VERIFIED. Nature Center hours (9:00–16:30, closed Tue/Wed in one listing) conflict between sources: not printed. |
+| Kushiro and Tsurui reached from Abashiri (agenda Day 6) | "South to Kushiro" | — | HEDGED: direction only; the train and its time ("Train south to Kushiro") were **removed** as unverified. |
+| Niseko off-piste only through gates (features, back) | "Go off-piste only through the official gates" | https://www.niseko.ne.jp/en/niseko/niseko-rules/ (official Niseko Rules) ; https://www.powderhounds.com/japan/hokkaido/niseko/sidecountry-gates.aspx | VERIFIED (backcountry only via gates; gates can be closed; rescue costs ≥¥100,000 — not printed). |
+| Niseko: four resorts, one lift pass (features) | Grand Hirafu, Hanazono, Niseko Village, Annupuri | https://www.shopback.com.au/guide/compare/niseko-hakuba-better-value-japan-ski-trip-australia ; https://www.niseko.ne.jp/en/all-mountain-season-pass ; https://japanactivity.com/niseko-lift-pass-guide | VERIFIED. Day-pass price **not printed** (¥13,500 peak / ¥12,600 regular for 2026–27 in one third-party source only; another still shows 2025–26 prices). |
+| Mount Yōtei height (features) | 1,898 m | https://en.wikipedia.org/wiki/Mount_Y%C5%8Dtei ; https://www.visit-hokkaido.jp/en/spot/detail_10334.html ; https://torifito.jp/niseko/en/locations/mount-yotei | VERIFIED |
+| Red-crowned crane: thought extinct, rediscovered in the Kushiro Marsh in 1924; hundreds in winter (features) | 1924; "hundreds" | https://www.japan-guide.com/blog/sam/170209.html ; https://gov-online.go.jp/eng/publicity/book/hlj/html/202312/202312_01_en.html ; https://www.nippon.com/en/japan-data/h02739/ ; https://mobile.wbsj.org/en/tsurui/ (300+ at once at peak) | VERIFIED. Flock size in 1924 varies (≈10–20+) — not printed. 1,927 cranes in the 2024 winter count; downgraded to near-threatened in 2026 — not printed. |
+| Upopoy opened July 2020 in Shiraoi; name = "singing (together) in a large group"; Ainu dance programmes (features) | July 2020 | https://www.dokyoi.pref.hokkaido.lg.jp/hk/kki/a0008/intl3/introduction.html ; https://ainu-upopoy.go.jp/en/guide/ ; https://www.haveagood-holiday.com/en/articles/upopoy-free-admission-day-november-3-2026 (traditional dance programme) | VERIFIED. Copy now says "Upopoy means “singing together”" (source: "singing in a large group"). |
+| Shiretoko World Heritage, 2005 (features) | 2005 | https://www.japan.travel/national-parks/parks/shiretoko/see-and-do/walk-drift-ice ; https://gov-online.go.jp/eng/publicity/book/hlj/html/202401/202401_01_en.html (Ministry of the Environment) | VERIFIED. UNESCO page link replaced in `sources` by the pages actually found. |
+| Drift-ice walks at Utoro, dry suits (features, map) | "From February into March" | https://www.visit-hokkaido.jp/en/spot/detail_11297.html (early Feb–late Mar) ; https://www.japan.travel/national-parks/parks/shiretoko/see-and-do/walk-drift-ice (Utoro) ; https://japan-experience.com/activities/ice-drift-walk-in-shiretoko | VERIFIED (was "In February"). Operators and prices not printed (private businesses). |
+| Snow Festival began 1950: six snow statues by local junior-high and high-school students (place) | 1950, six | https://www.jrailpass.com/blog/sapporo-snow-festival ; https://www.inspiringvacations.com/us/japan-tours/insight-articles/everything-you-need-to-know-about-sapporo-snow-festival/6589 ; https://japan-food.guide/en/articles/Complete-Guide-to-the-Sapporo-Snow-Festival-To-the-Fantasy-City-Created-by-Snow-and-Light | VERIFIED |
+| Visitors (place) | "Around two million people come each year" | https://www.jrailpass.com/blog/sapporo-snow-festival ; https://www.inspiringvacations.com/us/japan-tours/insight-articles/everything-you-need-to-know-about-sapporo-snow-festival/6589 | CHANGED from "More than two million … in a typical year": sources say "about / over two million"; no official 2026 count found. |
+| Otaru Canal completed 1923; built for cargo between ships and warehouses (place) | 1923 | https://www.mlit.go.jp/tagengo-db/common/001781789.pdf (MLIT: project begun 1914, nine years) ; https://hokkaido-labo.com/en/otaru-canal-438 ; https://www.gltjp.com/en/directory/item/14606/ | VERIFIED |
+| Road plan, residents' campaign, compromise (place) | "part of it became road, and in the 1980s the rest became a stone promenade" | https://www.mlit.go.jp/tagengo-db/common/001781789.pdf (1966 road plan; 1973 campaign; 1980s compromise: part reclaimed for a road) ; https://hokkaido-labo.com/en/otaru-canal-438 (1986 promenade) | CHANGED: "half its width was kept, and in 1986" → "part of it became road, and in the 1980s" (MLIT gives only "the 1980s"; 1986 is single-source). |
+| Gas lamps (place) | 63 | https://hokkaido-labo.com/en/otaru-canal-438 ; https://mom-mom.net/en/travel/places/6ab092676150319914088e5c | VERIFIED (was "old-style gas lamps", no number). |
+| Ezo renamed Hokkaidō in 1869 (intro) | 1869 | https://en.wikipedia.org/wiki/Ezo ; https://en.wikipedia.org/wiki/Hokkaido | VERIFIED (8th month of 1869, with the Kaitakushi; name from Matsuura Takeshirō's proposals). |
+| Ainu Mosir, the Ainu homeland (intro) | — | https://en.wikipedia.com/wiki/Mosir | VERIFIED (single source; term only). |
+| Quote: Chiri Yukie, preface to *Ainu Shin'yōshū* (quote) | その昔この広い北海道は、私たちの先祖の自由の天地でありました。 · "(1922; published 1923)" | https://www.asahi-net.or.jp/~pb5h-ootk/pages/SAKKA/ti/chiriyukie.html (preface opening; Chiri 1903–1922, manuscript finished 1922) ; https://www.hokkaido-np.co.jp/article/1225327/ (first edition 1923) ; https://www.hokkaido-np.co.jp/article/836487/ | VERIFIED. Translation: Tabi Guides. Public domain. |
 
-| Claim (page) | Value used | Verify against | Conf. | Fact-check (17 Oct 2026, memory, no web) |
-| --- | --- | --- | --- | --- |
-| Hokkaidō is the northernmost main island (intro) | — | https://www.visit-hokkaido.jp/en/ ; Wikipedia "Hokkaido" | H | OK |
-| Share of Japan's land (intro) | "about a fifth" | Wikipedia "Hokkaido" (≈83,400 km², ≈22% incl. disputed islands) | H | OK: ≈83,400 of ≈378,000 km² |
-| Snow from Siberian air over the Sea of Japan (intro) | descriptive | Wikipedia "Sea-effect snow" / JMA | H | OK |
-| Ainu homeland, "Ainu Mosir" (intro) | — | https://ainu-upopoy.jp/en/ ; Wikipedia "Ainu people" | H | FIXED wording: "This is Ainu Mosir, the Ainu homeland, renamed Hokkaidō by the Meiji government in 1869" (Ainu Mosir ≈ "land of humans"). |
-| Named Hokkaidō in 1869 (intro) | 1869, Meiji government | Wikipedia "Hokkaido" (Ezo renamed August 1869) | H | FIXED "named" → "renamed" (it was Ezo before; name proposed by Matsuura Takeshirō). |
-| Snow Festival began 1950, six snow statues by local students in Ōdōri Park (place) | 1950, six statues | https://www.snowfes.com/ (history page) ; Wikipedia "Sapporo Snow Festival" | H | FIXED "school students" → "secondary-school students" (official history: junior and senior high-school students). |
-| Festival length (place) | "about a week in early February" | https://www.snowfes.com/ | H | OK. **2027 (77th) dates not checked.** |
-| Three sites: Ōdōri (snow), Susukino (ice), Tsudome (family, snow slides) (place) | — | https://www.snowfes.com/ | M | DOUBT: Tsudome's programme changes year to year; confirm it runs in 2027. |
-| Free admission (place) | "Free to enter" | https://www.snowfes.com/ | H | FIXED "Free at all three sites" → "Free to enter": paid extras (seating, some activities) may exist. |
-| Sculptures lit after dark (place) | "lit up until late" | https://www.snowfes.com/ | H | OK (usually until 22:00; not printed). |
-| Visitors (place) | "more than two million in a typical year" | https://www.snowfes.com/ ; Sapporo City press releases | M | OK: ≈2.0–2.7 million in normal years; ≈1.7 million in scaled-down 2023. |
-| Getting there (place) | "Subway to Ōdōri Station" | https://www.sapporo.travel/en/ | H | FIXED: shortened (row was longer than other brochures' facts); the 15-min walk from JR Sapporo dropped. |
-| Ōdōri Park coordinates (place, map, location) | 43.0600, 141.3480 | Wikipedia "Ōdōri Park" | L | OK: falls inside the park, which runs ≈141.338–141.356 E along ≈43.060 N. |
-| Otaru canal completed 1923 (place) | 1923 | https://otaru.gr.jp/ ; Wikipedia "Otaru Canal" | H | OK (built 1914–1923, by reclaiming land offshore). |
-| Preservation campaign; half the width kept; promenade 1986 (place) | 1986 | https://otaru.gr.jp/ ; Wikipedia "Otaru Canal" | M | FIXED: "reopening in 1986" was wrong (the canal never closed) → "half its width was kept, and in 1986 it became a stone promenade". Half-width applies to the main stretch; the northern canal kept its full width (not mentioned). |
-| "Old-style gas lamps" along the canal (place) | descriptive | https://otaru.gr.jp/ | M | OK: often given as 63 gas lamps; number not printed. |
-| Otaru Snow Light Path, about a week in February (place, agenda) | "about a week in February" | https://yukiakarinomichi.org/ (check URL) ; https://otaru.gr.jp/ | M | DOUBT: recent editions ran ≈8–10 days; check 2027 dates and whether "about ten days" is better. |
-| JR Sapporo–Otaru ~40 min; canal 10 min walk from Otaru Station (place, agenda) | ~40 min | https://www.jrhokkaido.co.jp/global/ | H | OK (rapid ≈32–40 min). Walk dropped from the facts row for length. Fare left out (JR Hokkaido revised fares in 2025). |
-| Otaru Canal coordinates | 43.1990, 141.0010 | Wikipedia "Otaru Canal" | L | OK-ish: near Chūō Bridge (≈0.7 km east of Otaru Station at ≈43.198, 140.994). |
-| Drift ice forms where the Amur River freshens the Sea of Okhotsk (place) | — | https://www.ms-aurora.com/abashiri/ ; Okhotsk Ryūhyō Museum ; Wikipedia "Sea of Okhotsk" | H | OK |
-| ~~"About as far south as sea ice reaches land anywhere in the Northern Hemisphere"~~ (place) | **removed** | — | — | FIXED: wrong as written: the Bohai Sea (Liaodong Bay, ≈38–40 °N) freezes every winter. The usual Japanese claim is narrower (the southern limit of *drift* ice reaching shore). Replaced with "level with the south of France" (Abashiri ≈44.0 °N; Nice 43.7 °N, Bordeaux 44.8 °N). |
-| Icebreaker Aurora, ~1 h cruises from Abashiri (place, agenda) | ~1 h | https://www.ms-aurora.com/abashiri/ | M | OK. Season, timetable and fare **not printed**; check the 2027 season. |
-| Season late Jan–Mar; best Feb to early Mar (place) | — | https://www.ms-aurora.com/abashiri/ ; https://www.visit-hokkaido.jp/en/ | M | OK |
-| Getting there: fly to Memanbetsu, or ~5½ h by train from Sapporo (place, agenda) | "Fly to Memanbetsu, or 5½ h by train" | https://www.jrhokkaido.co.jp/global/ (Ltd. Exp. Okhotsk) | M | OK (Ltd. Exp. Okhotsk ≈5 h 20–30 min); shortened for length. |
-| Okhotsk Ryūhyō Museum on Mount Tento (place, agenda) | — | Abashiri City tourism | H | OK (real drift ice kept in a −15 °C room). Hours/fee not printed. |
-| Abashiri coordinates | 44.0170, 144.2830 | Michi-no-eki Ryūhyō Kaidō Abashiri (Aurora terminal) | L | DOUBT: plausible for the east side of central Abashiri; confirm against the Aurora terminal. |
-| Niseko: four linked resorts on Mt Niseko Annupuri (features) | 4 (Grand Hirafu, Hanazono, Niseko Village, Annupuri) | https://www.niseko.ne.jp/en/ | H | OK |
-| Mount Yōtei height (features) | 1,898 m | Wikipedia "Mount Yōtei" ; GSI | H | OK |
-| Leave pistes only through gates (Niseko Rules) (features, back) | "official gates" | https://www.niseko.ne.jp/en/ (Niseko Rules) | H | FIXED "patrolled gates" → "official gates" (the rules speak of gates, and gates can be closed; "patrolled" was not sourced). Back page reworded the same way. |
-| Red-crowned crane once thought extinct in Japan; now hundreds at feeding grounds near Kushiro and Tsurui (features) | — | Wikipedia "Red-crowned crane" ; Kushiro City | H/M | OK: rediscovered in Kushiro Marsh in 1924 (≈20 birds). Population (≈1,800) not printed. |
-| Upopoy = National Ainu Museum and Park, Shiraoi, opened 2020, Lake Poroto (features, gallery) | 2020 (12 July) | https://ainu-upopoy.jp/en/ | H | OK; the museum's exhibits are written in the first person from an Ainu point of view. Admission/hours **not printed**. Believed closed Mondays (memory): check before relying on Day 3. |
-| Sapporo–Shiraoi by limited express ~1 h (agenda) | ~1 h | https://www.jrhokkaido.co.jp/global/ | M | OK (Ltd. Exp. Suzuran / Hokuto). |
-| Shiretoko UNESCO World Heritage, 2005 (features) | 2005 | https://whc.unesco.org/en/list/1193/ | H | OK: natural site, inscribed July 2005, list number 1193. |
-| Drift-ice walks in dry suits at Utoro (features) | — | Shiretoko Shari tourism | M | OK. Operators not named (private businesses). |
-| Sapporo is the home of miso ramen (features) | — | https://www.sapporo.travel/en/ | M | OK: miso ramen developed in Sapporo in the 1950s–60s; Susukino's Ganso Ramen Yokochō is the "noodle alley". No business named. |
-| New Chitose–Sapporo ~40 min by JR (map) | ~40 min | https://www.jrhokkaido.co.jp/global/ | H | OK (Rapid Airport ≈37 min). |
-| New Chitose–Memanbetsu flight (agenda) | "Fly from New Chitose to Memanbetsu" | airline timetables | M | FIXED: Day 4 now names the departure airport (Day 3 ends in Shiraoi, near New Chitose). Flight ≈50 min, not printed. |
-| Abashiri → Kushiro by train (agenda) | "Train south to Kushiro" | JR Senmō Line | M | OK: Senmō Main Line ≈3 h (memory), kept untimed. "Feeding grounds" → "sanctuary" for length. |
-| Tsurui-Itō Tanchō Sanctuary (map, agenda) | 43.2300, 144.3200 | Wild Bird Society of Japan | L | DOUBT: near Tsurui village; confirm exact site. |
-| Upopoy coordinates | 42.5560, 141.3610 | Wikipedia "Upopoy" | L | OK-ish: just north-east of JR Shiraoi Station (≈42.551, 141.356), by Lake Poroto. |
-| Utoro coordinates | 44.0680, 144.9880 | Wikipedia "Utoro" | L | OK-ish: Utoro port town. |
-| Niseko coordinates and label | 42.8600, 140.7000 · "Niseko Hirafu / ニセコひらふ" | Niseko United | L | FIXED label: "Niseko Grand Hirafu / ニセコグラン・ヒラフ" (a ski-area trade name) → the place name "Niseko Hirafu / ニセコひらふ" (Kutchan). Coordinates ≈ Hirafu village. |
-| New Chitose Airport coordinates | 42.7753, 141.6922 | Wikipedia "New Chitose Airport" | M | OK (airport reference point ≈42°46′31″N 141°41′32″E). |
-| Dialect: しばれる "freezing cold", なまら "very" (phrases) | — | Hokkaidō dialect references | H | OK |
-| Ainu greeting イランカラプテ Irankarapte (phrases) | "Hello" | https://ainu-upopoy.jp/en/ ; Hokkaidō Government "Irankarapte campaign" | H | OK. Also written イランカラㇷ゚テ with the Ainu small-katakana ㇷ゚; the government campaign uses イランカラプテ. |
-| Other phrases (リフト券を一枚ください, 流氷は見えますか？, 滑りやすいので気をつけてください) | — | — | H | OK: natural, polite Japanese; romaji correct. |
-| Quote: Chiri Yukie, preface to *Ainu Shin'yōshū* | その昔この広い北海道は、私たちの先祖の自由の天地でありました。 | Aozora Bunko text of アイヌ神謡集 ; Wikipedia "Chiri Yukie" | H | FIXED date: the preface is signed 1 March 1922 (大正十一年三月一日); the book was published in 1923 after Chiri's death on 18 September 1922. Role now "Preface to Ainu Shin'yōshū (1922; published 1923)". Wording OK (original 其の昔此の広い…; modernised spelling is the one usually quoted). Translation: Tabi Guides. Public domain. |
-| Tourist information centre at JR Sapporo Station (contact) | "Hokkaidō-Sapporo Tourist Information Center" | https://www.sapporo.travel/en/ | M | OK (West Concourse, north side of JR Sapporo Station). Hours not printed. |
-| Official URLs (sources, place websites, contact) | snowfes.com, sapporo.travel/en, visit-hokkaido.jp/en, otaru.gr.jp, ainu-upopoy.jp/en, ms-aurora.com/abashiri, niseko.ne.jp/en, whc.unesco.org/en/list/1193 | — | M | OK from memory: all are the known official domains. **Still open every link** before publishing. |
+## Descriptive copy not re-checked in this pass
 
-### Copy edits in the fact-check pass
+No price, hour, date or access detail; kept as written and judged well established, but not searched
+(budget). Status **HEDGED**.
 
-- Cover subtitle "candlelit canals in Otaru" → "a candlelit canal in Otaru" (there is one canal).
-- Facts rows, map body, Day 1 and back-page text shortened to the lengths used in the verified Kyoto and Nara
-  brochures (facts ≤ ~40 characters, map body ≈ 130, back body ≈ 145).
-- Back page: "keep to marked trails and patrolled gates, and give the cranes and the ice their distance" →
-  "leave the pistes only by the gates, never walk on sea ice unguided, and give the cranes room" (walking out on
-  shore ice without a guide is the real danger).
-- Photo manifest: Snow Festival `alt` no longer promises the TV Tower, so it stays true for whichever photo is chosen.
+| Claim (page) | Value used | Note |
+| --- | --- | --- |
+| Hokkaidō covers about a fifth of Japan's land (intro) | "about a fifth" | ≈83,400 of ≈378,000 km² (≈22%) from memory; already worded loosely. |
+| Siberian air over the Sea of Japan brings dry snow (intro) | — | General meteorology. |
+| Sea ice forms where the Amur River freshens the Sea of Okhotsk; Abashiri "level with the south of France" (place) | — | Memory (Abashiri ≈44.0 °N; Nice 43.7 °N, Bordeaux 44.8 °N). |
+| Sapporo miso ramen (features) | "famous for miso ramen — rich, sometimes topped with butter and corn" | Softened from "the home of miso ramen" / "often". |
+| Upopoy by Lake Poroto (gallery caption, manifest) | — | Memory. |
+| Susukino "carved ice" (place) and ice sculptures (gallery) | — | Susukino site location verified; "ice" from memory and common knowledge. |
+| Phrases: しばれる, なまら, イランカラプテ, リフト券を一枚ください, 流氷は見えますか？, 滑りやすいので気をつけてください | — | Language, not facts: natural, polite Japanese; romaji checked. |
 
-## Changes from the old brochure
+## Coordinates (not re-checked)
 
-- Removed the fictional publisher "Shirokuma Winter Co.", its fake email and office, the invented tour
-  packages and prices (¥168,000 / ¥298,000), and the invented testimonial ("Ines & Sam").
-- Removed the stats page ("~5 m of snow", "2M+ visitors", "22%"). Visitors and land share moved into the copy,
-  rounded; the snowfall figure was dropped as unverified.
-- Removed the Asahiyama Zoo day (not in this brief) and "glass workshops" (would point to private businesses).
-- Added place pages (Snow Festival, Otaru Canal, Abashiri drift ice), Upopoy and Ainu culture, Shiretoko, a map,
-  visitor information and a real quote.
+No search was spent on coordinates. Values are from memory and approximate (±~0.5 km); all fall inside the map.
 
-## Not verified / left out
+| Place | lat, lng |
+| --- | --- |
+| Ōdōri Park (location, place, map) | 43.0600, 141.3480 |
+| Otaru Canal | 43.1990, 141.0010 |
+| Niseko Hirafu | 42.8600, 140.7000 |
+| Upopoy, Shiraoi | 42.5560, 141.3610 |
+| Abashiri (Aurora terminal area) | 44.0170, 144.2830 |
+| Utoro | 44.0680, 144.9880 |
+| Tsurui-Itō Tanchō Sanctuary | 43.2300, 144.3200 |
+| New Chitose Airport | 42.7753, 141.6922 |
 
-- Every price and hour (see above), Snow Festival and Snow Light Path dates for 2027, the Aurora 2027 season.
-- Sapporo's average snowfall (≈4.8 m, 1991–2020 normal), the crane population, the Okhotsk Ryūhyō Museum fee.
-- A Costs page: add it once Upopoy admission, Aurora fares, the JR Sapporo–Otaru fare and the Niseko pass are verified.
-- **Before publishing:** a sourced pass over every row (two sources each), then set `factsChecked` and the
-  tagline "Facts checked <month year> · Tabi Guides".
+## Official URLs used on the pages
+
+Confirmed to exist by appearing in search results: https://www.snowfes.com/ , https://www.sapporo.travel/en/… ,
+https://www.ms-aurora.com/abashiri/ , https://ainu-upopoy.go.jp/en/guide/ (**Upopoy's site is now on `.go.jp`**; the old
+`ainu-upopoy.jp` links were replaced), https://www.niseko.ne.jp/en/… , https://www.visit-hokkaido.jp/en/… ,
+https://visit-abashiri.jp/en/access/ , https://mobile.wbsj.org/en/tsurui/ , https://www.japan.travel/national-parks/… .
+**REMOVED:** `https://otaru.gr.jp/` (Otaru place page and sources) and the UNESCO list page, which did not turn up in
+any search; the Otaru page now links the official Sapporo city guide's Snow Light Path page. **REMOVED:** the
+"Hokkaidō-Sapporo Tourist Information Center, JR Sapporo Station" contact row (location not confirmed); the
+contact page now lists the Aurora's official site instead.
+
+## Costs page (added)
+
+| Plan | Price | Basis |
+| --- | --- | --- |
+| Upopoy | ¥1,200 adult; high school ¥600; winter 9:00–17:00; closed Mondays, 28 Dec–4 Jan, 27 Feb–8 Mar | Official guide page and fare sheet (above). |
+| Icebreaker Aurora (highlight) | ¥5,000–7,000; 2026: ¥6,000 Feb, ¥5,000 Jan & Mar; children half | Hedged range (above). |
+| Free to enjoy | Snow Festival (all three sites); Tsurui-Itō sanctuary, Oct–Mar; pay only for food and some Tsudome activities | Above. |
+
+Left off: JR fares (2025 revision, current figures not found), Niseko day pass (single source), Okhotsk Ryūhyō
+Museum fee (conflicting), Hokkaido Rail Pass (not searched).
+
+## Searches
+
+This brochure used 21 of the shared 40 searches (Snow Festival ×3, Snow Light Path, Aurora ×3, Upopoy, cranes,
+Niseko ×2, Ryūhyō Museum, JR fares, Otaru Canal, JR times, Abashiri access, Shiretoko, Yōtei/cranes, Chiri Yukie,
+official domains, Ezo/Upopoy). No searches were spent on photos.
 
 ## Photos
 
-**No candidates were found**, because search was unavailable in both passes. Each slot in
-`src/data/photos/manifest/hokkaido-powder-snow.json` has an empty `candidates` array rather than guessed file titles
-(`npm run photos:fetch` reports these slots as having no candidates, and the brochure shows its generative art until
-real titles are added). Suggested searches for the curator (the category names are guesses):
+**No candidates yet** (photo searches were out of scope for this pass; candidates are curated later through the
+Commons API). Each slot in `src/data/photos/manifest/hokkaido-powder-snow.json` keeps an empty `candidates` array,
+and the brochure shows its generative art until real titles are added. Suggested searches for the curator:
 
 | Slot (id → page) | What to look for | Suggested search |
 | --- | --- | --- |
-| `hokkaido-tancho-dance` → cover | Two cranes dancing in snow, strong central subject that survives a portrait crop | `site:commons.wikimedia.org File: Grus japonensis Tsurui dancing` · Commons categories for *Grus japonensis* in Hokkaido |
-| `hokkaido-yotei-niseko` → intro | Snow-covered Mount Yōtei from Niseko, landscape | `File: Mount Yotei winter Niseko` |
-| `hokkaido-sapporo-snow-festival` → Snow Festival place | Snow sculptures in Ōdōri Park; crowds small | `File: Sapporo Snow Festival Odori` |
-| `hokkaido-otaru-canal` → Otaru place | Canal with warehouses and lamps in snow, dusk | `File: Otaru Canal winter` |
-| `hokkaido-abashiri-drift-ice` → Abashiri place | Icebreaker Aurora in the floes | `File: Aurora icebreaker Abashiri drift ice` |
-| `hokkaido-susukino-ice` → gallery | Ice sculptures at the Susukino site | `File: Susukino ice sculpture` |
-| `hokkaido-upopoy` → gallery | National Ainu Museum building by Lake Poroto | `File: National Ainu Museum Upopoy` |
-| `hokkaido-shiretoko-drift-ice` → gallery | Drift ice below the Shiretoko range | `File: Shiretoko drift ice` |
-| `hokkaido-otaru-snow-light` → gallery | Snow lanterns along the canal at night (not mostly black) | `File: Otaru Yuki Akari no Michi` |
+| `hokkaido-tancho-dance` → cover | Two cranes dancing in snow, strong central subject that survives a portrait crop | Commons categories for *Grus japonensis* in Hokkaido; "Tsurui" |
+| `hokkaido-yotei-niseko` → intro | Snow-covered Mount Yōtei from Niseko, landscape | "Mount Yotei winter Niseko" |
+| `hokkaido-sapporo-snow-festival` → Snow Festival place | Snow sculptures in Ōdōri Park; crowds small | "Sapporo Snow Festival Odori" |
+| `hokkaido-otaru-canal` → Otaru place | Canal with warehouses and gas lamps in snow, dusk | "Otaru Canal winter" |
+| `hokkaido-abashiri-drift-ice` → Abashiri place | Icebreaker Aurora in the floes | "Aurora icebreaker Abashiri drift ice" |
+| `hokkaido-susukino-ice` → gallery | Ice sculptures at the Susukino site | "Susukino ice sculpture" |
+| `hokkaido-upopoy` → gallery | National Ainu Museum building by Lake Poroto | "National Ainu Museum Upopoy" |
+| `hokkaido-shiretoko-drift-ice` → gallery | Drift ice below the Shiretoko range | "Shiretoko drift ice" |
+| `hokkaido-otaru-snow-light` → gallery | Snow lanterns along the canal at night (not mostly black) | "Otaru Yuki Akari no Michi" |
 
 Avoid photos where people are the main subject, and be careful with photos of Ainu ceremonies or performers.
 Prefer buildings, landscapes and crafts on display. Snow and ice sculptures are temporary artworks: prefer
