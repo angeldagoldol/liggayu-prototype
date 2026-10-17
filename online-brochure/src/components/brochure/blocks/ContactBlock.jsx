@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react';
 import { pad } from '../../../lib/format.js';
+import { safeUrl } from '../../../data/sanitize.js';
 import { Button, Icon, VerticalText } from '../../ui/index.js';
 import { usePage } from './pageContext.js';
 import { fitSize, list, text } from './pageUtils.js';
@@ -15,8 +16,10 @@ function hrefFor(value) {
 }
 
 /**
- * Contact page: headline, a ticket (切符, kippu) listing the details with a
- * perforated stub, and a call to action that calls `onCta`.
+ * Contact page — for built-ins, "Visitor information": headline, a ticket
+ * (切符, kippu) listing the details with a perforated stub, and a call to
+ * action. Details with a `url` link to it (http(s) only, new tab); with a
+ * `ctaUrl` the call to action opens that site, otherwise it calls `onCta`.
  */
 export function ContactBlock({ page, brochure, index }) {
   const { isStatic, onCta } = usePage();
@@ -25,7 +28,8 @@ export function ContactBlock({ page, brochure, index }) {
   const cta = text(page.cta);
   const details = list(page.details, 4).filter((d) => text(d.value));
   const titleJp = text(brochure.titleJp) || '旅';
-  const interactive = !isStatic && typeof onCta === 'function';
+  const ctaUrl = safeUrl(page.ctaUrl);
+  const interactive = !isStatic && (Boolean(ctaUrl) || typeof onCta === 'function');
   // 〒, the Japan Post mark, is a ghost in the open space above the ticket.
   // It hangs off the ticket's top edge so the ticket (whose height depends on
   // the details) never hides part of the glyph.
@@ -57,7 +61,8 @@ export function ContactBlock({ page, brochure, index }) {
           <dl className={styles.details}>
             {details.map((detail, i) => {
               const value = text(detail.value);
-              const href = isStatic ? null : hrefFor(value);
+              const url = safeUrl(detail.url);
+              const href = isStatic ? null : url || hrefFor(value);
               return (
                 <div key={i} className={styles.row}>
                   {/* A dl group may only hold dt/dd, so the icon lives inside the term. */}
@@ -67,7 +72,16 @@ export function ContactBlock({ page, brochure, index }) {
                     </span>
                     {text(detail.label) || 'Detail'}
                   </dt>
-                  <dd>{href ? <a href={href}>{value}</a> : value}</dd>
+                  <dd>
+                    {href ? (
+                      <a href={href} {...(url ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                        {value}
+                        {url && <span className="sr-only"> (opens in a new tab)</span>}
+                      </a>
+                    ) : (
+                      value
+                    )}
+                  </dd>
                 </div>
               );
             })}
@@ -81,7 +95,12 @@ export function ContactBlock({ page, brochure, index }) {
 
       {cta && (
         <Reveal className={styles.action}>
-          {interactive ? (
+          {interactive && ctaUrl ? (
+            <Button variant="accent" className={styles.cta} href={ctaUrl} target="_blank" rel="noopener noreferrer" iconRight={<ArrowUpRight aria-hidden="true" />}>
+              {cta}
+              <span className="sr-only"> (opens in a new tab)</span>
+            </Button>
+          ) : interactive ? (
             <Button variant="accent" className={styles.cta} onClick={onCta} iconRight={<ArrowUpRight aria-hidden="true" />}>
               {cta}
             </Button>

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { BrochureProvider } from '../../context/BrochureContext.jsx';
 import { ToastProvider } from '../../context/ToastContext.jsx';
+import { BROCHURES } from '../../data/brochures.js';
 import Library from './Library.jsx';
 
 function LocationProbe() {
@@ -42,7 +43,7 @@ describe('<Library>', () => {
   it('lists every built-in brochure as one named link per card', () => {
     renderLibrary();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Every brochure, unfolded.');
-    expect(cards()).toHaveLength(10);
+    expect(cards()).toHaveLength(BROCHURES.length);
     expect(screen.getByRole('link', { name: 'Kyoto: A Thousand Gates' })).toHaveAttribute('href', '/brochures/kyoto-thousand-gates');
   });
 
@@ -58,7 +59,7 @@ describe('<Library>', () => {
     renderLibrary('/brochures?category=food');
     expect(cards()).toHaveLength(1);
     const live = document.querySelector('[aria-live="polite"][aria-atomic="true"]');
-    expect(live).toHaveTextContent('1 brochure of 10');
+    expect(live).toHaveTextContent(`1 brochure of ${BROCHURES.length}`);
     expect(screen.getByRole('button', { name: /Remove category filter: Food & Drink/ })).toBeInTheDocument();
   });
 
@@ -68,7 +69,7 @@ describe('<Library>', () => {
     expect(screen.getByRole('heading', { name: 'No brochures match' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Clear filters' }));
     expect(screen.getByTestId('location')).toHaveTextContent(/^$/);
-    expect(cards()).toHaveLength(10);
+    expect(cards()).toHaveLength(BROCHURES.length);
   });
 
   it('toggles seasons and the favourites-only filter through the URL', async () => {
@@ -120,7 +121,7 @@ describe('<Library>', () => {
 
   it('drops prototype-named filters from a hand-edited URL instead of showing an empty mystery state', () => {
     renderLibrary('/brochures?category=constructor&region=toString&season=__proto__');
-    expect(cards()).toHaveLength(10);
+    expect(cards()).toHaveLength(BROCHURES.length);
     expect(screen.queryByRole('button', { name: /Remove .* filter/ })).toBeNull();
   });
 });

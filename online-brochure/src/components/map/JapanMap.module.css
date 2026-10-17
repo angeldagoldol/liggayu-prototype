@@ -1,0 +1,193 @@
+/* A printed atlas plate: paper sea, a breath of ink on the land, hairline
+   coast and borders. Colours follow the brochure theme (--b-*) on brochure
+   pages and the app tokens elsewhere; override any --map-* on the root. */
+.map {
+  --map-ink: var(--b-ink, var(--ink));
+  --map-paper: var(--b-paper, var(--bg));
+  --map-accent: var(--b-accent, var(--accent));
+  --map-accent2: var(--b-accent2, var(--accent-2));
+  --map-on-accent: var(--b-on-accent, var(--accent-ink));
+  --map-sea: var(--map-paper);
+  --map-land: color-mix(in srgb, var(--map-ink) 6%, var(--map-paper));
+  --map-coast: color-mix(in srgb, var(--map-ink) 72%, var(--map-paper));
+  --map-border: color-mix(in srgb, var(--map-ink) 24%, var(--map-paper));
+  --map-grid: color-mix(in srgb, var(--map-ink) 10%, var(--map-paper));
+  --map-label: color-mix(in srgb, var(--map-ink) 88%, var(--map-paper));
+  --map-quiet: color-mix(in srgb, var(--map-ink) 52%, var(--map-paper));
+  --map-highlight: color-mix(in srgb, var(--map-accent) 26%, var(--map-paper));
+  --map-tone-a: color-mix(in srgb, var(--map-accent2) 11%, var(--map-paper));
+  --map-tone-b: color-mix(in srgb, var(--map-accent) 9%, var(--map-paper));
+  --map-tone-c: color-mix(in srgb, var(--map-ink) 9%, var(--map-paper));
+  --map-font: var(--font-sans);
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--map-aspect);
+  max-height: 100%;
+  margin-inline: auto;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--map-font);
+}
+
+.sea {
+  fill: var(--map-sea);
+}
+
+.graticule {
+  fill: none;
+  stroke: var(--map-grid);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+
+.plate {
+  fill: none;
+  stroke: var(--map-quiet);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+
+.insetFrame rect {
+  fill: var(--map-sea);
+  stroke: var(--map-quiet);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Drawn under the fills: only the outer half of this stroke survives, at the shore. */
+.coast path {
+  fill: var(--map-coast);
+  stroke: var(--map-coast);
+  stroke-width: 1.6px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.region path {
+  fill: var(--map-land);
+  fill-rule: evenodd;
+  stroke: var(--map-border);
+  stroke-width: 0.6px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: fill 240ms var(--ease-out, ease-out);
+}
+
+.region[data-fill='a'] path {
+  fill: var(--map-tone-a);
+}
+
+.region[data-fill='b'] path {
+  fill: var(--map-tone-b);
+}
+
+.region[data-fill='c'] path {
+  fill: var(--map-tone-c);
+}
+
+.region[data-highlighted] path {
+  fill: var(--map-highlight);
+}
+
+.interactive .region {
+  cursor: pointer;
+  outline: none;
+}
+
+.interactive .region:hover path {
+  fill: color-mix(in srgb, var(--map-accent) 16%, var(--map-paper));
+}
+
+.interactive .region[data-highlighted]:hover path {
+  fill: var(--map-highlight);
+}
+
+/* SVG groups take no outline: draw the focus ring as a heavier border. */
+.interactive .region:focus-visible path {
+  stroke: var(--focus, var(--map-ink));
+  stroke-width: 2px;
+}
+
+.lakes path {
+  fill: var(--map-sea);
+  stroke: var(--map-coast);
+  stroke-width: 0.6px;
+  vector-effect: non-scaling-stroke;
+}
+
+.insetLabel,
+.seaLabel,
+.regionLabel {
+  fill: var(--map-quiet);
+  font-family: var(--map-font);
+  letter-spacing: 0.04em;
+}
+
+.seaLabel {
+  font-style: italic;
+  letter-spacing: 0.18em;
+}
+
+.seaEn {
+  font-size: 0.62em;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+.regionLabel {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.jp {
+  font-family: var(--font-jp);
+  font-style: normal;
+}
+
+.leader {
+  stroke: var(--map-ink);
+  stroke-width: 0.75px;
+  vector-effect: non-scaling-stroke;
+}
+
+.spot {
+  fill: var(--map-ink);
+}
+
+.marker {
+  fill: var(--map-accent);
+  stroke: var(--map-paper);
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+}
+
+.number {
+  fill: var(--map-on-accent);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  fill: var(--map-label);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  paint-order: stroke;
+  stroke: var(--map-paper);
+  stroke-linejoin: round;
+}
+
+.labelJp {
+  fill: var(--map-quiet);
+  font-family: var(--font-jp);
+  font-weight: 500;
+  font-size: 0.86em;
+}

@@ -1,11 +1,34 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+/**
+ * Photo manifests (src/data/photos/manifest/*.json) list Commons candidates for
+ * curation; the app only needs what each photo shows (alt, caption, place,
+ * focus, use). Drop `candidates` and `file` before the JSON reaches the bundle.
+ */
+function photoManifests() {
+  const manifest = /[\\/]src[\\/]data[\\/]photos[\\/]manifest[\\/][^\\/]+\.json$/;
+  return {
+    name: 'tabi-photo-manifests',
+    enforce: 'pre',
+    transform(code, id) {
+      if (!manifest.test(id.split('?')[0])) return null;
+      try {
+        const json = JSON.parse(code);
+        const photos = Array.isArray(json?.photos) ? json.photos.map(({ candidates: _candidates, file: _file, ...keep }) => keep) : [];
+        return { code: JSON.stringify({ ...json, photos }), map: null };
+      } catch {
+        return null; // let Vite report the broken JSON
+      }
+    },
+  };
+}
+
 // `base: './'` keeps every asset URL relative, so the built `dist/` folder
 // works from any host or sub-path (Vercel, Netlify, GitHub Pages, a USB stick).
 export default defineConfig({
   base: './',
-  plugins: [react()],
+  plugins: [react(), photoManifests()],
   server: { port: 5173, host: true },
   preview: { port: 4173, host: true },
   build: {

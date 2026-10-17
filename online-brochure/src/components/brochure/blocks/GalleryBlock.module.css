@@ -83,6 +83,12 @@
   inset: 0;
 }
 
+.frame > .photo {
+  position: absolute;
+  inset: 0;
+  --photo-credit-size: 1.05cqw;
+}
+
 .caption {
   display: flex;
   align-items: baseline;

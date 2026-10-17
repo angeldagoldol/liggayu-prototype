@@ -1,0 +1,93 @@
+.map {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chart {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3.4cqw 0 0;
+  --map-font: var(--font-sans);
+}
+
+.japan {
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: color-mix(in srgb, var(--b-ink) 4%, var(--b-paper));
+}
+
+.places {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6cqw 4cqw;
+  margin: 3.4cqw 0 0;
+  padding: 2.8cqw 0 0;
+  border-top: var(--hair) solid var(--b-rule);
+  list-style: none;
+}
+
+.places[data-count='1'] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 3.4cqw minmax(0, 1fr);
+  align-items: start;
+  gap: 1.4cqw;
+  min-width: 0;
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  width: 3.2cqw;
+  height: 3.2cqw;
+  border-radius: 50%;
+  background: var(--b-accent);
+  color: var(--b-on-accent);
+  font-family: var(--font-mono);
+  font-size: 1.5cqw;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3cqw;
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font-size: 2cqw;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--b-ink);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.nameJp {
+  margin-left: 0.6em;
+  font-weight: 500;
+  color: var(--b-muted-text);
+}
+
+.note {
+  font-size: 1.65cqw;
+  line-height: 1.35;
+  color: var(--b-muted-text);
+}

@@ -97,3 +97,26 @@
   font-size: 2cqw;
   color: var(--b-muted-text);
 }
+
+/* The original Japanese (e.g. a haiku), above its translation. */
+.text p.original,
+[data-typeface] .text p.original {
+  margin: 1.6cqw 0 0;
+  font-family: var(--font-jp);
+  font-size: var(--fs, 4.2cqw);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  color: var(--b-ink);
+  font-feature-settings: 'palt';
+}
+
+.text p.original {
+  font-style: normal;
+  font-variation-settings: normal;
+  margin-bottom: 2.4cqw;
+}
+
+.text[data-translation] p:not(.original) {
+  font-size: calc(var(--fs, 6cqw) * 0.78);
+}

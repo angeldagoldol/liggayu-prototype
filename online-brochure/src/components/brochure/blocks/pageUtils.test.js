@@ -5,6 +5,7 @@ import {
   fitSize,
   folio,
   formatEdition,
+  formatLatLng,
   kanjiNumeral,
   list,
   pageHeading,
@@ -60,7 +61,11 @@ describe('labels and numerals', () => {
     expect(pageHeading({ type: 'cover' }, brochure)).toBe('Kyoto: A Thousand Gates');
     expect(pageHeading({ type: 'intro', heading: 'Welcome' }, brochure)).toBe('Welcome');
     expect(pageHeading({ type: 'agenda' }, brochure)).toBe('Schedule');
-    expect(pageHeading({ type: 'quote', author: 'Hannah' }, brochure)).toBe('Testimonial from Hannah');
+    expect(pageHeading({ type: 'quote', author: 'Matsuo Bashō' }, brochure)).toBe('Quote from Matsuo Bashō');
+    expect(pageHeading({ type: 'quote' }, brochure)).toBe('Quote');
+    expect(pageHeading({ type: 'place', name: 'Kiyomizu-dera' }, brochure)).toBe('Kiyomizu-dera');
+    expect(pageHeading({ type: 'place' }, brochure)).toBe('Place');
+    expect(pageHeading({ type: 'map', heading: 'Where it all is' }, brochure)).toBe('Where it all is');
     expect(pageHeading({ type: 'back' }, brochure)).toBe('Back cover');
     expect(pageHeading({ type: 'mystery' }, brochure)).toBe('Untitled page');
     expect(pageHeading(null, null)).toBe('Untitled page');
@@ -109,5 +114,16 @@ describe('themeVars', () => {
 
   it('falls back to the default theme for missing input', () => {
     expect(themeVars(undefined)['--b-font']).toBe('var(--font-display)');
+  });
+});
+
+describe('formatLatLng', () => {
+  it('prints hemispheres with four decimals, or nothing', () => {
+    expect(formatLatLng(34.9949, 135.785)).toBe('34.9949° N · 135.7850° E');
+    expect(formatLatLng(-33.8568, -151.2153)).toBe('33.8568° S · 151.2153° W');
+    expect(formatLatLng(91, 10)).toBe('');
+    expect(formatLatLng(-33.8568, 151.2153)).toBe('33.8568° S · 151.2153° E');
+    expect(formatLatLng('x', 1)).toBe('');
+    expect(formatLatLng(undefined, undefined)).toBe('');
   });
 });

@@ -7,6 +7,11 @@
 .art {
   position: absolute;
   inset: 0 0 30% 0;
+  /* Photo credit: bottom-left, clear of the seal on the obi. */
+  --photo-credit-size: 1.15cqw;
+  --photo-chip-left: 7cqw;
+  --photo-chip-right: auto;
+  --photo-chip-bottom: 1.6cqw;
 }
 
 .masthead {

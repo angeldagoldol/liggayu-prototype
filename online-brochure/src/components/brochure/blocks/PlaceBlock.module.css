@@ -1,0 +1,139 @@
+/* A museum label for one real place: photograph, name, story, facts. */
+.place {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.media {
+  position: relative;
+  flex: none;
+  height: 46cqw;
+  margin: 0 0 4.2cqw;
+  outline: var(--hair) solid var(--b-rule);
+  outline-offset: 0.8cqw;
+  --photo-credit-size: 1.2cqw;
+}
+
+.media > .photo {
+  position: absolute;
+  inset: 0;
+}
+
+.header {
+  margin-bottom: 3.2cqw;
+}
+
+.nameJp {
+  display: inline-block;
+  margin-left: 0.45em;
+  font-size: 0.5em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--b-accent-text);
+  vertical-align: 0.2em;
+  white-space: nowrap;
+}
+
+.columns {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4.4cqw;
+  border-top: var(--hair) solid var(--b-rule);
+  padding-top: 3.2cqw;
+}
+
+.columns[data-facts] {
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+}
+
+.copy {
+  min-height: 0;
+  overflow: hidden;
+  font-size: var(--copy, 2.4cqw);
+  line-height: 1.6;
+  color: var(--b-body);
+  hyphens: auto;
+  mask-image: linear-gradient(to bottom, #000 88%, transparent);
+}
+
+.copy p {
+  margin: 0;
+}
+
+.copy p + p {
+  margin-top: 0.85em;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4cqw;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.facts {
+  margin: 0;
+}
+
+.fact {
+  padding: 1.3cqw 0 1.4cqw;
+  border-bottom: var(--hair) solid var(--b-rule);
+}
+
+.fact:first-child {
+  padding-top: 0;
+}
+
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: 1.35cqw;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--b-accent-text);
+}
+
+.fact dd {
+  margin: 0.5cqw 0 0;
+  font-size: 2cqw;
+  line-height: 1.4;
+  color: var(--b-ink);
+}
+
+.site {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6cqw;
+  align-self: flex-start;
+  margin: 0;
+  font-size: 1.9cqw;
+  font-weight: 600;
+  color: var(--b-ink);
+  text-decoration: underline;
+  text-decoration-thickness: var(--hair);
+  text-underline-offset: 0.5cqw;
+  text-decoration-color: var(--b-rule-strong);
+  overflow-wrap: anywhere;
+}
+
+.site svg {
+  flex: none;
+  width: 2cqw;
+  height: 2cqw;
+}
+
+a.site:hover {
+  text-decoration-color: currentColor;
+}
+
+.where {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 1.3cqw;
+  letter-spacing: 0.06em;
+  color: var(--b-muted-text);
+}

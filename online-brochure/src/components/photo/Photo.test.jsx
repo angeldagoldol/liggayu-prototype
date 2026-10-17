@@ -1,0 +1,160 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { createPhotoRegistry } from '../../data/photos/registry.js';
+import { Photo } from './Photo.jsx';
+import { renderedWidth } from './renderedWidth.js';
+
+const registry = createPhotoRegistry(
+  {
+    m: [
+      { id: 'test-gate', alt: 'A tunnel of vermilion gates', caption: 'Senbon Torii', focus: '40% 30%' },
+      { id: 'test-pending', alt: 'Not downloaded yet' },
+      { id: 'test-pd', alt: 'An old print' },
+      { id: 'test-no-alt', caption: 'Kiyomizu-dera in autumn' },
+    ],
+  },
+  {
+    'test-gate': {
+      width: 1600,
+      height: 1067,
+      widths: [480, 960, 1600],
+      lqip: 'data:image/webp;base64,UklGRg==',
+      color: '#8a3b22',
+      author: 'Example Photographer',
+      authorUrl: 'https://commons.wikimedia.org/wiki/User:Example',
+      license: 'CC BY-SA 4.0',
+      licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Example.jpg',
+      attributionRequired: true,
+    },
+    'test-pd': { width: 960, height: 640, widths: [480, 960], author: 'Unknown author', license: 'Public domain', licenseUrl: '', sourceUrl: 'javascript:alert(1)' },
+    'test-no-alt': { width: 1600, height: 1067, widths: [480, 960, 1600], author: 'A', license: 'CC0', licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/' },
+  },
+);
+const gate = { ...registry.getPhoto('test-gate'), credit: { ...registry.getPhoto('test-gate').credit, title: 'Senbon Torii at dawn' } };
+const Art = () => <svg data-testid="art" />;
+
+describe('<Photo>', () => {
+  it('renders a responsive, lazy, sized image with the manifest alt text', () => {
+    const { container } = render(<Photo photo={gate} sizes="50vw" />);
+    const img = screen.getByRole('img', { name: 'A tunnel of vermilion gates' });
+    expect(img).toHaveAttribute('srcset', 'photos/test-gate-480.webp 480w, photos/test-gate-960.webp 960w, photos/test-gate-1600.webp 1600w');
+    expect(img).toHaveAttribute('src', 'photos/test-gate-960.webp');
+    expect(img).toHaveAttribute('sizes', '50vw');
+    expect(img).toHaveAttribute('width', '1600');
+    expect(img).toHaveAttribute('height', '1067');
+    expect(img).toHaveAttribute('loading', 'lazy');
+    expect(img).toHaveAttribute('decoding', 'async');
+    expect(img).not.toHaveAttribute('fetchpriority');
+    const root = container.firstChild;
+    expect(root).toHaveAttribute('data-state', 'loading');
+    expect(root.style.getPropertyValue('--photo-focus')).toBe('40% 30%');
+    expect(root.style.getPropertyValue('--photo-color')).toBe('#8a3b22');
+    expect(container.querySelector('[aria-hidden="true"]').style.backgroundImage).toContain('data:image/webp;base64');
+  });
+
+  it('loads eagerly with high priority for heroes, and takes focus/alt overrides', () => {
+    const { container } = render(<Photo photo={gate} priority focus="50% 80%" alt="" />);
+    const img = container.querySelector('img');
+    expect(img).toHaveAttribute('loading', 'eager');
+    expect(img).toHaveAttribute('fetchpriority', 'high');
+    expect(img).toHaveAttribute('alt', '');
+    expect(container.firstChild.style.getPropertyValue('--photo-focus')).toBe('50% 80%');
+  });
+
+  it('sharpens in once loaded, and falls back if the file fails', () => {
+    const { container } = render(<Photo photo={gate} fallback={<Art />} />);
+    const img = container.querySelector('img');
+    fireEvent.load(img);
+    expect(container.firstChild).toHaveAttribute('data-state', 'loaded');
+    fireEvent.error(img);
+    expect(container.firstChild).toHaveAttribute('data-state', 'fallback');
+    expect(screen.getByTestId('art')).toBeInTheDocument();
+    expect(container.querySelector('img')).toBeNull();
+  });
+
+  it('shows the fallback for unknown ids and photos not downloaded yet', () => {
+    render(<Photo id="no-such-photo" fallback={<Art />} />);
+    expect(screen.getByTestId('art')).toBeInTheDocument();
+    const pending = render(<Photo photo={registry.getPhoto('test-pending')} credit="overlay" fallback={<Art />} />);
+    expect(pending.container.firstChild).toHaveAttribute('data-state', 'fallback');
+    expect(pending.container.textContent).not.toMatch(/Photo:/);
+    expect(() => render(<Photo />)).not.toThrow();
+  });
+
+  it('credits the photographer in a chip that opens the source and licence in a new tab', () => {
+    render(<Photo photo={gate} credit="overlay" />);
+    const source = screen.getByRole('link', { name: /Example Photographer/ });
+    expect(source).toHaveAttribute('href', 'https://commons.wikimedia.org/wiki/File:Example.jpg');
+    expect(source).toHaveAttribute('target', '_blank');
+    expect(source).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(screen.getByRole('link', { name: /CC BY-SA 4\.0/ })).toHaveAttribute('href', 'https://creativecommons.org/licenses/by-sa/4.0');
+  });
+
+  it('prints the credit as plain text when links are off, and never links unsafe URLs', () => {
+    const { container } = render(<Photo photo={gate} credit="caption" creditLinks={false} />);
+    expect(container.querySelectorAll('a')).toHaveLength(0);
+    expect(container.textContent).toContain('Photo: Example Photographer · CC BY-SA 4.0');
+    const pd = render(<Photo photo={registry.getPhoto('test-pd')} credit="overlay" />);
+    expect(pd.container.querySelectorAll('a')).toHaveLength(0);
+    expect(pd.container.textContent).toContain('Unknown author · Public domain');
+  });
+
+  it('keeps the licence whole and lets only the author’s name shorten; the tooltip has the full credit', () => {
+    const { container } = render(<Photo photo={gate} credit="overlay" />);
+    const chip = container.querySelector('small');
+    expect(chip).toHaveAttribute('title', '“Senbon Torii at dawn” by Example Photographer · CC BY-SA 4.0');
+    const [label, author, sep, license] = chip.children;
+    expect(label.textContent).toBe('Photo:');
+    expect(author.textContent).toBe('Example Photographer');
+    expect(sep).toHaveAttribute('aria-hidden', 'true');
+    expect(license.textContent).toBe('CC BY-SA 4.0');
+    expect(author.className).not.toBe(license.className);
+  });
+
+  it('falls back to the caption when the manifest has no alt text', () => {
+    render(<Photo id={undefined} photo={registry.getPhoto('test-no-alt')} />);
+    expect(screen.getByRole('img', { name: 'Kiyomizu-dera in autumn' })).toBeInTheDocument();
+  });
+
+  it('draws no credit when asked for none', () => {
+    const { container } = render(<Photo photo={gate} />);
+    expect(container.textContent).toBe('');
+  });
+
+  it('switches cleanly to another photo', () => {
+    const { container, rerender } = render(<Photo photo={gate} fallback={<Art />} />);
+    fireEvent.load(container.querySelector('img'));
+    rerender(<Photo photo={registry.getPhoto('test-pd')} fallback={<Art />} />);
+    expect(container.firstChild).toHaveAttribute('data-state', 'loading');
+    expect(container.querySelector('img')).toHaveAttribute('src', 'photos/test-pd-960.webp');
+  });
+});
+
+describe('<Photo> sizes', () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  it('measures its frame and asks for the width the picture is really drawn at', () => {
+    // A 320×480 portrait frame and a 3:2 landscape photo: cover crops it, so it is drawn 720px wide.
+    vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(320);
+    vi.spyOn(HTMLElement.prototype, 'clientHeight', 'get').mockReturnValue(480);
+    const { container, rerender } = render(<Photo photo={gate} sizes="100vw" />);
+    expect(container.querySelector('img')).toHaveAttribute('sizes', '720px');
+    rerender(<Photo photo={gate} sizes="100vw" fit="contain" />);
+    expect(container.querySelector('img')).toHaveAttribute('sizes', '320px');
+  });
+
+  it('keeps the given sizes until the frame has a size', () => {
+    const { container } = render(<Photo photo={gate} sizes="(min-width: 900px) 50vw, 100vw" />);
+    expect(container.querySelector('img')).toHaveAttribute('sizes', '(min-width: 900px) 50vw, 100vw');
+  });
+
+  it('renderedWidth covers, contains and rounds up', () => {
+    expect(renderedWidth(320, 480, 1.5)).toBe(720);
+    expect(renderedWidth(320, 480, 1.5, 'contain')).toBe(320);
+    expect(renderedWidth(600, 200, 0.75)).toBe(600);
+    expect(renderedWidth(39, 55, 1.5)).toBe(120);
+    expect(renderedWidth(300, 0, 1.5)).toBe(320);
+    expect(renderedWidth(0, 400, 1.5)).toBeNull();
+  });
+});

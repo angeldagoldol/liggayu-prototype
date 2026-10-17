@@ -44,12 +44,19 @@ npm run preview    # serve dist/ on http://localhost:4173
 npm test           # vitest run (unit, component and route smoke tests)
 npm run test:watch
 npm run lint       # eslint .
+
+npm run photos:fetch       # download + credit the brochure photos from Wikimedia Commons
+npm run photos:candidates  # contact sheets of every candidate, for curation
+npm run photos:import      # add a photo you own or licensed (fallback)
+npm run geo:build          # rebuild the map of Japan from Natural Earth
 ```
 
 `/playground.html` (dev server only, never built) is a workbench for the
 brochure kit: every cover-art style, every page of every brochure, empty-field
-pages and theme crops. Query parameters: `section=art|pages|large|empty`,
-`style`, `seeds=1,2,3`, `b=<slug>`, `crop=native|3:4|1:1`, `animate=1`.
+pages, theme crops, the map of Japan, `<Photo>` states (with a test card drawn
+at runtime) and the place/map/quote pages. Query parameters:
+`section=art|pages|large|empty|map|photo|real`, `style`, `seeds=1,2,3`,
+`b=<slug>`, `crop=native|3:4|1:1`, `animate=1`.
 
 ## Project structure
 
@@ -64,15 +71,24 @@ src/
   hooks/                   useHotkey, useFocusTrap, useLockBodyScroll, useMediaQuery…
   context/                 ThemeContext, ToastContext, BrochureContext
   data/                    schema.js (the data contract), brochures.js, categories, regions, seasons
+    photos/                photo registry: manifest/<brochure>.json + photos.generated.json
+    geo/                   japan.js (generated prefecture outlines) + projection.js
   components/
     ui/                    design-system primitives (Button, IconButton, Modal/Drawer, Hanko…)
     layout/                AppShell, Navbar, Footer, command palette, route transition, search
     brochure/              CoverArt (generative art in art/), BrochurePage (+ blocks/), BrochureCard
+    photo/                 <Photo>: responsive, credited photographs with an art fallback
+    map/                   <JapanMap>: the 47 prefectures, an Okinawa inset, numbered pins
     viewer/                Flipbook, reader toolbar, scrubber, thumbnails, overview, print, inquiry
     studio/                editor reducer, panels, fields, preview, publish checks, import/export
   pages/                   Home, Library, Viewer, Studio, NotFound (route components + sections)
   dev/                     the kit playground
   test/setup.js            jsdom polyfills for Vitest
+scripts/
+  photos/                  fetch.mjs, candidates.mjs, import-local.mjs (+ lib.mjs, process.mjs, io.mjs)
+  geo/build-japan.mjs      Natural Earth → src/data/geo/japan.js
+public/photos/             resized photos, <id>-<480|960|1600>.webp (written by the scripts)
+docs/REAL_CONTENT.md       the standard for real places, facts and photos
 ```
 
 [`ARCHITECTURE.md`](./ARCHITECTURE.md) has the conventions, routes, shared
@@ -134,8 +150,12 @@ static states (the flipbook becomes a cross-fade).
 
 ## Adding a brochure
 
-1. Open `src/data/brochures.js` and add an object to `BROCHURES`. The shape is
-   documented in `src/data/schema.js`:
+Built-in brochures describe real places with verified facts and real,
+credited photographs: follow [`docs/REAL_CONTENT.md`](./docs/REAL_CONTENT.md)
+(sources, `factsChecked`, the 12–14 page outline, photo manifests).
+
+1. Add a module in `src/data/brochures/` and list it in
+   `src/data/brochures/index.js`. The shape is documented in `src/data/schema.js`:
 
    ```js
    {
@@ -147,14 +167,17 @@ static states (the flipbook becomes a cross-fade).
      category: 'craft',                   // id from data/categories.js
      region: 'chubu',                     // id from data/regions.js
      seasons: ['autumn', 'winter'],       // ids from data/seasons.js
-     organization: 'Hakuichi Walks',      // fictional publisher
+     organization: 'Tabi Guides',         // the app's own editorial imprint
+     location: { name: 'Kenroku-en', nameJp: '兼六園', prefecture: 'Ishikawa', lat: 36.5621, lng: 136.6627 },
+     sources: [{ label: 'Kenroku-en official site', url: 'https://…' }],  // official sources first, verified
+     factsChecked: 'October 2026',
      format: 'booklet',                   // booklet | bifold | trifold
      updatedAt: '2026-10-01T09:00:00.000Z',
      readMinutes: 5,
      featured: false,
      source: 'builtin',
      theme: { paper: '#f6f1e6', ink: '#1f1a14', accent: '#b8862b', accent2: '#1d4f7a', muted: '#6b5e4e', typeface: 'serif' },
-     cover: { art: 'kumo', seed: 7 },     // one of ART_STYLES; the seed picks the variation
+     cover: { art: 'kumo', seed: 7, photo: 'kanazawa-kenrokuen' },  // art = fallback; photo = registry id
      pages: [
        { id: 'p1', type: 'cover', eyebrow: '…', title: '…', subtitle: '…' },
        { id: 'p2', type: 'intro', kicker: '…', heading: '…', body: 'Paragraph one.\n\nParagraph two.', pullQuote: '…' },
@@ -164,11 +187,12 @@ static states (the flipbook becomes a cross-fade).
    }
    ```
 
-2. Page types and their fields: `cover, intro, features, gallery, stats,
-   agenda, pricing, phrases, quote, contact, back`. `PAGE_TYPES[type].create()`
-   in `schema.js` returns a filled example of each. Start with a `cover`, end
-   with a `back`, and aim for 9–12 pages. Icons are names from the registry in
-   `src/components/ui/Icon.jsx`.
+2. Page types and their fields: `cover, intro, features, gallery, place, map,
+   stats, agenda, pricing, phrases, quote, contact, back`.
+   `PAGE_TYPES[type].create()` in `schema.js` returns a filled example of
+   each. Start with a `cover`, end with a `back`. Icons are names from the
+   registry in `src/components/ui/Icon.jsx`. Photos are ids from the photo
+   registry (`photo: 'kanazawa-kenrokuen'`, see below).
 3. Run `npm test`. `src/data/brochures.test.js` checks the schema, unique ids
    and slugs, cover/back placement, icon names, `.example` contact domains, no
    dialable phone numbers (Japan has no fictional number range) and palette
@@ -177,6 +201,76 @@ static states (the flipbook becomes a cross-fade).
 
 Renderers never crash on missing or empty fields, because user-made
 brochures are often half-finished.
+
+## Real photos
+
+Photos come from **Wikimedia Commons** under free licences only — CC0,
+public domain, CC BY, CC BY-SA (any version or port). NonCommercial,
+NoDerivatives, "fair use" and unrecognised licences are rejected, and so are
+images under 1600 px on the long edge. Nothing is hotlinked: each photo is
+downloaded once and served from this site.
+
+1. Researchers list candidates per brochure in
+   `src/data/photos/manifest/<brochure>.json` — `id`, `use`, `candidates`
+   (Commons file titles, best first), `alt`, `caption`, `place`, `focus` —
+   and pages reference the id (`photo: 'kyoto-senbon-torii'`).
+2. `npm run photos:candidates -- <brochure>` downloads every candidate as a
+   preview and writes a contact sheet per photo to
+   `.cache/photo-candidates/<brochure>/<id>.jpg` (gitignored), marked ✓/✗
+   with size and licence. Record the winner as `"file"` in the manifest.
+3. `npm run photos:fetch` takes each photo's `file` (or the first candidate
+   that passes), downloads Commons' 1920 px thumbnail (a standard thumbnail
+   step; other widths may be refused), writes WebP at 480/960/1600 px
+   (quality 72, never upscaled) to `public/photos/`, and records size, a
+   24 px blurred preview (LQIP), the dominant colour, the work's title,
+   author (the attribution the author asked for, when Commons has one),
+   licence + deed URL and source page in
+   `src/data/photos/photos.generated.json`. API requests go one at a time,
+   follow `continue`, and the registry file is written atomically after each
+   photo (a damaged file stops the run instead of being overwritten). It is cached:
+   photos already fetched are skipped unless `--force`. Other flags:
+   `--only <brochure|photo-id>`, `--dry-run` (check, write nothing),
+   `--list-candidates` (print the Commons links, offline), `--prune` (drop
+   photos no manifest lists). Wikimedia asks for a contact in the
+   User-Agent: set `PHOTOS_CONTACT` (a URL or e-mail) when you run it. Behind
+   an HTTPS proxy, Node's `fetch` needs `NODE_USE_ENV_PROXY=1` (Node ≥ 22.21).
+4. Commit `public/photos/` and `photos.generated.json` with the manifests.
+
+If Commons cannot be reached, `npm run photos:import -- photo.jpg --id <id>
+--author "Name" --license "CC BY-SA 4.0" --license-url <url> --source <url>`
+runs a photo you own or have licensed through the same resizing (add
+`--permission` for a photo that is yours but not under a free licence).
+
+Until a photo is downloaded — or if it fails to load — pages show the
+brochure's generative art in its place, so every brochure always renders.
+
+**Credits.** Each photo is credited where it appears ("Photo: Author ·
+CC BY-SA 4.0", linking to the Commons file page and the licence deed, in a
+new tab); the credit comes from the Commons metadata, never typed by hand.
+`creditsFor(brochure)` in `src/data/photos` lists every credit a brochure
+needs (with the work's title), for a colophon. When space is short the
+author's name is shortened, never the licence. Credits are plain text (HTML
+in Commons metadata is stripped) and carry only http(s) links. CC BY / BY-SA
+photos without a licence link (Commons' or the deed for their version) are
+rejected. CC BY-SA photos are only resized and re-encoded.
+
+## Map of Japan
+
+`src/data/geo/japan.js` holds the 47 prefectures as SVG paths, generated by
+`npm run geo:build` from [Natural Earth](https://www.naturalearthdata.com/)
+1:10m admin-1 boundaries (public domain; the 40 MB source is cached in
+`.cache/geo/`). The build maps Natural Earth regions to the app's eight
+regions, returns the Amami islands (filed under Okinawa in Natural Earth) to
+Kagoshima, simplifies with mapshaper, projects with a Lambert conformal conic
+and puts Okinawa Prefecture and the Amami islands in an inset; islands
+outside the frames (Ogasawara, the Daitō and Tokara islands,
+Minami-Torishima) are left out, and Natural Earth's 1:10m coastline leaves
+out some small islands (Naoshima is not drawn; pins there still are).
+`src/data/geo/geography.test.js` projects real cities and every built-in
+pin and checks, point-in-polygon on the drawn paths, that each lands in its
+own prefecture. Lake Biwa
+comes from the Natural Earth lakes layer. `<JapanMap>` draws it with
+numbered pins, zooms to where the pins are, and loads lazily.
 
 ## Deploying
 
@@ -208,11 +302,12 @@ palette, the cover-art generator and the icon registry are loaded on demand.
   Geist Mono (Vercel), Shippori Mincho (Fontdasu) and Zen Kaku Gothic New
   (Yoshimichi Ohira), all under the SIL Open Font License.
 - Icons are by [Lucide](https://lucide.dev) (ISC).
-- All cover art and illustrations are generated in code from traditional
-  patterns (seigaiha, asanoha, shippō, ichimatsu, ensō, torii, kumo…). There
-  are no photos or third-party images.
-- Facts about Japan are real and deliberately conservative: rounded figures,
-  official sources such as the Geospatial Information Authority of Japan and
-  the Japan Meteorological Agency, dated where they can change. Organisations,
-  people, prices and contact details are fictional, every email address
-  uses an `.example` domain, and no brochure prints a phone number.
+- Cover art and illustrations are generated in code from traditional
+  patterns (seigaiha, asanoha, shippō, ichimatsu, ensō, torii, kumo…).
+- Photographs are from Wikimedia Commons under CC0, public-domain, CC BY or
+  CC BY-SA licences, credited to their authors on the page where they appear
+  (see "Real photos").
+- Map data: Natural Earth (public domain).
+- Built-in brochures describe real places with facts checked against official
+  sources (`docs/REAL_CONTENT.md`); they are published by Tabi Guides, the
+  app's own editorial imprint, and print no phone numbers.

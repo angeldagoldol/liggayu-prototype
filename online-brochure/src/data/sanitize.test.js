@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BROCHURES } from './brochures.js';
-import { normalizeBrochure, sanitizePages, sanitizeStoredBrochure } from './sanitize.js';
+import { normalizeBrochure, normalizePage, safeUrl, sanitizePages, sanitizeStoredBrochure, toLat, toLng } from './sanitize.js';
 
 const cover = { id: 'p1', type: 'cover', title: 'Hi' };
 
@@ -63,5 +63,154 @@ describe('sanitizeStoredBrochure', () => {
     expect(sanitizeStoredBrochure({ id: 'b_1', slug: 's', pages: [cover] })).toEqual({ id: 'b_1', slug: 's', pages: [cover] });
     expect(sanitizeStoredBrochure({ id: 'b_1', slug: '', pages: [cover] })).toBeNull();
     expect(sanitizeStoredBrochure({ id: 1, slug: 's', pages: [cover] })).toBeNull();
+  });
+});
+
+describe('safeUrl / coordinates', () => {
+  it('keeps absolute http(s) URLs only', () => {
+    expect(safeUrl('https://www.inari.jp/')).toBe('https://www.inari.jp/');
+    expect(safeUrl(' http://example.com/a?b=1 ')).toBe('http://example.com/a?b=1');
+    for (const bad of [
+      'javascript:alert(1)',
+      'JAVASCRIPT:alert(1)',
+      'data:text/html,<b>x</b>',
+      'mailto:a@b.c',
+      '/relative',
+      '//host/x',
+      'https://',
+      'ftp://x.y',
+      ' ',
+      7,
+      null,
+      {},
+    ]) {
+      expect(safeUrl(bad)).toBe('');
+    }
+  });
+
+  it('reads latitude and longitude in range', () => {
+    expect(toLat(34.9671)).toBe(34.9671);
+    expect(toLat('35.0')).toBe(35);
+    expect(toLat(-90)).toBe(-90);
+    for (const bad of [90.1, Number.NaN, Infinity, '', 'north', null, undefined, [35]]) expect(toLat(bad)).toBeNull();
+    expect(toLng(135.7727)).toBe(135.7727);
+    expect(toLng(-180)).toBe(-180);
+    expect(toLng(181)).toBeNull();
+  });
+});
+
+describe('normalizePage', () => {
+  it('returns valid new page types unchanged (same object)', () => {
+    const place = {
+      id: 'pl',
+      type: 'place',
+      kicker: 'Spotlight',
+      name: 'Kiyomizu-dera',
+      nameJp: '清水寺',
+      photo: 'kyoto-kiyomizu-dera',
+      body: 'A wooden stage.',
+      facts: [{ label: 'Hours', value: '6:00–18:00' }],
+      lat: 34.9949,
+      lng: 135.785,
+      website: 'https://www.kiyomizudera.or.jp/en/',
+    };
+    const map = { id: 'm', type: 'map', heading: 'Where', body: '', places: [{ name: 'Kyoto', nameJp: '京都', lat: 34.9858, lng: 135.7588, note: 'Station' }] };
+    const quote = { id: 'q', type: 'quote', quote: 'An old pond', quoteJp: '古池や', author: 'Matsuo Bashō', role: 'Translation: Tabi Guides' };
+    const contact = {
+      id: 'c',
+      type: 'contact',
+      cta: 'Visit',
+      ctaUrl: 'https://kyoto.travel/en/',
+      details: [{ icon: 'Globe', label: 'Web', value: 'kyoto.travel', url: 'https://kyoto.travel/en/' }],
+    };
+    const gallery = { id: 'g', type: 'gallery', items: [{ photo: 'kyoto-senbon-torii', art: 'torii', seed: 1, caption: 'Gates' }] };
+    for (const page of [place, map, quote, contact, gallery]) expect(normalizePage(page)).toBe(page);
+  });
+
+  it('fixes place pages: text, facts, coordinates and website', () => {
+    const page = normalizePage({
+      id: 'pl',
+      type: 'place',
+      name: 3,
+      photo: { id: 'x' },
+      facts: [{ label: 'Admission', value: 500 }, 'junk', { label: null, value: 'x' }],
+      lat: '34.99',
+      lng: 999,
+      website: 'javascript:alert(1)',
+    });
+    expect(page).toEqual({
+      id: 'pl',
+      type: 'place',
+      name: '',
+      photo: '',
+      facts: [
+        { label: 'Admission', value: '500' },
+        { label: '', value: 'x' },
+      ],
+      lat: 34.99,
+      website: '',
+    });
+    expect(normalizePage({ id: 'pl', type: 'place', facts: 'Hours: 9–5' }).facts).toEqual([]);
+  });
+
+  it('fixes map places, keeping places without usable coordinates for the list', () => {
+    const page = normalizePage({
+      id: 'm',
+      type: 'map',
+      places: [{ name: 'Naha', lat: 26.21, lng: 127.68 }, null, { name: 'Somewhere', lat: 'x', lng: 200 }, { name: 4, nameJp: [], lat: -91 }],
+    });
+    expect(page.places).toEqual([{ name: 'Naha', lat: 26.21, lng: 127.68 }, { name: 'Somewhere' }, { name: '', nameJp: '' }]);
+    expect(normalizePage({ id: 'm', type: 'map', places: { a: 1 } }).places).toEqual([]);
+  });
+
+  it('fixes quote, contact and photo fields on items', () => {
+    expect(normalizePage({ id: 'q', type: 'quote', quoteJp: 5 }).quoteJp).toBe('');
+    const contact = normalizePage({
+      id: 'c',
+      type: 'contact',
+      ctaUrl: 'data:text/html,hi',
+      details: [{ label: 'Web', url: 'javascript:void(0)' }, { label: 'Ok', url: 'https://www.japan.travel/en/' }, 'x'],
+    });
+    expect(contact.ctaUrl).toBe('');
+    expect(contact.details).toEqual([
+      { label: 'Web', url: '' },
+      { label: 'Ok', url: 'https://www.japan.travel/en/' },
+    ]);
+    const features = normalizePage({ id: 'f', type: 'features', items: [{ title: 'A', photo: 7 }, { title: 'B' }] });
+    expect(features.items).toEqual([{ title: 'A', photo: '' }, { title: 'B' }]);
+    expect(normalizePage({ id: 'g', type: 'gallery', items: 'x' }).items).toBe('x');
+  });
+});
+
+describe('brochure-level real-place fields', () => {
+  const page = { id: 'p1', type: 'cover', title: 'Hi' };
+
+  it('keeps valid location, sources, factsChecked and cover photo as they are', () => {
+    const doc = {
+      location: { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', prefecture: 'Kyoto', lat: 34.9671, lng: 135.7727 },
+      sources: [{ label: 'Fushimi Inari Taisha', url: 'https://inari.jp/en/' }],
+      factsChecked: 'October 2026',
+      cover: { art: 'torii', seed: 5, photo: 'kyoto-senbon-torii' },
+      pages: [page],
+    };
+    expect(JSON.stringify(normalizeBrochure(doc))).toBe(JSON.stringify(doc));
+  });
+
+  it('resets broken location, sources, factsChecked and cover photo', () => {
+    const doc = normalizeBrochure({
+      location: { name: 'X', lat: 'far', lng: 135 },
+      sources: [{ label: 'Ok', url: ' https://www.japan.travel/en/ ' }, { label: 'Bad', url: 'javascript:alert(1)' }, { url: 'https://kyoto.travel/', label: 9 }, 'x'],
+      factsChecked: 2026,
+      cover: { art: 'torii', seed: 5, photo: 12 },
+      pages: [page],
+    });
+    expect(doc.location).toEqual({ name: 'X', lng: 135 });
+    expect(doc.sources).toEqual([
+      { label: 'Ok', url: 'https://www.japan.travel/en/' },
+      { url: 'https://kyoto.travel/', label: '' },
+    ]);
+    expect(doc.factsChecked).toBe('');
+    expect(doc.cover).toEqual({ art: 'torii', seed: 5, photo: '' });
+    expect(normalizeBrochure({ location: 'Kyoto', sources: 'x', pages: [page] })).toEqual({ sources: [], pages: [page] });
   });
 });

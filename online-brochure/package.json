@@ -10,7 +10,11 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "photos:fetch": "node scripts/photos/fetch.mjs",
+    "photos:candidates": "node scripts/photos/candidates.mjs",
+    "photos:import": "node scripts/photos/import-local.mjs",
+    "geo:build": "node scripts/geo/build-japan.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.43.0",
@@ -31,6 +35,8 @@
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
     "jsdom": "^29.1.1",
+    "mapshaper": "^0.6.121",
+    "sharp": "^0.34.5",
     "vite": "^7.3.7",
     "vitest": "^3.2.7"
   }

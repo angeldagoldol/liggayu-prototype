@@ -3,9 +3,11 @@ import { fitSize, pageHeading, text } from './pageUtils.js';
 import { Reveal } from './Reveal.jsx';
 import styles from './QuoteBlock.module.css';
 
-/** A traveller's words set large between Japanese quotation brackets 「 」, over a faint ensō. */
+/** Real, attributed words — a haiku, a proverb — set large between Japanese quotation
+ *  brackets 「 」 over a faint ensō; the original Japanese (quoteJp) sits above a translation. */
 export function QuoteBlock({ page, brochure, index }) {
   const quote = text(page.quote);
+  const quoteJp = text(page.quoteJp);
   const author = text(page.author);
   const role = text(page.role);
 
@@ -19,14 +21,21 @@ export function QuoteBlock({ page, brochure, index }) {
       <Reveal variant="fade" className={styles.open} aria-hidden="true">
         <span lang="ja">「</span>
       </Reveal>
-      {quote && (
-        <Reveal as="blockquote" className={styles.text}>
-          <p style={{ '--fs': `${fitSize(quote, { max: 6.2, min: 3.4, ideal: 90 })}cqw` }}>
-            {quote}
-            <span className={styles.close} lang="ja" aria-hidden="true">
-              」
-            </span>
-          </p>
+      {(quote || quoteJp) && (
+        <Reveal as="blockquote" className={styles.text} data-translation={quoteJp && quote ? true : undefined}>
+          {quoteJp && (
+            <p className={styles.original} lang="ja" style={{ '--fs': `${fitSize(quoteJp, { max: 4.6, min: 2.8, ideal: 18 })}cqw` }}>
+              {quoteJp}
+            </p>
+          )}
+          {quote && (
+            <p style={{ '--fs': `${fitSize(quote, { max: 6.2, min: 3.4, ideal: 90 })}cqw` }}>
+              {quote}
+              <span className={styles.close} lang="ja" aria-hidden="true">
+                」
+              </span>
+            </p>
+          )}
         </Reveal>
       )}
       {(author || role) && (

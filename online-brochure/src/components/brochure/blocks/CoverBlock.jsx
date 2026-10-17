@@ -1,4 +1,5 @@
 import { Hanko, VerticalText } from '../../ui/index.js';
+import { Photo } from '../../photo/Photo.jsx';
 import { CoverArt } from '../CoverArt.jsx';
 import { usePage } from './pageContext.js';
 import { sealChars } from '../../../lib/format.js';
@@ -8,9 +9,10 @@ import styles from './CoverBlock.module.css';
 import type from './type.module.css';
 
 /**
- * Front cover: full-bleed generative art, a title slip (題簽, daisen) with
- * the Japanese title in vertical type, and a paper band (帯, obi) carrying
- * the headline, standfirst and a seal.
+ * Front cover: a full-bleed photograph of the place (page.photo, else
+ * brochure.cover.photo) — or the generative art while there is none — a title
+ * slip (題簽, daisen) with the Japanese title in vertical type, and a paper
+ * band (帯, obi) carrying the headline, standfirst and a seal.
  */
 export function CoverBlock({ page, brochure }) {
   const { isStatic, active } = usePage();
@@ -21,11 +23,25 @@ export function CoverBlock({ page, brochure }) {
   const organization = text(brochure.organization);
   const seal = sealChars(titleJp);
   const cover = brochure.cover ?? {};
+  const photo = text(page.photo) || text(cover.photo);
+  const art = <CoverArt style={cover.art} seed={cover.seed} theme={brochure.theme} animated={active && !isStatic} />;
 
   return (
     <div className={styles.cover}>
       <Reveal variant="zoom" className={styles.art}>
-        <CoverArt style={cover.art} seed={cover.seed} theme={brochure.theme} animated={active && !isStatic} />
+        {photo ? (
+          <Photo
+            id={photo}
+            priority={!isStatic}
+            sizes="(min-width: 1100px) 640px, 100vw"
+            credit="overlay"
+            creditLinks={!isStatic}
+            kenBurns={active && !isStatic}
+            fallback={art}
+          />
+        ) : (
+          art
+        )}
       </Reveal>
 
       {organization && (

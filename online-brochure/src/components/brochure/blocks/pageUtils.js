@@ -6,6 +6,7 @@ import { PAGE_TYPES } from '../../../data/schema.js';
 import { ensureContrast, mix, normalizeTheme, readableOn } from '../art/color.js';
 import { pad } from '../../../lib/format.js';
 import { dict } from '../../../data/lookup.js';
+import { toLat, toLng } from '../../../data/sanitize.js';
 
 /** Japanese section names, set vertically in the page margin: PAGE_TYPES[type].jp. */
 export const SECTION_JP = dict(Object.fromEntries(Object.entries(PAGE_TYPES).map(([type, meta]) => [type, meta.jp])));
@@ -20,7 +21,9 @@ export const SECTION_EN = dict({
   agenda: 'Itinerary',
   pricing: 'Journeys',
   phrases: 'Phrasebook',
-  quote: 'Voices',
+  quote: 'Words',
+  place: 'Spotlight',
+  map: 'Map',
   contact: 'Contact',
   back: 'Colophon',
 });
@@ -81,8 +84,10 @@ export function pageHeading(page, brochure) {
       return text(p.title) || text(brochure?.title) || 'Cover';
     case 'quote': {
       const author = text(p.author);
-      return author ? `Testimonial from ${author}` : 'Testimonial';
+      return author ? `Quote from ${author}` : 'Quote';
     }
+    case 'place':
+      return text(p.name) || text(p.heading) || 'Place';
     case 'back':
       return text(p.title) || 'Back cover';
     default:
@@ -106,6 +111,14 @@ export function fitSize(value, { max, min, ideal }) {
   if (length <= ideal) return max;
   const size = max * Math.sqrt(ideal / length);
   return Math.round(Math.max(min, size) * 100) / 100;
+}
+
+/** "34.9949° N · 135.7850° E" — '' unless both are real coordinates. */
+export function formatLatLng(lat, lng) {
+  const a = toLat(lat);
+  const b = toLng(lng);
+  if (a === null || b === null) return '';
+  return `${Math.abs(a).toFixed(4)}° ${a >= 0 ? 'N' : 'S'} · ${Math.abs(b).toFixed(4)}° ${b >= 0 ? 'E' : 'W'}`;
 }
 
 /** "October 2026" — empty string for missing or invalid dates. */

@@ -99,3 +99,105 @@ describe('import', () => {
     expect(parseBrochureJson('x'.repeat(MAX_IMPORT_BYTES + 1), { makeId })).toMatchObject({ ok: false, error: expect.stringMatching(/too large/) });
   });
 });
+
+describe('import of real-place fields', () => {
+  const brochure = {
+    title: 'Kyoto',
+    cover: { art: 'torii', seed: 5, photo: ' kyoto-senbon-torii ' },
+    location: { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', prefecture: 'Kyoto', lat: 34.9671, lng: 135.7727, extra: { deep: true } },
+    sources: [
+      { label: 'Fushimi Inari Taisha', url: 'https://inari.jp/en/' },
+      { label: 'Evil', url: 'javascript:alert(document.cookie)' },
+      { label: 'Data', url: 'data:text/html;base64,PHNjcmlwdD4=' },
+    ],
+    factsChecked: 'October 2026',
+    pages: [
+      { type: 'cover', title: 'Kyoto', photo: 'kyoto-senbon-torii' },
+      {
+        type: 'place',
+        name: 'Kiyomizu-dera',
+        nameJp: '清水寺',
+        photo: 'kyoto-kiyomizu-dera',
+        body: 'A wooden stage.',
+        facts: [
+          { label: 'Hours', value: '6:00–18:00' },
+          { label: 'Admission', value: 500 },
+        ],
+        lat: 34.9949,
+        lng: 135.785,
+        website: 'https://www.kiyomizudera.or.jp/en/',
+      },
+      { type: 'place', name: 'Bad', website: 'javascript:alert(1)', lat: 123, lng: 'east', photo: ['x'] },
+      {
+        type: 'map',
+        heading: 'Where',
+        places: [
+          { name: 'Kyoto Station', lat: 34.9858, lng: 135.7588 },
+          { name: 'Nowhere', lat: Infinity },
+        ],
+      },
+      { type: 'quote', quote: 'An old pond', quoteJp: '古池や蛙飛び込む水の音', author: 'Matsuo Bashō' },
+      {
+        type: 'contact',
+        ctaUrl: 'javascript:alert(1)',
+        details: [
+          { label: 'Web', value: 'kyoto.travel', url: 'https://kyoto.travel/en/' },
+          { label: 'X', url: 'vbscript:msgbox' },
+        ],
+      },
+      { type: 'gallery', items: [{ photo: 'kyoto-yasaka-pagoda', caption: 'Pagoda' }, { photo: 42 }] },
+    ],
+  };
+  const { ok, doc } = parseBrochureJson(JSON.stringify(brochure), { makeId, now });
+
+  it('keeps photo ids, location, sources and the facts date', () => {
+    expect(ok).toBe(true);
+    expect(doc.cover).toEqual({ art: 'torii', seed: 5, photo: 'kyoto-senbon-torii' });
+    expect(doc.location).toEqual(brochure.location);
+    expect(doc.sources).toEqual([{ label: 'Fushimi Inari Taisha', url: 'https://inari.jp/en/' }]);
+    expect(doc.factsChecked).toBe('October 2026');
+    expect(doc.pages[0].photo).toBe('kyoto-senbon-torii');
+  });
+
+  it('keeps valid place, map, quote and contact fields', () => {
+    const [, place, , map, quote, contact, gallery] = doc.pages;
+    expect(place).toMatchObject({
+      name: 'Kiyomizu-dera',
+      nameJp: '清水寺',
+      photo: 'kyoto-kiyomizu-dera',
+      lat: 34.9949,
+      lng: 135.785,
+      website: 'https://www.kiyomizudera.or.jp/en/',
+    });
+    expect(place.facts).toEqual([
+      { label: 'Hours', value: '6:00–18:00' },
+      { label: 'Admission', value: '500' },
+    ]);
+    expect(map.places).toEqual([{ name: 'Kyoto Station', lat: 34.9858, lng: 135.7588 }, { name: 'Nowhere' }]);
+    expect(quote.quoteJp).toBe('古池や蛙飛び込む水の音');
+    expect(contact.details[0].url).toBe('https://kyoto.travel/en/');
+    expect(gallery.items).toEqual([{ photo: 'kyoto-yasaka-pagoda', caption: 'Pagoda' }, { photo: '' }]);
+  });
+
+  it('drops unsafe links and impossible coordinates', () => {
+    const bad = doc.pages[2];
+    expect(bad.website).toBe('');
+    expect(bad).not.toHaveProperty('lat');
+    expect(bad).not.toHaveProperty('lng');
+    expect(bad.photo).toBe('');
+    expect(doc.pages[5].ctaUrl).toBe('');
+    expect(doc.pages[5].details[1].url).toBe('');
+    expect(JSON.stringify(doc)).not.toMatch(/javascript:|vbscript:|data:text/);
+  });
+
+  it('leaves location and sources out when the file has none usable', () => {
+    const { doc: bare } = parseBrochureJson(
+      JSON.stringify({ pages: [{ type: 'cover' }], location: 'Kyoto', sources: [{ url: 'javascript:x' }], factsChecked: 7, cover: { photo: 5 } }),
+      { makeId, now },
+    );
+    expect(bare).not.toHaveProperty('location');
+    expect(bare).not.toHaveProperty('sources');
+    expect(bare).not.toHaveProperty('factsChecked');
+    expect(bare.cover).toEqual({ art: 'hinomaru', seed: 1 });
+  });
+});

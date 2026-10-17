@@ -1,10 +1,17 @@
+import { Photo } from '../../photo/Photo.jsx';
+import { CoverArt } from '../CoverArt.jsx';
+import { usePage } from './pageContext.js';
 import { fitSize, paragraphs, text } from './pageUtils.js';
 import { Reveal } from './Reveal.jsx';
 import styles from './IntroBlock.module.css';
 import type from './type.module.css';
 
-/** Opening story: kicker, headline, two-column copy with a drop cap, and a bracketed pull quote. */
-export function IntroBlock({ page }) {
+/** Opening story: kicker, headline, an optional photograph of the place, two-column
+ *  copy with a drop cap, and a bracketed pull quote. */
+export function IntroBlock({ page, brochure }) {
+  const { isStatic } = usePage();
+  const photo = text(page.photo);
+  const cover = brochure?.cover ?? {};
   const kicker = text(page.kicker);
   const heading = text(page.heading);
   const copy = paragraphs(page.body);
@@ -28,6 +35,19 @@ export function IntroBlock({ page }) {
         )}
       </header>
 
+      {photo && (
+        <Reveal variant="fade" className={styles.media}>
+          <Photo
+            id={photo}
+            sizes="(min-width: 1100px) 560px, 90vw"
+            credit="overlay"
+            creditLinks={!isStatic}
+            className={styles.photo}
+            fallback={<CoverArt style={cover.art} seed={(Number(cover.seed) || 1) + 2} theme={brochure?.theme} />}
+          />
+        </Reveal>
+      )}
+
       <Reveal variant="wipe" className={`${type.rule} ${styles.rule}`} />
 
       {copy.length > 0 && (
@@ -35,8 +55,8 @@ export function IntroBlock({ page }) {
           className={styles.copy}
           data-columns={length > 320 ? 2 : 1}
           data-dropcap={dropCap || undefined}
-          data-long={length > 900 || undefined}
-          style={{ '--copy': `${fitSize(copy.join(' '), { max: length > 320 ? 2.75 : 3, min: 1.85, ideal: 560 })}cqw` }}
+          data-long={length > (photo ? 520 : 900) || undefined}
+          style={{ '--copy': `${fitSize(copy.join(' '), { max: length > 320 ? 2.75 : 3, min: 1.85, ideal: photo ? 360 : 560 })}cqw` }}
         >
           {copy.map((p, i) => (
             <p key={i}>{p}</p>

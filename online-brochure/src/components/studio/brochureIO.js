@@ -9,6 +9,7 @@ import { CATEGORY_MAP } from '../../data/categories.js';
 import { REGION_MAP } from '../../data/regions.js';
 import { SEASON_MAP } from '../../data/seasons.js';
 import { hasKey } from '../../data/lookup.js';
+import { normalizePage, sanitizeLocation, sanitizeSources } from '../../data/sanitize.js';
 import { createId, slugify } from '../../lib/id.js';
 import { isHex } from '../brochure/art/color.js';
 import { PALETTE_MAP } from './palettes.js';
@@ -86,7 +87,9 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
   }
 
   const known = source.pages.filter((p) => p && typeof p === 'object' && hasKey(PAGE_TYPES, p.type));
-  const pages = known.slice(0, MAX_PAGES).map((p) => ({ ...plain(p), id: makeId('pg'), type: p.type }));
+  // Pages keep plain JSON only, then the same field rules as stored brochures:
+  // photo ids are strings, coordinates are real, links are http(s) only.
+  const pages = known.slice(0, MAX_PAGES).map((p) => normalizePage({ ...plain(p), id: makeId('pg'), type: p.type }));
   if (pages.length === 0) return { ok: false, error: 'None of the pages in that file could be read.' };
 
   const cover = source.cover && typeof source.cover === 'object' ? source.cover : {};
@@ -114,8 +117,15 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
     cover: {
       art: ART_STYLES.includes(cover.art) ? cover.art : 'hinomaru',
       seed: Number.isFinite(seed) && seed > 0 ? seed : 1,
+      ...(typeof cover.photo === 'string' && cover.photo.trim() ? { photo: cover.photo.trim().slice(0, 80) } : {}),
     },
     pages,
   };
+  // The real place a brochure is about, and where its facts come from.
+  const location = sanitizeLocation(plain(source.location));
+  if (location && Object.keys(location).length) doc.location = location;
+  const sources = sanitizeSources(plain(source.sources)).slice(0, 12);
+  if (sources.length) doc.sources = sources;
+  if (typeof source.factsChecked === 'string' && source.factsChecked.trim()) doc.factsChecked = str(source.factsChecked, 40).trim();
   return { ok: true, doc, dropped: source.pages.length - pages.length };
 }

@@ -9,6 +9,26 @@
   margin: 3.6cqw 0 3.4cqw;
 }
 
+/* The photograph sits between the headline and the copy. */
+.media {
+  position: relative;
+  flex: none;
+  height: 34cqw;
+  margin-top: 3.6cqw;
+  outline: var(--hair) solid var(--b-rule);
+  outline-offset: 0.8cqw;
+  --photo-credit-size: 1.15cqw;
+}
+
+.media + .rule {
+  margin-top: 3.4cqw;
+}
+
+.media > .photo {
+  position: absolute;
+  inset: 0;
+}
+
 .copy {
   flex: 1 1 auto;
   min-height: 0;

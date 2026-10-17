@@ -6,6 +6,8 @@ import { FallbackBlock } from './FallbackBlock.jsx';
 import { FeaturesBlock } from './FeaturesBlock.jsx';
 import { GalleryBlock } from './GalleryBlock.jsx';
 import { IntroBlock } from './IntroBlock.jsx';
+import { MapBlock } from './MapBlock.jsx';
+import { PlaceBlock } from './PlaceBlock.jsx';
 import { PhrasesBlock } from './PhrasesBlock.jsx';
 import { PricingBlock } from './PricingBlock.jsx';
 import { QuoteBlock } from './QuoteBlock.jsx';
@@ -19,6 +21,8 @@ export const BLOCKS = dict({
   intro: IntroBlock,
   features: FeaturesBlock,
   gallery: GalleryBlock,
+  place: PlaceBlock,
+  map: MapBlock,
   stats: StatsBlock,
   agenda: AgendaBlock,
   pricing: PricingBlock,

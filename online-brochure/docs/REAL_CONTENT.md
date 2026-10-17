@@ -36,7 +36,10 @@ writing them. Data shapes are in `src/data/schema.js`.
   look for, plus 2–5 `facts` rows (Hours, Admission, Getting there, Time
   needed, Best time) and its `lat`/`lng` and official `website`.
 - `map` pages pin the brochure's real places with accurate coordinates
-  (decimal degrees, 4 decimals).
+  (decimal degrees, 4 decimals). The map shows the four main islands with
+  their near islands and an Okinawa & Amami inset; the Tokara, Ogasawara and
+  Daitō islands are not drawn, and `src/data/geo/geography.test.js` fails
+  for a pin outside the map.
 - Japanese must be correct: kanji/kana, natural romaji with macrons
   (Tōdai-ji, Arigatō). Use common English names for big cities (Tokyo, Kyoto,
   Osaka). Phrasebook entries must be natural, polite Japanese.
