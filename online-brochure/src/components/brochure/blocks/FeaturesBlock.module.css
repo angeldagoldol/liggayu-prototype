@@ -39,10 +39,11 @@
 .item {
   display: grid;
   grid-template-columns: 6cqw minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
+  /* The copy row never shrinks below its text, so a crowded grid overflows
+     (and is fitted) rather than letting one cell run into the next. */
+  grid-template-rows: auto 1fr;
   column-gap: 2.4cqw;
-  min-height: 0;
-  padding: 2.4cqw 0 2cqw;
+  padding: 2.4cqw 0 calc(2.4cqw * var(--fit, 1));
   border-top: var(--hair) solid var(--b-rule);
 }
 
@@ -77,7 +78,6 @@
 .copy {
   grid-column: 1 / -1;
   grid-row: 2;
-  min-height: 0;
   padding-top: calc(3cqw * var(--fit, 1));
 }
 
@@ -105,7 +105,7 @@
 /* One column: icon rail on the left, copy beside it. */
 .grid[data-columns='1'] .item {
   grid-template-columns: 6cqw 9cqw minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr);
+  grid-template-rows: auto;
   align-items: start;
   padding-top: 3cqw;
 }

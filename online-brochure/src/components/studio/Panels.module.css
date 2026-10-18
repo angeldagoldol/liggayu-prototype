@@ -167,3 +167,54 @@
   line-height: 1.45;
   color: var(--ink-3);
 }
+
+/* --- Place, facts checked, sources ------------------------------------- */
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+}
+
+.prefecture,
+.checked {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: start;
+  gap: var(--space-2);
+}
+
+.prefecture > :first-child,
+.checked > :first-child {
+  justify-self: stretch;
+}
+
+.suggestJp {
+  margin-left: 0.4em;
+  font-family: var(--font-jp);
+  font-size: 0.85em;
+  color: var(--ink-3);
+}
+
+.quiet {
+  align-self: flex-start;
+  color: var(--ink-2);
+}
+
+.help {
+  margin-top: calc(var(--space-1) * -1);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.warnText {
+  font-size: var(--fs-xs);
+  color: var(--accent);
+}
+
+@media (max-width: 380px) {
+  .pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

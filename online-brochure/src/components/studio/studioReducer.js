@@ -25,7 +25,16 @@ const DOC_FIELDS = new Set([
   'seasons',
   'format',
   'tags',
+  'factsChecked',
 ]);
+/** Brochure fields edited by path (updateDoc): the real place it is about, and its sources. */
+const DOC_PATH_ROOTS = new Set(['location', 'sources']);
+/** Brochure-level lists edited with addDocItem / removeDocItem / moveDocItem. */
+export const DOC_LIST_LIMITS = { sources: { min: 0, max: 12 } };
+/** Keys of brochure.userPhotos (pages refer to them as "user:<key>"). */
+const PHOTO_KEY = /^[A-Za-z0-9_-]{1,40}$/;
+/** Fields of an upload the editor may change (src, size and key are fixed). */
+const USER_PHOTO_FIELDS = new Set(['alt', 'caption', 'focus', 'credit']);
 const THEME_FIELDS = new Set(['paper', 'ink', 'accent', 'accent2', 'muted', 'typeface']);
 const LOCKED_PAGE_KEYS = new Set(['id', 'type']);
 
@@ -96,6 +105,70 @@ function updatePageAt(state, id, updater) {
   const pages = [...state.doc.pages];
   pages[index] = nextPage;
   return withPages(state, pages);
+}
+
+function docListLimit(path) {
+  return DOC_LIST_LIMITS[path?.[0]] ?? null;
+}
+
+/**
+ * Put photo `id` where `target` says:
+ *   { kind: 'cover', pageId? }  brochure.cover.photo (cards, cover and back page); a cover
+ *                               page's own `photo` is removed, so one value drives them all
+ *   { kind: 'page', id, path }  a page field ending in 'photo' (['photo'], ['items', 2, 'photo'])
+ * Returns the same doc when nothing changes or the target is invalid.
+ */
+function placePhotoIn(doc, target, id) {
+  const value = typeof id === 'string' ? id.trim() : '';
+  if (target?.kind === 'cover') {
+    let next = doc;
+    if ((doc.cover?.photo ?? '') !== value) next = { ...doc, cover: { ...doc.cover, photo: value } };
+    const index = target.pageId ? doc.pages.findIndex((p) => p.id === target.pageId && p.type === 'cover') : -1;
+    if (index !== -1 && 'photo' in doc.pages[index]) {
+      const { photo: _own, ...page } = doc.pages[index];
+      const pages = [...doc.pages];
+      pages[index] = page;
+      next = { ...next, pages };
+    }
+    return next;
+  }
+  if (target?.kind === 'page') {
+    const path = target.path ?? [];
+    if (path.length === 0 || path.at(-1) !== 'photo' || LOCKED_PAGE_KEYS.has(path[0])) return doc;
+    const index = doc.pages.findIndex((p) => p.id === target.id);
+    if (index === -1) return doc;
+    const page = doc.pages[index];
+    if (path.length > 1 && getIn(page, path.slice(0, -1)) == null) return doc;
+    if (Object.is(getIn(page, path), value)) return doc;
+    const pages = [...doc.pages];
+    pages[index] = setIn(page, path, value);
+    return { ...doc, pages };
+  }
+  return doc;
+}
+
+/** Where the editor should land after a photo change: the page it was placed on. */
+function photoSelection(state, target) {
+  if (target?.kind === 'page') return target.id;
+  if (target?.kind === 'cover' && target.pageId) return target.pageId;
+  return state.selectedId;
+}
+
+/** `doc` with every use of photo `id` (cover, pages, items) cleared. */
+function clearPhotoUses(doc, id) {
+  let next = doc;
+  if (doc.cover?.photo === id) next = { ...next, cover: { ...doc.cover, photo: '' } };
+  let pagesChanged = false;
+  const pages = doc.pages.map((page) => {
+    let out = page;
+    if (page.photo === id) out = { ...out, photo: '' };
+    if (Array.isArray(page.items) && page.items.some((item) => item?.photo === id)) {
+      out = { ...out, items: page.items.map((item) => (item?.photo === id ? { ...item, photo: '' } : item)) };
+    }
+    if (out !== page) pagesChanged = true;
+    return out;
+  });
+  return pagesChanged ? { ...next, pages } : next;
 }
 
 /* --- Reducer -------------------------------------------------------------- */
@@ -192,6 +265,21 @@ export function studioReducer(state, action) {
       return commit(state, doc, { selectedId: action.id, key, at });
     }
 
+    case 'mergePage': {
+      const path = action.path ?? [];
+      const patch = action.patch && typeof action.patch === 'object' && !Array.isArray(action.patch) ? action.patch : null;
+      if (!patch || LOCKED_PAGE_KEYS.has(path[0]) || (path.length === 0 && Object.keys(patch).some((k) => LOCKED_PAGE_KEYS.has(k)))) return state;
+      const doc = updatePageAt(state, action.id, (page) => {
+        const target = path.length ? getIn(page, path) : page;
+        if (!target || typeof target !== 'object' || Array.isArray(target)) return page;
+        if (Object.entries(patch).every(([k, v]) => Object.is(target[k], v))) return page;
+        return path.length ? setIn(page, path, { ...target, ...patch }) : { ...page, ...patch };
+      });
+      if (!doc) return state;
+      const key = action.typing ? `page:${action.id}:${path.join('.')}:{${Object.keys(patch).sort().join(',')}}` : null;
+      return commit(state, doc, { selectedId: action.id, key, at });
+    }
+
     case 'addItem': {
       const doc = updatePageAt(state, action.id, (page) => {
         const list = getIn(page, action.path);
@@ -223,6 +311,83 @@ export function studioReducer(state, action) {
         return to === action.from ? page : setIn(page, action.path, moveIndex(list, action.from, to));
       });
       return doc ? commit(state, doc, { selectedId: action.id, at }) : state;
+    }
+
+    case 'updateDoc': {
+      const path = action.path ?? [];
+      if (!DOC_PATH_ROOTS.has(path[0])) return state;
+      if (path.length === 1 && action.value == null) {
+        if (!(path[0] in state.doc)) return state;
+        const { [path[0]]: _removed, ...doc } = state.doc;
+        return commit(state, doc, { at });
+      }
+      // List entries are edited in place; adding them is addDocItem's job.
+      if (docListLimit(path) && (path.length < 3 || getIn(state.doc, path.slice(0, 2)) == null)) return state;
+      if (Object.is(getIn(state.doc, path), action.value)) return state;
+      const key = action.typing ? `doc:${path.join('.')}` : null;
+      return commit(state, setIn(state.doc, path, action.value), { key, at });
+    }
+
+    case 'addDocItem': {
+      const limit = docListLimit(action.path);
+      if (!limit || action.path.length !== 1) return state;
+      const list = Array.isArray(state.doc[action.path[0]]) ? state.doc[action.path[0]] : [];
+      if (list.length >= limit.max) return state;
+      const index = Number.isInteger(action.index) ? clamp(action.index, 0, list.length) : list.length;
+      const next = [...list];
+      next.splice(index, 0, action.item);
+      return commit(state, { ...state.doc, [action.path[0]]: next }, { at });
+    }
+
+    case 'removeDocItem': {
+      const limit = docListLimit(action.path);
+      const list = limit ? state.doc[action.path[0]] : null;
+      if (!Array.isArray(list) || action.index < 0 || action.index >= list.length || list.length <= limit.min) return state;
+      return commit(state, { ...state.doc, [action.path[0]]: list.filter((_, i) => i !== action.index) }, { at });
+    }
+
+    case 'moveDocItem': {
+      const list = docListLimit(action.path) ? state.doc[action.path[0]] : null;
+      if (!Array.isArray(list) || action.from < 0 || action.from >= list.length) return state;
+      const to = clamp(action.to, 0, list.length - 1);
+      if (to === action.from) return state;
+      return commit(state, { ...state.doc, [action.path[0]]: moveIndex(list, action.from, to) }, { at });
+    }
+
+    case 'placePhoto': {
+      const doc = placePhotoIn(state.doc, action.target, action.id);
+      return doc === state.doc ? state : commit(state, doc, { selectedId: photoSelection(state, action.target), at });
+    }
+
+    case 'addUserPhoto': {
+      const { key, photo } = action;
+      const existing = state.doc.userPhotos;
+      if (typeof key !== 'string' || !PHOTO_KEY.test(key) || !photo || typeof photo.src !== 'string') return state;
+      if (existing && Object.hasOwn(existing, key)) return state;
+      const withPhoto = { ...state.doc, userPhotos: { ...(existing ?? {}), [key]: photo } };
+      // One step: the upload and where it was placed undo together.
+      const doc = action.target ? placePhotoIn(withPhoto, action.target, `user:${key}`) : withPhoto;
+      return commit(state, doc, { selectedId: photoSelection(state, action.target), at });
+    }
+
+    case 'updateUserPhoto': {
+      const path = action.path ?? [];
+      const photos = state.doc.userPhotos;
+      if (!photos || !Object.hasOwn(photos, action.key) || !USER_PHOTO_FIELDS.has(path[0])) return state;
+      const entry = photos[action.key];
+      if (Object.is(getIn(entry, path), action.value)) return state;
+      const userPhotos = { ...photos, [action.key]: setIn(entry, path, action.value) };
+      const key = action.typing ? `photo:${action.key}:${path.join('.')}` : null;
+      return commit(state, { ...state.doc, userPhotos }, { key, at });
+    }
+
+    case 'removeUserPhoto': {
+      const photos = state.doc.userPhotos;
+      if (!photos || !Object.hasOwn(photos, action.key)) return state;
+      const { [action.key]: _removed, ...rest } = photos;
+      const cleared = clearPhotoUses(state.doc, `user:${action.key}`);
+      const { userPhotos: _old, ...doc } = cleared;
+      return commit(state, Object.keys(rest).length ? { ...doc, userPhotos: rest } : doc, { at });
     }
 
     case 'replaceDoc': {
@@ -278,10 +443,24 @@ export const studioActions = {
   movePage: (id, to) => ({ type: 'movePage', id, to }),
   reorderPages: (ids) => ({ type: 'reorderPages', ids }),
   updatePage: (id, path, value, typing = false) => ({ type: 'updatePage', id, path, value, typing }),
+  /** Several fields of one page (or of the object at `path` in it) at once: { lat, lng }. */
+  mergePage: (id, path, patch, typing = false) => ({ type: 'mergePage', id, path, patch, typing }),
   addItem: (id, path, item, index) => ({ type: 'addItem', id, path, item, index }),
   removeItem: (id, path, index) => ({ type: 'removeItem', id, path, index }),
   moveItem: (id, path, from, to) => ({ type: 'moveItem', id, path, from, to }),
   replaceDoc: (doc, selectedId) => ({ type: 'replaceDoc', doc, selectedId }),
+  /** Brochure-level fields by path: ['location', 'lat'], ['sources', 0, 'url']; ['location'] + null removes it. */
+  updateDoc: (path, value, typing = false) => ({ type: 'updateDoc', path, value, typing }),
+  addDocItem: (path, item, index) => ({ type: 'addDocItem', path, item, index }),
+  removeDocItem: (path, index) => ({ type: 'removeDocItem', path, index }),
+  moveDocItem: (path, from, to) => ({ type: 'moveDocItem', path, from, to }),
+  /** Put a photo id (registry or "user:<key>", '' for none) on the cover or a page field. */
+  placePhoto: (target, id) => ({ type: 'placePhoto', target, id }),
+  /** Store an upload in brochure.userPhotos (and place it at `target`) as one undo step. */
+  addUserPhoto: (key, photo, target) => ({ type: 'addUserPhoto', key, photo, target }),
+  updateUserPhoto: (key, path, value, typing = false) => ({ type: 'updateUserPhoto', key, path, value, typing }),
+  /** Delete an upload and clear every field that showed it. */
+  removeUserPhoto: (key) => ({ type: 'removeUserPhoto', key }),
   undo: () => ({ type: 'undo' }),
   redo: () => ({ type: 'redo' }),
 };

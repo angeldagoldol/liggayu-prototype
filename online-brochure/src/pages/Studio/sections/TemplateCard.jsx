@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Tilt, VerticalText } from '../../../components/ui/index.js';
 import { CoverArt } from '../../../components/brochure/index.js';
+import { Photo } from '../../../components/photo/Photo.jsx';
 import { getCategory } from '../../../data/categories.js';
 import { getRegion } from '../../../data/regions.js';
 import { SEASON_MAP } from '../../../data/seasons.js';
@@ -15,9 +16,10 @@ const reveal = {
 };
 
 /**
- * A template as a printed proof: live cover art in the template's palette,
- * its Japanese title set vertically, and what it contains. The whole card is
- * one button (stretched from the heading).
+ * A template as a printed proof: its cover photograph (the live cover art in
+ * the template's palette until the photo is downloaded), its Japanese title
+ * set vertically, and what it contains. The whole card is one button
+ * (stretched from the heading).
  *   <TemplateCard template={t} index={0} onChoose={(t) => …} />
  */
 export function TemplateCard({ template, index, onChoose }) {
@@ -31,7 +33,13 @@ export function TemplateCard({ template, index, onChoose }) {
       <Tilt className={styles.tilt} max={5}>
         <article className={styles.card}>
           <div className={styles.art} style={{ background: b.theme.paper }}>
-            <CoverArt style={b.cover.art} seed={b.cover.seed} theme={b.theme} animated className={styles.svg} />
+            <Photo
+              id={b.cover.photo}
+              alt=""
+              sizes="(min-width: 1100px) 300px, (min-width: 700px) 45vw, 90vw"
+              className={styles.svg}
+              fallback={<CoverArt style={b.cover.art} seed={b.cover.seed} theme={b.theme} animated />}
+            />
             <span className={styles.no} style={{ color: b.theme.ink, background: b.theme.paper }} aria-hidden="true">
               {kanjiNumeral(index + 1)}
             </span>

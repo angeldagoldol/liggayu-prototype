@@ -325,3 +325,163 @@ describe('load and replace', () => {
     expect(studioReducer(start, { type: 'nope' })).toBe(start);
   });
 });
+
+describe('brochure-level real-place fields', () => {
+  it('sets factsChecked like any brochure field', () => {
+    const s = run([A.setField('factsChecked', 'October 2026')]);
+    expect(s.doc.factsChecked).toBe('October 2026');
+    expect(s.past).toHaveLength(1);
+  });
+
+  it('edits the location by path, creating it when missing, and removes it', () => {
+    let s = run([A.updateDoc(['location', 'name'], 'Kiyomizu-dera', true), A.updateDoc(['location', 'lat'], 34.9949)]);
+    expect(s.doc.location).toEqual({ name: 'Kiyomizu-dera', lat: 34.9949 });
+    s = studioReducer(s, A.updateDoc(['location'], null));
+    expect(s.doc).not.toHaveProperty('location');
+    expect(studioReducer(s, A.updateDoc(['location'], null))).toBe(s);
+  });
+
+  it('coalesces typing in one location field into one undo step', () => {
+    const s = run([A.updateDoc(['location', 'name'], 'K', true), A.updateDoc(['location', 'name'], 'Ky', true), A.updateDoc(['location', 'name'], 'Kyo', true)], undefined, 10);
+    expect(s.past).toHaveLength(1);
+    expect(studioReducer(s, A.undo()).doc).not.toHaveProperty('location');
+  });
+
+  it('only edits allowed brochure paths', () => {
+    const start = createStudioState(makeDoc());
+    expect(studioReducer(start, A.updateDoc(['title'], 'x'))).toBe(start);
+    expect(studioReducer(start, A.updateDoc(['userPhotos', 'a'], {}))).toBe(start);
+    expect(studioReducer(start, A.updateDoc([], 'x'))).toBe(start);
+    // Sources are added with addDocItem, never conjured by a path edit.
+    expect(studioReducer(start, A.updateDoc(['sources', 0, 'url'], 'https://x.jp'))).toBe(start);
+  });
+
+  it('adds, edits, moves and removes sources within the limit', () => {
+    let s = run([
+      A.addDocItem(['sources'], { label: 'Official site', url: '' }),
+      A.addDocItem(['sources'], { label: 'JNTO', url: 'https://www.japan.travel/en/' }),
+      A.updateDoc(['sources', 0, 'url'], 'https://www.kiyomizudera.or.jp/en/'),
+      A.moveDocItem(['sources'], 1, 0),
+    ]);
+    expect(s.doc.sources.map((x) => x.label)).toEqual(['JNTO', 'Official site']);
+    expect(s.doc.sources[1].url).toBe('https://www.kiyomizudera.or.jp/en/');
+    s = studioReducer(s, A.removeDocItem(['sources'], 0));
+    expect(s.doc.sources.map((x) => x.label)).toEqual(['Official site']);
+    expect(studioReducer(s, A.removeDocItem(['sources'], 5))).toBe(s);
+    expect(studioReducer(s, A.moveDocItem(['sources'], 0, 0))).toBe(s);
+    expect(studioReducer(s, A.addDocItem(['pages'], {}))).toBe(s);
+    const full = run(Array.from({ length: 14 }, (_, i) => A.addDocItem(['sources'], { label: `S${i}`, url: '' })));
+    expect(full.doc.sources).toHaveLength(12);
+  });
+});
+
+describe('photos', () => {
+  const upload = { src: 'data:image/jpeg;base64,QUJD', alt: 'Lanterns', width: 1600, height: 1067, credit: { author: 'Your photo', license: '' } };
+
+  it('places a library photo on a page field and selects that page', () => {
+    const s = run([A.placePhoto({ kind: 'page', id: 'p2', path: ['photo'] }, 'kyoto-senbon-torii')]);
+    expect(s.doc.pages[1].photo).toBe('kyoto-senbon-torii');
+    expect(s.selectedId).toBe('p2');
+    expect(s.past).toHaveLength(1);
+  });
+
+  it('places photos on list items, never on locked keys or missing items', () => {
+    let s = run([A.placePhoto({ kind: 'page', id: 'p3', path: ['items', 1, 'photo'] }, 'nara-deer')]);
+    expect(s.doc.pages[2].items[1].photo).toBe('nara-deer');
+    expect(s.doc.pages[2].items[0]).not.toHaveProperty('photo');
+    const same = s;
+    s = studioReducer(s, A.placePhoto({ kind: 'page', id: 'p3', path: ['items', 9, 'photo'] }, 'x'));
+    expect(s).toBe(same);
+    expect(studioReducer(s, A.placePhoto({ kind: 'page', id: 'p3', path: ['id'] }, 'x'))).toBe(same);
+    expect(studioReducer(s, A.placePhoto({ kind: 'page', id: 'p3', path: ['heading'] }, 'x'))).toBe(same);
+    expect(studioReducer(s, A.placePhoto({ kind: 'page', id: 'nope', path: ['photo'] }, 'x'))).toBe(same);
+    expect(studioReducer(s, A.placePhoto({ kind: 'page', id: 'p3', path: ['items', 1, 'photo'] }, 'nara-deer'))).toBe(same);
+  });
+
+  it('sets the cover photo on the brochure and drops the cover page’s own one', () => {
+    const doc = makeDoc();
+    doc.pages[0] = { ...doc.pages[0], photo: 'old-photo' };
+    const s = run([A.placePhoto({ kind: 'cover', pageId: 'p1' }, 'kyoto-senbon-torii')], createStudioState(doc));
+    expect(s.doc.cover).toEqual({ art: 'torii', seed: 5, photo: 'kyoto-senbon-torii' });
+    expect(s.doc.pages[0]).not.toHaveProperty('photo');
+    const cleared = studioReducer(s, A.placePhoto({ kind: 'cover', pageId: 'p1' }, ''));
+    expect(cleared.doc.cover.photo).toBe('');
+  });
+
+  it('stores an upload and places it in one undo step', () => {
+    const s = run([A.addUserPhoto('ph1', upload, { kind: 'page', id: 'p2', path: ['photo'] })]);
+    expect(s.doc.userPhotos).toEqual({ ph1: upload });
+    expect(s.doc.pages[1].photo).toBe('user:ph1');
+    expect(s.past).toHaveLength(1);
+    const undone = studioReducer(s, A.undo());
+    expect(undone.doc).not.toHaveProperty('userPhotos');
+    expect(undone.doc.pages[1]).not.toHaveProperty('photo');
+  });
+
+  it('refuses bad or duplicate upload keys', () => {
+    const s = run([A.addUserPhoto('ph1', upload)]);
+    expect(studioReducer(s, A.addUserPhoto('ph1', upload))).toBe(s);
+    expect(studioReducer(s, A.addUserPhoto('bad key', upload))).toBe(s);
+    expect(studioReducer(s, A.addUserPhoto('__proto__x!', upload))).toBe(s);
+    expect(studioReducer(s, A.addUserPhoto('ph2', { alt: 'no src' }))).toBe(s);
+  });
+
+  it('edits an upload’s alt text and credit, coalescing typing', () => {
+    let s = run([A.addUserPhoto('ph1', upload)]);
+    s = run([A.updateUserPhoto('ph1', ['alt'], 'L', true), A.updateUserPhoto('ph1', ['alt'], 'La', true)], s, 10);
+    expect(s.doc.userPhotos.ph1.alt).toBe('La');
+    expect(s.past).toHaveLength(2);
+    s = studioReducer(s, A.updateUserPhoto('ph1', ['credit', 'author'], 'Aiko Tanaka'));
+    expect(s.doc.userPhotos.ph1.credit).toEqual({ author: 'Aiko Tanaka', license: '' });
+    expect(studioReducer(s, A.updateUserPhoto('ph1', ['src'], 'data:x'))).toBe(s);
+    expect(studioReducer(s, A.updateUserPhoto('nope', ['alt'], 'x'))).toBe(s);
+  });
+
+  it('removes an upload and clears every field that showed it', () => {
+    const doc = makeDoc();
+    let s = run(
+      [
+        A.addUserPhoto('ph1', upload, { kind: 'cover', pageId: 'p1' }),
+        A.addUserPhoto('ph2', upload, { kind: 'page', id: 'p2', path: ['photo'] }),
+        A.placePhoto({ kind: 'page', id: 'p3', path: ['items', 0, 'photo'] }, 'user:ph1'),
+      ],
+      createStudioState(doc),
+    );
+    s = studioReducer(s, A.removeUserPhoto('ph1'));
+    expect(Object.keys(s.doc.userPhotos)).toEqual(['ph2']);
+    expect(s.doc.cover.photo).toBe('');
+    expect(s.doc.pages[2].items[0].photo).toBe('');
+    expect(s.doc.pages[1].photo).toBe('user:ph2');
+    s = studioReducer(s, A.removeUserPhoto('ph2'));
+    expect(s.doc).not.toHaveProperty('userPhotos');
+    expect(studioReducer(s, A.removeUserPhoto('ph2'))).toBe(s);
+  });
+});
+
+describe('mergePage', () => {
+  const place = () => {
+    const doc = makeDoc();
+    doc.pages.splice(1, 0, { id: 'pl', type: 'map', places: [{ name: 'A', lat: 1, lng: 2 }] });
+    return createStudioState(doc);
+  };
+
+  it('sets several page fields in one step', () => {
+    const s = run([A.mergePage('p2', [], { lat: 34.9949, lng: 135.785 })]);
+    expect(s.doc.pages[1]).toMatchObject({ lat: 34.9949, lng: 135.785 });
+    expect(s.past).toHaveLength(1);
+  });
+
+  it('merges into an item and coalesces typing', () => {
+    const s = run([A.mergePage('pl', ['places', 0], { lat: 3, lng: 2 }, true), A.mergePage('pl', ['places', 0], { lat: 3, lng: 4 }, true)], place(), 10);
+    expect(s.doc.pages[1].places[0]).toEqual({ name: 'A', lat: 3, lng: 4 });
+    expect(s.past).toHaveLength(1);
+  });
+
+  it('refuses locked keys, missing targets and no-ops', () => {
+    const start = place();
+    expect(studioReducer(start, A.mergePage('pl', [], { id: 'x' }))).toBe(start);
+    expect(studioReducer(start, A.mergePage('pl', ['places', 5], { lat: 1 }))).toBe(start);
+    expect(studioReducer(start, A.mergePage('pl', ['places', 0], { lat: 1, lng: 2 }))).toBe(start);
+    expect(studioReducer(start, A.mergePage('pl', [], null))).toBe(start);
+  });
+});

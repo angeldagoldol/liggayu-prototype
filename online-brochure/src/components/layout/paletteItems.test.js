@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BROCHURES } from '../../data/brochures.js';
-import { actionItems, brochureItem, createPaletteIndex, pageItems, queryPalette } from './paletteItems.js';
+import { actionItems, brochureItem, createPaletteIndex, pageItems, placeItems, queryPalette } from './paletteItems.js';
 
 const make = (id, extra = {}) => ({
   id,
@@ -118,5 +118,49 @@ describe('items', () => {
     expect(tos).toContain('/brochures?category=heritage');
     expect(tos).toContain('/brochures?season=winter');
     expect(tos).toContain('/brochures?region=hokkaido');
+  });
+});
+
+describe('places and credits', () => {
+  const nara = make('nara', {
+    title: 'Nara: Deer and Temples',
+    titleJp: '奈良',
+    location: { name: 'Tōdai-ji', nameJp: '東大寺', prefecture: 'Nara' },
+    pages: [
+      { id: 'p1', type: 'cover' },
+      { id: 'p3', type: 'place', kicker: 'Temple', name: 'Tōdai-ji', nameJp: '東大寺', photo: 'nara-todaiji' },
+      { id: 'p4', type: 'place', name: 'Kasuga Taisha', nameJp: '春日大社' },
+      { id: 'p5', type: 'place', name: '  ' },
+      null,
+    ],
+  });
+  const palette = createPaletteIndex({ brochures: [nara, ...brochures] });
+
+  it('makes a row per named place page that opens the brochure at that page', () => {
+    const items = placeItems(nara);
+    expect(items.map((i) => [i.title, i.to, i.photo])).toEqual([
+      ['Tōdai-ji', '/brochures/nara?p=1', 'nara-todaiji'],
+      ['Kasuga Taisha', '/brochures/nara?p=2', ''],
+    ]);
+    expect(items[0]).toMatchObject({ kind: 'place', group: 'places', titleJp: '東大寺', meta: 'Nara · page 2' });
+    expect(placeItems({})).toEqual([]);
+  });
+
+  it('finds places by English or Japanese name, without macrons', () => {
+    const todai = queryPalette(palette, 'todaiji');
+    expect(todai.groups.find((g) => g.id === 'places').items[0].to).toBe('/brochures/nara?p=1');
+    expect(queryPalette(palette, '春日').flat[0].title).toBe('Kasuga Taisha');
+  });
+
+  it('finds a brochure by its main place', () => {
+    const hits = queryPalette(palette, 'todai').groups.find((g) => g.id === 'brochures');
+    expect(hits.items.map((i) => i.brochure.id)).toEqual(['nara']);
+  });
+
+  it('leaves places out of the empty state and finds the Credits page', () => {
+    expect(queryPalette(palette, '').groups.map((g) => g.id)).not.toContain('places');
+    for (const q of ['credits', 'photo licence', 'natural earth', '奥付']) {
+      expect(queryPalette(palette, q).flat[0].to).toBe('/credits');
+    }
   });
 });

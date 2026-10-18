@@ -26,7 +26,7 @@ describe('fitElement', () => {
   it('shrinks overflowing text to the largest scale that fits', () => {
     const el = region(125);
     const fit = fitElement(el);
-    // 1px of tolerance: 0.808 × 125 rounds up to 101.
+    // A pixel of slack: 0.808 × 125 rounds up to 101.
     expect(fit).toBeGreaterThan(0.79);
     expect(fit).toBeLessThanOrEqual(0.81);
     expect(overflows(el)).toBe(false);
@@ -49,6 +49,17 @@ describe('fitElement', () => {
     expect(overflows(wide)).toBe(false);
     expect(overflows(wide, 'both')).toBe(true);
     expect(fitElement(wide)).toBe(1);
+  });
+
+  it('catches a sub-pixel overflow from the last child’s edge', () => {
+    const el = region(100, 100);
+    const child = document.createElement('p');
+    el.append(child);
+    el.getBoundingClientRect = () => ({ top: 0, bottom: 100, height: 100, left: 0, right: 200, width: 200 });
+    child.getBoundingClientRect = () => ({ top: 0, bottom: 100.8, height: 100.8, left: 0, right: 200, width: 200 });
+    expect(overflows(el)).toBe(true);
+    child.getBoundingClientRect = () => ({ top: 0, bottom: 100.3, height: 100.3, left: 0, right: 200, width: 200 });
+    expect(overflows(el)).toBe(false);
   });
 
   it('skips elements without a box', () => {

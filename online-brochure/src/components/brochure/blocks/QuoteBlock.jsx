@@ -33,7 +33,7 @@ export function QuoteBlock({ page, brochure, index }) {
 
       {jpLines.length > 0 && (
         <Reveal variant="fade" className={styles.original}>
-          <p lang="ja" className={styles.jp} style={{ '--jp': `${verseSize(jpLines, { height: COLUMN - 10, perChar: 1.24 })}cqw`, '--col': `${COLUMN}cqw` }}>
+          <p lang="ja" className={styles.jp} style={{ '--jp': `${verseSize(jpLines, { height: COLUMN - 10, perChar: 1.24, offset: 1.4 })}cqw`, '--col': `${COLUMN}cqw` }}>
             {jpLines.map((line, i) => (
               <span key={i} className={styles.jpLine}>
                 {i === 0 && (

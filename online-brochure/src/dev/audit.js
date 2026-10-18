@@ -33,8 +33,10 @@ function opacityWithin(el, root) {
   return opacity;
 }
 
+const intersects = (a, b) => a.left < b.right - 1 && b.left < a.right - 1 && a.top < b.bottom - 1 && b.top < a.bottom - 1;
+
 /**
- * Issues on one page <article>: [{ kind: 'clipped'|'off-page'|'ellipsis'|'clamped'|'fit', text, where }].
+ * Issues on one page <article>: [{ kind: 'clipped'|'off-page'|'ellipsis'|'clamped'|'overlap'|'fit', text, where }].
  * `where` is the page's aria-label, so a report reads "Page 4 of 14: Kiyomizu-dera".
  */
 export function auditPage(article) {
@@ -48,6 +50,7 @@ export function auditPage(article) {
 
   const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT);
   const done = new Set();
+  const placed = [];
   while (walker.nextNode()) {
     const node = walker.currentNode;
     const el = node.parentElement;
@@ -59,6 +62,15 @@ export function auditPage(article) {
     range.selectNodeContents(node);
     const rects = [...range.getClientRects()];
     if (!rects.length) continue;
+
+    // Text running into other text (a cell overflowing into the next one).
+    // (Vertical type is left out: its line boxes are wider than the glyphs, so columns set
+    // solid at line-height 1 always "touch".)
+    if (!getComputedStyle(el).writingMode.startsWith('vertical') && !el.closest('svg')) {
+      const hit = placed.find((other) => !other.el.contains(el) && !el.contains(other.el) && other.rects.some((a) => rects.some((b) => intersects(a, b))));
+      if (hit) add('overlap', el, `${node.textContent.trim().slice(0, 40)} ⟷ ${hit.text.slice(0, 30)}`);
+      placed.push({ el, rects, text: node.textContent.trim() });
+    }
 
     const style = getComputedStyle(el);
     const slack = Math.max(TOLERANCE, Number.parseFloat(style.fontSize) * 0.3);

@@ -213,6 +213,13 @@
   transition: transform var(--dur-3) var(--ease-out);
 }
 
+/* A place: a small landscape print rather than a book cover. */
+.swatchPlace {
+  width: 42px;
+  height: 32px;
+  border-radius: 2px;
+}
+
 .row[data-active] .swatch {
   transform: rotate(-4deg) scale(1.04);
 }

@@ -5,6 +5,10 @@ import { REGION_MAP } from '../../data/regions.js';
 import { SEASON_MAP } from '../../data/seasons.js';
 import { ICON_NAMES } from '../ui/Icon.jsx';
 import { contrast } from '../brochure/art/color.js';
+import { getPhoto, photoIdsIn } from '../../data/photos/index.js';
+import { prefectures, project } from '../../data/geo/japan.js';
+import { coordinateCheck } from './fieldChecks.js';
+import { locate } from './geoLookup.js';
 import { LIST_LIMITS } from './pageLimits.js';
 import { validateForPublish } from './publishCheck.js';
 import { TEMPLATES, createBlank, createFromTemplate, createRemix } from './templates.js';
@@ -67,6 +71,63 @@ describe('templates', () => {
     }
   });
 
+  it.each(TEMPLATES.map((t) => [t.name, t]))('%s follows the real-content outline with placeholder copy', (_, template) => {
+    const b = template.brochure;
+    const types = b.pages.map((p) => p.type);
+    expect(types[0]).toBe('cover');
+    expect(types.at(-1)).toBe('back');
+    expect(types.filter((t) => t === 'place').length).toBeGreaterThanOrEqual(2);
+    expect(types).toContain('map');
+    expect(types).toContain('contact');
+    // No invented publisher: the person's own name goes here.
+    expect(b.organization).toBe('Your name');
+    expect(b.location).toMatchObject({ name: expect.any(String), nameJp: expect.stringMatching(/[぀-ヿ一-龯]/) });
+    for (const page of b.pages) {
+      if (page.type === 'place') {
+        expect(page.nameJp).toMatch(/[぀-ヿ一-龯]/);
+        expect(page.facts.length).toBeGreaterThan(0);
+        expect(page.website).toBe('');
+      }
+      if (page.type === 'contact') {
+        expect(page.heading).toBe('Visitor information');
+        expect(page.ctaUrl).toBe('');
+        for (const detail of page.details) expect(detail.url).toBe('');
+      }
+      if (page.type === 'quote') {
+        expect(page.quoteJp).toMatch(/[぀-ヿ一-龯]/);
+        expect(page.role).toMatch(/Translation: Tabi Guides$/);
+      }
+      if (page.type === 'pricing') for (const plan of page.plans) expect(plan.price).not.toMatch(/\d/);
+    }
+    // No unchecked prices or times dressed as facts anywhere.
+    expect(JSON.stringify(b)).not.toMatch(/[¥$€£]\s?\d/);
+  });
+
+  it.each(TEMPLATES.map((t) => [t.name, t]))('%s pins real places inside Japan', (_, template) => {
+    const b = template.brochure;
+    const points = [
+      b.location,
+      ...b.pages.filter((p) => p.type === 'place'),
+      ...b.pages.filter((p) => p.type === 'map').flatMap((p) => p.places),
+    ];
+    for (const point of points) {
+      expect(coordinateCheck(point.lat, point.lng).state).toBe('ok');
+      expect(locate(point.lat, point.lng, { project, prefectures })?.state).not.toBe('off');
+    }
+    // Each place page's pin is on the map page too.
+    const map = b.pages.find((p) => p.type === 'map');
+    for (const place of b.pages.filter((p) => p.type === 'place')) {
+      expect(map.places.some((m) => m.lat === place.lat && m.lng === place.lng)).toBe(true);
+    }
+    expect(locate(b.location.lat, b.location.lng, { project, prefectures }).prefecture?.name).toBe(b.location.prefecture);
+  });
+
+  it.each(TEMPLATES.map((t) => [t.name, t]))('%s uses photos from the library', (_, template) => {
+    const ids = photoIdsIn(template.brochure);
+    expect(ids.length).toBeGreaterThanOrEqual(3);
+    for (const id of ids) expect(getPhoto(id), id).not.toBeNull();
+  });
+
   it('uses only fictional .example web and email addresses', () => {
     const text = JSON.stringify(TEMPLATES);
     const domains = text.match(/[a-z0-9-]+(?:\.[a-z0-9-]+)+(?=["\s,])/gi) ?? [];
@@ -83,13 +144,15 @@ describe('draft factories', () => {
     expect(doc.updatedAt).toBe(now.toISOString());
     expect(new Set(doc.pages.map((p) => p.id)).size).toBe(doc.pages.length);
     expect(doc.pages.every((p) => p.id.startsWith('pg_'))).toBe(true);
-    expect(doc.title).toBe('Kinosaki: Seven Baths');
+    expect(doc.title).toBe('Hakone: A Hot-Spring Weekend');
   });
 
   it('does not share nested objects with the template', () => {
     const doc = createFromTemplate('city-weekend', { makeId, now });
-    doc.pages[2].items[0].title = 'Changed';
-    expect(TEMPLATES[0].brochure.pages[2].items[0].title).not.toBe('Changed');
+    doc.pages[2].facts[0].value = 'Changed';
+    doc.location.lat = 0;
+    expect(TEMPLATES[0].brochure.pages[2].facts[0].value).not.toBe('Changed');
+    expect(TEMPLATES[0].brochure.location.lat).not.toBe(0);
   });
 
   it('falls back to the first template for unknown ids', () => {
@@ -106,7 +169,7 @@ describe('draft factories', () => {
   it('remixes a brochure as a new user copy', () => {
     const source = { ...TEMPLATES[4].brochure, id: 'b_src', slug: 'src', source: 'builtin', featured: true };
     const doc = createRemix(source, { makeId, now });
-    expect(doc.title).toBe('Kamakura: The Temple Trail (remix)');
+    expect(doc.title).toBe('Nara: The Temple Trail (remix)');
     expect(doc.id).not.toBe('b_src');
     expect(doc).toMatchObject({ slug: '', source: 'user', featured: false });
     expect(doc.pages).toHaveLength(source.pages.length);

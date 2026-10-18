@@ -13,7 +13,12 @@ export const LIST_LIMITS = {
   pricing: { plans: { min: 1, max: 3 }, features: { min: 1, max: 6 } },
   phrases: { items: { min: 3, max: 6 } },
   contact: { details: { min: 2, max: 4 } },
+  place: { facts: { min: 1, max: 5 } },
+  map: { places: { min: 1, max: 8 } },
 };
+
+/** The practical facts a place page usually lists, in the order a new row offers them. */
+export const FACT_LABELS = ['Hours', 'Admission', 'Getting there', 'Time needed', 'Best time'];
 
 const NO_LIMIT = { min: 0, max: Infinity };
 
@@ -30,9 +35,12 @@ export function randomSeed(random = Math.random) {
 
 /**
  * A fresh, sensible item for the list at `path` on a page type. Placeholder
- * copy is Japan-flavoured so a new row already reads like a brochure.
+ * copy is Japan-flavoured so a new row already reads like a brochure; rows
+ * that hold facts (place facts, visitor information, map places) start
+ * empty, so nothing unchecked is printed by accident. `page` (optional) lets
+ * a new fact row offer the next label the page doesn't have yet.
  */
-export function newListItem(pageType, path, random = Math.random) {
+export function newListItem(pageType, path, random = Math.random, page = null) {
   const key = [...(path ?? [])].reverse().find((part) => typeof part === 'string');
   switch (`${pageType}.${key}`) {
     case 'features.items':
@@ -50,7 +58,13 @@ export function newListItem(pageType, path, random = Math.random) {
     case 'phrases.items':
       return { jp: 'よろしくお願いします', romaji: 'Yoroshiku onegaishimasu', meaning: 'Pleased to meet you' };
     case 'contact.details':
-      return { icon: 'Globe', label: 'Website', value: 'your-site.example' };
+      return { icon: 'Globe', label: 'Official site', value: '', url: '' };
+    case 'place.facts': {
+      const used = new Set((Array.isArray(page?.facts) ? page.facts : []).map((f) => String(f?.label ?? '').trim().toLowerCase()));
+      return { label: FACT_LABELS.find((label) => !used.has(label.toLowerCase())) ?? 'Good to know', value: '' };
+    }
+    case 'map.places':
+      return { name: '', nameJp: '', lat: '', lng: '', note: '' };
     default:
       return {};
   }

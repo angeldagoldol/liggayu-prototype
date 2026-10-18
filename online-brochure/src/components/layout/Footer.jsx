@@ -1,14 +1,13 @@
 import { useId, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { ArrowUp } from 'lucide-react';
+import { ArrowRight, ArrowUp } from 'lucide-react';
 import { CATEGORIES } from '../../data/categories.js';
 import { REGIONS } from '../../data/regions.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { VerticalText } from '../ui/index.js';
 import { cn } from '../../lib/cn.js';
 import { AppearanceSwitch } from './AppearanceSwitch.jsx';
-import { NewsletterForm } from './NewsletterForm.jsx';
 import { NowInJapan } from './NowInJapan.jsx';
 import styles from './Footer.module.css';
 
@@ -76,9 +75,11 @@ function Wordmark() {
 
 /**
  * Editorial footer on a sumi-ink band (dark in both themes): statement and
- * proverb, seasonal-letters sign-up, link columns into the library, a live
- * "Now in Japan" strip, small print, and a giant TABI 旅 wordmark that rises
- * on scroll. Hidden on the immersive viewer route by <AppShell>.
+ * proverb, where the content comes from (real places, checked facts,
+ * credited photographs, Natural Earth map data) with a link to the Credits
+ * page, link columns into the library, a live "Now in Japan" strip, small
+ * print, and a giant TABI 旅 wordmark that rises on scroll. Hidden on the
+ * immersive viewer route by <AppShell>.
  */
 export function Footer() {
   const reduce = useReducedMotion();
@@ -106,18 +107,27 @@ export function Footer() {
           </h2>
           <p className={styles.blurb}>
             <span lang="ja">旅</span> <em>tabi</em> means journey. Tabi is a small library of interactive brochures about
-            Japan — each one turns like paper and can be remixed in the Studio. Everything you make stays in your
-            browser.
+            real places in Japan — each one turns like paper and can be remixed in the Studio. Everything you make stays
+            in your browser.
           </p>
           <div className={styles.letters}>
             <h3 className={styles.lettersTitle}>
-              Seasonal letters
+              Real places, credited
               <span lang="ja" className={styles.columnJp}>
-                季節の便り
+                出典
               </span>
             </h3>
-            <p className={styles.lettersNote}>One email per season. Sakura, fireworks, maples, snow — nothing else.</p>
-            <NewsletterForm />
+            <p className={styles.lettersNote}>
+              Facts are checked against official sources. Photographs come from Wikimedia Commons under free licences,
+              credited to the people who took them, and the maps are drawn from Natural Earth.
+            </p>
+            <Link to="/credits" className={styles.creditsLink}>
+              Credits &amp; sources
+              <span lang="ja" className={styles.creditsJp} aria-hidden="true">
+                奥付
+              </span>
+              <ArrowRight aria-hidden="true" focusable="false" className={styles.creditsArrow} />
+            </Link>
           </div>
         </section>
 
@@ -151,7 +161,8 @@ export function Footer() {
 
       <div className={cn('container', styles.bottom)}>
         <p className={styles.small}>
-          © {YEAR} Tabi <span lang="ja">旅</span>. Demo project. Brochure publishers are fictional.
+          © {YEAR} Tabi <span lang="ja">旅</span>. Brochures by Tabi Guides, this site’s own imprint. Photographs: Wikimedia
+          Commons contributors · Map data: Natural Earth · <Link to="/credits">Credits</Link>
         </p>
         <AppearanceSwitch className={styles.appearance} />
         <button type="button" className={styles.toTop} onClick={backToTop}>

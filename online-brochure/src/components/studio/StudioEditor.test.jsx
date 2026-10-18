@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MotionGlobalConfig } from 'framer-motion';
 import { MemoryRouter } from 'react-router-dom';
 import { BrochureProvider } from '../../context/BrochureContext.jsx';
 import { ToastProvider } from '../../context/ToastContext.jsx';
 import { serializeBrochure } from './brochureIO.js';
+import { pageHeading } from '../brochure/blocks/pageUtils.js';
 import { IconPicker } from './fields/IconPicker.jsx';
 import { ListEditor } from './fields/ListEditor.jsx';
 import { NumberField } from './fields/NumberField.jsx';
@@ -13,6 +14,12 @@ import { StudioEditor } from './StudioEditor.jsx';
 import { DRAFT_KEY, readDraft } from './draftStore.js';
 import { createBlank, createFromTemplate } from './templates.js';
 import { useAutosave, useStudio } from './useStudio.js';
+
+// Canvas is not drawn in jsdom: the upload's downscale returns a ready JPEG.
+vi.mock('./photoUpload.js', async (importOriginal) => ({
+  ...(await importOriginal()),
+  downscaleImage: vi.fn(async () => ({ src: 'data:image/jpeg;base64,QUJD', width: 1600, height: 1067, size: 27, quality: 0.82 })),
+}));
 
 beforeAll(() => {
   MotionGlobalConfig.skipAnimations = true;
@@ -43,7 +50,7 @@ describe('<StudioEditor>', () => {
     renderEditor(createFromTemplate('food-crawl'));
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toHaveFocus();
-    expect(heading).toHaveTextContent('Studio: designing “Fukuoka: A Yatai Crawl”');
+    expect(heading).toHaveTextContent('Studio: designing “Osaka: A Food Crawl”');
   });
 
   it('says how long ago restored changes were made', () => {
@@ -90,6 +97,61 @@ describe('<StudioEditor>', () => {
     fireEvent.change(title, { target: { value: 'Imported trail, edited' } });
     fireEvent.click(screen.getByRole('button', { name: 'Undo import' }));
     expect(title).toHaveValue(original);
+    await settle();
+  });
+});
+
+describe('<StudioEditor> real-place editing', () => {
+  const openPage = (name) => fireEvent.click(screen.getAllByRole('button', { name: new RegExp(name) }).find((b) => b.dataset.action === 'open'));
+
+  it('fills a place’s coordinates from a pasted pair and names where they land', async () => {
+    renderEditor(createFromTemplate('food-crawl'));
+    openPage('Kuromon Market');
+    const lat = await screen.findByLabelText('Latitude');
+    fireEvent.paste(lat, { clipboardData: { getData: () => '34.6687, 135.5013' } });
+    expect(lat).toHaveValue('34.6687');
+    expect(screen.getByLabelText('Longitude')).toHaveValue('135.5013');
+    expect(await screen.findByText('大阪府')).toBeInTheDocument();
+    await settle();
+  });
+
+  it('uploads a photo into a page in one undoable step', async () => {
+    renderEditor(createFromTemplate('food-crawl'));
+    openPage('Come hungry');
+    fireEvent.click(await screen.findByRole('button', { name: 'Choose photo' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Choose a photo' });
+    fireEvent.click(within(dialog).getByRole('tab', { name: /Your photos/ }));
+    const file = new File(['jpeg-bytes'], 'kuromon-market-stalls.jpg', { type: 'image/jpeg' });
+    await act(async () => {
+      fireEvent.change(within(dialog).getByLabelText(/Drop a photo here/), { target: { files: [file] } });
+    });
+    // A descriptive file name suggests the alt text; the person can change it.
+    const alt = await within(dialog).findByLabelText(/Describe the photo/);
+    expect(alt).toHaveValue('Kuromon market stalls');
+    fireEvent.change(alt, { target: { value: 'Seafood stalls under a covered market roof' } });
+    fireEvent.click(within(dialog).getByRole('button', { name: /Add to brochure/ }));
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Choose a photo' })).not.toBeInTheDocument());
+    expect(screen.getByText('Seafood stalls under a covered market roof')).toBeInTheDocument();
+    const draft = await waitFor(() => {
+      const value = readDraft(DRAFT_KEY);
+      expect(Object.keys(value?.doc.userPhotos ?? {})).toHaveLength(1);
+      return value;
+    });
+    const [key] = Object.keys(draft.doc.userPhotos);
+    expect(draft.doc.pages[1].photo).toBe(`user:${key}`);
+    expect(draft.doc.userPhotos[key].credit).toEqual({ author: 'Your photo', license: '' });
+    // One undo takes back both the upload and its placement.
+    fireEvent.keyDown(document.body, { key: 'z', code: 'KeyZ', ctrlKey: true });
+    expect(screen.queryByText('Seafood stalls under a covered market roof')).not.toBeInTheDocument();
+    await settle();
+  });
+
+  it('marks the facts as checked this month from the Details panel', async () => {
+    renderEditor(createFromTemplate('temple-trail'));
+    fireEvent.click(screen.getByRole('tab', { name: /Details/ }));
+    const button = await screen.findByRole('button', { name: /^Mark / });
+    fireEvent.click(button);
+    expect(screen.getByLabelText(/Checked in/)).toHaveValue(new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(new Date()));
     await settle();
   });
 });
@@ -161,7 +223,7 @@ function PanelHarness({ doc, compact = false }) {
 describe('<PagesPanel>', () => {
   const doc = createFromTemplate('food-crawl');
   const second = doc.pages[1];
-  const heading = (page) => page.heading || page.title;
+  const heading = (page) => pageHeading(page, doc);
 
   it('keeps focus on the moved page, on the arrow that still works (regression)', async () => {
     render(<PanelHarness doc={doc} />);

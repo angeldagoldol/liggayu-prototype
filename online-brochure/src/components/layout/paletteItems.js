@@ -1,6 +1,8 @@
 /**
- * What the command palette can find: brochures, pages (plus filtered
- * library shortcuts) and actions — and how results are grouped. Pure data
+ * What the command palette can find: brochures, the real places inside them
+ * (each place page, opening the brochure at that page), pages (plus
+ * filtered library shortcuts and the Credits page) and actions — and how
+ * results are grouped. Pure data
  * shaping on top of search.js so it can be unit-tested without React.
  */
 import { CATEGORIES, getCategory } from '../../data/categories.js';
@@ -13,11 +15,12 @@ export const PALETTE_GROUPS = {
   recent: { label: 'Recently viewed', jp: '最近見た' },
   suggested: { label: 'Suggested', jp: 'おすすめ' },
   brochures: { label: 'Brochures', jp: 'パンフレット' },
+  places: { label: 'Places', jp: '名所' },
   pages: { label: 'Pages', jp: 'ページ' },
   actions: { label: 'Actions', jp: '操作' },
 };
 
-const LIMITS = { recent: 4, suggested: 5, brochures: 8, pages: 7, actions: 3 };
+const LIMITS = { recent: 4, suggested: 5, brochures: 8, places: 6, pages: 7, actions: 3 };
 const SEASON_ICONS = { spring: 'Flower', summer: 'Sun', autumn: 'Leaf', winter: 'Snowflake' };
 
 /** Palette row for a brochure. Missing fields (user drafts) are tolerated. */
@@ -37,6 +40,45 @@ export function brochureItem(brochure, group = 'brochures') {
   };
 }
 
+const text = (value) => (typeof value === 'string' ? value.trim() : '');
+
+/**
+ * Palette rows for the real places in a brochure: one per place page with a
+ * name (opening the brochure at that page, ?p=<index>), carrying the page's
+ * photo for the thumbnail. Missing or odd fields are skipped.
+ */
+export function placeItems(brochure) {
+  const pages = Array.isArray(brochure?.pages) ? brochure.pages : [];
+  const short = text(brochure?.title).split(':')[0] || 'Untitled brochure';
+  const items = [];
+  pages.forEach((page, index) => {
+    if (!page || typeof page !== 'object' || page.type !== 'place' || !text(page.name)) return;
+    items.push({
+      id: `place:${brochure.id}:${text(page.id) || index}`,
+      kind: 'place',
+      group: 'places',
+      title: text(page.name),
+      titleJp: text(page.nameJp),
+      meta: `${short} · page ${index + 1}`,
+      kicker: text(page.kicker),
+      photo: text(page.photo),
+      brochure,
+      to: `/brochures/${brochure.slug}${index > 0 ? `?p=${index}` : ''}`,
+    });
+  });
+  return items;
+}
+
+function placeFields(item) {
+  const b = item.brochure;
+  return [
+    { key: 'title', text: item.title },
+    { key: 'titleJp', text: item.titleJp },
+    { key: 'kicker', text: item.kicker, weight: 0.5, fuzzy: false },
+    { key: 'brochure', text: `${b.title ?? ''} ${b.titleJp ?? ''}`, weight: 0.4, fuzzy: false },
+  ];
+}
+
 function brochureFields(item) {
   const b = item.brochure;
   const region = getRegion(b.region);
@@ -52,6 +94,8 @@ function brochureFields(item) {
     { key: 'kana', text: brochureKana(b), weight: 0.9, fuzzy: false },
     { key: 'tags', text: (Array.isArray(b.tags) ? b.tags : []).join(' · '), weight: 0.75 },
     { key: 'region', text: `${region.label} ${region.jp}`, weight: 0.75 },
+    // The main place (often a sight's own name) and its prefecture.
+    { key: 'location', text: [b.location?.name, b.location?.nameJp, b.location?.prefecture].filter((t) => typeof t === 'string').join(' '), weight: 0.7, fuzzy: false },
     { key: 'category', text: `${category.label} ${category.jp}`, weight: 0.65 },
     { key: 'seasons', text: seasons.join(' '), weight: 0.55, fuzzy: false },
     { key: 'subtitle', text: b.subtitle, weight: 0.45, fuzzy: false },
@@ -82,6 +126,14 @@ export function pageItems() {
       to: '/studio',
       keywords: 'editor create design make build',
       pinned: true,
+    }),
+    page('credits', {
+      title: 'Credits & sources',
+      titleJp: '奥付',
+      meta: 'Photo credits, fact checks, map data and fonts',
+      icon: 'Camera',
+      to: '/credits',
+      keywords: 'credits photographs photos photographers licence license attribution wikimedia commons sources facts fact check research map natural earth fonts typefaces colophon okuzuke about',
     }),
     page('favorites', {
       title: 'Your favourites',
@@ -180,9 +232,11 @@ function staticFields(item) {
 
 /** Build the searchable universe once per brochure list / theme. */
 export function createPaletteIndex({ brochures = [], theme = 'light', preference = 'system' } = {}) {
-  const brochureRows = brochures.filter((b) => b && b.slug).map((b) => brochureItem(b));
-  const items = [...brochureRows, ...pageItems(), ...actionItems(theme, preference)];
-  const index = createSearchIndex(items, (item) => (item.kind === 'brochure' ? brochureFields(item) : staticFields(item)));
+  const listed = brochures.filter((b) => b && b.slug);
+  const brochureRows = listed.map((b) => brochureItem(b));
+  const items = [...brochureRows, ...listed.flatMap(placeItems), ...pageItems(), ...actionItems(theme, preference)];
+  const fieldsOf = (item) => (item.kind === 'brochure' ? brochureFields(item) : item.kind === 'place' ? placeFields(item) : staticFields(item));
+  const index = createSearchIndex(items, fieldsOf);
   const byId = new Map(brochureRows.map((row) => [row.brochure.id, row.brochure]));
   return { index, byId };
 }

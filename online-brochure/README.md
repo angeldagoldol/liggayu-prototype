@@ -13,9 +13,10 @@ account. Everything a visitor makes is stored in their own browser.
 | --- | --- |
 | `#/` **Home** | A 3D tri-fold hero of real photographs (Fuji, Fushimi Inari, Shibuya; credited) that unfolds and follows the pointer, a live Tokyo clock, a bilingual word marquee, a featured-brochure carousel, the four seasons with a photograph each (opening on the current season in Japan), the eight regions on the accurate map of Japan (keyboard-navigable, a photo card per region), "how it works" sketches, Japan in numbers, five classic haiku as postcards (original, romaji, our translation) and a Studio call to action. Facts are logged in `docs/research/home.md`. |
 | `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones, where "Continue reading" reopens the page you left off on. |
-| `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones: drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet), share/deep link (`?p=` is the page index), favourites, a "Plan this trip" inquiry form and "More like this". |
-| `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview, change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
-| **⌘K / Ctrl K** | The command palette searches brochures, places, seasons, library filters and actions from anywhere. |
+| `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones: drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet), share/deep link (`?p=` is the page index), favourites, a private "Plan this trip" planner kept on your device (dates, travellers, interests, notes, copy as text, the official sites to check; nothing is sent), "About this brochure" with a full-bleed photograph, the fact-check date, numbered sources and every photo credit, and "More like this". |
+| `#/credits` **Credits** | 奥付: every photograph's credit grouped by where it appears (author, licence, source, plus the photos still to download), how the facts are checked with links to the standard and each brochure's research log, the Natural Earth map data, the typefaces and the rest. |
+| `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview — places with coordinates checked against the map of Japan, a live map of your pins, sources and a facts-checked date — choose real photos from the library or upload your own (resized in the browser, with alt text and credit), change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
+| **⌘K / Ctrl K** | The command palette searches brochures, the places inside them (opening the brochure at that page), seasons, library filters, the Credits page and actions from anywhere. |
 | `#/anything-else` | A 404 page ("迷子 — maigo, lost") with a suggested brochure. |
 
 Light ("washi") and dark ("sumi ink") themes follow the system and can be
@@ -52,11 +53,14 @@ npm run geo:build          # rebuild the map of Japan from Natural Earth
 ```
 
 `/playground.html` (dev server only, never built) is a workbench for the
-brochure kit: every cover-art style, every page of every brochure, empty-field
-pages, theme crops, the map of Japan, `<Photo>` states (with a test card drawn
-at runtime) and the place/map/quote pages. Query parameters:
-`section=art|pages|large|empty|map|photo|real`, `style`, `seeds=1,2,3`,
-`b=<slug>`, `crop=native|3:4|1:1`, `animate=1`.
+brochure kit: every cover-art style, every page of every brochure at reader
+and thumbnail size (on its own paper or dark paper), empty-field pages, theme
+crops, the map of Japan, `<Photo>` states (with a test card drawn at runtime,
+also as an uploaded `user:` photo), the place/map/quote pages and a layout
+audit that lists any clipped or cut-off text. Query parameters:
+`section=art|reader|pages|audit|large|empty|map|photo|real`, `rb=<slug>|all`,
+`w=340|460|640` (reader page width), `paper=dark`, `audit=1`, `style`,
+`seeds=1,2,3`, `b=<slug>`, `crop=native|3:4|1:1`, `animate=1`.
 
 ## Project structure
 
@@ -79,9 +83,9 @@ src/
     brochure/              CoverArt (generative art in art/), BrochurePage (+ blocks/), BrochureCard
     photo/                 <Photo>: responsive, credited photographs with an art fallback
     map/                   <JapanMap>: the 47 prefectures, an Okinawa inset, numbered pins
-    viewer/                Flipbook, reader toolbar, scrubber, thumbnails, overview, print, inquiry
+    viewer/                Flipbook, reader toolbar, scrubber, thumbnails, overview, print, trip planner
     studio/                editor reducer, panels, fields, preview, publish checks, import/export
-  pages/                   Home, Library, Viewer, Studio, NotFound (route components + sections)
+  pages/                   Home, Library, Viewer, Studio, Credits, NotFound (route components + sections)
   dev/                     the kit playground
   test/setup.js            jsdom polyfills for Vitest
 scripts/
@@ -248,8 +252,8 @@ brochure's generative art in its place, so every brochure always renders.
 CC BY-SA 4.0", linking to the Commons file page and the licence deed, in a
 new tab); the credit comes from the Commons metadata, never typed by hand.
 `creditsFor(brochure)` in `src/data/photos` lists every credit a brochure
-needs (with the work's title), for a colophon. When space is short the
-author's name is shortened, never the licence. Credits are plain text (HTML
+needs (with the work's title); the back page prints them all. A long credit
+wraps rather than being cut off, and the licence never breaks. Credits are plain text (HTML
 in Commons metadata is stripped) and carry only http(s) links. CC BY / BY-SA
 photos without a licence link (Commons' or the deed for their version) are
 rejected. CC BY-SA photos are only resized and re-encoded.
@@ -308,6 +312,7 @@ palette, the cover-art generator and the icon registry are loaded on demand.
   CC BY-SA licences, credited to their authors on the page where they appear
   (see "Real photos").
 - Map data: Natural Earth (public domain).
+- The Credits page (`#/credits`) lists all of the above, with every photo credit.
 - Built-in brochures describe real places with facts checked against official
   sources (`docs/REAL_CONTENT.md`); they are published by Tabi Guides, the
   app's own editorial imprint, and print no phone numbers.

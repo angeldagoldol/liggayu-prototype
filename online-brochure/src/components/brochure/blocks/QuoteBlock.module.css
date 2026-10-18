@@ -75,7 +75,7 @@
 
 /* Each further line of a tanka starts a little lower, as written by hand. */
 .jpLine + .jpLine {
-  padding-block-start: 1.6em;
+  padding-inline-start: 1.6em;
 }
 
 .bracket {

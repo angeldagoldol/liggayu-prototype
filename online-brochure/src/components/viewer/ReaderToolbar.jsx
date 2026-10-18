@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowUpRight, Heart, LayoutGrid, Maximize, Minimize, Printer, Share2, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowLeft, CalendarDays, Heart, LayoutGrid, Maximize, Minimize, Printer, Share2, ZoomIn, ZoomOut } from 'lucide-react';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useMediaQuery } from '../../hooks/useMediaQuery.js';
 import { libraryPath } from '../../lib/librarySearch.js';
@@ -148,7 +148,7 @@ export function ReaderToolbar({ brochure, indicator, onShare, overview, zoom, fu
         )}
         {roomy && <IconButton label="Print" icon={<Printer />} onClick={onPrint} />}
         {overflow.length > 0 && <MoreMenu items={overflow} label="More reading actions" />}
-        <Button variant="accent" size="sm" iconRight={<ArrowUpRight />} onClick={onPlan} className={styles.plan}>
+        <Button variant="accent" size="sm" iconLeft={<CalendarDays />} onClick={onPlan} className={styles.plan}>
           {tablet ? 'Plan this trip' : 'Plan'}
         </Button>
       </div>

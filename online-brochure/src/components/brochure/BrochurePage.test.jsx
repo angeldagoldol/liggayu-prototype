@@ -118,13 +118,22 @@ describe('<BrochurePage>', () => {
     expect(container.textContent).toContain('~1,600');
   });
 
-  it('builds a valid definition list on the contact page and hangs the 〒 off the ticket', () => {
+  it('builds a valid definition list on the contact page', () => {
     const { container } = render(<BrochurePage brochure={kyoto} page={CONTACT} index={9} total={11} isStatic />);
     const groups = container.querySelectorAll('dl > div');
     expect(groups).toHaveLength(CONTACT.details.length);
     for (const group of groups) expect([...group.children].map((el) => el.tagName)).toEqual(['DT', 'DD']);
-    const postmark = [...container.querySelectorAll('[aria-hidden="true"]')].find((el) => el.textContent === '〒');
-    expect(postmark.parentElement.querySelector('dl')).not.toBeNull();
+  });
+
+  it('never dresses a call to action as a button when it cannot do anything', () => {
+    const page = { ...CONTACT, ctaUrl: '' };
+    const still = render(<BrochurePage brochure={kyoto} page={page} index={9} total={11} isStatic />);
+    expect(still.getByText('Request an itinerary').tagName).toBe('P');
+    still.unmount();
+    // Live without a handler: plain text too.
+    render(<BrochurePage brochure={kyoto} page={page} index={9} total={11} active />);
+    expect(screen.queryByRole('button', { name: /request an itinerary/i })).toBeNull();
+    expect(screen.getByText('Request an itinerary')).toBeInTheDocument();
   });
 
   it('survives Object.prototype names as page types and icon names (regression)', () => {
@@ -200,11 +209,38 @@ describe('real-place pages', () => {
     expect(numbers).toEqual(['1', '3']);
   });
 
-  it('shows the original Japanese of a quote above its translation', () => {
-    const quote = { id: 'q', type: 'quote', quote: 'The old pond — a frog jumps in, the sound of water.', quoteJp: '古池や蛙飛び込む水の音', author: 'Matsuo Bashō', role: 'Translation: Tabi Guides' };
+  it('sets the original Japanese of a quote vertically and the translation as verse lines', () => {
+    const quote = { id: 'q', type: 'quote', quote: 'The old pond — / a frog jumps in, / the sound of water.', quoteJp: '古池や蛙飛び込む水の音', author: 'Matsuo Bashō', role: 'Translation: Tabi Guides' };
     const { container } = render(<BrochurePage brochure={kyoto} page={quote} index={10} total={12} isStatic />);
     expect(screen.getByRole('article', { name: 'Page 11 of 12: Quote from Matsuo Bashō' })).toBeInTheDocument();
-    expect(container.querySelector('blockquote p[lang="ja"]')).toHaveTextContent('古池や蛙飛び込む水の音');
+    expect(container.querySelector('figure p[lang="ja"]')).toHaveTextContent('古池や蛙飛び込む水の音');
+    const lines = [...container.querySelectorAll('blockquote p > span')].map((el) => el.textContent);
+    expect(lines).toEqual(['The old pond —', 'a frog jumps in,', 'the sound of water.']);
+    // A tanka breaks into columns where the poem breaks.
+    const tanka = render(<BrochurePage brochure={kyoto} page={{ ...quote, quoteJp: '浅草の夜のにぎはひに　まぎれ入り　まぎれ出で来しさびしき心' }} index={10} total={12} isStatic />);
+    expect(tanka.container.querySelectorAll('p[lang="ja"] > span')).toHaveLength(3);
+  });
+
+  it('shows a brochure’s own uploaded photo ("user:<key>") through the page’s photo context', () => {
+    const PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+    const mine = {
+      ...kyoto,
+      source: 'user',
+      userPhotos: { gate: { src: PNG, alt: 'My own photo of the gate', width: 800, height: 600, credit: { author: 'Aiko', license: 'CC BY 4.0' } } },
+    };
+    const page = { ...place, photo: 'user:gate' };
+    const { container } = render(<BrochurePage brochure={mine} page={page} index={3} total={12} isStatic />);
+    expect(screen.getByRole('img', { name: 'My own photo of the gate' })).toHaveAttribute('src', PNG);
+    expect(container.textContent).toContain('Photo: Aiko · CC BY 4.0');
+    // The back page credits it in the colophon.
+    const back = render(<BrochurePage brochure={{ ...mine, pages: [...mine.pages, page] }} page={kyoto.pages.at(-1)} index={13} total={14} active />);
+    expect(back.container.textContent).toContain('Photo credits');
+    expect(back.container.textContent).toContain('Aiko · CC BY 4.0');
+  });
+
+  it('prints when the facts were checked, and against how many sources, in the colophon', () => {
+    const { container } = render(<BrochurePage brochure={kyoto} page={kyoto.pages.at(-1)} index={13} total={14} isStatic />);
+    expect(container.textContent).toContain(`${kyoto.factsChecked} · ${kyoto.sources.length} sources`);
   });
 
   it('draws the cover photo slot with the art as its fallback', () => {

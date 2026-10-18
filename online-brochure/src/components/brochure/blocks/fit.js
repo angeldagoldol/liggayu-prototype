@@ -18,10 +18,38 @@
 /** Smallest scale a region shrinks to before it gives up (and is flagged data-overflow). */
 export const FIT_MIN = 0.6;
 
-/** Does `el`'s content overflow its box (with a 1px tolerance for sub-pixel layout)?
- *  `axis` 'y' (default) checks the height only, 'both' the width too. */
+/**
+ * Does `el`'s content overflow its box? `axis` 'y' (default) checks the
+ * height only, 'both' the width too. scrollHeight is rounded to whole pixels,
+ * so it gets a pixel of slack (rows that share out the height exactly can sum
+ * to a fraction over); on a thumbnail a pixel is a whole line, so the bottom of
+ * the last child is also compared, to the sub-pixel.
+ */
 export function overflows(el, axis = 'y') {
-  return el.scrollHeight > el.clientHeight + 1 || (axis === 'both' && el.scrollWidth > el.clientWidth + 1);
+  if (el.scrollHeight > el.clientHeight + 1) return true;
+  if (axis === 'both' && el.scrollWidth > el.clientWidth + 1) return true;
+  return lastChildBottom(el) > contentBottom(el) + 0.5;
+}
+
+const px = (value) => Number.parseFloat(value) || 0;
+
+/** Bottom edge of `el`'s content box, in viewport px (fractional). */
+function contentBottom(el) {
+  const style = getComputedStyle(el);
+  return el.getBoundingClientRect().bottom - px(style.borderBottomWidth) - px(style.paddingBottom);
+}
+
+/** The lowest margin edge among `el`'s children in flow (−Infinity when none); positioned
+ *  ornaments (a printer's colour bar in the margin) do not count. */
+function lastChildBottom(el) {
+  let bottom = -Infinity;
+  for (const child of el.children) {
+    const style = getComputedStyle(child);
+    if (style.position === 'absolute' || style.position === 'fixed') continue;
+    const rect = child.getBoundingClientRect();
+    if (rect.height > 0) bottom = Math.max(bottom, rect.bottom + px(style.marginBottom));
+  }
+  return bottom;
 }
 
 /**

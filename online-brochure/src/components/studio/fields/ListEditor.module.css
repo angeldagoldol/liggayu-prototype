@@ -121,3 +121,58 @@
   text-transform: uppercase;
   color: var(--ink-3);
 }
+
+/* --- Rows: short items as ruled ledger lines ------------------------------ */
+.items[data-variant='rows'] {
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.row .numeral {
+  justify-self: center;
+}
+
+.rowBody {
+  min-width: 0;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 0.8fr) minmax(0, 1.6fr) 7.25rem;
+  gap: var(--space-2);
+  margin-bottom: calc(var(--space-2) * -1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.columns::before {
+  content: '';
+}
+
+.columns span + span {
+  padding-left: var(--space-3);
+}
+
+@media (max-width: 420px) {
+  .row {
+    grid-template-columns: 1.4rem minmax(0, 1fr);
+  }
+
+  .row .actions {
+    grid-column: 2;
+    justify-self: end;
+  }
+}

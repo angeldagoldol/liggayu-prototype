@@ -33,8 +33,16 @@ export function PlaceBlock({ page, brochure, index }) {
   const cover = brochure.cover ?? {};
   const photo = text(page.photo);
   const pins = useMemo(() => (lat !== null && lng !== null ? [{ id: 'here', lat, lng, label: name }] : []), [lat, lng, name]);
-  const jpChars = Array.from(nameJp).length;
+  // A long name hangs in two columns where it breaks (ベネッセハウス｜ミュージアム, 竹林の小径｜天龍寺).
+  const parts = Array.from(nameJp).length > 7 ? nameJp.split(/[\s\u3000・]+/).filter(Boolean) : [];
+  const slipLines = parts.length > 1 ? parts : [nameJp];
+  // Column length in characters (later columns start 1.2em lower).
+  const jpChars = Math.max(...slipLines.map((line, i) => Array.from(line).length + (i ? 1.05 : 0)));
   const hasAside = facts.length > 0 || Boolean(website);
+  // Long facts get a wider column (34–46% of the measure), so neither side shrinks much.
+  const factChars = facts.reduce((n, f) => n + text(f.label).length + text(f.value).length, 0);
+  const bodyChars = copy.join(' ').length;
+  const aside = Math.min(0.46, Math.max(0.34, (factChars / Math.max(1, factChars + bodyChars)) * 1.3));
 
   return (
     <div className={styles.place}>
@@ -50,7 +58,13 @@ export function PlaceBlock({ page, brochure, index }) {
         />
         {nameJp && (
           <span className={styles.slip} aria-hidden="true" style={{ '--jp': `${Math.min(4.6, 39 / Math.max(3, jpChars * 1.18)).toFixed(2)}cqw` }}>
-            <VerticalText className={styles.slipText}>{nameJp}</VerticalText>
+            <VerticalText className={styles.slipText}>
+              {slipLines.map((line, i) => (
+                <span key={i} className={styles.slipLine}>
+                  {line}
+                </span>
+              ))}
+            </VerticalText>
           </span>
         )}
         {pins.length > 0 && (
@@ -79,7 +93,7 @@ export function PlaceBlock({ page, brochure, index }) {
         </Reveal>
       </header>
 
-      <div className={styles.columns} data-aside={hasAside || undefined}>
+      <div className={styles.columns} data-aside={hasAside || undefined} style={{ '--cols': `minmax(0, ${(1 - aside).toFixed(3)}fr) minmax(0, ${aside.toFixed(3)}fr)` }}>
         {copy.length > 0 && (
           <Reveal className={styles.copy} data-fit="">
             {copy.map((p, i) => (

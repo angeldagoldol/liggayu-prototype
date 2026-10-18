@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { gridIndex, isEditableTarget, nextIndex, nextTabbable, tabbablesIn, tabPanelProps, wantsStudioUndo } from './a11y.js';
+import { geometryIndex, gridIndex, isEditableTarget, nextIndex, nextTabbable, tabbablesIn, tabPanelProps, wantsStudioUndo } from './a11y.js';
 import { humanizeIcon, searchIcons } from './iconSearch.js';
 import { DRAFT_KEY, clearDraft, contentSignature, editDraftKey, readDraft, writeDraft } from './draftStore.js';
 import { LIST_LIMITS, listLimit, newListItem, randomSeed } from './pageLimits.js';
@@ -30,6 +30,18 @@ describe('pageLimits', () => {
     expect(newListItem('pricing', ['plans', 0, 'features'])).toBe('Another inclusion');
     expect(newListItem('phrases', ['items']).jp).toMatch(/よろしく/);
     expect(newListItem('quote', ['x'])).toEqual({});
+  });
+
+  it('starts fact rows empty, offering the next usual label', () => {
+    expect(newListItem('place', ['facts'])).toEqual({ label: 'Hours', value: '' });
+    const page = { facts: [{ label: 'Hours' }, { label: 'admission' }] };
+    expect(newListItem('place', ['facts'], Math.random, page)).toEqual({ label: 'Getting there', value: '' });
+    const full = { facts: ['Hours', 'Admission', 'Getting there', 'Time needed', 'Best time'].map((label) => ({ label })) };
+    expect(newListItem('place', ['facts'], Math.random, full).label).toBe('Good to know');
+    expect(newListItem('map', ['places'])).toEqual({ name: '', nameJp: '', lat: '', lng: '', note: '' });
+    expect(newListItem('contact', ['details'])).toEqual({ icon: 'Globe', label: 'Official site', value: '', url: '' });
+    expect(listLimit('place', ['facts'])).toEqual({ min: 1, max: 5 });
+    expect(listLimit('map', ['places'])).toEqual({ min: 1, max: 8 });
   });
 
   it('draws seeds in range', () => {
@@ -63,6 +75,18 @@ describe('draftStore', () => {
     expect(readDraft(DRAFT_KEY)).toBeNull();
   });
 
+  it('keeps safe uploads and drops unsafe ones on the way back from storage', () => {
+    const good = { src: 'data:image/jpeg;base64,QUJD', alt: 'x', width: 4, height: 3, credit: { author: 'Your photo', license: '' } };
+    const stored = { ...doc, userPhotos: { a: good } };
+    writeDraft(DRAFT_KEY, { doc: stored, selectedId: 'p' }, 1);
+    expect(readDraft(DRAFT_KEY).doc).toEqual(stored);
+    writeDraft(DRAFT_KEY, { doc: { ...doc, userPhotos: { a: good, b: { ...good, src: 'https://x.example/a.jpg' } } }, selectedId: 'p' }, 1);
+    expect(readDraft(DRAFT_KEY).doc.userPhotos).toEqual({ a: good });
+    writeDraft(DRAFT_KEY, { doc: { ...doc, userPhotos: { b: { src: 'javascript:x' } } }, selectedId: 'p' }, 1);
+    expect(readDraft(DRAFT_KEY).doc).not.toHaveProperty('userPhotos');
+    clearDraft(DRAFT_KEY);
+  });
+
   it('keys edit drafts per brochure', () => {
     expect(editDraftKey('b_9')).toBe('studio-edit:b_9');
   });
@@ -73,6 +97,52 @@ describe('draftStore', () => {
     expect(contentSignature(a)).toBe(contentSignature(b));
     expect(contentSignature({ ...a, title: 'Other' })).not.toBe(contentSignature(a));
     expect(contentSignature(null)).toBe('');
+  });
+
+  it('notices changed uploads without carrying their data', () => {
+    const photo = (src) => ({ src, alt: 'x', width: 4, height: 3, credit: { author: 'Your photo', license: '' } });
+    const big = `data:image/jpeg;base64,${'A'.repeat(200_000)}B`;
+    const a = { ...doc, userPhotos: { p1: photo(big) } };
+    const signature = contentSignature(a);
+    expect(signature.length).toBeLessThan(1000);
+    expect(contentSignature({ ...doc, userPhotos: { p1: photo(big) } })).toBe(signature);
+    expect(contentSignature({ ...doc, userPhotos: { p1: photo(`${big.slice(0, -1)}C`) } })).not.toBe(signature);
+    expect(contentSignature({ ...doc, userPhotos: { p1: { ...photo(big), alt: 'changed' } } })).not.toBe(signature);
+    expect(contentSignature(doc)).not.toBe(signature);
+  });
+});
+
+describe('geometryIndex', () => {
+  // Two groups: a row of three, a row of one, then (second grid) a row of two.
+  const rects = [
+    { top: 0, left: 0, width: 100, height: 80 },
+    { top: 0, left: 110, width: 100, height: 80 },
+    { top: 0, left: 220, width: 100, height: 80 },
+    { top: 90, left: 0, width: 100, height: 80 },
+    { top: 240, left: 0, width: 150, height: 80 },
+    { top: 240, left: 160, width: 150, height: 80 },
+  ];
+
+  it('steps along the reading order with Left/Right, Home and End', () => {
+    expect(geometryIndex('ArrowRight', rects, 2)).toBe(3);
+    expect(geometryIndex('ArrowLeft', rects, 0)).toBe(0);
+    expect(geometryIndex('ArrowRight', rects, 5)).toBe(5);
+    expect(geometryIndex('Home', rects, 4)).toBe(0);
+    expect(geometryIndex('End', rects, 1)).toBe(5);
+  });
+
+  it('moves to the nearest item in the next or previous row, across groups', () => {
+    expect(geometryIndex('ArrowDown', rects, 2)).toBe(3);
+    expect(geometryIndex('ArrowDown', rects, 3)).toBe(4);
+    expect(geometryIndex('ArrowUp', rects, 5)).toBe(3);
+    expect(geometryIndex('ArrowUp', rects, 3)).toBe(0);
+    expect(geometryIndex('ArrowUp', rects, 1)).toBe(1);
+    expect(geometryIndex('ArrowDown', rects, 5)).toBe(5);
+  });
+
+  it('ignores other keys and empty lists', () => {
+    expect(geometryIndex('Enter', rects, 0)).toBe(-1);
+    expect(geometryIndex('ArrowDown', [], 0)).toBe(-1);
   });
 });
 

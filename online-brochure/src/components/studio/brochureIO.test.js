@@ -201,3 +201,75 @@ describe('import of real-place fields', () => {
     expect(bare.cover).toEqual({ art: 'hinomaru', seed: 1 });
   });
 });
+
+describe('the brochure’s own photos (userPhotos)', () => {
+  const photo = (src = 'data:image/jpeg;base64,QUJD') => ({ src, alt: 'A lantern', width: 1600, height: 1067, credit: { author: 'Your photo', license: '' } });
+  const withPhotos = (userPhotos, extra = {}) =>
+    JSON.stringify({
+      format: EXPORT_FORMAT,
+      version: 1,
+      brochure: {
+        title: 'Mine',
+        cover: { art: 'kumo', seed: 3, photo: 'user:a' },
+        pages: [
+          { type: 'cover', title: 'Mine' },
+          { type: 'intro', photo: 'user:b' },
+          { type: 'gallery', items: [{ photo: 'user:a', art: 'kumo', seed: 2 }, { photo: 'user:gone', art: 'fuji', seed: 4 }] },
+        ],
+        userPhotos,
+        ...extra,
+      },
+    });
+
+  it('round-trips uploads through export and import', () => {
+    const doc = { ...createFromTemplate('temple-trail', { makeId, now }), userPhotos: { a: photo() } };
+    doc.cover = { ...doc.cover, photo: 'user:a' };
+    const result = parseBrochureJson(serializeBrochure(doc), { makeId, now });
+    expect(result.doc.userPhotos).toEqual({ a: photo() });
+    expect(result.doc.cover.photo).toBe('user:a');
+    expect(result.droppedPhotos).toBe(0);
+  });
+
+  it('keeps inline JPEG, PNG and WebP only, and clears fields that pointed at the rest', () => {
+    const result = parseBrochureJson(
+      withPhotos({
+        a: photo(),
+        b: photo('https://example.com/hotlink.jpg'),
+        c: photo('data:image/png;base64,QUJD'),
+        d: photo('data:image/svg+xml;base64,PHN2Zz4='),
+        e: photo('blob:https://example.com/1234-5678-9abc'),
+      }),
+      { makeId, now },
+    );
+    expect(Object.keys(result.doc.userPhotos)).toEqual(['a', 'c']);
+    expect(result.droppedPhotos).toBe(3);
+    expect(result.doc.cover.photo).toBe('user:a');
+    expect(result.doc.pages[1].photo).toBe('');
+    expect(result.doc.pages[2].items.map((item) => item.photo)).toEqual(['user:a', '']);
+  });
+
+  it('drops photos past the brochure’s budget', () => {
+    const big = `data:image/jpeg;base64,${'A'.repeat(1_100_000)}`;
+    const result = parseBrochureJson(withPhotos({ a: photo(big), b: photo(big), c: photo(big) }), { makeId, now });
+    expect(Object.keys(result.doc.userPhotos)).toEqual(['a', 'b']);
+    expect(result.droppedPhotos).toBe(1);
+  });
+
+  it('accepts a file large enough to carry the photo budget', () => {
+    expect(MAX_IMPORT_BYTES).toBeGreaterThan(3_000_000);
+  });
+
+  it('clears upload ids when the file has no photos', () => {
+    const result = parseBrochureJson(withPhotos(undefined), { makeId, now });
+    expect(result.doc).not.toHaveProperty('userPhotos');
+    expect(result.doc.cover.photo).toBe('');
+    expect(result.doc.pages[1].photo).toBe('');
+    expect(result.droppedPhotos).toBe(0);
+  });
+
+  it('keeps registry photo ids untouched', () => {
+    const result = parseBrochureJson(JSON.stringify({ title: 'x', cover: { photo: 'kyoto-senbon-torii' }, pages: [{ type: 'intro', photo: 'nara-deer' }] }), { makeId, now });
+    expect(result.doc.cover.photo).toBe('kyoto-senbon-torii');
+    expect(result.doc.pages[0].photo).toBe('nara-deer');
+  });
+});

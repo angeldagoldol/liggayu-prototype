@@ -183,7 +183,7 @@ function useZoomBridge(zoom, reduce) {
  * The reading room: toolbar, the flipbook on its stage, the scrubber and
  * thumbnail filmstrip, and the overview grid. Owns page (in ?p=), zoom,
  * pan, overview and fullscreen state.
- * Props: brochure; onPlan opens the inquiry drawer; planOpen pauses the
+ * Props: brochure; onPlan opens the trip planner; planOpen pauses the
  * page-turn shortcuts while it is open.
  *
  * Keyboard: ←/→ turn, PageUp/PageDown/Home/End turn too while focus is in

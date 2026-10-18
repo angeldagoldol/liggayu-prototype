@@ -152,6 +152,20 @@
   inset: 0;
 }
 
+/* The cover photograph fills the board; keep it crisp while the cover swings. */
+.art > .photo {
+  position: absolute;
+  inset: 0;
+}
+
+.cover {
+  backface-visibility: hidden;
+}
+
+.cover img {
+  transform: translateZ(0);
+}
+
 /* 題簽 daisen: the title slip pasted onto traditional bound books. */
 .daisen {
   position: absolute;
@@ -381,6 +395,20 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+/* "✓ Facts checked Oct 2026" on the obi: only for brochures whose facts were verified. */
+.checked {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6cqw;
+}
+
+.checked svg {
+  flex: none;
+  width: 4.4cqw;
+  height: 4.4cqw;
+  color: var(--b-accent);
 }
 
 .summary {

@@ -1,0 +1,239 @@
+/* Coordinates: two hairline boxes like a surveyor's ledger, a stamp-sized locator map beside them. */
+.coords {
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-3) var(--space-3) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+}
+
+.coords[data-compact] {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0 0.35em;
+  margin-left: -0.35em;
+  font-size: var(--fs-sm);
+  font-weight: 560;
+  color: var(--ink);
+}
+
+.coords[data-compact] .legend {
+  margin-bottom: var(--space-2);
+}
+
+.legend svg {
+  color: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: var(--space-3);
+}
+
+.inputs {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.coords[data-compact] .inputs {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.box {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.control:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.control[data-invalid] {
+  border-color: var(--danger);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 0 0 var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.unit {
+  flex: none;
+  padding: 0 var(--space-3) 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--ink-3);
+}
+
+/* --- Locator ------------------------------------------------------------- */
+.preview {
+  display: grid;
+  width: 104px;
+}
+
+.previewHold {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 96px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink-3);
+  background:
+    repeating-linear-gradient(135deg, transparent 0 7px, color-mix(in srgb, var(--ink) 4%, transparent) 7px 8px);
+}
+
+.figure {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 4px;
+  margin: 0;
+  min-height: 96px;
+  padding: 4px 4px 5px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-sunken);
+}
+
+.mini {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.mini > * {
+  width: 100%;
+  max-height: 100%;
+}
+
+.prefecture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.prefJp {
+  font-family: var(--font-jp);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.prefEn {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.prefecture[data-state='sea'] .prefEn,
+.prefecture[data-state='off'] .prefEn {
+  color: var(--accent);
+}
+
+/* --- Messages ------------------------------------------------------------ */
+.message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.message:empty {
+  display: none;
+}
+
+.where {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45em;
+  font-size: var(--fs-xs);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.note svg {
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.message[data-tone='warning'] .note {
+  color: var(--ink);
+}
+
+.message[data-tone='warning'] .note svg {
+  color: var(--accent);
+}
+
+.message[data-tone='error'] .note {
+  color: var(--danger);
+}
+
+.tip {
+  width: 100%;
+  font-size: var(--fs-xs);
+  color: var(--ink-3);
+}
+
+@media (max-width: 380px) {
+  .preview {
+    width: 88px;
+  }
+}

@@ -32,6 +32,7 @@ const ROUTES = [
   [`#/brochures/${darkPaper.slug}?p=3`, /Tokyo/i],
   ['#/brochures/no-such-brochure', /.+/],
   ['#/studio', /.+/],
+  ['#/credits', /Credits/],
   ['#/nope', /.+/],
 ];
 

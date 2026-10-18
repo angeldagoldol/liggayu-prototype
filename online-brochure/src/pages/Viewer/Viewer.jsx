@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
-import { InquiryDrawer, PrintPages } from '../../components/viewer/index.js';
+import { PrintPages, TripPlanner } from '../../components/viewer/index.js';
 import { Button } from '../../components/ui/index.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
@@ -13,8 +13,8 @@ import { ViewerNotFound } from './ViewerNotFound.jsx';
 import styles from './Viewer.module.css';
 
 /**
- * One brochure: the reader, its story, related reading and the inquiry
- * drawer. Memoised so router-visible ?p= changes (links, back/forward) only
+ * One brochure: the reader, its story (with sources and photo credits),
+ * related reading and the private trip planner. Memoised so router-visible ?p= changes (links, back/forward) only
  * re-render the reader, which reads ?p= itself. Page turns never reach the
  * router: they rewrite the URL with history.replaceState.
  */
@@ -45,7 +45,7 @@ const BrochureViewer = memo(function BrochureViewer({ brochure }) {
           </Button>
         </div>
       </div>
-      <InquiryDrawer open={planOpen} onClose={closePlan} brochure={brochure} />
+      <TripPlanner open={planOpen} onClose={closePlan} brochure={brochure} />
       <PrintPages brochure={brochure} />
     </div>
   );

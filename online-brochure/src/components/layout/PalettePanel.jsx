@@ -9,6 +9,7 @@ import { useLockBodyScroll } from '../../hooks/useLockBodyScroll.js';
 import { backdrop, ease, spring } from '../../lib/motion.js';
 import { cn } from '../../lib/cn.js';
 import { CoverArt } from '../brochure/CoverArt.jsx';
+import { Photo } from '../photo/Photo.jsx';
 import { Icon, Kbd } from '../ui/index.js';
 import { highlight } from './search.js';
 import { createPaletteIndex, queryPalette } from './paletteItems.js';
@@ -74,13 +75,19 @@ function Highlight({ text, ranges, lang }) {
   );
 }
 
-/** Mini cover for brochures, an icon tile for everything else. */
+/**
+ * Mini cover for brochures and a picture for places — the photograph when it
+ * is downloaded, the brochure's cover art until then — and an icon tile for
+ * everything else.
+ */
 function RowVisual({ item }) {
-  if (item.kind === 'brochure') {
+  if (item.kind === 'brochure' || item.kind === 'place') {
     const b = item.brochure;
+    const art = <CoverArt style={b.cover?.art ?? 'hinomaru'} seed={b.cover?.seed ?? 1} theme={b.theme} className={styles.swatchArt} />;
+    const photo = item.kind === 'place' ? item.photo : typeof b.cover?.photo === 'string' ? b.cover.photo : '';
     return (
-      <span className={styles.swatch} aria-hidden="true">
-        <CoverArt style={b.cover?.art ?? 'hinomaru'} seed={b.cover?.seed ?? 1} theme={b.theme} className={styles.swatchArt} />
+      <span className={cn(styles.swatch, item.kind === 'place' && styles.swatchPlace)} aria-hidden="true">
+        {photo ? <Photo id={photo} brochure={b} alt="" sizes="96px" credit="none" fallback={art} className={styles.swatchArt} /> : art}
       </span>
     );
   }
@@ -160,8 +167,8 @@ function EmptyState({ query, onPick, onBrowse }) {
 }
 
 /**
- * The ⌘K / Ctrl K command palette panel: search brochures, places, library
- * filters and actions. ARIA combobox + listbox with aria-activedescendant;
+ * The ⌘K / Ctrl K command palette panel: search brochures, the places in
+ * them (place pages), library filters, pages (Credits too) and actions. ARIA combobox + listbox with aria-activedescendant;
  * ↑ ↓ Home End to move, Enter to open, Esc to close. Lazy-loaded by
  * <CommandPalette> so its search index, cover art and icon registry stay out
  * of the entry chunk. Props: onClose.

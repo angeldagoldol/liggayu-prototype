@@ -13,21 +13,31 @@ import styles from './PageEditor.module.css';
 /**
  * Right-hand inspector: a header naming the selected page and the form for
  * its type. Fields write straight into the Studio reducer (typing coalesces
- * into single undo steps).
+ * into single undo steps); photo slots get place/upload/update/remove
+ * actions bound to their target (api.photos(path), api.coverPhotos()).
  *   <PageEditor brochure={doc} page={page} index={2} total={8} dispatch={dispatch} onEditDesign={…} />
  */
 export function PageEditor({ brochure, page, index, total, dispatch, onEditDesign }) {
-  const api = useMemo(
-    () =>
-      page && {
-        get: (path) => getIn(page, path),
-        set: (path, value, typing = false) => dispatch(A.updatePage(page.id, path, value, typing)),
-        add: (path, at) => dispatch(A.addItem(page.id, path, newListItem(page.type, path), at)),
-        remove: (path, at) => dispatch(A.removeItem(page.id, path, at)),
-        move: (path, from, to) => dispatch(A.moveItem(page.id, path, from, to)),
-      },
-    [page, dispatch],
-  );
+  const api = useMemo(() => {
+    if (!page) return null;
+    /** Photo actions for one slot: the cover (brochure.cover.photo) or a page field ending in 'photo'. */
+    const photoSlot = (target) => ({
+      place: (id) => dispatch(A.placePhoto(target, id)),
+      upload: (key, photo) => dispatch(A.addUserPhoto(key, photo, target)),
+      update: (key, path, value, typing = false) => dispatch(A.updateUserPhoto(key, path, value, typing)),
+      remove: (key) => dispatch(A.removeUserPhoto(key)),
+    });
+    return {
+      get: (path) => getIn(page, path),
+      set: (path, value, typing = false) => dispatch(A.updatePage(page.id, path, value, typing)),
+      merge: (path, patch, typing = false) => dispatch(A.mergePage(page.id, path, patch, typing)),
+      add: (path, at) => dispatch(A.addItem(page.id, path, newListItem(page.type, path, Math.random, page), at)),
+      remove: (path, at) => dispatch(A.removeItem(page.id, path, at)),
+      move: (path, from, to) => dispatch(A.moveItem(page.id, path, from, to)),
+      photos: (path) => photoSlot({ kind: 'page', id: page.id, path }),
+      coverPhotos: () => photoSlot({ kind: 'cover', pageId: page.id }),
+    };
+  }, [page, dispatch]);
 
   if (!page) {
     return (

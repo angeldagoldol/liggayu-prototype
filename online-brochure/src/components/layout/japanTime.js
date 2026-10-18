@@ -2,7 +2,7 @@
  * "Now in Japan": the current season and Tokyo time, whatever the visitor's
  * own time zone. Seasons follow the Japanese convention (spring = March–May).
  */
-import { SEASONS, SEASON_MAP } from '../../data/seasons.js';
+import { SEASON_MAP } from '../../data/seasons.js';
 
 export const JAPAN_TIME_ZONE = 'Asia/Tokyo';
 
@@ -46,12 +46,6 @@ export function japanMonth(date = new Date()) {
 /** "21:04" — 24-hour Tokyo time. */
 export function formatJapanTime(date = new Date()) {
   return timeFormat.format(date);
-}
-
-/** The season after `seasonId` (winter wraps to spring). */
-export function nextSeason(seasonId) {
-  const i = SEASONS.findIndex((s) => s.id === seasonId);
-  return SEASONS[(i + 1) % SEASONS.length];
 }
 
 /** { time, month, season, note } for `date`, all in Japan time. */

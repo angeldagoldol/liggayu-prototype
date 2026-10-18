@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
+import { Photo } from '../../../components/photo/Photo.jsx';
 import { Hanko } from '../../../components/ui/index.js';
 import { resumePath } from '../../../lib/progress.js';
 import styles from './Spine.module.css';
 
 /**
  * A brochure seen from its spine, standing on a shelf: a slice of the cover
- * art, the Japanese and English titles set vertically, a seal at the foot.
+ * photograph (the cover art until it is downloaded), the Japanese and
+ * English titles set vertically, a seal at the foot.
  * Height and thickness follow the page count, so the shelf looks lived-in.
  * `page`: where the visitor left off; the link reopens the brochure there.
  */
@@ -17,6 +19,8 @@ export function Spine({ brochure, page = 0 }) {
   const title = String(brochure.title ?? '').trim() || 'Untitled brochure';
   const seal = Array.from(titleJp.replace(/[・\s]/g, '') || '旅')[0];
   const cover = brochure.cover ?? {};
+  const photo = typeof cover.photo === 'string' ? cover.photo.trim() : '';
+  const art = <CoverArt style={cover.art} seed={cover.seed} theme={theme} />;
 
   return (
     <Link
@@ -31,7 +35,7 @@ export function Spine({ brochure, page = 0 }) {
       }}
     >
       <span className={styles.art} aria-hidden="true">
-        <CoverArt style={cover.art} seed={cover.seed} theme={theme} />
+        {photo ? <Photo id={photo} brochure={brochure} alt="" sizes="64px" credit="none" fallback={art} /> : art}
       </span>
       <span className={styles.titles}>
         <span lang="ja" className={styles.jp}>

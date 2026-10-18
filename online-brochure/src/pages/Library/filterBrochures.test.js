@@ -8,6 +8,7 @@ import {
   facetCounts,
   filterBrochures,
   hasActiveFilters,
+  placeNames,
   queryTerms,
   scoreBrochure,
   toggleSeason,
@@ -126,7 +127,8 @@ describe('filterBrochures — kana readings', () => {
 
   it('finds category, region and season readings, and partial input while an IME composes', () => {
     expect(found('おんせん')).toEqual(['hakone-onsen-ryokan']);
-    expect(found('まつり')).toEqual(['tohoku-summer-festivals']);
+    // The festivals category reading ranks first; a festival named on a map (さっぽろ雪まつり) also matches.
+    expect(found('まつり')[0]).toBe('tohoku-summer-festivals');
     expect(found('かんさい').length).toBeGreaterThan(1);
     expect(found('きょ')).toContain('kyoto-thousand-gates');
     expect(found('ふゆ')).toEqual(found('winter'));
@@ -233,5 +235,39 @@ describe('active filter helpers', () => {
     expect(toggleSeason(['spring', 'winter'], 'spring')).toEqual(['winter']);
     expect(toggleSeason(undefined, 'autumn')).toEqual(['autumn']);
     expect(toggleSeason([], 'monsoon')).toEqual([]);
+  });
+});
+
+describe('place names', () => {
+  const kyoto = make({
+    slug: 'kyoto',
+    title: 'A Thousand Gates',
+    location: { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', prefecture: 'Kyoto', lat: 34.9672, lng: 135.7728 },
+    pages: [
+      { id: 'p1', type: 'place', name: 'Kiyomizu-dera', nameJp: '清水寺' },
+      { id: 'p2', type: 'place', name: 'Kiyomizu-dera', nameJp: '' },
+      { id: 'p3', type: 'map', places: [{ name: 'Tenryū-ji', nameJp: '天龍寺' }, null, 'bad'] },
+      { id: 'p4', type: 'intro', name: 'Not a place page' },
+      null,
+    ],
+  });
+
+  it('collects the location, place pages and map pins once each', () => {
+    expect(placeNames(kyoto)).toEqual(['Fushimi Inari Taisha', '伏見稲荷大社', 'Kyoto', 'Kiyomizu-dera', '清水寺', 'Tenryū-ji', '天龍寺']);
+    expect(placeNames({})).toEqual([]);
+    expect(placeNames({ location: 'x', pages: 'y' })).toEqual([]);
+  });
+
+  it('finds a brochure by a sight it describes, in English or Japanese', () => {
+    const list = [...FIXTURES, kyoto];
+    for (const q of ['kiyomizu', 'tenryu-ji', '清水寺', '伏見', 'fushimi inari']) {
+      expect(filterBrochures(list, { q }).map((b) => b.slug)).toEqual(['kyoto']);
+    }
+    expect(filterBrochures(list, { q: 'intro' })).toEqual([]);
+  });
+
+  it('ranks a place-name hit above a summary mention', () => {
+    const mention = make({ slug: 'mention', title: 'Day trips', summary: 'Includes a stop at Kiyomizu-dera.' });
+    expect(filterBrochures([mention, kyoto], { q: 'kiyomizu' }).map((b) => b.slug)).toEqual(['kyoto', 'mention']);
   });
 });

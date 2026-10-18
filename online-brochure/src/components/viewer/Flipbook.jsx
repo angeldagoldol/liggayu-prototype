@@ -235,7 +235,7 @@ function LeafBook({ brochure, book, position, onNavigate, layout, onCta, interac
 /**
  * Interactive brochure flipbook.
  *
- *   <Flipbook brochure={b} book={buildBook(n, layout.mode)} position={s} onNavigate={setS} layout={layout} onCta={openInquiry} />
+ *   <Flipbook brochure={b} book={buildBook(n, layout.mode)} position={s} onNavigate={setS} layout={layout} onCta={openPlanner} />
  *
  * - `book`       leaves and spreads from spreads.js (`buildBook`) for `layout.mode`.
  * - `position`   spread index (leaves turned); `onNavigate(next)` asks to move.

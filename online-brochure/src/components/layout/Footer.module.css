@@ -80,9 +80,54 @@
 }
 
 .lettersNote {
-  margin: 0.2rem 0 var(--space-4);
+  margin: 0.4rem 0 var(--space-4);
   font-size: var(--fs-sm);
-  color: var(--ink-3);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.creditsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.25rem 0.3rem 0.25rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.creditsJp {
+  font-family: var(--font-jp);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
+.creditsArrow {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  padding: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.creditsLink:hover {
+  border-color: var(--ink);
+  background: rgb(243 238 228 / 0.06);
+}
+
+.creditsLink:hover .creditsArrow {
+  transform: translateX(3px);
 }
 
 /* --- Link columns ------------------------------------------------------- */
@@ -228,8 +273,20 @@
 }
 
 .small {
+  max-width: 62ch;
   font-size: var(--fs-xs);
+  line-height: 1.6;
   color: var(--ink-3);
+}
+
+.small a {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+}
+
+.small a:hover {
+  color: var(--ink);
 }
 
 /* Small print, appearance, back to top: the switch takes the middle. */

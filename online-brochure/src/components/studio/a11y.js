@@ -26,6 +26,35 @@ export function gridIndex(key, index, count, columns) {
   return -1;
 }
 
+/**
+ * Arrow-key movement among items laid out in wrapping rows — a responsive
+ * grid, or several grids one under another — read from their boxes
+ * ([{ top, left, width, height }], in DOM order): Left/Right step to the
+ * previous/next item, Up/Down to the nearest item (by centre) in the row
+ * above/below, Home/End to the ends. Returns the new index (the same one at
+ * an edge), or -1 for other keys.
+ */
+export function geometryIndex(key, rects, index) {
+  const count = rects?.length ?? 0;
+  if (count === 0 || index < 0 || index >= count) return -1;
+  if (key === 'ArrowRight') return Math.min(count - 1, index + 1);
+  if (key === 'ArrowLeft') return Math.max(0, index - 1);
+  if (key === 'Home') return 0;
+  if (key === 'End') return count - 1;
+  if (key !== 'ArrowDown' && key !== 'ArrowUp') return -1;
+  const here = rects[index];
+  const centre = (r) => r.left + r.width / 2;
+  const down = key === 'ArrowDown';
+  const candidates = rects
+    .map((r, i) => ({ r, i }))
+    .filter(({ r }) => (down ? r.top > here.top + here.height / 2 : r.top + r.height / 2 < here.top));
+  if (candidates.length === 0) return index;
+  const rowTop = down ? Math.min(...candidates.map((c) => c.r.top)) : Math.max(...candidates.map((c) => c.r.top));
+  const row = candidates.filter((c) => Math.abs(c.r.top - rowTop) < Math.max(2, here.height / 2));
+  row.sort((a, b) => Math.abs(centre(a.r) - centre(here)) - Math.abs(centre(b.r) - centre(here)) || a.i - b.i);
+  return row[0].i;
+}
+
 /** Props for the tab panel paired with a <PanelTabs> tab of the same idBase. */
 export function tabPanelProps(idBase, value) {
   return {

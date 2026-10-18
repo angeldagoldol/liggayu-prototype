@@ -26,6 +26,15 @@
  * @property {number} lat           WGS84 decimal degrees, 4 decimals
  * @property {number} lng
  *
+ * @typedef {Object} UserPhoto
+ * @property {string} src          data:image/(png|jpeg|webp|gif|avif);base64,… or blob: URL (never http)
+ * @property {string} alt          what the photo shows
+ * @property {number} width        pixels
+ * @property {number} height
+ * @property {{ author: string, license: string, licenseUrl?: string, sourceUrl?: string }} credit
+ * @property {string} [caption]
+ * @property {string} [focus]      CSS object-position ("50% 40%")
+ *
  * @typedef {Object} Source
  * @property {string} label         e.g. "Kiyomizu-dera official site"
  * @property {string} url           https URL of an official or reputable source
@@ -62,6 +71,8 @@
  * @property {'builtin'|'user'} source
  * @property {BrochureTheme} theme
  * @property {CoverSpec} cover
+ * @property {Object<string, UserPhoto>} [userPhotos]  the brochure's own photos (Studio uploads); any
+ *                                         photo field may name one as "user:<key>" (ARCHITECTURE.md)
  * @property {Page[]} pages                pages[0] is type "cover", last is type "back"
  *
  * Page = { id: string, type: PageType, ...fields } — fields per type below.

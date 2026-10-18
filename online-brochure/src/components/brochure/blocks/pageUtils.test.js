@@ -147,5 +147,7 @@ describe('verse helpers', () => {
     expect(inscription).toBeGreaterThan(5);
     expect(verseSize([], { min: 3 })).toBe(7.2);
     expect(verseSize(['あ'.repeat(200)])).toBe(3.4);
+    // A stepped second line counts its indent.
+    expect(verseSize(['あ'.repeat(10), 'い'.repeat(10)], { height: 60, perChar: 1, offset: 2 })).toBe(5);
   });
 });

@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, Heart, PenLine } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, BadgeCheck, Heart, PenLine } from 'lucide-react';
 import { Badge, Hanko, IconButton, Tilt, VerticalText } from '../ui/index.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { getCategory } from '../../data/categories.js';
@@ -11,7 +11,9 @@ import { SEASON_MAP } from '../../data/seasons.js';
 import { cn } from '../../lib/cn.js';
 import { ease, spring } from '../../lib/motion.js';
 import { pad, pluralize, sealChars } from '../../lib/format.js';
+import { Photo } from '../photo/Photo.jsx';
 import { CoverArt } from './CoverArt.jsx';
+import { shortFactsChecked } from './factsChecked.js';
 import styles from './BrochureCard.module.css';
 
 const MAX_STAGGER = 8;
@@ -59,6 +61,8 @@ function describe(brochure) {
     seasons,
     pages,
     minutes: Number.isFinite(brochure.readMinutes) ? brochure.readMinutes : null,
+    factsChecked: String(brochure.factsChecked ?? '').trim(),
+    checkedShort: shortFactsChecked(brochure.factsChecked),
     isUser: brochure.source === 'user',
     vars: {
       '--b-paper': theme.paper || 'var(--page-paper)',
@@ -71,13 +75,16 @@ function describe(brochure) {
 }
 
 /**
- * The cover as a physical object: generative art with a title slip (題簽)
- * and paper band (帯), a binding crease, a stack of page edges on the right
- * and the first inner page waiting underneath. Decorative: the card's text
- * carries the meaning.
+ * The cover as a physical object: the cover photograph (the generative art
+ * until it is downloaded, or for brochures without one) with a title slip
+ * (題簽) and paper band (帯), a binding crease, a stack of page edges on the
+ * right and the first inner page waiting underneath. Decorative: the card's
+ * text carries the meaning.
  */
 function Book({ brochure, data, live }) {
   const cover = brochure.cover ?? {};
+  const photo = typeof cover.photo === 'string' ? cover.photo.trim() : '';
+  const art = <CoverArt style={cover.art} seed={cover.seed} theme={brochure.theme} animated={live} />;
   return (
     <div className={styles.book} aria-hidden="true">
       <span className={styles.edges} />
@@ -89,15 +96,24 @@ function Book({ brochure, data, live }) {
       </span>
       <span className={styles.cover}>
         <span className={styles.art}>
-          <CoverArt style={cover.art} seed={cover.seed} theme={brochure.theme} animated={live} />
+          {photo ? <Photo id={photo} brochure={brochure} alt="" sizes="(min-width: 1100px) 300px, 50vw" className={styles.photo} fallback={art} /> : art}
         </span>
         <span className={styles.daisen}>
           <VerticalText className={styles.daisenText}>{data.titleJp}</VerticalText>
         </span>
+        {/* 帯 obi: on a real book the band carries the endorsement — here, that the facts were checked. */}
         <span className={styles.obi}>
-          <span className={styles.obiLabel}>
-            {data.region.label} · {data.format}
-          </span>
+          {data.checkedShort ? (
+            <span className={`${styles.obiLabel} ${styles.checked}`}>
+              <BadgeCheck focusable="false" />
+              <span className={styles.checkedLong}>Facts checked&nbsp;</span>
+              {data.checkedShort}
+            </span>
+          ) : (
+            <span className={styles.obiLabel}>
+              {data.region.label} · {data.format}
+            </span>
+          )}
           <Hanko text={data.seal} className={styles.seal} />
         </span>
         <span className={styles.spine} />
@@ -287,6 +303,7 @@ export function BrochureCard({ brochure, index, variant = 'grid', layout = false
               {data.isUser ? 'Your brochure. ' : ''}
               {data.category.label}.{' '}
               {data.seasons.length > 0 && `Best in ${data.seasons.map((s) => s.label.toLowerCase()).join(' and ')}. `}
+              {data.factsChecked && `Facts checked ${data.factsChecked}. `}
             </span>
             {facts.map((fact) => (
               <span key={fact.key} className={styles.fact} data-fact={fact.key}>

@@ -13,7 +13,7 @@ import { tabPanelProps, wantsStudioUndo } from './a11y.js';
 import { exportFileName, MAX_IMPORT_BYTES, parseBrochureJson, serializeBrochure } from './brochureIO.js';
 import { DesignPanel } from './DesignPanel.jsx';
 import { DetailsPanel } from './DetailsPanel.jsx';
-import { clearDraft, contentSignature } from './draftStore.js';
+import { clearDraft, contentSignature, writeDraft } from './draftStore.js';
 import { PageEditor } from './PageEditor.jsx';
 import { PagesPanel } from './PagesPanel.jsx';
 import { PanelTabs } from './PanelTabs.jsx';
@@ -103,11 +103,13 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
   const draft = useMemo(() => ({ doc, selectedId }), [doc, selectedId]);
   const autosave = useAutosave(storageKey, draft, { enabled: !finished, initialSavedAt: initial.savedAt });
 
-  // Everything but the pages, so thumbnails only redraw when their own page changes.
-  const { title, titleJp, subtitle, organization, theme, cover, format, updatedAt } = doc;
+  // Everything but the pages, so thumbnails only redraw when their own page changes. The
+  // real-place fields and the uploads are in it too: covers print the coordinates and the
+  // facts-checked date, the map tints the region, and "user:<key>" photos resolve here.
+  const { title, titleJp, subtitle, organization, theme, cover, format, updatedAt, region, location, factsChecked, sources, userPhotos } = doc;
   const shell = useMemo(
-    () => ({ title, titleJp, subtitle, organization, theme, cover, format, updatedAt }),
-    [title, titleJp, subtitle, organization, theme, cover, format, updatedAt],
+    () => ({ title, titleJp, subtitle, organization, theme, cover, format, updatedAt, region, location, factsChecked, sources, userPhotos }),
+    [title, titleJp, subtitle, organization, theme, cover, format, updatedAt, region, location, factsChecked, sources, userPhotos],
   );
 
   const pages = doc.pages;
@@ -161,7 +163,10 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
     // (a plain undo would only take back the latest of those).
     const before = { doc, selectedId };
     dispatch(A.replaceDoc(imported, imported.pages[0].id));
-    const skipped = result.dropped ? ` ${result.dropped} unknown page${result.dropped === 1 ? ' was' : 's were'} skipped.` : '';
+    const skipped = [
+      result.dropped ? ` ${result.dropped} unknown page${result.dropped === 1 ? ' was' : 's were'} skipped.` : '',
+      result.droppedPhotos ? ` ${result.droppedPhotos} photo${result.droppedPhotos === 1 ? '' : 's'} couldn’t be kept (not a safe image, or over the size limit).` : '',
+    ].join('');
     toast({
       title: 'Imported',
       description: `“${imported.title || 'Untitled'}” replaced this draft.${skipped}`,
@@ -173,12 +178,22 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
   /* --- Publish / save / delete ------------------------------------------- */
   const commit = (finalDoc) => {
     if (finalDoc !== doc) dispatch(A.replaceDoc(finalDoc));
-    const saved = saveBrochure(finalDoc);
+    let saved = saveBrochure(finalDoc);
+    if (!saved && finalDoc.userPhotos) {
+      // Uploaded photos live in the draft too; while it is stored they count twice
+      // against the browser's quota. Free the draft's copy and try once more —
+      // and put it back if storage still refuses, so nothing is lost.
+      clearDraft(storageKey);
+      saved = saveBrochure(finalDoc);
+      if (!saved) writeDraft(storageKey, { doc: finalDoc, selectedId });
+    }
     if (!saved) {
       // Storage refused the write (usually a full quota): keep the draft and say so.
       toast({
         title: mode === 'new' ? 'Couldn’t publish' : 'Couldn’t save changes',
-        description: 'Your browser’s storage is full. Your draft is safe — export it to keep a copy.',
+        description: finalDoc.userPhotos
+          ? 'Your browser’s storage is full — your own photos take the most room. Remove one you don’t use, or export a copy. Your draft is safe.'
+          : 'Your browser’s storage is full. Your draft is safe — export it to keep a copy.',
         tone: 'error',
         action: { label: 'Export JSON', onClick: () => download(exportFileName(finalDoc), serializeBrochure(finalDoc)) },
       });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatJapanTime, japanMonth, japanNow, msUntilNextMinute, nextSeason, seasonIdForMonth } from './japanTime.js';
+import { formatJapanTime, japanMonth, japanNow, msUntilNextMinute, seasonIdForMonth } from './japanTime.js';
 
 describe('seasonIdForMonth', () => {
   it('follows the Japanese season calendar', () => {
@@ -28,9 +28,7 @@ describe('japan time', () => {
     expect(now.season).toMatchObject({ id: 'autumn', jp: '秋' });
   });
 
-  it('wraps seasons and computes the next minute boundary', () => {
-    expect(nextSeason('autumn').id).toBe('winter');
-    expect(nextSeason('winter').id).toBe('spring');
+  it('computes the next minute boundary', () => {
     expect(msUntilNextMinute(new Date('2026-10-17T12:04:59.250Z'))).toBe(750);
   });
 });

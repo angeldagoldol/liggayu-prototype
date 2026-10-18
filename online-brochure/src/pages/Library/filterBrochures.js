@@ -54,6 +54,7 @@ const FIELD_WEIGHTS = {
   title: 8,
   titleJp: 8,
   kana: 7, // hiragana readings: title, region, category, seasons (data/kana.js)
+  places: 6, // the brochure's location and the sights on its place and map pages
   tags: 5,
   category: 4,
   region: 4,
@@ -64,6 +65,33 @@ const FIELD_WEIGHTS = {
 };
 
 const indexCache = new WeakMap();
+
+const text = (value) => (typeof value === 'string' ? value.trim() : '');
+
+/**
+ * Every place name a brochure carries: its `location` (English, Japanese,
+ * prefecture), each place page's name and Japanese name, and the places
+ * pinned on its map pages — once each.
+ */
+export function placeNames(brochure) {
+  const names = [];
+  const add = (...values) => {
+    for (const value of values) {
+      const name = text(value);
+      if (name && !names.includes(name)) names.push(name);
+    }
+  };
+  const location = brochure?.location;
+  if (location && typeof location === 'object') add(location.name, location.nameJp, location.prefecture);
+  for (const page of Array.isArray(brochure?.pages) ? brochure.pages : []) {
+    if (!page || typeof page !== 'object') continue;
+    if (page.type === 'place') add(page.name, page.nameJp);
+    if (page.type === 'map' && Array.isArray(page.places)) {
+      for (const place of page.places) if (place && typeof place === 'object') add(place.name, place.nameJp);
+    }
+  }
+  return names;
+}
 
 /** Folded, per-field search text for one brochure (cached per object). */
 function searchIndex(brochure) {
@@ -79,6 +107,7 @@ function searchIndex(brochure) {
     title: foldQuery(brochure.title),
     titleJp: foldQuery(brochure.titleJp),
     kana: foldQuery(brochureKana(brochure)),
+    places: foldQuery(placeNames(brochure).join(' · ')),
     tags: foldQuery(Array.isArray(brochure.tags) ? brochure.tags.join(' · ') : ''),
     category: foldQuery([category.label, category.jp].filter(Boolean).join(' ')),
     region: foldQuery([region.label, region.jp].filter(Boolean).join(' ')),

@@ -195,17 +195,16 @@ describe('<Photo> with a brochure’s own photos ("user:<key>")', () => {
   });
 
   it('usePhotoRecord resolves ids in context', () => {
-    let seen = null;
     function Probe() {
-      seen = usePhotoRecord('user:dusk');
-      return null;
+      const record = usePhotoRecord('user:dusk');
+      return <output>{`${record?.id} ${record?.available} ${record?.user}`}</output>;
     }
     render(
       <PhotoContext.Provider value={brochure}>
         <Probe />
       </PhotoContext.Provider>,
     );
-    expect(seen).toMatchObject({ id: 'user:dusk', available: true, user: true });
+    expect(screen.getByRole('status')).toHaveTextContent('user:dusk true true');
   });
 
   it('<PhotoCredit> takes a creditsFor() entry and can drop its label', () => {

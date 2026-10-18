@@ -8,6 +8,7 @@ const Home = lazy(() => import('./pages/Home/Home.jsx'));
 const Library = lazy(() => import('./pages/Library/Library.jsx'));
 const Viewer = lazy(() => import('./pages/Viewer/Viewer.jsx'));
 const Studio = lazy(() => import('./pages/Studio/Studio.jsx'));
+const Credits = lazy(() => import('./pages/Credits/Credits.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound/NotFound.jsx'));
 
 /**
@@ -29,6 +30,7 @@ export default function App() {
             <Route path="brochures/:slug" element={<Viewer />} />
             <Route path="studio" element={<Studio />} />
             <Route path="studio/:id" element={<Studio />} />
+            <Route path="credits" element={<Credits />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

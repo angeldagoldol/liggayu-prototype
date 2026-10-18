@@ -67,6 +67,15 @@
   right: var(--pad-x);
 }
 
+.slipLine {
+  display: block;
+}
+
+/* A second column starts a little lower, as on a hand-lettered sign. */
+.slipLine + .slipLine {
+  padding-inline-start: 1.2em;
+}
+
 .slipText {
   font-size: var(--jp, 4cqw);
   font-weight: 600;
@@ -133,7 +142,7 @@
 }
 
 .columns[data-aside] {
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-columns: var(--cols, minmax(0, 1.5fr) minmax(0, 1fr));
 }
 
 .copy {

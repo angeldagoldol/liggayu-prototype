@@ -2,7 +2,10 @@
  * JSON export/import for Studio drafts. Exports are the brochure itself plus
  * a small envelope; imports accept that envelope or a bare brochure, and are
  * sanitised into a safe, editable user draft (unknown page types dropped,
- * colours and enums validated, fresh ids).
+ * colours and enums validated, fresh ids). The brochure's own photos
+ * (userPhotos) travel inside the file as data: URLs; on import only inline
+ * JPEG, PNG and WebP within the size caps are kept (photoUpload.js), and
+ * fields that pointed at a photo left behind are cleared.
  */
 import { ART_STYLES, FORMATS, PAGE_TYPES } from '../../data/schema.js';
 import { CATEGORY_MAP } from '../../data/categories.js';
@@ -13,11 +16,12 @@ import { normalizePage, sanitizeLocation, sanitizeSources } from '../../data/san
 import { createId, slugify } from '../../lib/id.js';
 import { isHex } from '../brochure/art/color.js';
 import { PALETTE_MAP } from './palettes.js';
+import { USER_PHOTO_BUDGET, sanitizeUserPhotos } from './photoUpload.js';
 
 export const EXPORT_FORMAT = 'tabi-brochure';
 export const EXPORT_VERSION = 1;
-/** Imports larger than this are refused before parsing. */
-export const MAX_IMPORT_BYTES = 1_000_000;
+/** Imports larger than this are refused before parsing: the photo budget plus room for the pages. */
+export const MAX_IMPORT_BYTES = USER_PHOTO_BUDGET + 1_500_000;
 const MAX_PAGES = 40;
 const MAX_TAGS = 12;
 
@@ -66,9 +70,23 @@ function plain(value, depth = 0) {
   return undefined;
 }
 
+/** Clear "user:<key>" photo ids whose upload is not in `photos` (a page field, an item, the cover). */
+function dropMissingUserPhotos(doc, photos) {
+  const keep = (id) => typeof id !== 'string' || !id.startsWith('user:') || Boolean(photos && Object.hasOwn(photos, id.slice(5)));
+  const fixItems = (items) => (Array.isArray(items) && items.some((item) => !keep(item?.photo)) ? items.map((item) => (keep(item?.photo) ? item : { ...item, photo: '' })) : items);
+  const pages = doc.pages.map((page) => {
+    const items = fixItems(page.items);
+    if (keep(page.photo) && items === page.items) return page;
+    return { ...page, ...(keep(page.photo) ? {} : { photo: '' }), ...(items === page.items ? {} : { items }) };
+  });
+  const cover = keep(doc.cover.photo) ? doc.cover : { ...doc.cover, photo: '' };
+  return { ...doc, cover, pages };
+}
+
 /**
  * Parse an exported file's text into a fresh draft.
- * Returns { ok: true, doc, dropped } or { ok: false, error } with a message for people.
+ * Returns { ok: true, doc, dropped, droppedPhotos } or { ok: false, error } with a message for people
+ * (`dropped`: unreadable pages; `droppedPhotos`: uploads that were unsafe or over the size caps).
  */
 export function parseBrochureJson(text, { makeId = createId, now = new Date() } = {}) {
   if (typeof text !== 'string' || !text.trim()) return { ok: false, error: 'That file is empty.' };
@@ -127,5 +145,8 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
   const sources = sanitizeSources(plain(source.sources)).slice(0, 12);
   if (sources.length) doc.sources = sources;
   if (typeof source.factsChecked === 'string' && source.factsChecked.trim()) doc.factsChecked = str(source.factsChecked, 40).trim();
-  return { ok: true, doc, dropped: source.pages.length - pages.length };
+  // The brochure's own photos: inline JPEG/PNG/WebP only, within the per-photo and per-brochure caps.
+  const { photos, dropped: droppedPhotos } = sanitizeUserPhotos(source.userPhotos, { budget: USER_PHOTO_BUDGET });
+  if (photos) doc.userPhotos = photos;
+  return { ok: true, doc: dropMissingUserPhotos(doc, photos), dropped: source.pages.length - pages.length, droppedPhotos };
 }

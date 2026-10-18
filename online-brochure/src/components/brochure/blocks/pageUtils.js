@@ -130,8 +130,9 @@ export function verseLines(value, { japanese = false } = {}) {
  * the longest line fits one column at up to `max`; very long lines (prose
  * inscriptions) wrap into further columns at no less than `min`.
  */
-export function verseSize(lines, { height = 92, max = 7.2, min = 3.4, perChar = 1.1 } = {}) {
-  const longest = Math.max(1, ...lines.map((line) => Array.from(line).length));
+export function verseSize(lines, { height = 92, max = 7.2, min = 3.4, perChar = 1.1, offset = 0 } = {}) {
+  // `offset`: characters' worth of space before every line after the first (a stepped tanka).
+  const longest = Math.max(1, ...lines.map((line, i) => Array.from(line).length + (i ? offset : 0)));
   const total = lines.reduce((sum, line) => sum + Array.from(line).length, 0);
   // Long single lines wrap: aim for about three columns of text.
   const perColumn = longest > 22 ? Math.ceil(Math.max(longest, total) / 3) : longest;
