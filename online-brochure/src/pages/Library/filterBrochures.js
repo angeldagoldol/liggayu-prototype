@@ -70,8 +70,8 @@ const text = (value) => (typeof value === 'string' ? value.trim() : '');
 
 /**
  * Every place name a brochure carries: its `location` (English, Japanese,
- * prefecture), each place page's name and Japanese name, and the places
- * pinned on its map pages — once each.
+ * prefecture) and each place page's and photo page's name and Japanese
+ * name — once each.
  */
 export function placeNames(brochure) {
   const names = [];
@@ -85,10 +85,7 @@ export function placeNames(brochure) {
   if (location && typeof location === 'object') add(location.name, location.nameJp, location.prefecture);
   for (const page of Array.isArray(brochure?.pages) ? brochure.pages : []) {
     if (!page || typeof page !== 'object') continue;
-    if (page.type === 'place') add(page.name, page.nameJp);
-    if (page.type === 'map' && Array.isArray(page.places)) {
-      for (const place of page.places) if (place && typeof place === 'object') add(place.name, place.nameJp);
-    }
+    if (page.type === 'place' || page.type === 'photo') add(page.name, page.nameJp);
   }
   return names;
 }

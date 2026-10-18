@@ -59,7 +59,7 @@
  * @property {string[]} seasons            best seasons: ids from data/seasons.js
  * @property {string} organization         publisher shown on the card. Built-ins: "Tabi Guides"
  *                                         (this app's own editorial imprint — never a real company)
- * @property {Location} [location]         the brochure's main place (map pin, search)
+ * @property {Location} [location]         the brochure's main place (cover coordinates, search)
  * @property {Source[]} [sources]          where the facts come from (official sites first)
  * @property {string} [factsChecked]       when prices/hours were last verified, e.g. "October 2026"
  * @property {string} summary              one or two sentences for cards/search
@@ -124,14 +124,13 @@ export const FORMATS = [
  *  features: { kicker, heading, items: [{ icon, title, text, photo }] }   2–6 items (photo optional)
  *  gallery:  { heading, items: [{ photo, art, seed, caption }] }          2–4 items
  *  place:    { kicker, name, nameJp, photo, body, facts: [{ label, value }], lat, lng, website }
- *            one real sight in depth; facts 2–5 rows such as Hours, Admission, Getting there,
- *            Time needed, Best time; website = official https URL
+ *            one real sight in depth, led by its photograph; facts 2–5 rows such as Hours,
+ *            Admission, Getting there, Time needed, Best time; website = official https URL;
+ *            lat/lng are printed as coordinates beside the name (Tabi draws no maps)
  *  stats:    { heading, body, items: [{ value, prefix, suffix, label }] } 2–4 items, value is a number
  *  agenda:   { heading, items: [{ time, title, text }] }                  3–6 items
  *  pricing:  { heading, note, plans: [{ name, price, period, features: string[], highlight }] } 1–3 plans
  *  phrases:  { heading, items: [{ jp, romaji, meaning }] }       3–6 items: useful Japanese
- *  map:      { heading, body, places: [{ name, nameJp, lat, lng, note }] }  2–8 real places, drawn on
- *            an accurate map of Japan (Natural Earth prefectures)
  *  quote:    { quote, quoteJp, author, role }               a real, attributable quote — e.g. a haiku
  *            (quoteJp = original Japanese, quote = translation) — never an invented testimonial
  *  contact:  { heading, body, cta, ctaUrl, details: [{ icon, label, value, url }] }   2–4 details;
@@ -249,20 +248,6 @@ export const PAGE_TYPES = dict({
       website: '',
     }),
   },
-  map: {
-    label: 'Map',
-    jp: '地図',
-    description: 'Real places pinned on a map of Japan',
-    icon: 'Map',
-    create: () => ({
-      heading: 'Where it all is',
-      body: 'The places in this brochure.',
-      places: [
-        { name: 'Tokyo', nameJp: '東京', lat: 35.6812, lng: 139.7671, note: 'Tokyo Station' },
-        { name: 'Kyoto', nameJp: '京都', lat: 34.9858, lng: 135.7588, note: 'Kyoto Station' },
-      ],
-    }),
-  },
   pricing: {
     label: 'Costs',
     jp: '料金',
@@ -351,3 +336,11 @@ export const PAGE_TYPES = dict({
 });
 
 export const PAGE_TYPE_IDS = Object.keys(PAGE_TYPES);
+
+/**
+ * Page types Tabi used to have and no longer draws. Stored brochures, Studio
+ * drafts and JSON imports drop pages of these types when they are read back
+ * (data/sanitize.js, studio/brochureIO.js); `map` (a map of Japan with pins)
+ * gave way to photographs of the places themselves.
+ */
+export const RETIRED_PAGE_TYPES = ['map'];

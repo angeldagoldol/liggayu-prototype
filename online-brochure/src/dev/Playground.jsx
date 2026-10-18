@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { BrochurePage } from '../components/brochure/BrochurePage.jsx';
 import { CoverArt } from '../components/brochure/CoverArt.jsx';
-import { themeVars } from '../components/brochure/blocks/pageUtils.js';
-import { JapanMap } from '../components/map/JapanMap.jsx';
 import { Photo } from '../components/photo/Photo.jsx';
 import { Button, Chip, Field, Select, Switch } from '../components/ui/index.js';
 import { BROCHURES } from '../data/brochures.js';
@@ -17,12 +15,11 @@ const SECTIONS = [
   { id: 'audit', label: 'Audit' },
   { id: 'large', label: 'Large brochure' },
   { id: 'empty', label: 'Empty pages' },
-  { id: 'map', label: 'Map' },
   { id: 'photo', label: 'Photo states' },
-  { id: 'real', label: 'Place & map pages' },
+  { id: 'real', label: 'Place, gallery & quote pages' },
 ];
 
-/** Real places for the new page types (coordinates WGS84, 4 decimals). */
+/** Real places for the place, gallery and quote pages (coordinates WGS84, 4 decimals). */
 const REAL_PAGES = [
   {
     id: 'demo-place',
@@ -42,16 +39,24 @@ const REAL_PAGES = [
     website: 'https://www.kiyomizudera.or.jp/en/',
   },
   {
-    id: 'demo-map',
-    type: 'map',
-    heading: 'Where it all is',
-    body: 'The places in this brochure, from the southern shrine gates to the western hills.',
-    places: [
-      { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', lat: 34.9671, lng: 135.7727, note: 'JR Inari Station' },
-      { name: 'Kiyomizu-dera', nameJp: '清水寺', lat: 34.9949, lng: 135.785, note: 'Higashiyama' },
-      { name: 'Gion', nameJp: '祇園', lat: 35.0037, lng: 135.7788, note: 'Yasaka Shrine' },
-      { name: 'Kinkaku-ji', nameJp: '金閣寺', lat: 35.0394, lng: 135.7292, note: 'Northern hills' },
-      { name: 'Arashiyama', nameJp: '嵐山', lat: 35.017, lng: 135.6713, note: 'Bamboo grove' },
+    id: 'demo-gallery-3',
+    type: 'gallery',
+    heading: 'A closer look',
+    items: [
+      { photo: 'kyoto-senbon-torii', art: 'torii', seed: 11, caption: 'Senbon Torii at Fushimi Inari Taisha' },
+      { photo: 'kyoto-kiyomizu-dera', art: 'enso', seed: 23, caption: 'The stage of Kiyomizu-dera' },
+      { art: 'sakura', seed: 37, caption: 'No photo yet: the art stands in' },
+    ],
+  },
+  {
+    id: 'demo-gallery-4',
+    type: 'gallery',
+    heading: 'Four plates',
+    items: [
+      { photo: 'kyoto-senbon-torii', art: 'torii', seed: 11, caption: 'Senbon Torii at Fushimi Inari Taisha' },
+      { photo: 'kyoto-kiyomizu-dera', art: 'enso', seed: 23, caption: 'The stage of Kiyomizu-dera' },
+      { art: 'sakura', seed: 37, caption: 'Petals on the river' },
+      { art: 'kumo', seed: 41, caption: 'Clouds over the hills' },
     ],
   },
   {
@@ -130,39 +135,6 @@ function useTestCard() {
   return record;
 }
 
-/** Real places (WGS84, 4 decimals) for the map workbench. */
-const MAP_SETS = {
-  japan: [
-    { id: 'sapporo', lat: 43.0618, lng: 141.3545, label: 'Sapporo', labelJp: '札幌' },
-    { id: 'tokyo', lat: 35.6812, lng: 139.7671, label: 'Tokyo', labelJp: '東京' },
-    { id: 'kamikochi', lat: 36.2486, lng: 137.6386, label: 'Kamikōchi', labelJp: '上高地' },
-    { id: 'kyoto', lat: 34.9858, lng: 135.7588, label: 'Kyoto', labelJp: '京都' },
-    { id: 'miyajima', lat: 34.2959, lng: 132.3199, label: 'Itsukushima', labelJp: '厳島' },
-    { id: 'naha', lat: 26.2172, lng: 127.7195, label: 'Shuri Castle', labelJp: '首里城' },
-    { id: 'ishigaki', lat: 24.3448, lng: 124.1572, label: 'Ishigaki', labelJp: '石垣' },
-  ],
-  kyoto: [
-    { id: 'inari', lat: 34.9671, lng: 135.7727, label: 'Fushimi Inari Taisha', labelJp: '伏見稲荷大社' },
-    { id: 'kiyomizu', lat: 34.9949, lng: 135.785, label: 'Kiyomizu-dera', labelJp: '清水寺' },
-    { id: 'gion', lat: 35.0037, lng: 135.7788, label: 'Gion', labelJp: '祇園' },
-    { id: 'kinkaku', lat: 35.0394, lng: 135.7292, label: 'Kinkaku-ji', labelJp: '金閣寺' },
-    { id: 'arashiyama', lat: 35.017, lng: 135.6713, label: 'Arashiyama', labelJp: '嵐山' },
-  ],
-  okinawa: [
-    { id: 'shuri', lat: 26.2172, lng: 127.7195, label: 'Shuri Castle', labelJp: '首里城' },
-    { id: 'churaumi', lat: 26.6944, lng: 127.8779, label: 'Churaumi Aquarium', labelJp: '美ら海水族館' },
-    { id: 'kerama', lat: 26.1983, lng: 127.3533, label: 'Tokashiki', labelJp: '渡嘉敷島' },
-    { id: 'ishigaki', lat: 24.3448, lng: 124.1572, label: 'Ishigaki', labelJp: '石垣島' },
-    { id: 'taketomi', lat: 24.3289, lng: 124.0867, label: 'Taketomi', labelJp: '竹富島' },
-  ],
-  alps: [
-    { id: 'matsumoto', lat: 36.2386, lng: 137.9689, label: 'Matsumoto Castle', labelJp: '松本城' },
-    { id: 'kamikochi', lat: 36.2486, lng: 137.6386, label: 'Kamikōchi', labelJp: '上高地' },
-    { id: 'takayama', lat: 36.1461, lng: 137.2522, label: 'Takayama', labelJp: '高山' },
-    { id: 'shirakawa', lat: 36.2577, lng: 136.9063, label: 'Shirakawa-gō', labelJp: '白川郷' },
-    { id: 'kanazawa', lat: 36.5621, lng: 136.6627, label: 'Kenroku-en', labelJp: '兼六園' },
-  ],
-};
 const DEFAULT_SEEDS = [7, 23, 61];
 
 /**
@@ -199,8 +171,6 @@ export function Playground() {
   const [themeB, setThemeB] = useState(params.get('z') ?? BROCHURES[1].slug);
   const [activePage, setActivePage] = useState(0);
   const [cta, setCta] = useState(0);
-  const [mapRegion, setMapRegion] = useState(null);
-  const [pickedRegion, setPickedRegion] = useState('kansai');
   const [paper, setPaper] = useState(params.get('paper') === 'dark' ? 'dark' : 'theme');
   const [readerSlug, setReaderSlug] = useState(params.get('rb') ?? 'all');
   const [readerWidth, setReaderWidth] = useState(READER_WIDTHS.includes(Number(params.get('w'))) ? Number(params.get('w')) : 460);
@@ -458,37 +428,6 @@ export function Playground() {
         </section>
       )}
 
-      {show('map') && (
-        <section id="map" className={styles.section} aria-labelledby="map-title">
-          <h2 id="map-title" className={styles.title}>Map of Japan · Natural Earth prefectures</h2>
-          <div className={styles.maps}>
-            <figure className={styles.mapTile}>
-              <JapanMap pins={MAP_SETS.japan} fillByRegion focus="japan" />
-              <figcaption>App tokens · whole country, region tones</figcaption>
-            </figure>
-            <figure className={styles.mapTile}>
-              <JapanMap regionLabels highlightedRegion={mapRegion ?? pickedRegion} onRegionEnter={setMapRegion} onRegionClick={setPickedRegion} />
-              <figcaption aria-live="polite">{`Interactive · picked ${pickedRegion}${mapRegion ? ` · hovering ${mapRegion}` : ''}`}</figcaption>
-            </figure>
-            {[
-              ['kyoto', 'kyoto-thousand-gates'],
-              ['okinawa', 'okinawa-coral-islands'],
-              ['alps', 'japan-alps'],
-            ].map(([set, theme]) => {
-              const b = BROCHURES.find((x) => x.slug === theme) ?? BROCHURES[0];
-              return (
-                <figure key={set} className={styles.mapTile}>
-                  <div className={styles.mapPaper} style={themeVars(b.theme)}>
-                    <JapanMap pins={MAP_SETS[set]} highlightedRegion={b.region} />
-                  </div>
-                  <figcaption>{`${b.title} theme · ${set} pins (zoomed)`}</figcaption>
-                </figure>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
       {show('photo') && (
         <section id="photo" className={styles.section} aria-labelledby="photo-title">
           <h2 id="photo-title" className={styles.title}>Photo states · runtime test card</h2>
@@ -516,7 +455,7 @@ export function Playground() {
 
       {show('real') && (
         <section id="real" className={styles.section} aria-labelledby="real-title">
-          <h2 id="real-title" className={styles.title}>Place, map and quote pages (photos not downloaded: art stands in)</h2>
+          <h2 id="real-title" className={styles.title}>Place, gallery and quote pages (photos not downloaded: art stands in)</h2>
           <div className={styles.large}>
             {REAL_PAGES.map((page, i) => (
               <div key={page.id} className={styles.largeItem}>

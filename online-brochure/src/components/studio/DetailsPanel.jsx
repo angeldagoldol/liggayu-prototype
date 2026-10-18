@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { CalendarCheck, MapPinned, X } from 'lucide-react';
+import { CalendarCheck, X } from 'lucide-react';
 import { CATEGORIES } from '../../data/categories.js';
 import { REGIONS } from '../../data/regions.js';
 import { FORMATS } from '../../data/schema.js';
@@ -21,39 +20,20 @@ const FORMAT_OPTIONS = FORMATS.map((f) => ({ value: f.id, label: f.label, sub: F
 
 /**
  * The real place the brochure is about: its names, prefecture and
- * coordinates (pinned on the cover and used by the library's map). The
- * prefecture can be filled from where the pin lands.
+ * coordinates (printed on the cover beside the Japanese title, and found by
+ * search).
  */
 function LocationSection({ location, dispatch }) {
-  const [landed, setLanded] = useState(null);
   const loc = location && typeof location === 'object' ? location : {};
   const set = (field) => (value) => dispatch(A.updateDoc(['location', field], value, true));
-  const suggestion = landed?.state === 'land' && landed.prefecture.name !== (loc.prefecture ?? '').trim() ? landed.prefecture : null;
   return (
     <PanelSection title="Place" jp="場所" note={loc.name ? undefined : 'Optional'}>
       <div className={styles.pair}>
         <TextField label="Main place" value={loc.name} onChange={set('name')} max={60} placeholder="Fushimi Inari Taisha" />
         <TextField label="In Japanese" lang="ja" value={loc.nameJp} onChange={set('nameJp')} max={20} placeholder="伏見稲荷大社" />
       </div>
-      <div className={styles.prefecture}>
-        <TextField label="Prefecture" value={loc.prefecture} onChange={set('prefecture')} max={24} placeholder="Kyoto" />
-        {suggestion && (
-          <Button size="sm" variant="secondary" iconLeft={<MapPinned />} onClick={() => dispatch(A.updateDoc(['location', 'prefecture'], suggestion.name))}>
-            {`Use ${suggestion.name}`}
-            <span lang="ja" className={styles.suggestJp}>
-              {suggestion.nameJp}
-            </span>
-          </Button>
-        )}
-      </div>
-      <CoordsField
-        label="Coordinates"
-        lat={loc.lat}
-        lng={loc.lng}
-        name={loc.name}
-        onLocate={setLanded}
-        onChange={(coords, typing) => dispatch(A.updateDoc(['location'], { ...loc, ...coords }, typing))}
-      />
+      <TextField label="Prefecture" value={loc.prefecture} onChange={set('prefecture')} max={24} placeholder="Kyoto" />
+      <CoordsField label="Coordinates" lat={loc.lat} lng={loc.lng} onChange={(coords, typing) => dispatch(A.updateDoc(['location'], { ...loc, ...coords }, typing))} />
       {location && (
         <Button size="sm" variant="ghost" iconLeft={<X />} onClick={() => dispatch(A.updateDoc(['location'], null))} className={styles.quiet}>
           Clear the place

@@ -3,6 +3,7 @@ import { geometryIndex, gridIndex, isEditableTarget, nextIndex, nextTabbable, ta
 import { humanizeIcon, searchIcons } from './iconSearch.js';
 import { DRAFT_KEY, clearDraft, contentSignature, editDraftKey, readDraft, writeDraft } from './draftStore.js';
 import { LIST_LIMITS, listLimit, newListItem, randomSeed } from './pageLimits.js';
+import { createStudioState } from './studioReducer.js';
 import {
   BLANK,
   buildSpreads,
@@ -38,10 +39,9 @@ describe('pageLimits', () => {
     expect(newListItem('place', ['facts'], Math.random, page)).toEqual({ label: 'Getting there', value: '' });
     const full = { facts: ['Hours', 'Admission', 'Getting there', 'Time needed', 'Best time'].map((label) => ({ label })) };
     expect(newListItem('place', ['facts'], Math.random, full).label).toBe('Good to know');
-    expect(newListItem('map', ['places'])).toEqual({ name: '', nameJp: '', lat: '', lng: '', note: '' });
     expect(newListItem('contact', ['details'])).toEqual({ icon: 'Globe', label: 'Official site', value: '', url: '' });
     expect(listLimit('place', ['facts'])).toEqual({ min: 1, max: 5 });
-    expect(listLimit('map', ['places'])).toEqual({ min: 1, max: 8 });
+    expect(LIST_LIMITS).not.toHaveProperty('map');
   });
 
   it('draws seeds in range', () => {
@@ -73,6 +73,28 @@ describe('draftStore', () => {
     expect(readDraft(DRAFT_KEY).doc).toEqual({ id: 'b_n', title: '', pages: [{ id: 'x', type: 'intro' }] });
     window.localStorage.setItem('tabi:studio-draft', JSON.stringify({ doc: { id: 'b_n', pages: [null, { type: 'constructor', id: 'y' }] } }));
     expect(readDraft(DRAFT_KEY)).toBeNull();
+  });
+
+  it('drops an old draft’s map pages (a retired type) and keeps everything else (migration)', () => {
+    const old = {
+      id: 'b_old',
+      title: 'Kyoto days',
+      pages: [
+        { id: 'c', type: 'cover', title: 'Kyoto days' },
+        { id: 'm', type: 'map', heading: 'Where it all is', places: [{ name: 'Kyoto Station', lat: 34.9858, lng: 135.7588 }] },
+        { id: 'pl', type: 'place', name: 'Kiyomizu-dera', lat: 34.9949, lng: 135.785 },
+        { id: 'b', type: 'back' },
+      ],
+    };
+    window.localStorage.setItem('tabi:studio-draft', JSON.stringify({ doc: old, selectedId: 'm', savedAt: 5 }));
+    const draft = readDraft(DRAFT_KEY);
+    expect(draft.doc.pages.map((p) => p.id)).toEqual(['c', 'pl', 'b']);
+    expect(draft.doc.pages[1]).toEqual(old.pages[2]);
+    // The selection pointed at the map page; the editor then opens on the first page.
+    expect(createStudioState(draft.doc, draft.selectedId).selectedId).toBe('c');
+    window.localStorage.setItem('tabi:studio-draft', JSON.stringify({ doc: { id: 'b_m', pages: [{ id: 'm', type: 'map' }] } }));
+    expect(readDraft(DRAFT_KEY)).toBeNull();
+    clearDraft(DRAFT_KEY);
   });
 
   it('keeps safe uploads and drops unsafe ones on the way back from storage', () => {

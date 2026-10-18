@@ -461,7 +461,7 @@ describe('photos', () => {
 describe('mergePage', () => {
   const place = () => {
     const doc = makeDoc();
-    doc.pages.splice(1, 0, { id: 'pl', type: 'map', places: [{ name: 'A', lat: 1, lng: 2 }] });
+    doc.pages.splice(1, 0, { id: 'pl', type: 'contact', details: [{ icon: 'Globe', label: 'A', value: 'x', url: '' }] });
     return createStudioState(doc);
   };
 
@@ -472,16 +472,16 @@ describe('mergePage', () => {
   });
 
   it('merges into an item and coalesces typing', () => {
-    const s = run([A.mergePage('pl', ['places', 0], { lat: 3, lng: 2 }, true), A.mergePage('pl', ['places', 0], { lat: 3, lng: 4 }, true)], place(), 10);
-    expect(s.doc.pages[1].places[0]).toEqual({ name: 'A', lat: 3, lng: 4 });
+    const s = run([A.mergePage('pl', ['details', 0], { label: 'B', value: 'x' }, true), A.mergePage('pl', ['details', 0], { label: 'B', value: 'y' }, true)], place(), 10);
+    expect(s.doc.pages[1].details[0]).toEqual({ icon: 'Globe', label: 'B', value: 'y', url: '' });
     expect(s.past).toHaveLength(1);
   });
 
   it('refuses locked keys, missing targets and no-ops', () => {
     const start = place();
     expect(studioReducer(start, A.mergePage('pl', [], { id: 'x' }))).toBe(start);
-    expect(studioReducer(start, A.mergePage('pl', ['places', 5], { lat: 1 }))).toBe(start);
-    expect(studioReducer(start, A.mergePage('pl', ['places', 0], { lat: 1, lng: 2 }))).toBe(start);
+    expect(studioReducer(start, A.mergePage('pl', ['details', 5], { label: 'B' }))).toBe(start);
+    expect(studioReducer(start, A.mergePage('pl', ['details', 0], { label: 'A', value: 'x' }))).toBe(start);
     expect(studioReducer(start, A.mergePage('pl', [], null))).toBe(start);
   });
 });

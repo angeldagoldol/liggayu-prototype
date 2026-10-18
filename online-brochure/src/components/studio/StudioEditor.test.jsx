@@ -102,21 +102,22 @@ describe('<StudioEditor>', () => {
 });
 
 describe('<StudioEditor> real-place editing', () => {
-  // Warm the lazy chunks (picker, coordinate preview, map) so a busy test run doesn't time out on them.
+  // Warm the photo picker's lazy chunk so a busy test run doesn't time out on it.
   beforeAll(async () => {
-    await Promise.all([import('./fields/PhotoPicker.jsx'), import('./fields/CoordsPreview.jsx')]);
+    await import('./fields/PhotoPicker.jsx');
   });
   const slow = { timeout: 5000 };
   const openPage = (name) => fireEvent.click(screen.getAllByRole('button', { name: new RegExp(name) }).find((b) => b.dataset.action === 'open'));
 
-  it('fills a place’s coordinates from a pasted pair and names where they land', async () => {
+  it('fills a place’s coordinates from a pasted pair, with no map', async () => {
     renderEditor(createFromTemplate('food-crawl'));
     openPage('Kuromon Market');
     const lat = await screen.findByLabelText('Latitude', {}, slow);
     fireEvent.paste(lat, { clipboardData: { getData: () => '34.6687, 135.5013' } });
     expect(lat).toHaveValue('34.6687');
     expect(screen.getByLabelText('Longitude')).toHaveValue('135.5013');
-    expect(await screen.findByText('大阪府', {}, slow)).toBeInTheDocument();
+    expect(await screen.findByText('34.6687° N, 135.5013° E', {}, slow)).toBeInTheDocument();
+    expect(screen.queryByRole('img', { name: /map/i })).toBeNull();
     await settle();
   }, 15_000);
 

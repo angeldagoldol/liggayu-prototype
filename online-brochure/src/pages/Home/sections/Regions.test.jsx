@@ -1,59 +1,63 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MotionGlobalConfig } from 'framer-motion';
 import { MemoryRouter } from 'react-router-dom';
 import { BrochureProvider } from '../../../context/BrochureContext.jsx';
 import { ToastProvider } from '../../../context/ToastContext.jsx';
+import { BUILTINS } from '../../../data/catalog.js';
+import { REGIONS } from '../../../data/regions.js';
 import { Regions } from './Regions.jsx';
 
-// The map's chunk "fails": rendering it throws, as a rejected lazy import would.
-vi.mock('./RegionsMap.jsx', () => ({
-  default: () => {
-    throw new Error('Failed to fetch dynamically imported module');
-  },
-}));
+function renderRegions() {
+  return render(
+    <MemoryRouter>
+      <ToastProvider>
+        <BrochureProvider>
+          <Regions />
+        </BrochureProvider>
+      </ToastProvider>
+    </MemoryRouter>,
+  );
+}
 
-describe('<Regions> without its map chunk', () => {
-  let RealObserver;
+describe('<Regions> — a photograph per region, no map', () => {
   beforeAll(() => {
     MotionGlobalConfig.skipAnimations = true;
-    RealObserver = window.IntersectionObserver;
-    window.IntersectionObserver = class {
-      constructor(callback) {
-        this.callback = callback;
-      }
-      observe(target) {
-        this.callback([{ target, isIntersecting: true, intersectionRatio: 1, boundingClientRect: target.getBoundingClientRect() }], this);
-      }
-      unobserve() {}
-      disconnect() {}
-      takeRecords() {
-        return [];
-      }
-    };
   });
   afterAll(() => {
     MotionGlobalConfig.skipAnimations = false;
-    window.IntersectionObserver = RealObserver;
   });
 
-  it('keeps the page whole and the card travelling', async () => {
-    const quiet = vi.spyOn(console, 'error').mockImplementation(() => {});
+  it('links each of the eight regions, north to south, to the Library filtered to it', () => {
+    renderRegions();
+    const links = screen.getAllByRole('link');
+    expect(links).toHaveLength(REGIONS.length);
+    links.forEach((link, i) => {
+      expect(link).toHaveAttribute('href', `/brochures?region=${REGIONS[i].id}`);
+      expect(link).toHaveTextContent(REGIONS[i].label);
+      expect(link.querySelector('[lang="ja"]')).toHaveTextContent(REGIONS[i].jp);
+    });
+  });
+
+  it('names each region in a heading and says how many brochures it has', () => {
+    const { container } = renderRegions();
+    expect(screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent)).toEqual(REGIONS.map((r) => `${r.label}${r.jp}`));
+    const kansai = BUILTINS.filter((b) => b.region === 'kansai').length;
+    const tile = screen.getByRole('link', { name: /Kansai/ }).closest('li');
+    expect(tile).toHaveTextContent(kansai === 1 ? '1 brochure' : `${kansai} brochures`);
+    // A photograph (or its art) in every tile, and no map anywhere.
+    expect(container.querySelectorAll('li [data-state]')).toHaveLength(REGIONS.length);
+    expect(screen.queryByRole('img', { name: /map/i })).toBeNull();
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('is keyboard accessible: Tab moves through the regions in reading order', async () => {
     const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <ToastProvider>
-          <BrochureProvider>
-            <Regions />
-          </BrochureProvider>
-        </ToastProvider>
-      </MemoryRouter>,
-    );
-    expect(await screen.findByText(/The map could not load/)).toBeInTheDocument();
-    const title = screen.getByRole('heading', { level: 3 }).textContent;
-    await user.click(screen.getByRole('button', { name: /^Next region/ }));
-    await waitFor(() => expect(screen.getByRole('heading', { level: 3 }).textContent).not.toBe(title));
-    quiet.mockRestore();
+    renderRegions();
+    await user.tab();
+    expect(document.activeElement).toHaveAttribute('href', `/brochures?region=${REGIONS[0].id}`);
+    await user.tab();
+    expect(document.activeElement).toHaveAttribute('href', `/brochures?region=${REGIONS[1].id}`);
   });
 });

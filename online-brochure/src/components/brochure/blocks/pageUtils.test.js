@@ -11,6 +11,7 @@ import {
   pageHeading,
   pageLabel,
   paragraphs,
+  placeLayout,
   text,
   themeVars,
   toNumber,
@@ -67,7 +68,7 @@ describe('labels and numerals', () => {
     expect(pageHeading({ type: 'quote' }, brochure)).toBe('Quote');
     expect(pageHeading({ type: 'place', name: 'Kiyomizu-dera' }, brochure)).toBe('Kiyomizu-dera');
     expect(pageHeading({ type: 'place' }, brochure)).toBe('Place');
-    expect(pageHeading({ type: 'map', heading: 'Where it all is' }, brochure)).toBe('Where it all is');
+    expect(pageHeading({ type: 'gallery', heading: 'A closer look' }, brochure)).toBe('A closer look');
     expect(pageHeading({ type: 'back' }, brochure)).toBe('Back cover');
     expect(pageHeading({ type: 'mystery' }, brochure)).toBe('Untitled page');
     expect(pageHeading(null, null)).toBe('Untitled page');
@@ -149,5 +150,33 @@ describe('verse helpers', () => {
     expect(verseSize(['あ'.repeat(200)])).toBe(3.4);
     // A stepped second line counts its indent.
     expect(verseSize(['あ'.repeat(10), 'い'.repeat(10)], { height: 60, perChar: 1, offset: 2 })).toBe(5);
+  });
+});
+
+describe('placeLayout (the place page, photo first)', () => {
+  const facts = [
+    { label: 'Hours', value: 'Grounds open 24 hours' },
+    { label: 'Admission', value: 'Free' },
+    { label: 'Getting there', value: 'JR Inari Station, 5 min from Kyoto' },
+  ];
+
+  it('gives a short story a towering photograph and a long one a smaller (never tiny) one', () => {
+    const short = placeLayout({ name: 'Tōdai-ji', copy: ['The Great Buddha Hall.'], facts: facts.slice(0, 1) });
+    const long = placeLayout({ name: 'Fushimi Inari Taisha', copy: ['x '.repeat(400), 'y '.repeat(200)], facts, website: 'https://inari.jp/' });
+    expect(short.media).toBe(80);
+    expect(long.media).toBeLessThan(short.media);
+    expect(long.media).toBeGreaterThanOrEqual(52);
+    // Bigger than the old 52cqw plate for a typical page.
+    expect(placeLayout({ name: 'Fushimi Inari Taisha', copy: ['z'.repeat(460)], facts, website: 'https://inari.jp/' }).media).toBeGreaterThan(60);
+  });
+
+  it('balances the columns: long facts get a wider column, a long story a narrower one (32–48%)', () => {
+    expect(placeLayout({ copy: ['a'.repeat(900)], facts: facts.slice(0, 1) }).aside).toBe(0.32);
+    expect(placeLayout({ copy: ['a'.repeat(50)], facts: [{ label: 'Getting there', value: 'b'.repeat(400) }] }).aside).toBeGreaterThanOrEqual(0.44);
+  });
+
+  it('copes with nothing at all', () => {
+    expect(placeLayout()).toEqual({ aside: 0.38, media: 80 });
+    expect(placeLayout({ name: null, copy: [], facts: [null, {}] })).toMatchObject({ media: expect.any(Number) });
   });
 });

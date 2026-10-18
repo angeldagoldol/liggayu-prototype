@@ -246,13 +246,14 @@ describe('place names', () => {
     pages: [
       { id: 'p1', type: 'place', name: 'Kiyomizu-dera', nameJp: '清水寺' },
       { id: 'p2', type: 'place', name: 'Kiyomizu-dera', nameJp: '' },
-      { id: 'p3', type: 'map', places: [{ name: 'Tenryū-ji', nameJp: '天龍寺' }, null, 'bad'] },
+      { id: 'p3', type: 'photo', name: 'Tenryū-ji', nameJp: '天龍寺' },
+      { id: 'p5', type: 'map', places: [{ name: 'Old map pin', nameJp: '地図' }] },
       { id: 'p4', type: 'intro', name: 'Not a place page' },
       null,
     ],
   });
 
-  it('collects the location, place pages and map pins once each', () => {
+  it('collects the location, place and photo pages once each (an old map page adds nothing)', () => {
     expect(placeNames(kyoto)).toEqual(['Fushimi Inari Taisha', '伏見稲荷大社', 'Kyoto', 'Kiyomizu-dera', '清水寺', 'Tenryū-ji', '天龍寺']);
     expect(placeNames({})).toEqual([]);
     expect(placeNames({ location: 'x', pages: 'y' })).toEqual([]);

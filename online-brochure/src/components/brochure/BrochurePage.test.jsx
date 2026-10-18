@@ -185,28 +185,18 @@ describe('real-place pages', () => {
     expect(container.textContent).not.toContain('javascript');
   });
 
-  it('renders a map page with numbered places and loads the map lazily', async () => {
+  it('draws an old map page (a retired type) as the quiet fallback, with no map', () => {
     const map = {
       id: 'm',
       type: 'map',
       heading: 'Where it all is',
-      body: 'The places in this brochure.',
-      places: [
-        { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', lat: 34.9671, lng: 135.7727, note: 'JR Inari Station' },
-        { name: 'Somewhere unknown', note: 'No coordinates yet' },
-        { name: 'Kiyomizu-dera', nameJp: '清水寺', lat: 34.9949, lng: 135.785 },
-      ],
+      places: [{ name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', lat: 34.9671, lng: 135.7727 }],
     };
     const { container } = render(<BrochurePage brochure={kyoto} page={map} index={8} total={12} active />);
     expect(screen.getByRole('heading', { level: 2, name: 'Where it all is' })).toBeInTheDocument();
-    const items = screen.getAllByRole('listitem');
-    expect(items.map((li) => li.getAttribute('value'))).toEqual(['1', '2', '3']);
-    expect(items[0]).toHaveTextContent('Fushimi Inari Taisha');
-    const img = await screen.findByRole('img', { name: /Map of Japan with 3 places: 1 Fushimi Inari Taisha, 2 Somewhere unknown, 3 Kiyomizu-dera/ });
-    expect(img).toBeInTheDocument();
-    // Pins only for places with coordinates, numbered like the list.
-    const numbers = [...container.querySelectorAll('svg circle + text')].map((t) => t.textContent);
-    expect(numbers).toEqual(['1', '3']);
+    expect(container.textContent).toContain('Tabi now shows photographs of the places instead');
+    expect(screen.queryByRole('img', { name: /map/i })).toBeNull();
+    expect(container.querySelector('[data-region], [data-pin]')).toBeNull();
   });
 
   it('sets the original Japanese of a quote vertically and the translation as verse lines', () => {

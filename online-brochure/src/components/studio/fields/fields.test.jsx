@@ -32,7 +32,6 @@ describe('<CoordsField>', () => {
       <CoordsField
         lat={coords.lat}
         lng={coords.lng}
-        preview={false}
         onChange={(next, typing) => {
           setCoords(next);
           onChange(next, typing);
@@ -70,10 +69,11 @@ describe('<CoordsField>', () => {
     expect(screen.queryByText(/These look swapped/)).not.toBeInTheDocument();
   });
 
-  it('warns about a point off the map', () => {
+  it('warns about a point outside Japan, and draws no map', () => {
     render(<Harness initial={{ lat: 48.8566, lng: 2.3522 }} />);
-    expect(screen.getByText(/outside the map of Japan/)).toBeInTheDocument();
-    expect(screen.getByLabelText('Latitude')).toHaveAccessibleDescription(/outside the map of Japan/);
+    expect(screen.getByText(/outside Japan/)).toBeInTheDocument();
+    expect(screen.getByLabelText('Latitude')).toHaveAccessibleDescription(/outside Japan/);
+    expect(screen.queryByRole('img')).toBeNull();
   });
 });
 

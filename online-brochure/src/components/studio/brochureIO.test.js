@@ -148,7 +148,17 @@ describe('import of real-place fields', () => {
       { type: 'gallery', items: [{ photo: 'kyoto-yasaka-pagoda', caption: 'Pagoda' }, { photo: 42 }] },
     ],
   };
-  const { ok, doc } = parseBrochureJson(JSON.stringify(brochure), { makeId, now });
+  const { ok, doc, dropped, retired } = parseBrochureJson(JSON.stringify(brochure), { makeId, now });
+
+  it('leaves out an old map page (a retired type) and says so, separately from unknown pages (migration)', () => {
+    expect(doc.pages.map((p) => p.type)).toEqual(['cover', 'place', 'place', 'quote', 'contact', 'gallery']);
+    expect(retired).toBe(1);
+    expect(dropped).toBe(0);
+    const mixed = parseBrochureJson(JSON.stringify({ pages: [{ type: 'cover' }, { type: 'map' }, { type: 'map' }, { type: 'hologram' }] }), { makeId, now });
+    expect(mixed).toMatchObject({ ok: true, retired: 2, dropped: 1 });
+    expect(mixed.doc.pages.map((p) => p.type)).toEqual(['cover']);
+    expect(parseBrochureJson(JSON.stringify({ pages: [{ type: 'map', places: [] }] }), { makeId, now }).ok).toBe(false);
+  });
 
   it('keeps photo ids, location, sources and the facts date', () => {
     expect(ok).toBe(true);
@@ -159,8 +169,8 @@ describe('import of real-place fields', () => {
     expect(doc.pages[0].photo).toBe('kyoto-senbon-torii');
   });
 
-  it('keeps valid place, map, quote and contact fields', () => {
-    const [, place, , map, quote, contact, gallery] = doc.pages;
+  it('keeps valid place, quote and contact fields', () => {
+    const [, place, , quote, contact, gallery] = doc.pages;
     expect(place).toMatchObject({
       name: 'Kiyomizu-dera',
       nameJp: '清水寺',
@@ -173,7 +183,6 @@ describe('import of real-place fields', () => {
       { label: 'Hours', value: '6:00–18:00' },
       { label: 'Admission', value: '500' },
     ]);
-    expect(map.places).toEqual([{ name: 'Kyoto Station', lat: 34.9858, lng: 135.7588 }, { name: 'Nowhere' }]);
     expect(quote.quoteJp).toBe('古池や蛙飛び込む水の音');
     expect(contact.details[0].url).toBe('https://kyoto.travel/en/');
     expect(gallery.items).toEqual([{ photo: 'kyoto-yasaka-pagoda', caption: 'Pagoda' }, { photo: '' }]);
@@ -185,8 +194,8 @@ describe('import of real-place fields', () => {
     expect(bad).not.toHaveProperty('lat');
     expect(bad).not.toHaveProperty('lng');
     expect(bad.photo).toBe('');
-    expect(doc.pages[5].ctaUrl).toBe('');
-    expect(doc.pages[5].details[1].url).toBe('');
+    expect(doc.pages[4].ctaUrl).toBe('');
+    expect(doc.pages[4].details[1].url).toBe('');
     expect(JSON.stringify(doc)).not.toMatch(/javascript:|vbscript:|data:text/);
   });
 

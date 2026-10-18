@@ -1,14 +1,11 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { Palette, Wand2 } from 'lucide-react';
 import { spanOf, spreadPartner } from '../../data/photoSpreads.js';
 import { spreadIssues } from '../../data/photoSpreadEdits.js';
 import { ART_LABELS, ART_STYLES, CAPTION_PLACEMENTS, CREDIT_PLACEMENTS } from '../../data/schema.js';
-import { toLat, toLng } from '../../data/sanitize.js';
 import { Button, Field, Select, Switch } from '../ui/index.js';
 import { CoverArt } from '../brochure/index.js';
-import { LazyJapanMap } from '../brochure/blocks/LazyJapanMap.jsx';
 import { Note } from './Note.jsx';
-import { coordinateCheck } from './fieldChecks.js';
 import { CoordsField } from './fields/CoordsField.jsx';
 import { DiceButton } from './fields/DiceButton.jsx';
 import { IconPicker } from './fields/IconPicker.jsx';
@@ -245,72 +242,8 @@ function PlaceFields({ api, page, brochure }) {
           </div>
         )}
       />
-      <CoordsField
-        label="Where it is"
-        lat={page.lat}
-        lng={page.lng}
-        name={page.name}
-        onChange={(coords, typing) => api.merge([], coords, typing)}
-      />
+      <CoordsField label="Coordinates" lat={page.lat} lng={page.lng} onChange={(coords, typing) => api.merge([], coords, typing)} />
       <Url api={api} path={['website']} label="Official website" hint="The place’s own site, or the city’s tourism page" />
-    </>
-  );
-}
-
-/** The map page's live preview: the same plate the page draws, pins numbered as the list below. */
-function MapPreview({ places, region }) {
-  const pins = useMemo(
-    () =>
-      (Array.isArray(places) ? places : []).map((place, i) => ({
-        id: `place-${i}`,
-        lat: toLat(place?.lat),
-        lng: toLng(place?.lng),
-        label: typeof place?.name === 'string' ? place.name : '',
-        labelJp: typeof place?.nameJp === 'string' ? place.nameJp : '',
-      })),
-    [places],
-  );
-  const total = pins.length;
-  const pinned = (Array.isArray(places) ? places : []).filter((p) => coordinateCheck(p?.lat, p?.lng).state === 'ok').length;
-  return (
-    <figure className={styles.mapPreview}>
-      <div className={styles.mapFrame}>
-        <LazyJapanMap pins={pins} highlightedRegion={region || undefined} aspect={1.45} labelScale={1.25} minSpan={0.016} overview />
-      </div>
-      <figcaption className={styles.mapCaption}>
-        <span lang="ja" aria-hidden="true">
-          地図
-        </span>
-        {pinned === total ? `All ${total} ${total === 1 ? 'place' : 'places'} pinned` : `${pinned} of ${total} places pinned — the others need coordinates on the map of Japan`}
-      </figcaption>
-    </figure>
-  );
-}
-
-function MapFields({ api, page, brochure }) {
-  return (
-    <>
-      <Text api={api} path={['heading']} label="Heading" max={70} />
-      <Text api={api} path={['body']} label="How it fits together" multiline rows={3} max={260} hint="Distances, lines, which places pair up" />
-      <MapPreview places={page.places} region={brochure.region} />
-      <List
-        api={api}
-        path={['places']}
-        pageType={page.type}
-        title="Places"
-        noun="place"
-        itemTitle={(item) => item?.name || item?.nameJp}
-        renderItem={(item, index, path) => (
-          <>
-            <div className={styles.nameRow}>
-              <Text api={api} path={[...path, 'name']} label="Name" max={40} />
-              <Text api={api} path={[...path, 'nameJp']} label="In Japanese" lang="ja" max={16} />
-            </div>
-            <CoordsField compact preview={false} label="Coordinates" lat={item?.lat} lng={item?.lng} name={item?.name} onChange={(coords, typing) => api.merge(path, coords, typing)} />
-            <Text api={api} path={[...path, 'note']} label="Note" max={60} placeholder="e.g. Main hall and stage" />
-          </>
-        )}
-      />
     </>
   );
 }
@@ -582,7 +515,6 @@ const EDITORS = {
   features: FeaturesFields,
   gallery: GalleryFields,
   place: PlaceFields,
-  map: MapFields,
   stats: StatsFields,
   agenda: AgendaFields,
   pricing: PricingFields,

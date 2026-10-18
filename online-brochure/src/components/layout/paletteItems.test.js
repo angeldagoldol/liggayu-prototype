@@ -159,7 +159,7 @@ describe('places and credits', () => {
 
   it('leaves places out of the empty state and finds the Credits page', () => {
     expect(queryPalette(palette, '').groups.map((g) => g.id)).not.toContain('places');
-    for (const q of ['credits', 'photo licence', 'natural earth', '奥付']) {
+    for (const q of ['credits', 'photo licence', 'wikimedia', '奥付']) {
       expect(queryPalette(palette, q).flat[0].to).toBe('/credits');
     }
   });

@@ -8,8 +8,9 @@ import type from './type.module.css';
 
 /**
  * Opening story. With a photograph: a tall plate bleeding off the page's
- * outer edge with the pull quote beneath it, and the kicker, headline and copy
- * (with a drop cap) in the inner column. Without: headline across the page,
+ * outer edge — the wider of the two columns, photo first — with the pull
+ * quote beneath it, and the kicker, headline and copy (with a drop cap) in the
+ * inner column. Without: headline across the page,
  * copy in two columns and a bracketed pull quote. Copy shrinks to fit.
  */
 export function IntroBlock({ page, brochure }) {
@@ -40,7 +41,7 @@ export function IntroBlock({ page, brochure }) {
         <Reveal variant="fade" className={styles.media} data-bleed="outer">
           <Photo
             id={photo}
-            sizes="(min-width: 1100px) 340px, 50vw"
+            sizes="(min-width: 1100px) 380px, 60vw"
             credit="overlay"
             creditLinks={!isStatic}
             className={styles.photo}

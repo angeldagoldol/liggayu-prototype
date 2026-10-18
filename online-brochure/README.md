@@ -7,7 +7,7 @@ Mount Fuji), read them in a flipbook with real 3D page-turns, and design their
 own Japan brochure in the Studio. The built-in brochures describe **real
 places**: every fact is checked against official sources (logged in
 `docs/research/`), every photograph is a credited, free-licence picture from
-Wikimedia Commons, and the maps are drawn from Natural Earth. It is a static
+Wikimedia Commons — the brochures show the places themselves, never a map. It is a static
 single-page app: no server, no account. Everything a visitor makes is stored
 in their own browser.
 
@@ -15,11 +15,11 @@ in their own browser.
 
 | Route | What you get |
 | --- | --- |
-| `#/` **Home** | A 3D tri-fold hero of real photographs (Fuji, Fushimi Inari, Shibuya; credited) that unfolds and follows the pointer, a live Tokyo clock, a bilingual word marquee, a featured-brochure carousel, the four seasons with a photograph each (opening on the current season in Japan), the eight regions on the accurate map of Japan (keyboard-navigable, a photo card per region), "how it works" sketches, Japan in numbers, five classic haiku as postcards (original, romaji, our translation) and a Studio call to action. Facts are logged in `docs/research/home.md`. |
+| `#/` **Home** | A 3D tri-fold hero of real photographs (Fuji, Fushimi Inari, Shibuya; credited) that unfolds and follows the pointer, a live Tokyo clock, a bilingual word marquee, a featured-brochure carousel, **Nostalgic Japan 懐かしい日本** — a magazine mosaic of real photographs of nostalgic places (old streets, wooden inns, quiet stations; from the Nostalgic Japan brochure, captioned and credited, linking to it), the four seasons with a photograph each (opening on the current season in Japan), the eight regions as a grid of real photographs (one per region, with its Japanese name and brochure count, each a link into the Library), "how it works" sketches, Japan in numbers, five classic haiku as postcards (original, romaji, our translation) and a Studio call to action. Facts are logged in `docs/research/home.md`. |
 | `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work; the places inside a brochure count too, so `Shirakawa-gō` or `伏見稲荷` find theirs), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones, where "Continue reading" reopens the page you left off on. |
 | `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones, laid out like a magazine: every brochure has a full-page photograph and a double-page photo spread whose picture runs across the fold (on a phone, the spread's halves become the photo on its own page and the whole wide view): drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet; the Print button and ⌘/Ctrl+P wait for the photographs before the print dialog opens), share/deep link (`?p=` is the page index), favourites, a private "Plan this trip" planner kept on your device (dates, travellers, interests, notes, copy as text, the official sites to check; nothing is sent), "About this brochure" with a full-bleed photograph, the fact-check date, numbered sources and every photo credit, and "More like this". |
-| `#/credits` **Credits** | 奥付: every photograph's credit grouped by where it appears (author, licence, source, plus the photos still to come — live photos from Wikimedia Commons are looked up and credited here too), the "Load photos from Wikimedia Commons" switch, how the facts are checked with links to the standard and each brochure's research log, the Natural Earth map data, the typefaces and the rest. |
-| `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview — places with coordinates checked against the map of Japan, a live map of your pins, sources and a facts-checked date — choose real photos from the library or upload your own (resized in the browser, with alt text and credit), add full-page photos and double-page spreads (placed on facing pages, with a warning and a one-click "Line up" if a reorder pushes one out of place), change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
+| `#/credits` **Credits** | 奥付: every photograph's credit grouped by where it appears (author, licence, source, plus the photos still to come — live photos from Wikimedia Commons are looked up and credited here too), the "Load photos from Wikimedia Commons" switch, how the facts are checked with links to the standard and each brochure's research log, the typefaces and the rest. |
+| `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview — real places with their coordinates (paste a pair or a link; checked to be in Japan), sources and a facts-checked date — choose real photos from the library or upload your own (resized in the browser, with alt text and credit), add full-page photos and double-page spreads (placed on facing pages, with a warning and a one-click "Line up" if a reorder pushes one out of place), change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
 | **⌘K / Ctrl K** | The command palette searches brochures, the places inside them (opening the brochure at that page), seasons, library filters, the Credits page and actions from anywhere. |
 | `#/anything-else` | A 404 page ("迷子 — maigo, lost") with a suggested brochure. |
 
@@ -53,16 +53,15 @@ npm run lint       # eslint .
 npm run photos:fetch       # bundle + credit the brochure photos (otherwise they load live from Commons)
 npm run photos:candidates  # contact sheets of every candidate, for curation
 npm run photos:import      # add a photo you own or licensed (fallback)
-npm run geo:build          # rebuild the map of Japan from Natural Earth
 ```
 
 `/playground.html` (dev server only, never built) is a workbench for the
 brochure kit: every cover-art style, every page of every brochure at reader
 and thumbnail size (on its own paper or dark paper), empty-field pages, theme
-crops, the map of Japan, `<Photo>` states (with a test card drawn at runtime,
-also as an uploaded `user:` photo), the place/map/quote pages and a layout
+crops, `<Photo>` states (with a test card drawn at runtime,
+also as an uploaded `user:` photo), the place, gallery (3 and 4 plates) and quote pages and a layout
 audit that lists any clipped or cut-off text. Query parameters:
-`section=art|reader|pages|audit|large|empty|map|photo|real`, `rb=<slug>|all`,
+`section=art|reader|pages|audit|large|empty|photo|real`, `rb=<slug>|all`,
 `w=340|460|640` (reader page width), `paper=dark`, `audit=1`, `style`,
 `seeds=1,2,3`, `b=<slug>`, `crop=native|3:4|1:1`, `animate=1`.
 
@@ -82,13 +81,11 @@ src/
     brochures/             one module per built-in brochure (+ index.js: the order)
     catalog.js             what the app loads: light outlines + each brochure's pages on demand
     photos/                photo registry: manifest/<brochure>.json + photos.generated.json
-    geo/                   japan.js (generated prefecture outlines) + projection.js
   components/
     ui/                    design-system primitives (Button, IconButton, Modal/Drawer, Hanko…)
     layout/                AppShell, Navbar, Footer, command palette, route transition, search
     brochure/              CoverArt (generative art in art/), BrochurePage (+ blocks/), BrochureCard
     photo/                 <Photo>: responsive, credited photographs with an art fallback
-    map/                   <JapanMap>: the 47 prefectures, an Okinawa inset, numbered pins
     viewer/                Flipbook, reader toolbar, scrubber, thumbnails, overview, print, trip planner
     studio/                editor reducer, panels, fields, preview, publish checks, import/export
   pages/                   Home, Library, Viewer, Studio, Credits, NotFound (route components + sections)
@@ -96,7 +93,6 @@ src/
   test/setup.js            jsdom polyfills for Vitest
 scripts/
   photos/                  fetch.mjs, candidates.mjs, import-local.mjs (+ lib.mjs, process.mjs, io.mjs)
-  geo/build-japan.mjs      Natural Earth → src/data/geo/japan.js
   build/brochure-outline.mjs  the Vite plugin that makes the brochure outlines
 public/photos/             resized photos, <id>-<480|960|1600>.webp (written by the scripts)
 docs/REAL_CONTENT.md       the standard for real places, facts and photos
@@ -152,7 +148,7 @@ static states (the flipbook becomes a cross-fade).
 **Accessibility.**
 - Semantics: landmarks, one `h1` per route, labelled controls and visible focus rings.
 - Focus: focus moves to `<main>` after every route change. Modals, drawers, the palette and the mobile menu trap and restore focus.
-- Keyboard: every gesture has a key, and the palette and region map are keyboard-first. The reader's keys switch off once it is scrolled out of view, so PageDown, Home and End scroll the rest of the page again.
+- Keyboard: every gesture has a key, and the palette is keyboard-first; the Home page's region photographs are plain links in reading order. The reader's keys switch off once it is scrolled out of view, so PageDown, Home and End scroll the rest of the page again.
 - Zoom: brochure pages stop shrinking at a readable width (the stage scrolls instead), so 200% browser zoom makes their text larger, not smaller; the reader's own zoom goes to 400%.
 - Live regions: result counts and the current page are announced through `aria-live`.
 - Pausing: the Home hero's "Pause motion" button stops every looping animation on the page (marquee, petals, sketches, postcard autoplay) and is remembered; the OS reduced-motion setting turns them off outright.
@@ -203,7 +199,7 @@ double-page spread, photo manifests).
    }
    ```
 
-3. Page types and their fields: `cover, intro, features, gallery, place, map, photo,
+3. Page types and their fields: `cover, intro, features, gallery, place, photo,
    stats, agenda, pricing, phrases, quote, contact, back`.
    `PAGE_TYPES[type].create()` in `schema.js` returns a filled example of
    each. Start with a `cover`, end with a `back`. Icons are names from the
@@ -215,7 +211,7 @@ double-page spread, photo manifests).
    and palette contrast (ink ≥ 7:1, muted ≥ 4.5:1, accent ≥ 3:1 on the paper),
    and the real-content rules: published by Tabi Guides, a main `location`
    with Japanese name and coordinates in Japan, at least two `https` sources,
-   place and map coordinates inside Japan, `https` official websites, no e-mail
+   place coordinates inside Japan, no (retired) map pages, `https` official websites, no e-mail
    addresses or phone numbers on Visitor information, `factsChecked` set
    whenever the back page claims it, and every photo id present in a manifest.
    `scripts/build/brochure-outline.test.mjs` checks the brochure still
@@ -378,24 +374,6 @@ keeps only JPEG, PNG or WebP data within the same limits (files up to 4.5 MB).
 Uploads with an author or licence are credited on the back page like any
 other photo. Removing an upload clears every field that used it.
 
-## Map of Japan
-
-`src/data/geo/japan.js` holds the 47 prefectures as SVG paths, generated by
-`npm run geo:build` from [Natural Earth](https://www.naturalearthdata.com/)
-1:10m admin-1 boundaries (public domain; the 40 MB source is cached in
-`.cache/geo/`). The build maps Natural Earth regions to the app's eight
-regions, returns the Amami islands (filed under Okinawa in Natural Earth) to
-Kagoshima, simplifies with mapshaper, projects with a Lambert conformal conic
-and puts Okinawa Prefecture and the Amami islands in an inset; islands
-outside the frames (Ogasawara, the Daitō and Tokara islands,
-Minami-Torishima) are left out, and Natural Earth's 1:10m coastline leaves
-out some small islands (Naoshima is not drawn; pins there still are).
-`src/data/geo/geography.test.js` projects real cities and every built-in
-pin and checks, point-in-polygon on the drawn paths, that each lands in its
-own prefecture. Lake Biwa
-comes from the Natural Earth lakes layer. `<JapanMap>` draws it with
-numbered pins, zooms to where the pins are, and loads lazily.
-
 ## Deploying
 
 `npm run build` writes a fully static site to `dist/`. Two settings make it
@@ -422,8 +400,9 @@ per route. The entry carries only an outline of each built-in brochure
 (titles, covers, places, sources); each brochure's pages are a chunk of their
 own (about 5 KB gzipped), fetched when the reader opens it — straight away for
 a deep link, on hover or focus from a card. The command palette, the
-cover-art generator, the icon registry, the photo registry and the map are
-loaded on demand.
+cover-art generator, the icon registry and the photo registry are loaded on
+demand. (Tabi no longer draws maps, which took away the largest lazy chunk:
+~60 KB of prefecture outlines.)
 
 ## Credits
 
@@ -436,7 +415,6 @@ loaded on demand.
 - Photographs are from Wikimedia Commons under CC0, public-domain, CC BY or
   CC BY-SA licences, credited to their authors on the page where they appear
   (see "Real photos").
-- Map data: Natural Earth (public domain).
 - The Credits page (`#/credits`) lists all of the above, with every photo credit.
 - Built-in brochures describe real places with facts checked against official
   sources (`docs/REAL_CONTENT.md`); they are published by Tabi Guides, the

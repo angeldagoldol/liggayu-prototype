@@ -22,9 +22,11 @@ describe('<Credits>', () => {
   it('has one h1 and a numbered section for each kind of credit', () => {
     renderCredits();
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
-    for (const name of ['Photographs', 'Facts & sources', 'Map data', 'Typefaces', 'Also']) {
+    for (const name of ['Photographs', 'Facts & sources', 'Typefaces', 'Also']) {
       expect(screen.getByRole('region', { name })).toBeInTheDocument();
     }
+    // Tabi draws no maps any more: no map section, no map data credit.
+    expect(screen.queryByRole('region', { name: 'Map data' })).toBeNull();
   });
 
   it('groups photographs by the Home page and every built-in brochure', () => {
@@ -36,11 +38,12 @@ describe('<Credits>', () => {
     }
   });
 
-  it('lists each brochure’s fact check and credits the map and the fonts', () => {
+  it('lists each brochure’s fact check and credits the fonts, with no map credit', () => {
     renderCredits();
     const facts = screen.getByRole('table', { name: 'Fact checks of the built-in brochures' });
     expect(within(facts).getAllByRole('row')).toHaveLength(BROCHURES.length + 1);
-    expect(screen.getByRole('link', { name: /^Natural Earth\s*\(opens in a new tab\)$/ })).toHaveAttribute('href', 'https://www.naturalearthdata.com/');
+    expect(screen.queryByRole('link', { name: /Natural Earth/ })).toBeNull();
+    expect(document.body.textContent).not.toMatch(/Natural Earth|map is drawn/);
     expect(screen.getAllByRole('link', { name: /SIL Open Font License/ }).length).toBe(5);
   });
 

@@ -133,7 +133,7 @@ export function pageItems() {
       meta: 'Photo credits, fact checks, map data and fonts',
       icon: 'Camera',
       to: '/credits',
-      keywords: 'credits photographs photos photographers licence license attribution wikimedia commons sources facts fact check research map natural earth fonts typefaces colophon okuzuke about',
+      keywords: 'credits photographs photos photographers licence license attribution wikimedia commons sources facts fact check research fonts typefaces colophon okuzuke about',
     }),
     page('favorites', {
       title: 'Your favourites',

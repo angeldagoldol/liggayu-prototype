@@ -6,30 +6,24 @@ import { LivePhotosToggle } from '../../components/photo/LivePhotosToggle.jsx';
 import { useLivePhotos } from '../../components/photo/useLivePhotos.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
-import { photoIdsIn } from '../../data/photos/index.js';
+import { listPhotos, photoIdsIn } from '../../data/photos/index.js';
 import { pad } from '../../lib/format.js';
 import { ease, fadeUp, stagger } from '../../lib/motion.js';
-import { HERO_PANELS, REGION_NOTES, SEASON_PHOTOS } from '../Home/homeContent.js';
+import { homePhotoIds } from '../Home/homeContent.js';
 import { creditGroups, creditTotals, licenceSummary } from './credits.js';
 import { ALSO } from './creditsContent.js';
 import { CreditsSection } from './CreditsSection.jsx';
 import { FactsTable } from './FactsTable.jsx';
-import { MapCredit } from './MapCredit.jsx';
 import { PhotoGroups } from './PhotoGroups.jsx';
 import { TypeSpecimens } from './TypeSpecimens.jsx';
 import styles from './Credits.module.css';
 
-/** Every photograph the Home page shows (hero, seasons, regions). */
-const HOME_PHOTO_IDS = [
-  ...Object.values(HERO_PANELS).map((p) => p.photo),
-  ...Object.values(SEASON_PHOTOS),
-  ...Object.values(REGION_NOTES).map((r) => r.photo),
-];
+/** Every photograph the Home page shows (hero, Nostalgic Japan, seasons, regions). */
+const HOME_PHOTO_IDS = homePhotoIds(listPhotos());
 
 const SECTIONS = [
   { id: 'credits-photos', title: 'Photographs', jp: '写真' },
   { id: 'credits-facts', title: 'Facts & sources', jp: '出典' },
-  { id: 'credits-map', title: 'Map data', jp: '地図' },
   { id: 'credits-type', title: 'Typefaces', jp: '書体' },
   { id: 'credits-also', title: 'Also', jp: '他' },
 ];
@@ -43,9 +37,8 @@ const rule = {
  * #/credits — 奥付 (okuzuke), the colophon of the whole site: every
  * photograph's credit grouped by where it appears (Home, each brochure, the
  * visitor's own uploads) with licence links, how the facts are checked
- * (with the standard and each brochure's research log), the map data
- * (Natural Earth, public domain), the typefaces (Google Fonts, OFL) and the
- * rest. A contents list jumps to each section (hash routing: no #anchors).
+ * (with the standard and each brochure's research log), the typefaces
+ * (Google Fonts, OFL) and the rest. A contents list jumps to each section (hash routing: no #anchors).
  */
 export default function Credits() {
   useDocumentTitle('Credits & sources');
@@ -101,7 +94,7 @@ export default function Credits() {
             </motion.p>
             <RevealText as="h1" immediate delay={0.1} className={styles.title} text={['Credits, ', { text: 'with thanks.', className: 'serif-italic' }]} />
             <motion.p variants={fadeUp} className={styles.standfirst}>
-              Tabi’s brochures show real places. The photographs come from Wikimedia Commons under free licences and are credited to the people who took them; the map is drawn from Natural Earth; the facts are checked against official sources. This page lists them all.
+              Tabi’s brochures show real places. The photographs come from Wikimedia Commons under free licences and are credited to the people who took them; the facts are checked against official sources. This page lists them all.
             </motion.p>
             <motion.dl variants={fadeUp} className={styles.stats}>
               {stats.map((item) => (
@@ -217,8 +210,14 @@ export default function Credits() {
         <FactsTable groups={groups} />
       </CreditsSection>
 
-      <CreditsSection id={SECTIONS[2].id} num={3} title={SECTIONS[2].title} jp={SECTIONS[2].jp}>
-        <MapCredit brochures={builtins} />
+      <CreditsSection
+        id={SECTIONS[2].id}
+        num={3}
+        title={SECTIONS[2].title}
+        jp={SECTIONS[2].jp}
+        lede="Five families, served by Google Fonts under the SIL Open Font License. Latin is set in Fraunces and Geist; Japanese falls back to Shippori Mincho and Zen Kaku Gothic New."
+      >
+        <TypeSpecimens />
       </CreditsSection>
 
       <CreditsSection
@@ -226,16 +225,6 @@ export default function Credits() {
         num={4}
         title={SECTIONS[3].title}
         jp={SECTIONS[3].jp}
-        lede="Five families, served by Google Fonts under the SIL Open Font License. Latin is set in Fraunces and Geist; Japanese falls back to Shippori Mincho and Zen Kaku Gothic New."
-      >
-        <TypeSpecimens />
-      </CreditsSection>
-
-      <CreditsSection
-        id={SECTIONS[4].id}
-        num={5}
-        title={SECTIONS[4].title}
-        jp={SECTIONS[4].jp}
         lede="The cover art and patterns (seigaiha, asanoha, shippō, ichimatsu, ensō…) are generated in code. The English translations of the haiku are our own, and each says so (“Translation: Tabi Guides”). Tabi is built with open-source software:"
       >
         <ul className={styles.also}>

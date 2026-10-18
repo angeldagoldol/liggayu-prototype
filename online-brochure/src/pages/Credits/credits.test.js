@@ -70,6 +70,15 @@ describe('creditTotals / licenceSummary', () => {
     expect(creditTotals(groups)).toEqual({ credited: 3, pending: 2, listed: 5, sources: 1, brochures: 1 });
   });
 
+  it('counts a photograph listed in two groups once (Home shows some brochure photos)', () => {
+    const twice = [...groups, { ...groups[1], id: 'b_other', kind: 'builtin', sources: [] }];
+    expect(creditTotals(twice)).toMatchObject({ credited: 3, pending: 2, brochures: 2 });
+    expect(licenceSummary(twice)).toEqual(licenceSummary(groups));
+    // Two brochures' own uploads are different photographs, even under the same key.
+    const uploads = groups.filter((g) => g.kind === 'user');
+    expect(creditTotals([...uploads, ...uploads.map((g) => ({ ...g, id: `${g.id}-copy` }))]).credited).toBe(2);
+  });
+
   it('summarises licences, most used first, with a deed link where known', () => {
     expect(licenceSummary(groups)).toEqual([
       { license: 'CC BY-SA 4.0', url: 'https://creativecommons.org/licenses/by-sa/4.0/', count: 2 },

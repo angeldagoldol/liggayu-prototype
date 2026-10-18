@@ -30,6 +30,6 @@ describe('lookup tables', () => {
   });
 
   it('keeps the page-type list intact', () => {
-    expect(PAGE_TYPE_IDS).toEqual(['cover', 'intro', 'features', 'gallery', 'stats', 'agenda', 'place', 'map', 'pricing', 'phrases', 'quote', 'contact', 'photo', 'back']);
+    expect(PAGE_TYPE_IDS).toEqual(['cover', 'intro', 'features', 'gallery', 'stats', 'agenda', 'place', 'pricing', 'phrases', 'quote', 'contact', 'photo', 'back']);
   });
 });

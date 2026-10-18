@@ -4,7 +4,7 @@ import { ICON_NAMES } from '../components/ui/Icon.jsx';
 import { BROCHURES, FEATURED_BROCHURES } from './brochures.js';
 import { CATEGORIES } from './categories.js';
 import { REGIONS } from './regions.js';
-import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
+import { ART_STYLES, FORMATS, PAGE_TYPES, RETIRED_PAGE_TYPES } from './schema.js';
 import { SEASONS } from './seasons.js';
 import { TEMPLATES } from '../components/studio/templates.js';
 import { getPhoto } from './photos/index.js';
@@ -58,6 +58,8 @@ describe('built-in brochures', () => {
     expect(b.pages.at(-1).type).toBe('back');
     expect(new Set(b.pages.map((p) => p.id)).size).toBe(b.pages.length);
     for (const page of b.pages) expect(Object.keys(PAGE_TYPES)).toContain(page.type);
+    // Photographs of the places, never a map: no page of a retired type.
+    for (const page of b.pages) expect(RETIRED_PAGE_TYPES, `${page.id} is a retired "${page.type}" page`).not.toContain(page.type);
     expect(new Set(b.pages.map((p) => p.type)).size).toBeGreaterThanOrEqual(8);
   });
 
@@ -155,7 +157,6 @@ describe('real places (docs/REAL_CONTENT.md)', () => {
         expect(inJapan(page.lat, page.lng)).toBe(true);
         if (page.website) expect(page.website).toMatch(/^https:\/\//);
       }
-      if (page.type === 'map') for (const place of page.places) expect(inJapan(place.lat, place.lng)).toBe(true);
     }
     const back = b.pages.at(-1);
     if (/facts checked/i.test(back.tagline ?? '')) expect(b.factsChecked).toBeTruthy();

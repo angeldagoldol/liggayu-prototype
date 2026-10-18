@@ -14,7 +14,6 @@ export const LIST_LIMITS = {
   phrases: { items: { min: 3, max: 6 } },
   contact: { details: { min: 2, max: 4 } },
   place: { facts: { min: 1, max: 5 } },
-  map: { places: { min: 1, max: 8 } },
 };
 
 /** The practical facts a place page usually lists, in the order a new row offers them. */
@@ -36,7 +35,7 @@ export function randomSeed(random = Math.random) {
 /**
  * A fresh, sensible item for the list at `path` on a page type. Placeholder
  * copy is Japan-flavoured so a new row already reads like a brochure; rows
- * that hold facts (place facts, visitor information, map places) start
+ * that hold facts (place facts, visitor information) start
  * empty, so nothing unchecked is printed by accident. `page` (optional) lets
  * a new fact row offer the next label the page doesn't have yet.
  */
@@ -63,8 +62,6 @@ export function newListItem(pageType, path, random = Math.random, page = null) {
       const used = new Set((Array.isArray(page?.facts) ? page.facts : []).map((f) => String(f?.label ?? '').trim().toLowerCase()));
       return { label: FACT_LABELS.find((label) => !used.has(label.toLowerCase())) ?? 'Good to know', value: '' };
     }
-    case 'map.places':
-      return { name: '', nameJp: '', lat: '', lng: '', note: '' };
     default:
       return {};
   }

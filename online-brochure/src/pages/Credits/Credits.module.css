@@ -901,134 +901,7 @@ a.licenceChip:hover {
   color: var(--success);
 }
 
-/* --- 03 Map ----------------------------------------------------------------- */
-.mapCredit {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-7);
-  margin-top: var(--space-6);
-}
-
-@media (min-width: 960px) {
-  .mapCredit {
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    align-items: start;
-  }
-}
-
-.mapFigure {
-  margin: 0;
-}
-
-.mapPlate {
-  position: relative;
-  aspect-ratio: 1.05;
-  padding: var(--space-4);
-  border: 1px solid var(--line-strong);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.mapPlate > * {
-  width: 100%;
-  height: 100%;
-}
-
-.mapCaption {
-  margin-top: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: var(--fs-2xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.mapText {
-  display: grid;
-  gap: var(--space-4);
-  font-size: var(--fs-base);
-  line-height: 1.65;
-  color: var(--ink-2);
-}
-
-.mapText strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.layers {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  line-height: 1.5;
-}
-
-.layers li {
-  padding: 0.45rem 0;
-  border-top: 1px solid var(--line);
-}
-
-.layers li:last-child {
-  border-bottom: 1px solid var(--line);
-}
-
-.mapIndex {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
-  column-gap: var(--space-5);
-  margin: var(--space-2) 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.mapIndexLink {
-  display: grid;
-  grid-template-columns: 1.75rem minmax(0, 1fr);
-  gap: 0 0.25rem;
-  padding: 0.55rem 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.mapIndexNum {
-  grid-row: span 2;
-  display: grid;
-  place-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-}
-
-.mapIndexName {
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  transition: color var(--dur-2) var(--ease-out);
-}
-
-.mapIndexJp {
-  margin-left: 0.5em;
-  font-family: var(--font-jp);
-  font-weight: 600;
-  color: var(--ink-3);
-}
-
-.mapIndexPlace {
-  font-size: var(--fs-xs);
-  color: var(--ink-3);
-}
-
-.mapIndexLink:hover .mapIndexName {
-  color: var(--accent);
-}
-
-/* --- 04 Type -------------------------------------------------------------- */
+/* --- 03 Type -------------------------------------------------------------- */
 .specimens {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
@@ -1091,7 +964,7 @@ a.licenceChip:hover {
   color: var(--ink-2);
 }
 
-/* --- 05 Also ------------------------------------------------------------- */
+/* --- 04 Also ------------------------------------------------------------- */
 .also {
   margin: var(--space-6) 0 0;
   padding: 0;

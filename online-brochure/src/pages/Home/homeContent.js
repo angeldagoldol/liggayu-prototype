@@ -9,14 +9,114 @@
 export const SECTIONS = {
   hero: { num: '01', label: 'Online brochures about Japan', jp: '表紙' },
   words: { num: '02', label: 'Words to travel with', jp: '言葉' },
-  featured: { num: '03', label: 'Featured', jp: '特集' },
-  seasons: { num: '04', label: 'Seasons', jp: '四季' },
-  regions: { num: '05', label: 'Regions', jp: '地方' },
-  how: { num: '06', label: 'How it works', jp: '使い方' },
-  numbers: { num: '07', label: 'Japan in numbers', jp: '数字' },
-  haiku: { num: '08', label: 'Haiku', jp: '俳句' },
-  studio: { num: '09', label: 'Studio', jp: '制作' },
+  nostalgic: { num: '03', label: 'Nostalgic Japan', jp: '懐かしい日本' },
+  featured: { num: '04', label: 'Featured', jp: '特集' },
+  seasons: { num: '05', label: 'Seasons', jp: '四季' },
+  regions: { num: '06', label: 'Regions', jp: '地方' },
+  how: { num: '07', label: 'How it works', jp: '使い方' },
+  numbers: { num: '08', label: 'Japan in numbers', jp: '数字' },
+  haiku: { num: '09', label: 'Haiku', jp: '俳句' },
+  studio: { num: '10', label: 'Studio', jp: '制作' },
 };
+
+/**
+ * 懐かしい日本 — Nostalgic Japan: a mosaic of real photographs of nostalgic
+ * places, from the Nostalgic Japan brochure's photo manifest
+ * (src/data/photos/manifest, ids starting "nostalgic-"). The section shows
+ * nothing until that manifest has photos.
+ */
+export const NOSTALGIC = {
+  prefix: 'nostalgic-',
+  slug: 'nostalgic-japan',
+  /** The mosaic's largest number of photographs. */
+  limit: 7,
+  word: { jp: '懐かしい', romaji: 'natsukashii' },
+  intro:
+    'Natsukashii (懐かしい) is the warm, wistful feeling of something dear from long ago. Old streets, wooden inns and quiet stations where it still lingers — in real photographs.',
+};
+
+/** Manifest uses in the order the mosaic wants them: tall pictures lead, wide ones fill the long tiles. */
+const USE_ORDER = { cover: 0, full: 1, wide: 2, spread: 3, any: 4 };
+
+/**
+ * The photographs the Nostalgic Japan section shows, from a listPhotos()
+ * result: ids starting "nostalgic-", the lead picture first (a cover-shaped
+ * one when there is one), then the rest in manifest-id order with wide
+ * pictures last (the mosaic's bottom row is wide) and one picture per place
+ * (a second view of the same street waits for the brochure), at most `limit`.
+ * Pure; [] when the manifest has no such photos yet.
+ */
+export function nostalgicPhotos(photos, limit = NOSTALGIC.limit) {
+  const mine = (Array.isArray(photos) ? photos : []).filter((p) => typeof p?.id === 'string' && p.id.startsWith(NOSTALGIC.prefix));
+  const rank = (p) => USE_ORDER[p.use] ?? USE_ORDER.any;
+  const lead = mine.reduce((best, p) => (best === null || rank(p) < rank(best) ? p : best), null);
+  if (!lead) return [];
+  const wide = (p) => (p.use === 'wide' || p.use === 'spread' ? 1 : 0);
+  const placeOf = (p) => (typeof p.place === 'string' ? p.place.trim().toLowerCase() : '');
+  const picked = [lead];
+  const places = new Set([placeOf(lead)].filter(Boolean));
+  for (const p of mine.filter((x) => x !== lead).sort((a, b) => wide(a) - wide(b))) {
+    const place = placeOf(p);
+    if (place && places.has(place)) continue;
+    if (place) places.add(place);
+    picked.push(p);
+  }
+  return picked.slice(0, Math.max(0, limit));
+}
+
+/**
+ * A caption split into its parts for a magazine caption:
+ *   "Ginzan Onsen, Yamagata — wooden inns on a snowy day · 銀山温泉"
+ *     → { text: 'Ginzan Onsen, Yamagata — wooden inns on a snowy day', title: 'Ginzan Onsen, Yamagata',
+ *         note: 'wooden inns on a snowy day', jp: '銀山温泉' }
+ * `jp` is the longest run of kana/kanji (with ・ and spaces inside it), and the
+ * separators around it are tidied away; `title`/`note` split the English at
+ * its first spaced dash (" — " or " – "), else `title` is the whole line and
+ * `note` is ''. No Japanese: `jp` is ''.
+ */
+export function splitCaption(caption) {
+  const source = typeof caption === 'string' ? caption.trim() : '';
+  const runs = source.match(/[\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff々〆ヶ][\u3040-\u30ff\u3400-\u9fff\uf900-\ufaff々〆ヶ・ー\u3000 ]*/g) ?? [];
+  const jp = runs.reduce((best, run) => (run.trim().length > best.length ? run.trim() : best), '');
+  if (!jp) return { text: source, jp: '', ...titled(source) };
+  // "Name (銀山温泉), place": the brackets go with the Japanese.
+  const at = source.indexOf(jp);
+  let before = source.slice(0, at);
+  let after = source.slice(at + jp.length);
+  if (/[（(]\s*$/.test(before) && /^\s*[)）]/.test(after)) {
+    before = before.replace(/\s*[（(]\s*$/, '');
+    after = after.replace(/^\s*[)）]/, '');
+  }
+  const SEP = /[—–·|/:;,]/;
+  const left = before.replace(/[\s—–·|/:;,]+$/, '');
+  const right = after.replace(/^[\s—–·|/:;,]+/, '');
+  const sep = before.trimEnd().slice(-1).match(SEP)?.[0] ?? after.trimStart()[0]?.match(SEP)?.[0] ?? '';
+  const joiner = !left || !right ? '' : sep === ',' ? ', ' : sep ? ` ${sep} ` : ' ';
+  const text = `${left}${joiner}${right}`.replace(/\s+([,.;:])/g, '$1').replace(/\s{2,}/g, ' ').trim();
+  return { text, jp, ...titled(text) };
+}
+
+/** "Place, Region — what it shows" → { title: 'Place, Region', note: 'what it shows' }. */
+function titled(text) {
+  const at = text.search(/\s[—–]\s/);
+  if (at <= 0) return { title: text, note: '' };
+  return { title: text.slice(0, at).trim(), note: text.slice(at + 3).trim() };
+}
+
+/**
+ * Every photograph the Home page shows, asked for together (so live photos
+ * arrive in one batch) and listed under "Home page" on #/credits: the hero,
+ * the Nostalgic Japan mosaic (from `photos`, a listPhotos() result), the
+ * seasons and the regions.
+ */
+export function homePhotoIds(photos) {
+  return [
+    ...Object.values(HERO_PANELS).map((p) => p.photo),
+    ...nostalgicPhotos(photos).map((p) => p.id),
+    ...Object.values(SEASON_PHOTOS),
+    ...Object.values(REGION_NOTES).map((r) => r.photo),
+  ];
+}
 
 /**
  * The hero tri-fold's three inside panels: a real photograph each (falling
@@ -107,7 +207,7 @@ export const SEASON_SWATCH = {
 
 /**
  * What each region is known for (docs/research/home.md §3), the place its
- * card pictures (`place`/`placeJp`, the manifest photo `photo`) and the
+ * tile pictures (`place`/`placeJp`, the manifest photo `photo`) and the
  * generative art shown until that photo is downloaded.
  */
 export const REGION_NOTES = {
@@ -176,13 +276,6 @@ export const REGION_NOTES = {
     seed: 23,
   },
 };
-
-/**
- * The region map's source line. The inset scale is the Okinawa inset's
- * projection scale over the main frame's in src/data/geo/japan.js
- * (homeContent.test.js recomputes it, so a map rebuild cannot leave it stale).
- */
-export const MAP_SOURCE = 'Natural Earth · Okinawa & Amami inset ×1.12';
 
 /** "How it works" steps. */
 export const STEPS = [

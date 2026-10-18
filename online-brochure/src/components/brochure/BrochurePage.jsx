@@ -5,7 +5,7 @@ import { photoIdsIn } from '../../data/photos/registry.js';
 import { spanOf, spreadPartner } from '../../data/photoSpreads.js';
 import { PhotoContext } from '../photo/photoContext.js';
 import { useLivePhotos } from '../photo/useLivePhotos.js';
-import { BLOCKS, FULL_BLEED, FallbackBlock } from './blocks/index.js';
+import { BLOCKS, FULL_BLEED, FallbackBlock, HEADLESS } from './blocks/index.js';
 import { Folio } from './blocks/Folio.jsx';
 import { PageContext } from './blocks/pageContext.js';
 import { pageLabel, themeVars } from './blocks/pageUtils.js';
@@ -55,6 +55,7 @@ export function BrochurePage({ brochure, page, index = 0, total = 1, active = fa
   const p = page && typeof page === 'object' ? page : {};
   const Block = BLOCKS[p.type] ?? FallbackBlock;
   const fullBleed = FULL_BLEED.has(p.type);
+  const headless = !fullBleed && HEADLESS.has(p.type);
   const number = index + 1;
   const recto = number % 2 === 1;
 
@@ -104,8 +105,8 @@ export function BrochurePage({ brochure, page, index = 0, total = 1, active = fa
     >
       <PageContext.Provider value={context}>
         <PhotoContext.Provider value={b}>
-          <Sheet className={cn(styles.sheet, fullBleed && styles.bleed)} {...sheetProps}>
-            {!fullBleed && <RunningHead brochure={b} />}
+          <Sheet className={cn(styles.sheet, fullBleed && styles.bleed, headless && styles.headless)} {...sheetProps}>
+            {!fullBleed && !headless && <RunningHead brochure={b} />}
             <div className={styles.body}>
               <Block page={p} brochure={b} index={index} total={total} partner={partner} />
             </div>

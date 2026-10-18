@@ -176,7 +176,6 @@
   gap: var(--space-3);
 }
 
-.prefecture,
 .checked {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -184,16 +183,8 @@
   gap: var(--space-2);
 }
 
-.prefecture > :first-child,
 .checked > :first-child {
   justify-self: stretch;
-}
-
-.suggestJp {
-  margin-left: 0.4em;
-  font-family: var(--font-jp);
-  font-size: 0.85em;
-  color: var(--ink-3);
 }
 
 .quiet {

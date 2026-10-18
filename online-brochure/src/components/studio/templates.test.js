@@ -6,9 +6,7 @@ import { SEASON_MAP } from '../../data/seasons.js';
 import { ICON_NAMES } from '../ui/Icon.jsx';
 import { contrast } from '../brochure/art/color.js';
 import { getPhoto, photoIdsIn } from '../../data/photos/index.js';
-import { prefectures, project } from '../../data/geo/japan.js';
 import { coordinateCheck } from './fieldChecks.js';
-import { locate } from './geoLookup.js';
 import { LIST_LIMITS } from './pageLimits.js';
 import { validateForPublish } from './publishCheck.js';
 import { TEMPLATES, createBlank, createFromTemplate, createRemix } from './templates.js';
@@ -77,7 +75,9 @@ describe('templates', () => {
     expect(types[0]).toBe('cover');
     expect(types.at(-1)).toBe('back');
     expect(types.filter((t) => t === 'place').length).toBeGreaterThanOrEqual(2);
-    expect(types).toContain('map');
+    // Photographs of the places, never a map.
+    expect(types).not.toContain('map');
+    expect(types.some((t) => t === 'gallery' || t === 'photo')).toBe(true);
     expect(types).toContain('contact');
     // No invented publisher: the person's own name goes here.
     expect(b.organization).toBe('Your name');
@@ -103,23 +103,19 @@ describe('templates', () => {
     expect(JSON.stringify(b)).not.toMatch(/[¥$€£]\s?\d/);
   });
 
-  it.each(TEMPLATES.map((t) => [t.name, t]))('%s pins real places inside Japan', (_, template) => {
+  it.each(TEMPLATES.map((t) => [t.name, t]))('%s names real places inside Japan, with coordinates', (_, template) => {
     const b = template.brochure;
-    const points = [
-      b.location,
-      ...b.pages.filter((p) => p.type === 'place'),
-      ...b.pages.filter((p) => p.type === 'map').flatMap((p) => p.places),
-    ];
-    for (const point of points) {
+    for (const point of [b.location, ...b.pages.filter((p) => p.type === 'place')]) {
       expect(coordinateCheck(point.lat, point.lng).state).toBe('ok');
-      expect(locate(point.lat, point.lng, { project, prefectures })?.state).not.toBe('off');
     }
-    // Each place page's pin is on the map page too.
-    const map = b.pages.find((p) => p.type === 'map');
-    for (const place of b.pages.filter((p) => p.type === 'place')) {
-      expect(map.places.some((m) => m.lat === place.lat && m.lng === place.lng)).toBe(true);
+    expect(b.location.prefecture).toMatch(/^[A-Z]/);
+  });
+
+  it.each(TEMPLATES.map((t) => [t.name, t]))('%s leads with photographs: every gallery plate and photo page has a library photo', (_, template) => {
+    for (const page of template.brochure.pages) {
+      if (page.type === 'gallery') for (const item of page.items) expect(getPhoto(item.photo), item.photo).not.toBeNull();
+      if (page.type === 'photo') expect(getPhoto(page.photo), page.photo).not.toBeNull();
     }
-    expect(locate(b.location.lat, b.location.lng, { project, prefectures }).prefecture?.name).toBe(b.location.prefecture);
   });
 
   it.each(TEMPLATES.map((t) => [t.name, t]))('%s uses photos from the library', (_, template) => {

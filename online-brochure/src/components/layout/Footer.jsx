@@ -77,8 +77,8 @@ function Wordmark() {
 /**
  * Editorial footer on a sumi-ink band (dark in both themes): statement and
  * proverb, where the content comes from (real places, checked facts,
- * credited photographs, Natural Earth map data) with a link to the Credits
- * page and the "Load photos from Wikimedia Commons" switch, link columns into the library, a live "Now in Japan" strip, small
+ * credited photographs) with a link to the Credits page and the "Load
+ * photos from Wikimedia Commons" switch, link columns into the library, a live "Now in Japan" strip, small
  * print, and a giant TABI 旅 wordmark that rises on scroll. Hidden on the
  * immersive viewer route by <AppShell>.
  */
@@ -119,8 +119,8 @@ export function Footer() {
               </span>
             </h3>
             <p className={styles.lettersNote}>
-              Facts are checked against official sources. Photographs come from Wikimedia Commons under free licences,
-              credited to the people who took them, and the maps are drawn from Natural Earth.
+              Facts are checked against official sources. Photographs of the places come from Wikimedia Commons under
+              free licences, credited to the people who took them.
             </p>
             <Link to="/credits" className={styles.creditsLink}>
               Credits &amp; sources
@@ -164,7 +164,7 @@ export function Footer() {
       <div className={cn('container', styles.bottom)}>
         <p className={styles.small}>
           © {YEAR} Tabi <span lang="ja">旅</span>. Brochures by Tabi Guides, this site’s own imprint. Photographs: Wikimedia
-          Commons contributors · Map data: Natural Earth · <Link to="/credits">Credits</Link>
+          Commons contributors · <Link to="/credits">Credits</Link>
         </p>
         <AppearanceSwitch className={styles.appearance} />
         <button type="button" className={styles.toTop} onClick={backToTop}>

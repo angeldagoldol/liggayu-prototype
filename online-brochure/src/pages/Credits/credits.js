@@ -76,19 +76,27 @@ export function creditGroups({ homeIds = [], builtins = [], userBrochures = [], 
   return groups;
 }
 
-/** { credited, pending, listed, sources, brochures } across all groups. */
+/** A photo's identity across groups: a registry id, or an upload within its own brochure. */
+const photoKey = (group, photo) => (photo.user ? `${group.id}|${photo.id}` : photo.id);
+
+/**
+ * { credited, pending, listed, sources, brochures } across all groups. A
+ * photograph listed in two groups (the Home page shows some of the Nostalgic
+ * Japan brochure's) counts once.
+ */
 export function creditTotals(groups) {
-  let credited = 0;
-  let pending = 0;
+  const credited = new Set();
+  const pending = new Set();
   let sources = 0;
   let brochures = 0;
   for (const g of groups) {
-    credited += g.credits.length;
-    pending += g.pending.length;
+    for (const c of g.credits) credited.add(photoKey(g, c));
+    for (const p of g.pending) pending.add(photoKey(g, p));
     sources += g.sources.length;
     if (g.kind === 'builtin') brochures += 1;
   }
-  return { credited, pending, listed: credited + pending, sources, brochures };
+  for (const key of credited) pending.delete(key);
+  return { credited: credited.size, pending: pending.size, listed: credited.size + pending.size, sources, brochures };
 }
 
 /**
@@ -98,8 +106,11 @@ export function creditTotals(groups) {
  */
 export function licenceSummary(groups) {
   const byName = new Map();
+  const seen = new Set();
   for (const g of groups) {
     for (const c of g.credits) {
+      if (seen.has(photoKey(g, c))) continue;
+      seen.add(photoKey(g, c));
       const name = str(c.license);
       if (!name) continue;
       const entry = byName.get(name) ?? { license: name, url: '', count: 0 };

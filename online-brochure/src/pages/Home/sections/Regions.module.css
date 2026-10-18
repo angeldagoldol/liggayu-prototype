@@ -2,277 +2,226 @@
   padding-block: var(--section-y);
 }
 
-.layout {
+/* A magazine grid, north to south: Hokkaidō's feature plate spans two
+   columns and two rows, Chūgoku's plate is wide, the rest are tiles. */
+.grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
-  align-items: start;
-  gap: clamp(2rem, 1rem + 3.4vw, 5rem);
-  margin-top: clamp(2rem, 1rem + 3vw, 4rem);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: clamp(11rem, 6rem + 9vw, 17rem);
+  gap: clamp(0.5rem, 0.25rem + 0.7vw, 1rem);
+  margin: clamp(2rem, 1rem + 3vw, 4rem) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* --- The print: a framed atlas sheet holding the map ---------------------- */
-.print {
+.tile {
   position: relative;
-  margin: 0;
-  padding: clamp(1rem, 0.6rem + 1.4vw, 1.75rem);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.printHead {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-4);
-  margin-bottom: var(--space-3);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: var(--fs-2xs);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.printHead > :first-child {
-  font-family: var(--font-jp);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  color: var(--ink);
-}
-
-.compass {
-  margin-left: auto;
-  color: var(--accent);
-}
-
-/* Same shape as the whole-country map (2400 × 2706), so nothing moves when it arrives. */
-.mapSlot {
-  aspect-ratio: 2400 / 2706;
-}
-
-.placeholder {
-  width: 100%;
-  height: 100%;
-  border-radius: var(--radius-sm);
-  background-image: radial-gradient(circle, var(--line-strong) 1px, transparent 1.5px);
-  background-size: 22px 22px;
-  opacity: 0.5;
-}
-
-.placeholder[data-failed] {
-  display: grid;
-  place-items: center;
-  padding: var(--space-6);
-  opacity: 1;
-}
-
-.failed {
-  max-width: 26ch;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  font-size: var(--fs-sm);
-  text-align: center;
-  color: var(--ink-2);
-}
-
-.caption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-5);
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: var(--fs-2xs);
-  letter-spacing: 0.08em;
-  color: var(--ink-3);
-}
-
-.keys,
-.tap {
-  margin-left: auto;
-  text-transform: uppercase;
-}
-
-/* Touch screens get their own hint instead of the keys. */
-.tap {
-  display: none;
-}
-
-@media (hover: none) {
-  .tap {
-    display: inline;
-    color: var(--accent);
-  }
-}
-
-/* --- The region card ------------------------------------------------------ */
-.card {
-  position: relative;
-  display: grid;
-  gap: var(--space-4);
-}
-
-/* Old and new cards share one cell while they cross-fade. */
-.stack {
-  display: grid;
-}
-
-.cardInner {
-  grid-area: 1 / 1;
-  display: grid;
-  align-content: start;
-  gap: clamp(1.25rem, 0.8rem + 1.2vw, 2rem);
-}
-
-.plate {
-  position: relative;
-  aspect-ratio: 3 / 2;
+  min-width: 0;
   overflow: hidden;
   border-radius: var(--radius-md);
   background: var(--bg-sunken);
-  box-shadow: var(--shadow-page);
-  /* The credit chip sits top-right, inside the rounded corner. */
-  --photo-chip-top: 0.5rem;
-  --photo-chip-right: 0.5rem;
-  --photo-chip-bottom: auto;
+  box-shadow: var(--shadow-sm);
 }
 
-.plateInner {
+.tile[data-shape='feature'] {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.tile[data-shape='wide'] {
+  grid-column: span 2;
+}
+
+/* The card is its own stacking context: the photograph and its scrim sit
+   below the text (negative z-index), and the region link's ::after covers
+   the whole card, so anywhere on the photograph opens the region. */
+.card {
   position: absolute;
   inset: 0;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(0.85rem, 0.55rem + 0.9vw, 1.5rem);
+  color: var(--wa-kinari);
 }
 
-.cardBody {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: var(--space-5);
+.plate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* The credit chip sits top-left, inside the rounded corner. */
+  --photo-chip-top: 0.6rem;
+  --photo-chip-left: 0.6rem;
+  --photo-chip-right: auto;
+  --photo-chip-bottom: auto;
+  --photo-credit-size: 0.625rem;
 }
 
-.cardJp {
-  font-size: clamp(2.5rem, 1.6rem + 2.4vw, 4.25rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.08em;
-  color: var(--accent);
+.photo {
+  position: absolute;
+  inset: 0;
+  transition: transform var(--dur-4) var(--ease-out);
 }
 
-.cardText {
-  display: grid;
-  justify-items: start;
-  gap: var(--space-3);
-  min-width: 0;
+/* A deep foot of sumi for the type, the top of the picture left clear. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--wa-sumi) 84%, transparent) 0%,
+    color-mix(in srgb, var(--wa-sumi) 52%, transparent) 30%,
+    color-mix(in srgb, var(--wa-sumi) 12%, transparent) 58%,
+    transparent 74%
+  );
 }
 
-.cardMeta {
+.num {
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--ink-3);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.16em;
+  opacity: 0.86;
 }
 
-.cardTitle {
-  font-family: var(--font-headline, var(--font-display));
-  font-size: var(--fs-2xl);
+.name {
+  margin-top: 0.3rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1rem + 1vw, 2rem);
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 14px color-mix(in srgb, var(--wa-sumi) 55%, transparent);
 }
 
-.knownFor {
-  max-width: 38ch;
-  font-size: var(--fs-md);
+.tile[data-shape='feature'] .name {
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.6rem);
+}
+
+.tile[data-shape='wide'] .name {
+  font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.6rem);
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.link:focus-visible {
+  outline: none;
+}
+
+.link:focus-visible::after {
+  outline: 3px solid var(--wa-kinari);
+  outline-offset: -7px;
+  box-shadow: inset 0 0 0 7px color-mix(in srgb, var(--wa-sumi) 60%, transparent);
+}
+
+.jp {
+  margin-left: 0.45em;
+  font-family: var(--font-jp);
+  font-size: 0.62em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  opacity: 0.92;
+}
+
+.dek {
+  max-width: 36ch;
+  margin-top: 0.5rem;
+  font-size: var(--fs-sm);
   line-height: 1.5;
-  color: var(--ink-2);
+  color: color-mix(in srgb, var(--wa-kinari) 88%, transparent);
   text-wrap: pretty;
 }
 
-/* "PICTURED  Sensō-ji, Asakusa  浅草寺" on a hairline. */
-.place {
+.meta {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.2rem 0.75rem;
-  width: 100%;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--line);
-  font-size: var(--fs-sm);
-  color: var(--ink);
-}
-
-.placeLabel {
+  gap: 0.25rem 0.9rem;
+  margin-top: 0.6rem;
   font-family: var(--font-mono);
   font-size: var(--fs-2xs);
-  font-weight: 600;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: 0.08em;
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
   text-transform: uppercase;
-  color: var(--ink-3);
 }
 
-.placeName {
-  font-weight: 500;
+.count::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--wa-shu);
 }
 
-.placeJp {
+.pictured {
+  opacity: 0.8;
+}
+
+.pictureJp {
+  margin-left: 0.5em;
   font-family: var(--font-jp);
-  letter-spacing: 0.1em;
-  color: var(--ink-3);
+  letter-spacing: 0.08em;
 }
 
-.cardActions {
-  margin-top: var(--space-2);
+.arrow {
+  position: absolute;
+  top: clamp(0.7rem, 0.5rem + 0.6vw, 1.1rem);
+  right: clamp(0.7rem, 0.5rem + 0.6vw, 1.1rem);
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0.3rem;
+  box-sizing: content-box;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--wa-sumi) 45%, transparent);
+  color: var(--wa-kinari);
+  opacity: 0;
+  transition: opacity var(--dur-2) var(--ease-out);
+  pointer-events: none;
 }
 
-.cardHead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--line-strong);
+.tile:hover .arrow,
+.tile:focus-within .arrow {
+  opacity: 1;
 }
 
-.pager {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.pagerCount {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  font-variant-numeric: tabular-nums;
-}
-
-.pagerCount span {
-  color: var(--ink-3);
-}
-
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: minmax(0, 1fr);
+@media (prefers-reduced-motion: no-preference) {
+  .tile:hover .photo,
+  .tile:focus-within .photo {
+    transform: scale(1.045);
   }
 }
 
-@media (max-width: 520px), (hover: none) {
-  .caption .keys {
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(9.5rem, 42vw, 14rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .meta .pictured {
     display: none;
   }
-}
 
-@media (max-width: 520px) {
-  .print {
-    padding: var(--space-3);
-  }
-
-  .cardBody {
-    gap: var(--space-4);
+  .tile:not([data-shape='tile']) .meta .pictured {
+    display: inline;
   }
 }

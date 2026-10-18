@@ -1,18 +1,19 @@
 /**
  * JSON export/import for Studio drafts. Exports are the brochure itself plus
  * a small envelope; imports accept that envelope or a bare brochure, and are
- * sanitised into a safe, editable user draft (unknown page types dropped,
- * colours and enums validated, fresh ids). The brochure's own photos
- * (userPhotos) travel inside the file as data: URLs; on import only inline
- * JPEG, PNG and WebP within the size caps are kept (photoUpload.js), and
- * fields that pointed at a photo left behind are cleared.
+ * sanitised into a safe, editable user draft (unknown page types dropped, and
+ * old map pages — a retired type — left out; colours and enums validated,
+ * fresh ids). The brochure's own photos (userPhotos) travel inside the file as
+ * data: URLs; on import only inline JPEG, PNG and WebP within the size caps
+ * are kept (photoUpload.js), and fields that pointed at a photo left behind
+ * are cleared.
  */
-import { ART_STYLES, FORMATS, PAGE_TYPES } from '../../data/schema.js';
+import { ART_STYLES, FORMATS } from '../../data/schema.js';
 import { CATEGORY_MAP } from '../../data/categories.js';
 import { REGION_MAP } from '../../data/regions.js';
 import { SEASON_MAP } from '../../data/seasons.js';
 import { hasKey } from '../../data/lookup.js';
-import { normalizePage, sanitizeLocation, sanitizeSources } from '../../data/sanitize.js';
+import { isKnownPageType, isRetiredPageType, normalizePage, sanitizeLocation, sanitizeSources } from '../../data/sanitize.js';
 import { createId, slugify } from '../../lib/id.js';
 import { isHex } from '../brochure/art/color.js';
 import { PALETTE_MAP } from './palettes.js';
@@ -104,7 +105,9 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
     return { ok: false, error: 'This doesn’t look like a Tabi brochure — it has no pages.' };
   }
 
-  const known = source.pages.filter((p) => p && typeof p === 'object' && hasKey(PAGE_TYPES, p.type));
+  const known = source.pages.filter((p) => p && typeof p === 'object' && isKnownPageType(p.type));
+  // Map pages (a retired type) are left out on purpose: Tabi shows photographs of the places instead.
+  const retired = source.pages.filter((p) => p && typeof p === 'object' && isRetiredPageType(p.type)).length;
   // Pages keep plain JSON only, then the same field rules as stored brochures:
   // photo ids are strings, coordinates are real, links are http(s) only.
   const pages = known.slice(0, MAX_PAGES).map((p) => normalizePage({ ...plain(p), id: makeId('pg'), type: p.type }));
@@ -148,5 +151,5 @@ export function parseBrochureJson(text, { makeId = createId, now = new Date() } 
   // The brochure's own photos: inline JPEG/PNG/WebP only, within the per-photo and per-brochure caps.
   const { photos, dropped: droppedPhotos } = sanitizeUserPhotos(source.userPhotos, { budget: USER_PHOTO_BUDGET });
   if (photos) doc.userPhotos = photos;
-  return { ok: true, doc: dropMissingUserPhotos(doc, photos), dropped: source.pages.length - pages.length, droppedPhotos };
+  return { ok: true, doc: dropMissingUserPhotos(doc, photos), dropped: source.pages.length - pages.length - retired, retired, droppedPhotos };
 }

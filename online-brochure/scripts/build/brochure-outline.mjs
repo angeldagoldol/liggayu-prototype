@@ -7,8 +7,8 @@
  * brochure with every top-level field (title, cover, theme, location,
  * sources, factsChecked…) and one stub per page that keeps only what the
  * Library, palette, Credits and the Studio's photo library read without
- * rendering a page: id, type, name, nameJp, kicker, photo, the `photo` of
- * each item and the names of map places. It also gains
+ * rendering a page: id, type, name, nameJp, kicker, photo and the `photo` of
+ * each item. It also gains
  * `outline: '<file stem>'`, which src/data/catalog.js uses to load the full
  * module (its own lazy chunk) when a page is drawn.
  *
@@ -26,7 +26,7 @@ import { parseAst } from 'rollup/parseAst';
 /** Page fields an outline keeps. */
 export const OUTLINE_PAGE_KEYS = ['id', 'type', 'name', 'nameJp', 'kicker', 'photo'];
 /** List fields of a page an outline keeps, and the keys kept in each entry. */
-export const OUTLINE_LIST_KEYS = { items: ['photo'], places: ['name', 'nameJp'] };
+export const OUTLINE_LIST_KEYS = { items: ['photo'] };
 
 const QUERY = /[?&]outline(?:&|$)/;
 

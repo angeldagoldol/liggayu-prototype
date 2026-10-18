@@ -32,14 +32,15 @@ writing them. Data shapes are in `src/data/schema.js`.
   Buson, Issa, Shiki…, give `quoteJp` = original Japanese and `quote` = an
   English translation; label your own translation "Translation: Tabi Guides" in
   `role`), a proverb, or a documented historical line. Verify the wording.
-- `place` pages describe one real sight: what it is, why it matters, what to
-  look for, plus 2–5 `facts` rows (Hours, Admission, Getting there, Time
-  needed, Best time) and its `lat`/`lng` and official `website`.
-- `map` pages pin the brochure's real places with accurate coordinates
-  (decimal degrees, 4 decimals). The map shows the four main islands with
-  their near islands and an Okinawa & Amami inset; the Tokara, Ogasawara and
-  Daitō islands are not drawn, and `src/data/geo/geography.test.js` fails
-  for a pin outside the map.
+- `place` pages describe one real sight, led by its photograph: what it is,
+  why it matters, what to look for, plus 2–5 `facts` rows (Hours, Admission,
+  Getting there, Time needed, Best time) and its `lat`/`lng` (decimal
+  degrees, 4 decimals — printed in small type beside the name) and official
+  `website`. Keep the story short: the photograph takes the room the text
+  leaves.
+- **No maps.** Tabi shows real photographs of the places, never a map; the
+  `map` page type is retired (old brochures and drafts drop such pages when
+  they are read back).
 - Japanese must be correct: kanji/kana, natural romaji with macrons
   (Tōdai-ji, Arigatō). Use common English names for big cities (Tokyo, Kyoto,
   Osaka). Phrasebook entries must be natural, polite Japanese.
@@ -98,15 +99,15 @@ Each brochure lists its photos in `src/data/photos/manifest/<slug>.json`:
   brochure's generative art in its place, so brochures always render.
 
 Typical photo budget per brochure: cover 1, intro 1, each `place` page 1,
-gallery 3–4, plus a full-page photo (`<prefix>-fullpage`, `use: "full"`,
+each gallery 3–4, plus a full-page photo (`<prefix>-fullpage`, `use: "full"`,
 portrait or near-square) and a double-page spread (`<prefix>-spread`,
 `use: "spread"`, a wide landscape that still works cut down the middle) —
-about 10–12 in total.
+about 13–16 in total.
 
 ## 3. Brochure outline (16–18 pages)
 
 `cover` (photo) → `intro` (photo) → 2–3 × `place` → `features` → `gallery` →
-`map` → `agenda` (a realistic day or trip plan using real opening hours and
+a second `gallery` of real photographs (3–4) → `agenda` (a realistic day or trip plan using real opening hours and
 travel times) → `pricing` as **Costs** (real admission fees, passes, fares) →
 `phrases` → `quote` (real) → `contact` as **Visitor information** → `back`
 (sign-off, `tagline` = "Facts checked <month year> · Tabi Guides").
@@ -119,7 +120,7 @@ Between them, two magazine **photo pages** (`type: "photo"`):
   the right half right after it, or the halves will not face each other in
   the booklet (`src/data/brochures.test.js` checks it, with
   `src/data/photoSpreadEdits.js`);
-- a **full-page photo**, often facing the map or a place page.
+- a **full-page photo**, often facing a gallery or a place page.
 
 Their captions come from the manifest: `caption` is the slot's caption,
 `name` its place, `nameJp` the place's Japanese name — log it in the research

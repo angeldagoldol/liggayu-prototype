@@ -11,19 +11,20 @@
   height: 100%;
 }
 
-/* With a photograph: plate + pull quote on the outer side, story inside. */
+/* With a photograph: plate + pull quote on the outer side, story inside.
+   The plate takes the larger share of the measure (photo first). */
 .intro[data-photo] {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
   grid-template-areas:
     'media text'
     'pull text';
-  column-gap: 5.4cqw;
+  column-gap: 4.8cqw;
 }
 
 [data-side='recto'] .intro[data-photo] {
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
   grid-template-areas:
     'text media'
     'text pull';
@@ -37,7 +38,7 @@
 .media {
   grid-area: media;
   position: relative;
-  min-height: 30cqw;
+  min-height: 40cqw;
   margin-inline-start: calc(-1 * var(--pad-x));
   --photo-credit-size: 1.1cqw;
   --photo-chip-left: auto;

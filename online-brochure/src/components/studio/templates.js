@@ -1,8 +1,9 @@
 /**
  * Starting points for the Studio: five Japan brochures laid out the way the
  * library's real-content brochures are (docs/REAL_CONTENT.md) — a photo
- * cover, real places on place pages with their coordinates, a map, costs,
- * phrases, a real quote with its original Japanese and visitor information —
+ * cover, real places on photo-led place pages with their coordinates, a
+ * gallery or full-page photograph of more real places, costs, phrases, a real
+ * quote with its original Japanese and visitor information —
  * plus a blank three-page brochure and a remix of any library brochure.
  *
  * What is real: the places, their Japanese names and coordinates (as checked
@@ -67,7 +68,7 @@ export const TEMPLATES = [
     id: 'city-weekend',
     name: 'Weekend in a city',
     jp: '週末の街',
-    blurb: 'Two days in Tokyo: a temple at dawn, the scramble at dusk, four real places on the map.',
+    blurb: 'Two days in Tokyo: a temple at dawn, the scramble at dusk, four real places in photographs.',
     brochure: {
       title: 'Tokyo in 48 Hours',
       titleJp: '東京',
@@ -127,14 +128,12 @@ export const TEMPLATES = [
           website: '',
         },
         {
-          type: 'map',
-          heading: 'Where it all is',
-          body: 'Say how the places connect: which line, how long between them, which pair well in one afternoon.',
-          places: [
-            { name: 'Sensō-ji', nameJp: '浅草寺', lat: 35.7148, lng: 139.7967, note: 'Temple and gate, Asakusa' },
-            { name: 'Shibuya Crossing', nameJp: '渋谷スクランブル交差点', lat: 35.6595, lng: 139.7005, note: 'The scramble' },
-            { name: 'Tokyo Tower', nameJp: '東京タワー', lat: 35.6586, lng: 139.7454, note: 'Observation decks' },
-            { name: 'Shinjuku Golden Gai', nameJp: '新宿ゴールデン街', lat: 35.6939, lng: 139.7047, note: 'Tiny bars, late' },
+          type: 'gallery',
+          heading: 'The city after dark',
+          items: [
+            { photo: 'tokyo-tower-night', art: 'hinomaru', seed: 17, caption: 'Tokyo Tower at night, Minato' },
+            { photo: 'tokyo-golden-gai', art: 'ichimatsu', seed: 29, caption: 'Shinjuku Golden Gai at night' },
+            { photo: 'tokyo-omoide-yokocho', art: 'kumo', seed: 41, caption: 'Omoide Yokochō, Shinjuku' },
           ],
         },
         {
@@ -256,14 +255,12 @@ export const TEMPLATES = [
           ],
         },
         {
-          type: 'map',
-          heading: 'Around the hills',
-          body: 'Say how the loop works — which train, cable car, ropeway and boat — and how long it takes.',
-          places: [
-            { name: 'Hakone-Yumoto', nameJp: '箱根湯本', lat: 35.2334, lng: 139.1037, note: 'Where the trains arrive' },
-            { name: 'Hakone Open-Air Museum', nameJp: '彫刻の森美術館', lat: 35.2447, lng: 139.0514, note: 'Sculpture park' },
-            { name: 'Ōwakudani', nameJp: '大涌谷', lat: 35.2419, lng: 139.0207, note: 'Volcanic valley' },
-            { name: 'Hakone Shrine', nameJp: '箱根神社', lat: 35.2039, lng: 139.0256, note: 'Torii in the lake' },
+          type: 'gallery',
+          heading: 'Around the loop',
+          items: [
+            { photo: 'hakone-tozan-railway', art: 'kumo', seed: 13, caption: 'Hakone Tozan Railway near Miyanoshita' },
+            { photo: 'hakone-ropeway', art: 'fuji', seed: 27, caption: 'Hakone Ropeway above Ōwakudani' },
+            { photo: 'hakone-lake-ashi-cruise', art: 'seigaiha', seed: 39, caption: 'A sightseeing ship and the Peace Torii on Lake Ashi' },
           ],
         },
         costs([
@@ -368,14 +365,13 @@ export const TEMPLATES = [
           ],
         },
         {
-          type: 'map',
-          heading: 'Where the floats run',
-          body: 'Say how far apart the towns are, and which nights to be where.',
-          places: [
-            { name: 'Aomori', nameJp: '青森', lat: 40.8287, lng: 140.7356, note: 'Nebuta' },
-            { name: 'Hirosaki', nameJp: '弘前', lat: 40.6078, lng: 140.4642, note: 'Neputa' },
-            { name: 'Goshogawara', nameJp: '五所川原', lat: 40.808, lng: 140.447, note: 'Tachineputa' },
-          ],
+          type: 'photo',
+          photo: 'tohoku-fullpage',
+          name: 'Nebuta Museum WA-RASSE',
+          nameJp: 'ねぶたの家 ワ・ラッセ',
+          caption: 'One line on what the picture shows — the float, the hall, the light.',
+          captionPlacement: 'overlay',
+          creditPlacement: 'caption',
         },
         {
           type: 'agenda',
@@ -483,13 +479,12 @@ export const TEMPLATES = [
           ],
         },
         {
-          type: 'map',
-          heading: 'Where to eat',
-          body: 'Say which stops are a walk apart, and which take a train.',
-          places: [
-            { name: 'Dōtonbori', nameJp: '道頓堀', lat: 34.6687, lng: 135.5013, note: 'Canal and takoyaki' },
-            { name: 'Kuromon Market', nameJp: '黒門市場', lat: 34.6658, lng: 135.5065, note: 'Market grazing' },
-            { name: 'Shinsekai', nameJp: '新世界', lat: 34.6525, lng: 135.5062, note: 'Kushikatsu under the tower' },
+          type: 'gallery',
+          heading: 'Between meals',
+          items: [
+            { photo: 'osaka-fullpage', art: 'hinomaru', seed: 19, caption: 'Winter lights in Tennōji Park, below Abeno Harukas' },
+            { photo: 'osaka-hozenji-fudo', art: 'enso', seed: 23, caption: 'Mizukake Fudō at Hōzen-ji, green with moss' },
+            { photo: 'osaka-castle', art: 'shippo', seed: 47, caption: 'The main tower of Osaka Castle' },
           ],
         },
         costs([
@@ -588,13 +583,12 @@ export const TEMPLATES = [
           ],
         },
         {
-          type: 'map',
-          heading: 'The walk',
-          body: 'Say how far it is between the stops and which way round you would walk.',
-          places: [
-            { name: 'Kōfuku-ji', nameJp: '興福寺', lat: 34.6833, lng: 135.8312, note: 'Halls by the station' },
-            { name: 'Tōdai-ji', nameJp: '東大寺', lat: 34.6892, lng: 135.8397, note: 'The Great Buddha' },
-            { name: 'Kasuga Taisha', nameJp: '春日大社', lat: 34.6814, lng: 135.8483, note: 'Lantern-lined shrine' },
+          type: 'gallery',
+          heading: 'Along the walk',
+          items: [
+            { photo: 'nara-kofukuji-chukondo', art: 'enso', seed: 11, caption: 'The Central Golden Hall of Kōfuku-ji' },
+            { photo: 'nara-ukimido', art: 'seigaiha', seed: 25, caption: 'Ukimidō pavilion on Sagi-ike pond, Nara Park' },
+            { photo: 'nara-naramachi', art: 'asanoha', seed: 37, caption: 'Latticed town houses in Naramachi' },
           ],
         },
         {

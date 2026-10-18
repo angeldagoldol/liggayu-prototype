@@ -1,6 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { BROCHURES } from './brochures.js';
-import { normalizeBrochure, normalizePage, safeUrl, sanitizePages, sanitizeStoredBrochure, sanitizeUserPhotoMap, toLat, toLng } from './sanitize.js';
+import {
+  isKnownPageType,
+  isRetiredPageType,
+  normalizeBrochure,
+  normalizePage,
+  safeUrl,
+  sanitizePages,
+  sanitizeStoredBrochure,
+  sanitizeUserPhotoMap,
+  toLat,
+  toLng,
+} from './sanitize.js';
+import { PAGE_TYPE_IDS, RETIRED_PAGE_TYPES } from './schema.js';
 
 const cover = { id: 'p1', type: 'cover', title: 'Hi' };
 
@@ -55,6 +67,35 @@ describe('normalizeBrochure', () => {
       pages: [cover],
     });
     expect(normalizeBrochure({ pages: [cover] })).toEqual({ pages: [cover] });
+  });
+});
+
+describe('retired page types (maps): migrating old brochures and drafts', () => {
+  const MAP = { id: 'm', type: 'map', heading: 'Where it all is', places: [{ name: 'Kyoto Station', nameJp: '京都駅', lat: 34.9858, lng: 135.7588 }] };
+  const PLACE = { id: 'pl', type: 'place', name: 'Kiyomizu-dera', nameJp: '清水寺', lat: 34.9949, lng: 135.785 };
+  const BACK = { id: 'b', type: 'back', title: 'Mata ne' };
+
+  it('knows map as retired, and no retired type is a page type any more', () => {
+    expect(RETIRED_PAGE_TYPES).toEqual(['map']);
+    expect(isRetiredPageType('map')).toBe(true);
+    expect(isRetiredPageType('place')).toBe(false);
+    expect(isKnownPageType('map')).toBe(false);
+    expect(isKnownPageType('place')).toBe(true);
+    for (const type of RETIRED_PAGE_TYPES) expect(PAGE_TYPE_IDS).not.toContain(type);
+  });
+
+  it('drops map pages from a stored brochure and keeps everything else as it was', () => {
+    const stored = { id: 'b_old', slug: 'old', title: 'Kyoto days', pages: [cover, MAP, PLACE, BACK] };
+    const migrated = sanitizeStoredBrochure(stored);
+    expect(migrated.pages).toEqual([cover, PLACE, BACK]);
+    // Untouched pages keep their identity (copy-on-write), lat/lng stay in the data.
+    expect(migrated.pages[1]).toBe(PLACE);
+    expect(migrated.pages[1]).toMatchObject({ lat: 34.9949, lng: 135.785 });
+    expect(sanitizePages([MAP, { ...MAP, id: 'm2' }])).toEqual([]);
+  });
+
+  it('a stored brochure that was nothing but a map is unreadable, like any other empty one', () => {
+    expect(sanitizeStoredBrochure({ id: 'b_m', slug: 'm', pages: [MAP] })).toBeNull();
   });
 });
 
@@ -114,7 +155,6 @@ describe('normalizePage', () => {
       lng: 135.785,
       website: 'https://www.kiyomizudera.or.jp/en/',
     };
-    const map = { id: 'm', type: 'map', heading: 'Where', body: '', places: [{ name: 'Kyoto', nameJp: '京都', lat: 34.9858, lng: 135.7588, note: 'Station' }] };
     const quote = { id: 'q', type: 'quote', quote: 'An old pond', quoteJp: '古池や', author: 'Matsuo Bashō', role: 'Translation: Tabi Guides' };
     const contact = {
       id: 'c',
@@ -124,7 +164,7 @@ describe('normalizePage', () => {
       details: [{ icon: 'Globe', label: 'Web', value: 'kyoto.travel', url: 'https://kyoto.travel/en/' }],
     };
     const gallery = { id: 'g', type: 'gallery', items: [{ photo: 'kyoto-senbon-torii', art: 'torii', seed: 1, caption: 'Gates' }] };
-    for (const page of [place, map, quote, contact, gallery]) expect(normalizePage(page)).toBe(page);
+    for (const page of [place, quote, contact, gallery]) expect(normalizePage(page)).toBe(page);
   });
 
   it('fixes place pages: text, facts, coordinates and website', () => {
@@ -151,16 +191,6 @@ describe('normalizePage', () => {
       website: '',
     });
     expect(normalizePage({ id: 'pl', type: 'place', facts: 'Hours: 9–5' }).facts).toEqual([]);
-  });
-
-  it('fixes map places, keeping places without usable coordinates for the list', () => {
-    const page = normalizePage({
-      id: 'm',
-      type: 'map',
-      places: [{ name: 'Naha', lat: 26.21, lng: 127.68 }, null, { name: 'Somewhere', lat: 'x', lng: 200 }, { name: 4, nameJp: [], lat: -91 }],
-    });
-    expect(page.places).toEqual([{ name: 'Naha', lat: 26.21, lng: 127.68 }, { name: 'Somewhere' }, { name: '', nameJp: '' }]);
-    expect(normalizePage({ id: 'm', type: 'map', places: { a: 1 } }).places).toEqual([]);
   });
 
   it('fixes quote, contact and photo fields on items', () => {

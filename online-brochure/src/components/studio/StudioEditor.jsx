@@ -165,6 +165,7 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
     dispatch(A.replaceDoc(imported, imported.pages[0].id));
     const skipped = [
       result.dropped ? ` ${result.dropped} unknown page${result.dropped === 1 ? ' was' : 's were'} skipped.` : '',
+      result.retired ? ` ${result.retired} map page${result.retired === 1 ? ' was' : 's were'} left out — Tabi shows photographs of the places instead.` : '',
       result.droppedPhotos ? ` ${result.droppedPhotos} photo${result.droppedPhotos === 1 ? '' : 's'} couldn’t be kept (not a safe image, or over the size limit).` : '',
     ].join('');
     toast({

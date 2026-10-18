@@ -1,4 +1,4 @@
-/* Coordinates: two hairline boxes like a surveyor's ledger, a stamp-sized locator map beside them. */
+/* Coordinates: two hairline boxes like a surveyor's ledger. */
 .coords {
   min-width: 0;
   margin: 0;
@@ -33,21 +33,11 @@
   color: var(--accent);
 }
 
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: stretch;
-  gap: var(--space-3);
-}
-
 .inputs {
   display: grid;
-  gap: var(--space-2);
-  min-width: 0;
-}
-
-.coords[data-compact] .inputs {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
 }
 
 .box {
@@ -111,75 +101,6 @@
   color: var(--ink-3);
 }
 
-/* --- Locator ------------------------------------------------------------- */
-.preview {
-  display: grid;
-  width: 104px;
-}
-
-.previewHold {
-  display: grid;
-  place-items: center;
-  height: 100%;
-  min-height: 96px;
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--radius-sm);
-  color: var(--ink-3);
-  background:
-    repeating-linear-gradient(135deg, transparent 0 7px, color-mix(in srgb, var(--ink) 4%, transparent) 7px 8px);
-}
-
-.figure {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 4px;
-  margin: 0;
-  min-height: 96px;
-  padding: 4px 4px 5px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--bg-sunken);
-}
-
-.mini {
-  min-height: 0;
-  display: grid;
-  place-items: center;
-}
-
-.mini > * {
-  width: 100%;
-  max-height: 100%;
-}
-
-.prefecture {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 1.15;
-  text-align: center;
-}
-
-.prefJp {
-  font-family: var(--font-jp);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  color: var(--ink);
-}
-
-.prefEn {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.prefecture[data-state='sea'] .prefEn,
-.prefecture[data-state='off'] .prefEn {
-  color: var(--accent);
-}
-
 /* --- Messages ------------------------------------------------------------ */
 .message {
   display: flex;
@@ -232,8 +153,8 @@
   color: var(--ink-3);
 }
 
-@media (max-width: 380px) {
-  .preview {
-    width: 88px;
+@media (max-width: 340px) {
+  .inputs {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

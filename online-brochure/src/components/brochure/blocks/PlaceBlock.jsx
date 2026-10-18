@@ -1,23 +1,24 @@
-import { useMemo } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { safeUrl, toLat, toLng } from '../../../data/sanitize.js';
+import { safeUrl } from '../../../data/sanitize.js';
 import { VerticalText } from '../../ui/index.js';
 import { Photo } from '../../photo/Photo.jsx';
 import { CoverArt } from '../CoverArt.jsx';
-import { LazyJapanMap } from './LazyJapanMap.jsx';
 import { usePage } from './pageContext.js';
-import { fitSize, formatLatLng, hostLabel, list, pageHeading, paragraphs, text } from './pageUtils.js';
+import { fitSize, formatLatLng, hostLabel, list, pageHeading, paragraphs, placeLayout, text } from './pageUtils.js';
 import { Reveal } from './Reveal.jsx';
 import styles from './PlaceBlock.module.css';
 import type from './type.module.css';
 
 /**
- * One real sight in depth — the kit's signature page. A photograph bleeds to
- * the trim across the top of the page (the brochure's art until it is
- * downloaded) carrying the Japanese name on a vertical paper slip (短冊) and a
- * small "you are here" map of Japan; below it the name, the story, and a
- * column of practical facts (Hours, Admission, Getting there…) ending in the
- * official website. Copy and facts shrink to fit rather than clip.
+ * One real sight in depth — the kit's signature page, led by its photograph
+ * like a travel magazine: the picture runs off the top trim and both sides
+ * (the page has no running head) and takes as much of the page as the text
+ * leaves free (placeLayout), with the Japanese name on a vertical paper slip
+ * (短冊) hung from the top. Below it: the kicker and the place's coordinates
+ * in small type, the name, the story, and a column of practical facts
+ * (Hours, Admission, Getting there…) ending in the official website. Copy and
+ * facts shrink to fit rather than clip. Tabi draws no maps: lat/lng are only
+ * printed. Until the photo is found, the brochure's art stands in.
  */
 export function PlaceBlock({ page, brochure, index }) {
   const { isStatic, active } = usePage();
@@ -27,25 +28,19 @@ export function PlaceBlock({ page, brochure, index }) {
   const copy = paragraphs(page.body);
   const facts = list(page.facts, 5).filter((f) => text(f.label) || text(f.value));
   const website = safeUrl(page.website);
-  const lat = toLat(page.lat);
-  const lng = toLng(page.lng);
-  const where = formatLatLng(lat, lng);
+  const where = formatLatLng(page.lat, page.lng);
   const cover = brochure.cover ?? {};
   const photo = text(page.photo);
-  const pins = useMemo(() => (lat !== null && lng !== null ? [{ id: 'here', lat, lng, label: name }] : []), [lat, lng, name]);
   // A long name hangs in two columns where it breaks (ベネッセハウス｜ミュージアム, 竹林の小径｜天龍寺).
   const parts = Array.from(nameJp).length > 7 ? nameJp.split(/[\s\u3000・]+/).filter(Boolean) : [];
   const slipLines = parts.length > 1 ? parts : [nameJp];
   // Column length in characters (later columns start 1.2em lower).
   const jpChars = Math.max(...slipLines.map((line, i) => Array.from(line).length + (i ? 1.05 : 0)));
   const hasAside = facts.length > 0 || Boolean(website);
-  // Long facts get a wider column (34–46% of the measure), so neither side shrinks much.
-  const factChars = facts.reduce((n, f) => n + text(f.label).length + text(f.value).length, 0);
-  const bodyChars = copy.join(' ').length;
-  const aside = Math.min(0.46, Math.max(0.34, (factChars / Math.max(1, factChars + bodyChars)) * 1.3));
+  const { aside, media } = placeLayout({ name, copy, facts, website });
 
   return (
-    <div className={styles.place}>
+    <div className={styles.place} style={{ '--media': `${media}cqw` }}>
       <Reveal variant="fade" className={styles.media} data-bleed="both">
         <Photo
           id={photo}
@@ -57,7 +52,7 @@ export function PlaceBlock({ page, brochure, index }) {
           fallback={<CoverArt style={cover.art} seed={(Number(cover.seed) || 1) + index * 7} theme={brochure.theme} />}
         />
         {nameJp && (
-          <span className={styles.slip} aria-hidden="true" style={{ '--jp': `${Math.min(4.6, 39 / Math.max(3, jpChars * 1.18)).toFixed(2)}cqw` }}>
+          <span className={styles.slip} aria-hidden="true" style={{ '--jp': `${Math.min(5.4, 46 / Math.max(3, jpChars * 1.18)).toFixed(2)}cqw` }}>
             <VerticalText className={styles.slipText}>
               {slipLines.map((line, i) => (
                 <span key={i} className={styles.slipLine}>
@@ -67,20 +62,13 @@ export function PlaceBlock({ page, brochure, index }) {
             </VerticalText>
           </span>
         )}
-        {pins.length > 0 && (
-          <figure className={styles.locator}>
-            <div className={styles.locatorMap}>
-              <LazyJapanMap variant="locator" pins={pins} highlightedRegion={text(brochure.region) || undefined} labelScale={2.4} label={`Where ${name || 'this place'} is in Japan`} />
-            </div>
-            <figcaption className={styles.coords}>{where}</figcaption>
-          </figure>
-        )}
       </Reveal>
 
       <header className={`${type.header} ${styles.header}`}>
-        {kicker && (
-          <Reveal as="p" className={type.kicker}>
-            {kicker}
+        {(kicker || where) && (
+          <Reveal className={styles.meta}>
+            {kicker && <p className={`${type.kicker} ${styles.kicker}`}>{kicker}</p>}
+            {where && <p className={styles.coords}>{where}</p>}
           </Reveal>
         )}
         <Reveal as="h2" className={`${type.heading} ${styles.name} ${name ? '' : 'sr-only'}`} style={{ '--fs': `${fitSize(name, { max: 7, min: 4.4, ideal: 18 })}cqw` }}>

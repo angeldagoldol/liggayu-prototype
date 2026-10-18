@@ -15,8 +15,9 @@
   inset: 0;
 }
 
-/* Three soft scrims: the masthead, the vertical title's corner, and a deep
-   foot for the headline. Gradients only — the photograph stays sharp. */
+/* Three soft scrims: the masthead, the vertical title's corner, and a foot
+   for the headline that leaves the upper half of the photograph clear.
+   Gradients only — the photograph stays sharp. */
 .scrim {
   position: absolute;
   inset: 0;
@@ -28,9 +29,9 @@
     linear-gradient(
       to top,
       color-mix(in srgb, var(--b-shade) 94%, transparent) 0%,
-      color-mix(in srgb, var(--b-shade) 78%, transparent) 22%,
-      color-mix(in srgb, var(--b-shade) 40%, transparent) 42%,
-      transparent 62%
+      color-mix(in srgb, var(--b-shade) 76%, transparent) 20%,
+      color-mix(in srgb, var(--b-shade) 36%, transparent) 40%,
+      transparent 57%
     );
 }
 

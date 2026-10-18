@@ -1,7 +1,7 @@
 /**
- * Fixed credits: the typefaces, the map data and the other work Tabi is
- * built with. Every name, licence and link here is real; keep it in step
- * with index.html (fonts), scripts/geo (map) and package.json (libraries).
+ * Fixed credits: the typefaces and the other work Tabi is built with. Every
+ * name, licence and link here is real; keep it in step with index.html
+ * (fonts) and package.json (libraries).
  */
 
 export const OFL = { label: 'SIL Open Font License 1.1', url: 'https://openfontlicense.org/' };
@@ -57,15 +57,6 @@ export const FONTS = [
     url: 'https://fonts.google.com/specimen/Geist+Mono',
   },
 ];
-
-/** The map of Japan in every brochure (scripts/geo/build-japan.mjs). */
-export const MAP_DATA = {
-  name: 'Natural Earth',
-  url: 'https://www.naturalearthdata.com/',
-  termsUrl: 'https://www.naturalearthdata.com/about/terms-of-use/',
-  licence: 'Public domain',
-  layers: ['1:10m Admin 1 – States, Provinces (the 47 prefectures)', '1:10m Lakes (Lake Biwa)'],
-};
 
 /** Everything else, briefly. */
 export const ALSO = [

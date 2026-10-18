@@ -1,20 +1,21 @@
 /**
  * Checks for the Studio's real-place fields: coordinates (in range, inside
- * the drawn map of Japan, pasted in any common form) and web links (https
- * only). Pure — the editors turn the results into hints, warnings and
- * one-click fixes.
+ * Japan, pasted in any common form) and web links (https only). Pure — the
+ * editors turn the results into hints, warnings and one-click fixes.
  */
 import { safeUrl } from '../../data/sanitize.js';
 
 /**
- * The lat/lng frames the map of Japan draws, as [west, south, east, north]:
- * the four main islands with their neighbours, and the Okinawa & Amami inset.
- * Copied from data/geo/japan.js (main.bounds, insets[].bounds) so the Studio
- * can check a pin without loading the 46 KB of outlines; a test keeps them in step.
+ * Where Japan is, as a few lat/lng boxes [west, south, east, north] — tight
+ * enough to tell Japan from Korea or Taiwan, loose enough for every island:
+ * Hokkaidō to Kyūshū with their islands; the Nansei (Ryūkyū) islands from
+ * Yonaguni to Amami and Daitō; and the Pacific islands (Ogasawara,
+ * Minamitorishima, Okinotorishima).
  */
-export const JAPAN_FRAMES = [
+export const JAPAN_AREAS = [
   { id: 'main', bounds: [128, 29.9, 146.2, 45.7] },
-  { id: 'okinawa', bounds: [122.75, 23.95, 130.15, 28.62] },
+  { id: 'nansei', bounds: [122.8, 23.9, 131.5, 29.9] },
+  { id: 'pacific', bounds: [135.9, 20.3, 154.1, 29.9] },
 ];
 
 /** Decimal places for stored coordinates (about 11 m): docs/REAL_CONTENT.md. */
@@ -34,44 +35,42 @@ export function roundCoord(n) {
   return Math.round(n * factor) / factor || 0;
 }
 
-const inFrame = ([west, south, east, north], lat, lng) => lat >= south && lat <= north && lng >= west && lng <= east;
-
-/** True when the point falls inside one of the frames the map of Japan draws. */
-export function onJapanMap(lat, lng) {
-  return JAPAN_FRAMES.some((frame) => inFrame(frame.bounds, lat, lng));
+/** True when the point lies in one of JAPAN_AREAS. */
+export function inJapan(lat, lng) {
+  return JAPAN_AREAS.some(({ bounds: [west, south, east, north] }) => lat >= south && lat <= north && lng >= west && lng <= east);
 }
 
 /**
  * What to say about a lat/lng pair:
  *   { state: 'empty' | 'partial' | 'invalid' | 'swapped' | 'outside' | 'ok', tone, message, fix? }
  * `tone` is 'info' | 'warning' | 'error' | 'ok'; `fix` (for swapped values) is the
- * corrected { lat, lng }. Empty coordinates are allowed (no pin is drawn).
+ * corrected { lat, lng }. Coordinates are optional: empty is fine.
  */
 export function coordinateCheck(latValue, lngValue) {
   const lat = readNumber(latValue);
   const lng = readNumber(lngValue);
   if (lat === null && lng === null) {
-    return { state: 'empty', tone: 'info', message: 'Add coordinates to pin this place on the map — paste them from any map app.' };
+    return { state: 'empty', tone: 'info', message: 'Optional: the coordinates are printed in small type beside the place.' };
   }
   if (lat === null || lng === null) {
-    return { state: 'partial', tone: 'warning', message: `Add the ${lat === null ? 'latitude' : 'longitude'} too — a pin needs both.` };
+    return { state: 'partial', tone: 'warning', message: `Add the ${lat === null ? 'latitude' : 'longitude'} too — coordinates need both.` };
   }
-  if (onJapanMap(lat, lng)) return { state: 'ok', tone: 'ok', message: '' };
+  if (inJapan(lat, lng)) return { state: 'ok', tone: 'ok', message: '' };
   // The usual slip: 135.77 typed as the latitude. Read the other way round, the pair lands in Japan.
-  if (onJapanMap(lng, lat)) {
+  if (inJapan(lng, lat)) {
     return {
       state: 'swapped',
       tone: 'warning',
-      message: 'These look swapped: latitude (north–south, about 24–46 in Japan) comes first.',
+      message: 'These look swapped: latitude (north–south, about 20–46 in Japan) comes first.',
       fix: { lat: lng, lng: lat },
     };
   }
-  if (Math.abs(lat) > 90) return { state: 'invalid', tone: 'error', message: 'Latitude runs from −90 to 90. In Japan it is about 24 to 46.' };
-  if (Math.abs(lng) > 180) return { state: 'invalid', tone: 'error', message: 'Longitude runs from −180 to 180. In Japan it is about 123 to 146.' };
+  if (Math.abs(lat) > 90) return { state: 'invalid', tone: 'error', message: 'Latitude runs from −90 to 90. In Japan it is about 20 to 46.' };
+  if (Math.abs(lng) > 180) return { state: 'invalid', tone: 'error', message: 'Longitude runs from −180 to 180. In Japan it is about 122 to 154.' };
   return {
     state: 'outside',
     tone: 'warning',
-    message: 'This point is outside the map of Japan, so its pin won’t be drawn. Japan lies at about 24–46° N, 123–146° E.',
+    message: 'This point is outside Japan, which lies at about 20–46° N, 122–154° E. Check the numbers.',
   };
 }
 

@@ -1,10 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import { insets, main } from '../../data/geo/japan.js';
 import { getPhoto } from '../../data/photos/index.js';
 import { REGIONS } from '../../data/regions.js';
 import { ART_STYLES } from '../../data/schema.js';
 import { SEASONS } from '../../data/seasons.js';
-import { FACTS, HAIKU, HERO_PANELS, MAP_SOURCE, REGION_NOTES, SEASON_LINES, SEASON_PHOTOS, SECTIONS, TRANSLATION_CREDIT, WORDS } from './homeContent.js';
+import {
+  FACTS,
+  HAIKU,
+  HERO_PANELS,
+  NOSTALGIC,
+  REGION_NOTES,
+  SEASON_LINES,
+  SEASON_PHOTOS,
+  SECTIONS,
+  TRANSLATION_CREDIT,
+  WORDS,
+  homePhotoIds,
+  nostalgicPhotos,
+  splitCaption,
+} from './homeContent.js';
+import { MOSAIC_MAX } from './sections/mosaic.js';
 
 /** The poems exactly as logged in docs/research/home.md §1.1. */
 const RESEARCHED_HAIKU = {
@@ -43,7 +57,7 @@ describe('haiku postcards (no invented people)', () => {
   it('softens the year the research marks uncertain, and credits our translations', () => {
     expect(HAIKU.find((h) => h.id === 'issa-kashiwabara').year).toBe('c. 1812');
     expect(TRANSLATION_CREDIT).toBe('Translation: Tabi Guides');
-    expect(SECTIONS.haiku).toEqual({ num: '08', label: 'Haiku', jp: '俳句' });
+    expect(SECTIONS.haiku).toEqual({ num: '09', label: 'Haiku', jp: '俳句' });
   });
 });
 
@@ -103,11 +117,59 @@ describe('photo slots', () => {
   });
 });
 
-describe('map source line', () => {
-  it('states the inset scale the generated map really uses', () => {
-    const okinawa = insets.find((i) => i.id === 'okinawa');
-    const scale = (okinawa.projection.scale / main.projection.scale).toFixed(2);
-    expect(MAP_SOURCE).toContain(`Okinawa & Amami inset ×${scale}`);
-    expect(okinawa.label).toBe('Okinawa & Amami');
+describe('sections', () => {
+  it('are numbered 01–10 in page order, with Nostalgic Japan third and no map', () => {
+    expect(Object.values(SECTIONS).map((s) => s.num)).toEqual(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']);
+    expect(SECTIONS.nostalgic).toEqual({ num: '03', label: 'Nostalgic Japan', jp: '懐かしい日本' });
+    expect(JSON.stringify(SECTIONS)).not.toMatch(/地図|map/i);
+  });
+});
+
+describe('Nostalgic Japan (懐かしい日本)', () => {
+  const photo = (id, use = 'any') => ({ id, use, caption: '', place: '' });
+
+  it('takes the "nostalgic-" photos only, a cover-shaped lead first, wide ones last, at most the mosaic’s size', () => {
+    const list = [photo('home-hero-fuji', 'cover'), photo('nostalgic-a', 'wide'), photo('nostalgic-b', 'any'), photo('nostalgic-c', 'cover'), photo('nostalgic-d', 'full'), photo('kyoto-x')];
+    expect(nostalgicPhotos(list).map((p) => p.id)).toEqual(['nostalgic-c', 'nostalgic-b', 'nostalgic-d', 'nostalgic-a']);
+    const many = Array.from({ length: 12 }, (_, i) => photo(`nostalgic-${String(i).padStart(2, '0')}`));
+    expect(nostalgicPhotos(many)).toHaveLength(NOSTALGIC.limit);
+    expect(NOSTALGIC.limit).toBe(MOSAIC_MAX);
+  });
+
+  it('is empty, not broken, while there are no such photos', () => {
+    expect(nostalgicPhotos([])).toEqual([]);
+    expect(nostalgicPhotos(undefined)).toEqual([]);
+    expect(nostalgicPhotos([photo('home-x'), null, { id: 5 }])).toEqual([]);
+  });
+
+  it('splits a caption into its English line, Japanese name, title and note', () => {
+    expect(splitCaption('Ginzan Onsen, Yamagata · 銀山温泉')).toMatchObject({ text: 'Ginzan Onsen, Yamagata', jp: '銀山温泉' });
+    expect(splitCaption('Ouchi-juku (大内宿), Fukushima')).toMatchObject({ text: 'Ouchi-juku, Fukushima', jp: '大内宿' });
+    expect(splitCaption('Narai-juku 奈良井宿 on the Nakasendō')).toMatchObject({ text: 'Narai-juku on the Nakasendō', jp: '奈良井宿' });
+    expect(splitCaption('銀山温泉 — snow on the old inns')).toMatchObject({ text: 'snow on the old inns', jp: '銀山温泉' });
+    expect(splitCaption('Tsumago-juku, Nagano — the 42nd post town of the Nakasendō')).toEqual({
+      text: 'Tsumago-juku, Nagano — the 42nd post town of the Nakasendō',
+      jp: '',
+      title: 'Tsumago-juku, Nagano',
+      note: 'the 42nd post town of the Nakasendō',
+    });
+    expect(splitCaption('A wooden station in the snow')).toEqual({ text: 'A wooden station in the snow', jp: '', title: 'A wooden station in the snow', note: '' });
+    expect(splitCaption(null)).toEqual({ text: '', jp: '', title: '', note: '' });
+  });
+
+  it('shows each place once (a second view of the same street waits for the brochure)', () => {
+    const at = (id, use, place) => ({ ...photo(id, use), place });
+    const list = [at('nostalgic-ginzan', 'cover', 'Ginzan Onsen, Yamagata'), at('nostalgic-ginzan-lamps', 'wide', 'Ginzan Onsen, Yamagata'), at('nostalgic-otaru', 'wide', 'Otaru Canal'), at('nostalgic-x', 'any', '')];
+    expect(nostalgicPhotos(list).map((p) => p.id)).toEqual(['nostalgic-ginzan', 'nostalgic-x', 'nostalgic-otaru']);
+  });
+
+  it('says what 懐かしい means, and adds its photos to the Home page’s set', () => {
+    expect(NOSTALGIC.intro).toContain('懐かしい');
+    expect(NOSTALGIC.slug).toBe('nostalgic-japan');
+    const ids = homePhotoIds([photo('nostalgic-a'), photo('kyoto-x')]);
+    expect(ids).toContain('nostalgic-a');
+    expect(ids).not.toContain('kyoto-x');
+    expect(ids).toContain(HERO_PANELS.left.photo);
+    expect(ids).toContain(REGION_NOTES.kansai.photo);
   });
 });

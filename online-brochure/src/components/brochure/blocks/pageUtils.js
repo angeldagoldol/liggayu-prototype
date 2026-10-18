@@ -23,7 +23,6 @@ export const SECTION_EN = dict({
   phrases: 'Phrasebook',
   quote: 'Words',
   place: 'Spotlight',
-  map: 'Map',
   contact: 'Contact',
   photo: 'Photograph',
   back: 'Colophon',
@@ -167,6 +166,60 @@ export function formatLatLng(lat, lng) {
   const b = toLng(lng);
   if (a === null || b === null) return '';
   return `${Math.abs(a).toFixed(4)}° ${a >= 0 ? 'N' : 'S'} · ${Math.abs(b).toFixed(4)}° ${b >= 0 ? 'E' : 'W'}`;
+}
+
+/**
+ * The place page's proportions, from how much it has to say: `aside` is the
+ * facts column's share of the measure (0.32–0.48, chosen so the story and the
+ * facts come out about as tall as each other) and `media` the photograph's
+ * height in cqw from the top trim (52–80). The photograph takes whatever the
+ * taller column leaves free at about 92% of its full size — a short story
+ * gets a towering picture, a long one still fits — and the copy-fitting
+ * (fit.js) settles the rest. Estimates only, calibrated on the reader: a
+ * story line is 3.76cqw (Geist's average letter about half an em), a fact row
+ * about 4.5cqw plus 2.76cqw per line of its value, the website about 6.8cqw.
+ *   placeLayout({ name: 'Kiyomizu-dera', copy: ['…'], facts: [{ label, value }], website: 'https://…' })
+ *   // → { aside: 0.4, media: 64.3 }
+ */
+export function placeLayout({ name = '', copy = [], facts = [], website = '' } = {}) {
+  const PAGE = 141.4;
+  const MEASURE = 83 - 4.6; // between the margins, less the column gap
+  const rows = (Array.isArray(facts) ? facts : []).filter(Boolean);
+  const story = (Array.isArray(copy) ? copy : []).filter((p) => typeof p === 'string');
+  const hasAside = rows.length > 0 || Boolean(website);
+
+  const copyHeight = (share) => {
+    const perLine = Math.max(8, (MEASURE * share) / (2.35 * 0.49));
+    const lines = story.reduce((n, p) => n + Math.ceil(p.length / perLine), 0);
+    return lines * 2.35 * 1.6 + Math.max(0, story.length - 1) * 2;
+  };
+  const factsHeight = (share) => {
+    const perValue = Math.max(6, (MEASURE * share) / (2 * 0.52));
+    return rows.reduce((n, f) => n + 4.55 + Math.max(1, Math.ceil(text(f?.value).length / perValue)) * 2 * 1.38, 0) + (website ? 6.8 : 0);
+  };
+
+  // The facts column's width that makes the taller of the two columns shortest.
+  let aside = 0.38;
+  let needed = hasAside ? Math.max(copyHeight(1 - aside), factsHeight(aside)) : copyHeight(1);
+  if (hasAside) {
+    for (let share = 0.32; share <= 0.481; share += 0.02) {
+      const tallest = Math.max(copyHeight(1 - share), factsHeight(share));
+      if (tallest < needed - 0.01) {
+        needed = tallest;
+        aside = share;
+      }
+    }
+  }
+
+  // The name (one or two lines of display type) under its kicker.
+  const nameSize = fitSize(name, { max: 7, min: 4.4, ideal: 18 });
+  const nameLines = Math.min(2, Math.max(1, Math.ceil((text(name).length * nameSize * 0.48) / 83)));
+  const header = 4 + 4.3 + nameLines * nameSize * 1.02 + 3 + 3.2;
+  const folioArea = 13.1;
+
+  const room = PAGE - folioArea - header - 0.92 * needed;
+  const media = Math.round(Math.min(80, Math.max(52, room)) * 10) / 10;
+  return { aside: Math.round(aside * 100) / 100, media };
 }
 
 /** "October 2026" — empty string for missing or invalid dates. */

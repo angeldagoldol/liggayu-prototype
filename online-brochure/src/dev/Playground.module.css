@@ -172,31 +172,6 @@
   }
 }
 
-.maps {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
-  gap: var(--space-6);
-}
-
-.mapTile {
-  margin: 0;
-}
-
-.mapTile figcaption {
-  margin-top: var(--space-2);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  color: var(--ink-3);
-}
-
-.mapPaper {
-  padding: var(--space-4);
-  background: var(--b-paper);
-  color: var(--b-ink);
-  border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-sm);
-}
-
 .photos {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));

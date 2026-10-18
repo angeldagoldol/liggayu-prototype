@@ -67,6 +67,11 @@
   padding: 0;
 }
 
+/* A page whose photograph runs off the top trim (place): no running head row. */
+.headless {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
 .bleed > .body {
   position: absolute;
   inset: 0;

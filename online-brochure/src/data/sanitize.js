@@ -12,7 +12,7 @@ import { CATEGORY_MAP } from './categories.js';
 import { hasKey } from './lookup.js';
 import { safeImageSrc } from './photos/safeImageSrc.js';
 import { REGION_MAP } from './regions.js';
-import { ART_STYLES, CAPTION_PLACEMENTS, CREDIT_PLACEMENTS, FORMATS, PAGE_TYPES } from './schema.js';
+import { ART_STYLES, CAPTION_PLACEMENTS, CREDIT_PLACEMENTS, FORMATS, PAGE_TYPES, RETIRED_PAGE_TYPES } from './schema.js';
 import { SEASON_MAP } from './seasons.js';
 
 const TEXT_FIELDS = ['title', 'titleJp', 'subtitle', 'summary', 'organization', 'updatedAt', 'factsChecked'];
@@ -127,12 +127,6 @@ const fixFact = (fact) => {
   }
   return edit.done();
 };
-const fixMapPlace = (place) => {
-  const edit = editor(place);
-  fixText(edit, place, ['name', 'nameJp', 'note']);
-  fixLatLng(edit, place);
-  return edit.done();
-};
 const fixDetail = (detail) => {
   const edit = editor(detail);
   fixUrlField(edit, detail, 'url');
@@ -141,7 +135,7 @@ const fixDetail = (detail) => {
 
 /**
  * The fields of one page, made safe for renderers: photo ids are strings,
- * place/map coordinates are real coordinates, links are http(s) only
+ * place coordinates are real coordinates, links are http(s) only
  * (place.website, contact.ctaUrl, contact details' url), lists hold records,
  * photo pages' caption and credit placements are known values and `span` is
  * 'left' | 'right' or absent.
@@ -158,10 +152,6 @@ export function normalizePage(page) {
       fixUrlField(edit, page, 'website');
       if ('facts' in page) edit.fix('facts', fixList(page.facts, fixFact));
       fixLatLng(edit, page);
-      break;
-    case 'map':
-      fixText(edit, page, ['heading', 'body']);
-      if ('places' in page) edit.fix('places', fixList(page.places, fixMapPlace));
       break;
     case 'quote':
       fixText(edit, page, ['quoteJp']);
@@ -212,16 +202,24 @@ export function sanitizeSources(value) {
   return changed ? out : value;
 }
 
+/** True for a page type Tabi no longer draws (schema.js RETIRED_PAGE_TYPES: old map pages). */
+export const isRetiredPageType = (type) => RETIRED_PAGE_TYPES.includes(type);
+
+/** True for a page type a renderer and the Studio can work with: in PAGE_TYPES and not retired. */
+export const isKnownPageType = (type) => hasKey(PAGE_TYPES, type) && !isRetiredPageType(type);
+
 /**
  * Pages a renderer and the Studio can work with: objects with a non-empty
  * string id (first one wins when ids repeat) and a type from PAGE_TYPES.
+ * Pages of a retired type (an old brochure's or draft's map page) are dropped,
+ * like any other unknown type, so old data never breaks.
  */
 export function sanitizePages(pages) {
   if (!Array.isArray(pages)) return [];
   const seen = new Set();
   return pages
     .filter((page) => {
-      if (!isRecord(page) || typeof page.id !== 'string' || !page.id || !hasKey(PAGE_TYPES, page.type)) return false;
+      if (!isRecord(page) || typeof page.id !== 'string' || !page.id || !isKnownPageType(page.type)) return false;
       if (seen.has(page.id)) return false;
       seen.add(page.id);
       return true;

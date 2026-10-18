@@ -5,17 +5,18 @@
   height: 100%;
 }
 
-/* The photograph bleeds off both sides of the page (past the margins). */
+/* The photograph runs off the top trim and both sides (the page has no
+   running head), as tall as the text leaves room for (--media, placeLayout). */
 .media {
   position: relative;
   flex: none;
-  height: 52cqw;
-  margin: -1.4cqw calc(-1 * var(--pad-x)) 4.4cqw;
-  /* Credit chip at the foot of the outer side, under the name slip. */
+  height: var(--media, 66cqw);
+  margin: calc(-1 * var(--pad-top)) calc(-1 * var(--pad-x)) 4cqw;
+  /* Credit chip at the foot of the outer side. */
   --photo-credit-size: 1.12cqw;
   --photo-chip-left: auto;
   --photo-chip-right: var(--pad-x);
-  --photo-chip-bottom: 2.4cqw;
+  --photo-chip-bottom: 2.2cqw;
 }
 
 [data-side='verso'] .media {
@@ -23,9 +24,8 @@
   --photo-chip-right: auto;
 }
 
-/* Leave the locator's side of the photograph to the locator. */
 .media :global([data-state]) small {
-  max-width: 52cqw;
+  max-width: 64cqw;
 }
 
 .media > .photo {
@@ -33,8 +33,8 @@
   inset: 0;
 }
 
-/* 短冊: the Japanese name on a paper slip hung from the top of the photograph,
-   on the page's outer side. */
+/* 短冊: the Japanese name on a paper slip hung from the top trim, on the
+   page's outer side. */
 .slip {
   position: absolute;
   top: 0;
@@ -42,14 +42,14 @@
   z-index: 1;
   display: grid;
   place-items: center;
-  max-height: 45cqw;
-  padding: 2.6cqw 1.5cqw 2.4cqw;
+  max-height: calc(var(--media, 66cqw) - 12cqw);
+  padding: 3.6cqw 1.7cqw 2.8cqw;
   overflow: hidden;
   background: var(--b-paper);
   box-shadow:
     inset 0 0 0 0.5cqw var(--b-paper),
     inset 0 0 0 calc(0.5cqw + var(--hair)) var(--b-rule-strong),
-    0 0.6cqw 2.4cqw color-mix(in srgb, var(--b-shade) 22%, transparent);
+    0 0.8cqw 3cqw color-mix(in srgb, var(--b-shade) 26%, transparent);
 }
 
 .slip::before {
@@ -58,7 +58,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 0.8cqw;
+  height: 0.9cqw;
   background: var(--b-accent);
 }
 
@@ -77,54 +77,40 @@
 }
 
 .slipText {
-  font-size: var(--jp, 4cqw);
+  font-size: var(--jp, 4.4cqw);
   font-weight: 600;
   line-height: 1;
   letter-spacing: 0.14em;
   color: var(--b-ink);
 }
 
-/* A "you are here" card on the inner side of the photograph. */
-.locator {
-  position: absolute;
-  bottom: 2.4cqw;
-  right: var(--pad-x);
-  z-index: 1;
+/* Kicker on the left, the place's coordinates in small type on the right. */
+.meta {
   display: flex;
-  flex-direction: column;
-  gap: 0.7cqw;
-  width: 16cqw;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6cqw 3cqw;
+  margin-bottom: 2cqw;
+}
+
+.meta .kicker {
   margin: 0;
-  padding: 1.1cqw 1.1cqw 0.9cqw;
-  background: color-mix(in srgb, var(--b-paper) 94%, transparent);
-  box-shadow:
-    inset 0 0 0 var(--hair) var(--b-rule),
-    0 0.6cqw 2.4cqw color-mix(in srgb, var(--b-shade) 22%, transparent);
-}
-
-[data-side='recto'] .locator {
-  right: auto;
-  left: var(--pad-x);
-}
-
-.locatorMap {
-  display: flex;
-  justify-content: center;
 }
 
 .coords {
+  margin: 0 0 0 auto;
   font-family: var(--font-mono);
-  font-size: 0.95cqw;
-  letter-spacing: 0.06em;
+  font-size: 1.3cqw;
+  letter-spacing: 0.1em;
   line-height: 1.2;
   white-space: nowrap;
-  text-align: center;
   color: var(--b-muted-text);
 }
 
 /* The bleeding photograph covers the outer margin: no vertical section name there. */
 .header {
-  margin-bottom: 3.4cqw;
+  margin-bottom: 3cqw;
 }
 
 .name {
@@ -176,7 +162,7 @@
 }
 
 .fact {
-  padding: calc(1.25cqw * var(--fit, 1)) 0 calc(1.35cqw * var(--fit, 1));
+  padding: calc(1.05cqw * var(--fit, 1)) 0 calc(1.1cqw * var(--fit, 1));
   border-bottom: var(--hair) solid var(--b-rule);
 }
 

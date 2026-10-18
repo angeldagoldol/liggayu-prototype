@@ -1,31 +1,38 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { insets, main } from '../../data/geo/japan.js';
 import {
-  JAPAN_FRAMES,
+  JAPAN_AREAS,
   coordinateCheck,
   describeCoords,
+  inJapan,
   monthYear,
-  onJapanMap,
   parseCoordinatePair,
   readNumber,
   roundCoord,
   urlCheck,
 } from './fieldChecks.js';
 
-describe('JAPAN_FRAMES', () => {
-  it('matches the frames the generated map draws (a map rebuild cannot leave them stale)', () => {
-    expect(JAPAN_FRAMES.find((f) => f.id === 'main').bounds).toEqual(main.bounds);
-    for (const inset of insets) expect(JAPAN_FRAMES.find((f) => f.id === inset.id)?.bounds).toEqual(inset.bounds);
-    expect(JAPAN_FRAMES).toHaveLength(1 + insets.length);
+describe('inJapan', () => {
+  it('knows real places in Japan, from Hokkaidō to the far islands, from points abroad', () => {
+    expect(inJapan(34.9671, 135.7727)).toBe(true); // Kyoto
+    expect(inJapan(26.2124, 127.6809)).toBe(true); // Naha
+    expect(inJapan(43.0618, 141.3545)).toBe(true); // Sapporo
+    expect(inJapan(27.0941, 142.1918)).toBe(true); // Chichijima, Ogasawara
+    expect(inJapan(24.4672, 122.9877)).toBe(true); // Yonaguni
+    expect(inJapan(20.4253, 136.0814)).toBe(true); // Okinotorishima
+    expect(inJapan(24.2867, 153.9807)).toBe(true); // Minamitorishima
+    expect(inJapan(51.5074, -0.1278)).toBe(false); // London
+    expect(inJapan(37.5665, 126.978)).toBe(false); // Seoul
+    expect(inJapan(25.033, 121.5654)).toBe(false); // Taipei
   });
 
-  it('knows real places from points off the map', () => {
-    expect(onJapanMap(34.9671, 135.7727)).toBe(true); // Kyoto
-    expect(onJapanMap(26.2124, 127.6809)).toBe(true); // Naha, in the inset
-    expect(onJapanMap(43.0618, 141.3545)).toBe(true); // Sapporo
-    expect(onJapanMap(51.5074, -0.1278)).toBe(false); // London
-    expect(onJapanMap(27.0941, 142.1918)).toBe(false); // Ogasawara: not drawn
+  it('every area lies within Japan’s extremes (20–46° N, 122–155° E)', () => {
+    for (const { bounds: [west, south, east, north] } of JAPAN_AREAS) {
+      expect(west).toBeGreaterThanOrEqual(122);
+      expect(east).toBeLessThanOrEqual(155);
+      expect(south).toBeGreaterThanOrEqual(20);
+      expect(north).toBeLessThanOrEqual(46);
+    }
   });
 });
 
@@ -46,7 +53,7 @@ describe('readNumber / roundCoord', () => {
 });
 
 describe('coordinateCheck', () => {
-  it('accepts points on the map, including the Okinawa inset', () => {
+  it('accepts points in Japan, including Okinawa', () => {
     expect(coordinateCheck(34.9671, 135.7727)).toMatchObject({ state: 'ok', tone: 'ok' });
     expect(coordinateCheck('26.2124', '127.6809')).toMatchObject({ state: 'ok' });
   });
@@ -66,7 +73,7 @@ describe('coordinateCheck', () => {
     expect(coordinateCheck(135.7727, 34.9671)).toMatchObject({ state: 'swapped', tone: 'warning', fix: { lat: 34.9671, lng: 135.7727 } });
   });
 
-  it('warns about points off the map of Japan', () => {
+  it('warns about points outside Japan', () => {
     expect(coordinateCheck(48.8566, 2.3522)).toMatchObject({ state: 'outside', tone: 'warning' });
     expect(coordinateCheck(35.6812, 33)).toMatchObject({ state: 'outside' });
   });

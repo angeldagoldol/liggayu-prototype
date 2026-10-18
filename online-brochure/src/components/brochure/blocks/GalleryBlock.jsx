@@ -11,16 +11,18 @@ import type from './type.module.css';
 
 /** Slot widths per layout, for srcset's first guess (the frame then measures itself). */
 const SIZES = {
-  hero: '(min-width: 1100px) 600px, 90vw',
-  half: '(min-width: 1100px) 320px, 50vw',
+  hero: '(min-width: 1100px) 680px, 100vw',
+  half: '(min-width: 1100px) 340px, 55vw',
   third: '(min-width: 1100px) 220px, 34vw',
 };
 
 /**
  * Photographs as plates in an editorial grid that changes with the number of
- * items (one plate; a staggered pair; a tall plate beside two; a wide plate
- * over three), each with a numbered caption and its photographer's credit.
- * Items without a photo (or not downloaded yet) show generative art instead.
+ * items, photo first like a magazine: one plate across the page; a staggered
+ * pair; a tall plate beside two, running off the left trim; a wide plate
+ * running off both side trims over three. Each has a numbered caption and its
+ * photographer's credit. Items without a photo (or not downloaded yet) show
+ * generative art instead.
  */
 export function GalleryBlock({ page, brochure }) {
   const heading = text(page.heading);
@@ -28,7 +30,7 @@ export function GalleryBlock({ page, brochure }) {
   const count = items.length;
 
   return (
-    <div className={styles.gallery}>
+    <div className={styles.gallery} data-bleed={count === 1 || count >= 3 ? 'side' : undefined}>
       <header className={`${type.header} ${styles.header}`}>
         {heading && (
           <Reveal as="h2" className={type.heading} style={{ '--fs': `${fitSize(heading, { max: 6.8, min: 4.2, ideal: 26 })}cqw` }}>
