@@ -144,6 +144,58 @@
       "place": "Nebuta Museum WA-RASSE, Aomori",
       "focus": "50% 45%",
       "query": "Nebuta float Wa Rasse Aomori"
+    },
+    {
+      "id": "tohoku-nostalgia-ginzan",
+      "use": "wide",
+      "candidates": [
+        "File:Ginzan Onsen - Inns (銀山温泉 - 旅館松本, 昭和館, 銀山川, 八木橋商店, 旅籠いとうや, 能登屋旅館, 旅館永澤平八, かじか庵, 旅館藤屋) (2015-03-07 by Eiji Kikuta @Pixabay 1366873).jpg",
+        "File:Ginzan Onsen in autumn 2018.jpg",
+        "File:Ginzan Onsen (32165662644).jpg"
+      ],
+      "alt": "Multi-storey wooden inns with lit windows facing each other across a narrow river",
+      "caption": "Ginzan Onsen, Yamagata — Taishō-era wooden inns lining the Ginzan River",
+      "place": "Ginzan Onsen, Obanazawa",
+      "focus": "50% 50%",
+      "query": "Ginzan Onsen Obanazawa"
+    },
+    {
+      "id": "tohoku-nostalgia-kakunodate",
+      "use": "any",
+      "candidates": [
+        "File:Kakunodate Bukeyashiki.JPG",
+        "File:Kawarada Samurai House in Kakunodate 20161106.jpg",
+        "File:Bukeyashiki Street in Kakunodate 20060506.jpg"
+      ],
+      "alt": "A wide, quiet street lined with black wooden fences, old gateways and tall trees",
+      "caption": "Kakunodate, Akita — a samurai street of black board fences, famous for its weeping cherries",
+      "place": "Kakunodate samurai district, Senboku",
+      "focus": "50% 50%",
+      "query": "Kakunodate Bukeyashiki street"
+    },
+    {
+      "id": "tohoku-nostalgia-ouchijuku",
+      "use": "wide",
+      "candidates": [
+        "File:Ouchi-juku, Fukushima 01.jpg",
+        "File:Ja-fukushima-ohuchijuku-7.jpg",
+        "File:Ouchijuku 1.JPG"
+      ],
+      "alt": "Rows of steep thatched-roof houses facing each other across a wide village street",
+      "caption": "Ōuchi-juku, Fukushima — thatched-roof houses along an Edo-period post town",
+      "place": "Ōuchi-juku, Shimogō",
+      "focus": "50% 50%",
+      "query": "Ouchi-juku Fukushima thatched"
+    },
+    {
+      "id": "tohoku-nostalgia-kuroishi",
+      "use": "any",
+      "candidates": [],
+      "alt": "A covered wooden walkway running along the fronts of old shop houses",
+      "caption": "Kuroishi, Aomori — komise, the covered arcades of Nakamachi, dating from the Edo period",
+      "place": "Nakamachi Komise Street, Kuroishi",
+      "focus": "50% 50%",
+      "query": "Komise Kuroishi Aomori"
     }
   ]
 }

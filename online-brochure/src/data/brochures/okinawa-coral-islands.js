@@ -213,17 +213,27 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where it all is',
-      body: 'Naha’s sights are linked by the Yui Rail monorail. The Kerama Islands lie west of Naha by boat, Churaumi far to the north on the Motobu Peninsula, and Sēfa-utaki and Mabuni in the south.',
-      places: [
-        { name: 'Naha Airport', nameJp: '那覇空港', lat: 26.1956, lng: 127.6458, note: 'Arrivals and the Yui Rail' },
-        { name: 'Kokusai-dōri', nameJp: '国際通り', lat: 26.2158, lng: 127.6862, note: 'Market, shops, Tsuboya nearby' },
-        { name: 'Shuri Castle', nameJp: '首里城', lat: 26.2169, lng: 127.7194, note: 'Castle of the Ryūkyū kings' },
-        { name: 'Zamami Island', nameJp: '座間味島', lat: 26.2287, lng: 127.3037, note: 'Kerama Islands' },
-        { name: 'Churaumi Aquarium', nameJp: '沖縄美ら海水族館', lat: 26.6942, lng: 127.8781, note: 'Whale sharks, Ocean Expo Park' },
-        { name: 'Sēfa-utaki', nameJp: '斎場御嶽', lat: 26.1729, lng: 127.8273, note: 'Sacred grove, Nanjō' },
-        { name: 'Peace Memorial Park', nameJp: '平和祈念公園', lat: 26.0958, lng: 127.7264, note: 'Mabuni, Itoman' },
+      type: 'gallery',
+      heading: 'Coral walls, red tiles',
+      items: [
+        {
+          photo: 'okinawa-nostalgia-kinjocho',
+          art: 'ichimatsu',
+          seed: 31,
+          caption: 'Shuri Kinjō-chō — a stone-paved road laid in 1522, winding down from Shuri Castle',
+        },
+        {
+          photo: 'okinawa-nostalgia-nakamura-house',
+          art: 'asanoha',
+          seed: 18,
+          caption: 'Nakamura House, Kitanakagusuku — an 18th-century farmhouse of red tiles and coral-stone walls',
+        },
+        {
+          photo: 'okinawa-nostalgia-taketomi',
+          art: 'shippo',
+          seed: 42,
+          caption: 'Taketomi Island, Yaeyama — red-tiled houses, coral-stone walls and white-sand lanes',
+        },
       ],
     },
     {

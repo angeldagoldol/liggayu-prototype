@@ -36,7 +36,7 @@ be verified, not printed.
 | 11 | Jinya admission (p4, costs) | ¥440 adults; high-school students and younger free | https://jinya.gifu.jp/en/guide/info/ (official; groups of 30+ ¥390) | VERIFIED |
 | 12 | Jinya closed (p4, costs) | 29 December – 3 January | https://jinya.gifu.jp/en/guide/info/ (official; also closes for inspections and storms) | VERIFIED — japan-guide lists fewer closed days; official site wins. |
 | 13 | Jinya building contents (p4) | "offices, tatami halls and storehouses" | jinya.gifu.jp · shoryudo | VERIFIED (general description; no specific room claims printed). |
-| 14 | Shirakawa-gō UNESCO 1995 with Gokayama; Ogimachi, Ainokura, Suganuma (p5, map) | as printed | https://whc.unesco.org/en/list/734 (UNESCO) · https://en.wikipedia.org/wiki/Historic_Villages_of_Shirakawa-g%C5%8D_and_Gokayama · https://www.unesco.emb-japan.go.jp/htm/shirakawaGokayama.htm | VERIFIED |
+| 14 | Shirakawa-gō UNESCO 1995 with Gokayama; Ogimachi, Ainokura, Suganuma (p5) | as printed | https://whc.unesco.org/en/list/734 (UNESCO) · https://en.wikipedia.org/wiki/Historic_Villages_of_Shirakawa-g%C5%8D_and_Gokayama · https://www.unesco.emb-japan.go.jp/htm/shirakawaGokayama.htm | VERIFIED |
 | 15 | Shō river valley; gasshō roofs shed snow; attics for silkworms (p5) | as printed | UNESCO list/734 (Shogawa valley, mulberry and silkworm rearing) · Wikipedia (above) | VERIFIED |
 | 16 | Nohi Bus Takayama → Shirakawa-gō (p5, agenda) | "50–70 min · book ahead" | https://jprail.com/destinations/how-to-get-shirakawa-go.html ("50 minutes to 1 hour 10 minutes"; "reservation is required to take most of Nohi bus routes") · https://japanbusonline.com/en/DestinationSearch/21 | VERIFIED. **Fare REMOVED** — no source gave the current one-way fare. |
 | 17 | Wada House (p5, costs) | ¥400 adults · about 9:00–17:00, irregular closing days | https://www.gltjp.com/en/directory/item/14793 · https://shoryudo.go-centraljapan.jp/en/wadakezyutaku/ · https://www.japan-guide.com/e/e5951.html | VERIFIED — one source says ¥300, outvoted. |
@@ -54,7 +54,7 @@ be verified, not printed.
 | 29 | Matsumoto Castle admission (p7, costs) | ¥1,300 adults (paper, same day) · ¥1,200 timed e-ticket | hiddenjapan-gems (2026) · gltjp 21584 · JTB/rurubu (Japanese) · go-nagano (Nagano Prefecture tourism) | VERIFIED — **surprising** (old guides say ¥700; one article ¥800 from Apr 2025, another ¥610), so four sources were required; all 2026 listings agree on ¥1,300/¥1,200. |
 | 30 | Matsumoto Castle hours (p7, agenda) | 8:30–17:00, last entry 16:30; closed 29–31 Dec | hiddenjapan-gems · rurubu/JTB (8時30分~17時, 入場は~16時30分, 休み12月29~31日) · https://visitmatsumoto.com/en/news/detail_33.html (summer extensions) | VERIFIED — extended hours in August (2026: 8–16 Aug, 8:00–18:00) not printed. |
 | 31 | Matsumoto Castle ~15 min walk from JR Matsumoto Station (p7) | as printed | https://www.go-nagano.net/en/theme/id=18040 · https://en.japantravel.com/places/japan/matsumoto-castle/91 · https://visitmatsumoto.com/en/spot/detail_1041.html (Town Sneaker bus ~5 min) | VERIFIED |
-| 32 | Hida limited express Nagoya → Takayama about 2 h 20 min (map, agenda) | as printed | https://www.japan.travel/id/spot/150/ (JNTO) · https://japantrain.net/guide/takayama-festival-trains ("2.5 hours") | VERIFIED ("about"). Fare (~¥6,000, one commercial site) REMOVED. |
+| 32 | Hida limited express Nagoya → Takayama about 2 h 20 min (agenda) | as printed | https://www.japan.travel/id/spot/150/ (JNTO) · https://japantrain.net/guide/takayama-festival-trains ("2.5 hours") | VERIFIED ("about"). Fare (~¥6,000, one commercial site) REMOVED. |
 | 33 | Bus to Shin-Shimashima and the Alpico train to Matsumoto (agenda) | as printed (no times) | https://watabi.org/en/articles/kamikochi-access-guide (Shin-Shimashima route bus) · https://tabiris.com/archives/alpico-suica/ (Alpico Kamikochi Line) | VERIFIED (route only; no time or fare printed). |
 | 34 | Hida Takayama tourist information in front of JR Takayama Station (contact) | as printed | https://www.westjr.co.jp/global/en/ticket/hokuriku-arch-pass/Explore_Japan/spot/spot_sta/takayama/index.html (JR West) · https://en.wikivoyage.org/wiki/Takayama | VERIFIED — hours conflict (8:30–19:00 vs 8:30–17:00), so no hours printed. Phone numbers never printed. |
 | 35 | Quote (p12) | 桟やいのちをからむつたかづら — Matsuo Bashō, at the Kiso no Kakehashi on the road through the Kiso Valley, 1688, *Sarashina Kikō* | https://tabi-mag.jp/nn494/ · https://www.mlit.go.jp/tagengo-db/common/001650013.pdf · https://adeac.jp/viewitem/shinshu-chiiki/viewer/viewer/pf12-07/data/pf12-07.pdf | VERIFIED — journey dated 貞享5 (1688); kakehashi in Agematsu, Kiso. English is Tabi Guides' own translation (labelled). |
@@ -69,10 +69,13 @@ be verified, not printed.
 | Takayama Jinya | 36.1390, 137.2580 | Editor's Wikipedia geodata (36°08′20″N 137°15′29″E) | HEDGED (not searched) |
 | Shirakawa-gō (Ogimachi) | 36.2575, 136.9064 | Editor's Wikipedia geodata | HEDGED (not searched) |
 | Matsumoto Castle | 36.2386, 137.9689 | Editor's Wikipedia geodata (36°14′19″N 137°58′08″E) | HEDGED (not searched) |
-| Nagoya Station | 35.1709, 136.8815 | Editor's Wikipedia geodata | HEDGED (not searched) |
 
-All pins pass `src/data/geo/geography.test.js` (inside the drawn map); none is a price, hour, date or
-access detail.
+These are the `lat`/`lng` printed beside each place name; none is a price, hour, date or access detail.
+
+The map page (p8, "The Alps, mapped") was replaced on 18 October 2026 by the **Old streets of the
+Alps** photo gallery (see *Nostalgic streets* below). Its map-only pin (Nagoya), its coordinates and
+the pin notes are no longer printed anywhere, so that row was removed; the Hida limited express
+time (row 32) is still printed on the agenda page.
 
 ### Not printed (REMOVED)
 
@@ -110,3 +113,36 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (full page, page 4) | Takayama / 高山 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
 | Caption (spread, pages 8–9) | Clear morning in Kamikochi: the Hotaka range stands over the Azusa valley | src/data/photos/manifest/japan-alps.json → `alps-spread` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (spread, pages 8–9) | Kamikochi / 上高地 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (`p8`) is now a photo gallery, **Old streets of the Alps**: four real photographs of
+懐かしい (natsukashii) places — a carp canal between storehouses, a street of plastered kura and two
+Edo-period post towns on the Nakasendō (the reader asked for real pictures of nostalgic places, not
+maps). Live web searches, 18 October 2026; outside pages could not be opened, so values come from
+search-result extracts. Each caption names the place and gives one short detail; anything that
+could not be confirmed was left out. Searches: 9 for this brochure (21 shared with
+`mount-fuji-five-lakes`).
+
+| Place (photo slot) | Japanese | Claim in caption | Sources | Notes |
+| --- | --- | --- | --- | --- |
+| Hida-Furukawa, Gifu (`alps-nostalgia-furukawa`) | 飛騨古川・瀬戸川と白壁土蔵街 | The Seto River canal (Setogawa) is lined with white-walled storehouses (shirakabe dozō); carp swim in it from spring to autumn | https://www.japan-guide.com/e/e5977.html (canal lined by old storehouses with white walls) · https://www.japan-alps.com/hida-city/ (Seto River through a stretch of white-walled storehouses; about 1,000 carp, April–November) · https://city.hida.gifu.jp/site/kamiokalab-en/12039.html (Hida City: carp moved to Tenjin pond from late November to early April) · https://commons.wikimedia.org/wiki/Category:Seto_River_(Gifu) (aqueduct canal in Hida, part of the Sosui Hyakusen) | Stretch length (400 m vs 500 m), carp count, the 1585/1589 date of the canal and the 1970s carp release are **not printed** (sources disagree or single source). |
+| Nakamachi, Matsumoto (`alps-nostalgia-nakamachi`) | 中町通り（松本） | A merchant street of kura storehouses with black-and-white namako (“sea-cucumber”) walls | https://www.japan.travel/en/ph/spot-activity/nakamachi-street/ (JNTO) · https://japanjourneys.jp/nagano/matsumoto/attractions/nakamachi-street-matsumotos-historic-thoroughfare/ (namako-kabe on Nakamachi's storehouses; fire-resistant late-Edo design) · https://www.kamikochi.org/?p=7022 · https://en.japantravel.com/nagano/nakamachi-dori-street-matsumoto/4820 | Rebuilt in kura style after 18th–19th-century fires (one source) and the start of the Zenkō-ji Kaidō are **not printed**. |
+| Narai-juku, Shiojiri (`alps-nostalgia-narai`) | 奈良井宿 | A long street of wooden inns and shops on the old Nakasendō, in the Kiso Valley | https://commons.wikimedia.org/wiki/Category:Narai-juku (Nakasendō post town in Shiojiri, Nagano; Important Preservation District for Groups of Traditional Buildings, 1978) · https://db.go-nagano.net/en/topics_detail7/id=100 (Nagano Prefecture tourism: Kiso Valley post towns preserved almost as in the Edo period) · https://afuncouple.com/narai-juku-japan/ (traditional inns and lacquerware workshops line the street) | "Narai of a thousand houses" (奈良井千軒) and the station number (34th of 69 — numbering varies between guides) are **not printed**. |
+| Tsumago-juku, Nagiso (`alps-nostalgia-tsumago`) | 妻籠宿 | A Nakasendō post town kept much as it looked in the Edo period | https://commons.wikimedia.org/wiki/Category:Tsumago-juku (Nakasendō post town in Nagiso, Kiso district; preservation district since 1976) · https://db.go-nagano.net/en/topics_detail7/id=100 (Nagano Prefecture tourism) · https://watabi.org/en/articles/kiso-magome-tsumago-guide (Edo post town with no power lines along the street) · https://www.japan-experience.com/all-about-japan/nagano/attractions-excursions/kiso-valley-guide | The 1976 designation, "no power lines / no cars" and the Tsumago–Magome walk (about 8 km) are **not printed** (caption kept to one detail). Tsumago lies in the southern Kiso Valley, outside the brochure's five main places; it ties in with the Bashō Kiso Valley quote (p12). |
+
+### Photos (gallery p8)
+
+Candidates are Commons file pages that appeared in search results (titles copied from the result
+URLs, underscores → spaces). Each slot also has a Commons `query` for the app's automatic fallback.
+Image sizes were not shown in the results — the curator should check each is ≥ 2,000 px wide.
+
+| Slot (id) | Candidates (best first) | Notes |
+| --- | --- | --- |
+| `alps-nostalgia-furukawa` (any) | `File:Hida Furukawa 20200620 P2 (cropped).jpg` · `File:Setogawa River flowing behind Enkoji Temple in Fukukawa, Hida, Gifu.JPG` | Only two found (the second's "Fukukawa" typo is in the real title). A "瀬戸川の鯉" file is listed in the category, but its file page and full title were not returned, so it is not a candidate. Query: "Hida Furukawa Setogawa canal white wall storehouses". |
+| `alps-nostalgia-nakamachi` (wide) | `File:Nakamachi street Matsumoto Nagano pref Japan01s3.jpg` · `File:Nakamachi street Matsumoto Nagano pref Japan02s3.jpg` · `File:Nakamachi street Matsumoto Nagano pref Japan06n.jpg` | One series from the same uploader. Query: "Nakamachi street Matsumoto kura storehouses". |
+| `alps-nostalgia-narai` (wide) | `File:Nakasendo Narai-juku08n4272.jpg` · `File:220729 Nakasendo Narai-juku Shiojiri Nagano pref Japan03s5.jpg` · `File:Narai post town.JPG` | Left out `File:Nakasendo Narai-juku banner.jpg` (a banner crop). Query: "Narai-juku Nakasendo townscape". |
+| `alps-nostalgia-tsumago` (wide) | `File:Tsumago-juku 1.jpg` · `File:Tsumago-juku 3.jpg` · `File:Tsumago 2009 4.JPG` | Content not described in the results; curator: prefer a street view without people in front. Also seen: `File:Shimosagaya of Tsumago-juku.JPG` (one named house) and `File:Tsumago.jpg`. Query: "Tsumago-juku Nakasendo street". |
+
+Considered but not used: Magome-juku (budget), Takayama Sanmachi at dawn (already the Takayama place
+photo), Ainokura in Gokayama (thatch already on the cover and the Shirakawa-gō page).

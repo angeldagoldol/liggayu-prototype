@@ -213,16 +213,33 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where it all is',
-      body: 'Trams (lines 2 and 6) take about 15 minutes from Hiroshima Station to the Peace Memorial Park. For Miyajima, ride the JR Sanyō Line to Miyajimaguchi, 25–30 minutes, then the ten-minute ferry.',
-      places: [
-        { name: 'Hiroshima Station', nameJp: '広島駅', lat: 34.3975, lng: 132.4753, note: 'Shinkansen, JR lines and trams' },
-        { name: 'Atomic Bomb Dome', nameJp: '原爆ドーム', lat: 34.3955, lng: 132.4536, note: 'World Heritage Site' },
-        { name: 'Peace Memorial Museum', nameJp: '広島平和記念資料館', lat: 34.3917, lng: 132.4527, note: 'In the Peace Memorial Park' },
-        { name: 'Miyajimaguchi', nameJp: '宮島口', lat: 34.3122, lng: 132.3036, note: 'JR station and ferry piers' },
-        { name: 'Itsukushima Shrine', nameJp: '厳島神社', lat: 34.2959, lng: 132.3198, note: 'World Heritage Site' },
-        { name: 'Mount Misen', nameJp: '弥山', lat: 34.2794, lng: 132.3194, note: 'Summit, 535 m' },
+      type: 'gallery',
+      heading: 'Old towns of the Inland Sea',
+      items: [
+        {
+          photo: 'miyajima-nostalgia-machiya-dori',
+          art: 'shippo',
+          seed: 33,
+          caption: 'Machiya-dōri, Miyajima — the island’s old main street of long, narrow townhouses',
+        },
+        {
+          photo: 'hiroshima-nostalgia-takehara',
+          art: 'asanoha',
+          seed: 47,
+          caption: 'Takehara — the old town of salt and sake merchants known as the “Little Kyoto of Aki”',
+        },
+        {
+          photo: 'hiroshima-nostalgia-onomichi',
+          art: 'kumo',
+          seed: 58,
+          caption: 'Onomichi — Tennei-ji’s three-storey pagoda on the temple-dotted slope of Mount Senkō-ji',
+        },
+        {
+          photo: 'hiroshima-nostalgia-tomonoura',
+          art: 'seigaiha',
+          seed: 66,
+          caption: 'Tomonoura, Fukuyama — an old Inland Sea port that still keeps its stone lantern of 1859',
+        },
       ],
     },
     {

@@ -46,37 +46,39 @@ prices (Freepass ¥6,100 / ¥6,500; cruise ¥1,200).
 | 14 | Shrine access (place) | Moto-Hakone port/bus stop, ~10 min walk | gltjp (above) · https://hakonetrip.odakyu-global.com/spot/hakone-shrine/ | Bus stop names vary. |
 | 15 | Come early for the torii photo (place) | "before the queue for photographs forms" | https://onedayawaytravel.com/?p=175 · https://www.magical-trip.com/media/hakone-shrine-explore-the-historic-lakeside-sanctuary-with-iconic-torii-gate-and-scenic-views/ | Advice, not a number. |
 | 16 | Fuji visibility (intro, back) | Clear days, best in winter mornings | https://www.tokyoweekender.com/location/hakone-shrine/ · https://www.milehacker.com/travel/japan/kanagawa/hakone/famous-landmarks-in-hakone-attractions-monuments-s/ | Kept qualitative. |
-| 17 | Open-Air Museum: first in Japan, 1969 (place, map) | Japan's first open-air art museum, opened 1969 | https://hakonetrip.odakyu-global.com/spot/the-hakone-open-air-museum/ · https://en.wikipedia.org/wiki/Hakone_Open-Air_Museum · https://samuraicarjapanjdm.jp/hakone-open-air-museum-guide/ | |
+| 17 | Open-Air Museum: first in Japan, 1969 (place) | Japan's first open-air art museum, opened 1969 | https://hakonetrip.odakyu-global.com/spot/the-hakone-open-air-museum/ · https://en.wikipedia.org/wiki/Hakone_Open-Air_Museum · https://samuraicarjapanjdm.jp/hakone-open-air-museum-guide/ | |
 | 18 | Open-Air Museum collection (place) | About 120 sculptures on 70,000 m²; Bourdelle, Maillol, Moore, Miró; Picasso Pavilion rotates 300+ works; hot-spring footbath | https://jw-webmagazine.com/tips/hakone-open-air-museum/ · https://www.japan.travel/experiences-in-japan/en/977/ (JNTO) · Commons file descriptions (artists) | Picasso: "more than 300" / "nearly 320". |
 | 19 | Open-Air Museum hours & fee (place, costs) | 9:00–17:00 daily, last entry 16:30; ¥2,000 (¥1,800 online) | https://www.hakone-oam.or.jp/en/info (official) · https://samuraicarjapanjdm.jp/hakone-open-air-museum-guide/ (June 2026) | |
 | 20 | Open-Air Museum access (place) | Chōkoku-no-Mori Station, 2 min walk | https://hakone-oam.or.jp/en/about/access (official) · https://trip.pref.kanagawa.jp/destination/hakone-open-air-museum/726 | Accessibility guide says 5 min uphill. "Allow about two hours" is editorial advice. |
 | 21 | Hakone Freepass prices (costs) | From Shinjuku: 2 days ¥7,100, 3 days ¥7,500; from Odawara ¥6,000 / ¥6,400 (adults) | https://www.odakyu.jp/news/h3de760000005kuv-att/h3de760000005kv2.pdf (Odakyu press release) · https://www.pricey.jp/web/articles/4978 · https://tabi-mag.jp/priceincrease-hakone/ · https://couplestravelstories.ca/hakone-freepass/ | **Changed 1 Oct 2025** (was ¥6,100 / ¥6,500 / ¥5,000 / ¥5,400). |
-| 22 | Freepass coverage (costs, map) | Odakyu round trip to Odawara + 8 networks: Tozan train, cable car, ropeway, cruise, designated buses; ~70 discount sights; Romancecar seat extra | https://hakonetrip.odakyu-global.com/feature/the-complete-guide-to-the-hakone-freepass/ (Odakyu) · https://www.fun-japan.jp/intl/articles/10098 · https://pelago.com/activity/ptx5a-hakone-freepass-hakone | |
+| 22 | Freepass coverage (costs) | Odakyu round trip to Odawara + 8 networks: Tozan train, cable car, ropeway, cruise, designated buses; ~70 discount sights; Romancecar seat extra | https://hakonetrip.odakyu-global.com/feature/the-complete-guide-to-the-hakone-freepass/ (Odakyu) · https://www.fun-japan.jp/intl/articles/10098 · https://pelago.com/activity/ptx5a-hakone-freepass-hakone | |
 | 23 | Romancecar Shinjuku → Hakone-Yumoto (costs, agenda, cover) | ¥2,470 (fare ¥1,270 + seat ticket ¥1,200); about 75–90 min | https://tabiris.com/?p=45517 · https://lifestyle.assist-all.co.jp/?p=41601 · https://ekitan.com/en/article/hakone-romancecar | Ticketless/IC slightly cheaper (¥2,420–2,461). Fastest ~75 min. |
 | 24 | Hakone Tozan Railway (agenda, gallery) | Three switchbacks; gradients up to 80‰ | https://en.wikipedia.org/wiki/Hakone_Tozan_Line · https://www.japanjournal.jp/travel/pt202506191025.html · https://hakone-japan.com/plan-your-trip/stories/getting-around/the-hydrangea-train/ | Opening date conflicts (1919 vs later) — not printed. |
-| 25 | Hakone Checkpoint (costs, gallery, map) | Edo-era barrier (est. 1619), rebuilt from records; admission ¥500 | https://hakone-japan.com/things-to-do/sightseeing/hakone-sekisho-checkpoint/ · https://trip.pref.kanagawa.jp/destination/hakone-checkpoint/193 · https://www.ana.co.jp/en/us/japan-travel-planner/kanagawa/0000016.html | Rebuild year 2006 vs 2007 conflict → no year printed. |
+| 25 | Hakone Checkpoint (costs, gallery) | Edo-era barrier (est. 1619), rebuilt from records; admission ¥500 | https://hakone-japan.com/things-to-do/sightseeing/hakone-sekisho-checkpoint/ · https://trip.pref.kanagawa.jp/destination/hakone-checkpoint/193 · https://www.ana.co.jp/en/us/japan-travel-planner/kanagawa/0000016.html | Rebuild year 2006 vs 2007 conflict → no year printed. |
 | 26 | Onsen etiquette (features) | Wash first; no swimsuits; towel out of the water; tattoo rules set by each bath; keep quiet | https://hiddenjapan-gems.com/onsen-etiquette-japan/ · https://mileasia.com/japan/onsen-etiquette/ · https://yakult.co.jp/english/inbound/manners/03.html | JNTO page not readable this pass. Yukata "left over right" is standard etiquette, not separately sourced in this pass. |
 | 27 | Tourist Information Center (contact) | Opposite Hakone-Yumoto Station, daily 9:00–17:45 | https://hakone-japan.com/plan-your-trip/stories/helpful-info/hakone-information-center/ (official) · https://livejapan.com/en/in-tokyo/in-pref-kanagawa/in-hakone_odawara/spot-lj0000047/ | JNTO-certified; no phone numbers printed. |
 | 28 | Quote (quote page) | 霧しぐれ富士をみぬ日ぞ面白き — Matsuo Bashō, Nozarashi Kikō, written crossing the Hakone barrier in 1684 | https://www.basho-bp.jp/?page_id=20 · https://artscouncil-shizuoka.jp/culture-resource-db/detail.php?id=679 · https://en.wikipedia.org/wiki/Nozarashi_Kik%C5%8D | Prose before it: 関こゆる日は雨降て、山皆雲にかくれたり. English is Tabi Guides' own translation (labelled). |
 | 29 | Brochure location | Hakone, Kanagawa — 35.2323, 139.1069 | Wikipedia (Hakone town) | Town centre at Yumoto. |
 
-### Coordinates
+### Coordinates (place pages)
 
 | Place | lat, lng | Source / note |
 |---|---|---|
-| Hakone-Yumoto | 35.2334, 139.1037 | travelprofy (route pages); within ~150 m of the station |
 | Hakone Open-Air Museum | 35.2447, 139.0514 | Wikipedia 35°14′41″N 139°3′5″E; AroundUs 35.2450, 139.0511 |
-| Sōunzan | 35.2465, 139.0359 | Sygic 35°14′47.4″N 139°2′9.3″E |
 | Ōwakudani | 35.2419, 139.0207 | latitude.to (Wikipedia geodata) 35°14′30.9″N 139°01′14.4″E |
 | Hakone Shrine | 35.2039, 139.0256 | Wikipedia 35°12′14″N 139°01′32″E |
-| Hakone Checkpoint | 35.1925, 139.0261 | Wikipedia (Hakone Barrier) 35°11′33″N 139°01′34″E |
+
+The map page (p8, "The Hakone loop, mapped") was replaced on 18 October 2026 by the
+"Where old travellers rested" photo gallery (see *Nostalgic streets* below). Its map-only pins
+(Hakone-Yumoto, Sōunzan, Hakone Checkpoint), their coordinates and pin notes are no longer
+printed anywhere, so their rows were removed.
 
 ### Left out (could not verify to two sources, or not needed)
 
 - Ropeway one-way fares after the Oct 2025 rise (covered by the Freepass; not printed).
 - Ōwakudani elevation (~1,044 m — single source).
 - Lake Ashi elevation (723–724 m) — fine but not needed.
-- Old Tōkaidō cedar avenue (planted 1618, ~400 trees, ~500 m — hakone-japan.com + hakonenavi) — dropped from the gallery because only one Commons candidate was found.
+- Old Tōkaidō cedar avenue facts (planted 1618, ~400 trees, ~500 m — hakone-japan.com + hakonenavi, first pass). The avenue is now pictured in the nostalgic gallery (two Commons candidates found on 18 Oct 2026), but its caption describes what is visible rather than printing these numbers, which were not re-confirmed.
 - Any ryokan names or prices (no private business is promoted).
 
 ## Photos
@@ -141,7 +143,7 @@ researcher, but the checker could neither confirm nor refute it without web acce
 | 27 Tourist Information Center, Hakone-Yumoto, 9:00–17:45 | ✔ | |
 | 28 Bashō, 霧しぐれ富士をみぬ日ぞ面白き, Nozarashi Kikō, 1684 | ✔ | Text and occasion (crossing the Hakone barrier in rain) agree; the translation reads faithfully. |
 | 29 Brochure location | ✔ | Hakone town hall area, Yumoto. |
-| Coordinates (6) | ✔ | Each falls on the named place. Hakone-Yumoto is about 150 m from the station building; fine for the map scale. |
+| Coordinates (3, place pages) | ✔ | Each falls on the named place. The three map-only pins went with the map page. |
 | Japanese & phrasebook | ✔ | Kanji, kana and romaji correct; phrases are natural and polite. |
 | Publisher / contacts | ✔ | Tabi Guides only; no phone numbers, no ryokan named or promoted, no invented testimonials. |
 | Photo candidates | Not re-checked | Commons titles could not be opened. All 8 ids are referenced and unique across manifests. The cover slot has only 2 candidates (minimum met). |
@@ -177,3 +179,34 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (spread, pages 4–5) | Lake Ashi / 芦ノ湖 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
 | Caption (full page, page 10) | Beneath the vermilion gates of Hakone Shrine, in the cedar woods above Lake Ashi | src/data/photos/manifest/hakone-onsen-ryokan.json → `hakone-fullpage` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (full page, page 10) | Hakone Shrine / 箱根神社 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (p8) is now a photo gallery, **"Where old travellers rested"**: three real
+photographs of old Hakone — the Edo highway, a teahouse on it and a Meiji-era hotel (the reader
+asked for real pictures of nostalgic places, not maps). Live web searches, 18 Oct 2026; outside
+pages could not be opened, so values come from search-result extracts. Each caption carries one
+short detail; anything that could not be confirmed was left out.
+
+| Claim (gallery caption) | Value used | Sources | Notes |
+|---|---|---|---|
+| Ancient Cedar Avenue on the Hakone old road (箱根旧街道・杉並木) | "towering cedars on the old Tōkaidō in Hakone" | https://commons.wikimedia.org/wiki/Category:Hakone_old_road ("one section of Tōkaidō, in Hakone"; *Ancient Cedar Avenue* subcategory) · first-pass hakone-japan.com + hakonenavi.jp entries (see *Left out*) | Describes the picture; the planting year and tree count are not printed. |
+| Amazake-chaya (甘酒茶屋) | "a thatched teahouse on the old Tōkaidō, still serving sweet amazake" | https://www.lonelyplanet.com/pois/1236640 · https://business.dptribune.com/dptribune/news/read/43979924/hike_through_japanese_history_in_kanagawa (PRLog, Mar 2024) · https://commons.wikimedia.org/wiki/File:Amazake-cyaya_01.jpg (tea house in Hakone, next to the old Tōkaidō; linked to ja.wikipedia 甘酒茶屋) | Thatched roof and amazake (non-alcoholic sweet rice drink) in both sources. "13 generations / 400 years" rests on tour and press listings repeating each other — not printed. The current building is a rebuild (one listing: 2009) — no year printed. A café, mentioned as a historic stop, not promoted. |
+| Fujiya Hotel, Miyanoshita (富士屋ホテル) | "a classic hotel that opened in 1878" | https://hakone-japan.com/plan-your-trip/stories/cultural-experiences/the-fujiya-hotel/ (official tourism) · https://www.historichotels.org/hotels-resorts/the-fujiya-hotel/history · https://japanese-onsen.com/?p=11616 · Commons category "Fujiya Hotel" ("classic hotel in Miyanoshita Onsen") | 1878 agreed by all. Hana-goten (Flower Palace) wing 1936 per two sources — not printed, because the photo shown may be another building. Cultural-property status of individual buildings not confirmed — not printed. Historic building mentioned, not endorsed. |
+
+### Photos (gallery p8)
+
+Candidates are Commons file pages that appeared in search results (titles copied from the result
+URLs). Live photos need ≥ 1,600 px on the long edge; the app falls back to each slot's `query`.
+
+| Slot (id) | Candidates (best first) | Notes |
+|---|---|---|
+| `hakone-nostalgia-cedar-avenue` | `File:Ancient Cedar Avenue, Hakone old road - Hakone, Japan - DSC05952.jpg` · `File:Ancient Cedar Avenue, Hakone old road - Hakone, Japan - DSC05938.jpg` | 5,472 × 3,648 (2017) and a 3,461 × 5,165 portrait (Sept 2016). |
+| `hakone-nostalgia-amazake-chaya` | `File:Amazake-cyaya 01.jpg` | Only one file found (2,592 × 1,944, 2011); `query` "Amasake Chaya Hakone" matches the Commons category name. |
+| `hakone-nostalgia-fujiya-hotel` | `File:Fujiya Hotel Hana-goten.JPG` · `File:Happiness Hill - Fujiya Hotel - Hakone, Japan - DSC06142.jpg` | Sizes not shown in results; the second is from the same 2016–17 Hakone series as the cedar photos (Daderot). Alt text kept general so it fits either building. |
+
+Not found: the stone-paved slopes of the Hakone Hachiri (old Tōkaidō *ishidatami*). Four searches
+(English and Japanese) returned only category pages — Commons sorts them under Shiromizu-zaka,
+Tengaishi-zaka and other slope categories — and no file page, so the stone road has no slot.
+The Hakone Tozan Railway and the Hakone Checkpoint already have photos in the "Around the caldera"
+gallery.

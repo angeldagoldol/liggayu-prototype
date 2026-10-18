@@ -145,6 +145,59 @@
       "place": "Hokkaidō Jingū, Sapporo",
       "focus": "50% 45%",
       "query": "Hokkaido Jingu torii snow"
+    },
+    {
+      "id": "hokkaido-nostalgia-hachimanzaka",
+      "use": "wide",
+      "candidates": [
+        "File:Hachimanzaka Hakodate Hokkaido pref Japan01n.jpg"
+      ],
+      "alt": "A broad stone-paved street sloping straight down between trees towards the harbour and the sea",
+      "caption": "Hachiman-zaka, Hakodate — a stone-paved slope running straight down to the harbour",
+      "place": "Hachiman-zaka, Motomachi, Hakodate",
+      "focus": "50% 55%",
+      "query": "Hachimanzaka Hakodate slope"
+    },
+    {
+      "id": "hokkaido-nostalgia-sakaimachi",
+      "use": "any",
+      "candidates": [
+        "File:Sakaimachi street Otaru Hokkaido16n.jpg",
+        "File:Sakaimachi street Otaru Hokkaido09n.jpg",
+        "File:Sakaimachi street Otaru Hokkaido04bs3.jpg"
+      ],
+      "alt": "A street of old stone and timber shopfronts with tiled roofs and shop signs",
+      "caption": "Sakaimachi-dōri, Otaru — old stone warehouses and merchant houses, now glass and music-box shops",
+      "place": "Sakaimachi-dōri, Otaru",
+      "focus": "50% 50%",
+      "query": "Sakaimachi street Otaru"
+    },
+    {
+      "id": "hokkaido-nostalgia-kanemori",
+      "use": "wide",
+      "candidates": [
+        "File:Kanemori Red Brick Warehouse Hakodate Hokkaido pref Japan01n.jpg",
+        "File:Kanemori Red Brick Warehouse Hakodate Hokkaido pref Japan04n.jpg",
+        "File:Kanemori Red Brick Warehouse Hakodate Hokkaido pref Japan12s5.jpg"
+      ],
+      "alt": "A row of long red-brick warehouses with tiled roofs beside the water, a wooded hill behind",
+      "caption": "Kanemori Red Brick Warehouses, Hakodate — harbour warehouses rebuilt in 1909, now shops and halls",
+      "place": "Kanemori Red Brick Warehouses, Hakodate",
+      "focus": "50% 55%",
+      "query": "Kanemori Red Brick Warehouse Hakodate"
+    },
+    {
+      "id": "hokkaido-nostalgia-kaitaku",
+      "use": "any",
+      "candidates": [
+        "File:220722 Historical Village of Hokkaido Sapporo Hokkaido Japan01s5.jpg",
+        "File:北海道開拓の村(Historical Village of Hokkaido) - panoramio (4).jpg"
+      ],
+      "alt": "Old wooden and Western-style buildings preserved at an open-air museum",
+      "caption": "Historical Village of Hokkaido, Sapporo — an open-air museum of buildings from the Meiji to early Shōwa eras",
+      "place": "Historical Village of Hokkaido, Sapporo",
+      "focus": "50% 50%",
+      "query": "Historical Village of Hokkaido"
     }
   ]
 }

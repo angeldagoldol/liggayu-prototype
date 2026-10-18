@@ -59,7 +59,7 @@ October 2026 · Tabi Guides" stay. The biggest change: **Shuri Castle's Seiden r
 | Okinawa: "some 160 islands" (intro) | ~160 | not searched | HEDGED ("some"); not a price/hour/date/access detail |
 | Kerama "under an hour from Naha by fast boat" (intro) | 35–50 min | S6, S8 sources below | VERIFIED |
 | Keramashotō National Park, 2014; "Kerama blue" | 5 Mar 2014 | https://www.env.go.jp/nature/mankitsu-project/pdf/presskit/JP/presskit_34kerama-shotou_JP.pdf ; https://www.env.go.jp/nature/nationalparks/list/kerama-shoto/feature/story/ ; https://tabi-mag.jp/kerama-nationalpark/ | VERIFIED. Place-page `website` and the source entry switched to the env.go.jp URL found this session. |
-| "40 km west of Naha" (old kicker, map body) | — | not searched | REMOVED → "By boat from Naha" / "lie west of Naha by boat" |
+| "40 km west of Naha" (old kicker) | — | not searched | REMOVED → "By boat from Naha" |
 | Boats from Tomari Port | — | https://tabi-mag.jp/on0410/ ; https://en.okinawatraveler.net/feature/0210_sp | VERIFIED |
 | Zamami times | High-speed ≈ 50 min direct (≈ 70 via Aka); ferry ≈ 2 h | https://tabi-mag.jp/on0410/ ; https://tabi-mag.jp/on0411/ ; https://skyticket.jp/guide/539827/ | VERIFIED ("About 50–70 min"; "About 2 h") |
 | Tokashiki times | High-speed ≈ 35 min; ferry ≈ 70 min | https://en.okinawatraveler.net/feature/0210_sp ; https://new.japantravel-centre.com/en/destination/okinawa/okinawa-island-main-island/tokashiki-island/ ; https://feeljapan.net/okinawa-en/article/2020-11-17-17173/ | VERIFIED |
@@ -73,7 +73,7 @@ October 2026 · Tabi Guides" stay. The biggest change: **Shuri Castle's Seiden r
 | Churaumi 16:00 tickets | "cheaper from 16:00" | https://www.veltra.com/en/travelguide/okinawa/churaumi-aquarium/ ; https://new.japantravel-centre.com/destination/okinawa/okinawa-island-main-island/churaumi-aquarium/ | VERIFIED (2 secondary sources; amount not printed) |
 | Churaumi hours | "Usually 8:30–18:30; longer in summer" | https://www.nta.co.jp/kokunai/okinawa/churaumi/ ; https://www.veltra.com/en/travelguide/okinawa/churaumi-aquarium/ | VERIFIED |
 | "Ocean Expo Park grounds: free" (old Costs bullet) | — | not searched | REMOVED → "Open later in summer" |
-| Churaumi access "2–3 h from Naha" (fact row, map body, agenda) | — | not searched | HEDGED → "Far north of Naha, by car or bus"; map "far to the north on the Motobu Peninsula"; agenda "A long drive north". No travel time printed. |
+| Churaumi access "2–3 h from Naha" (fact row, agenda) | — | not searched | HEDGED → "Far north of Naha, by car or bus"; agenda "A long drive north". No travel time printed. |
 | Kokusai-dōri "1.6 km Miracle Mile" | "Miracle Mile" | https://www.fun-japan.jp/id/articles/12392 ; https://japanactivity.com/kokusai-dori-naha-guide | HEDGED: nickname ✓, length conflicts (1.6 km vs ≈ 2 km) → dropped "1.6 km". |
 | Makishi Public Market "rebuilt"; buy fish downstairs, cooked upstairs | — | not found | "rebuilt" REMOVED (date not verified); the mochiage practice UNSEARCHED (descriptive). |
 | Tsuboya kilns gathered in 1682; working potteries | 1682; "some twenty working potteries" | https://tabi-mag.jp/on0485/ ; https://www.mlit.go.jp/tagengo-db/R1-01315.html | VERIFIED. ✎ "past potters, shīsā makers and the pottery museum" → "past some twenty working potteries and their shops". |
@@ -86,13 +86,13 @@ October 2026 · Tabi Guides" stay. The biggest change: **Shuri Castle's Seiden r
 | Tourist information (Naha Airport, Kokusai-dōri) | — | not searched | REMOVED (location not verified) → replaced by the Zamami Village site (Kerama boats). |
 | Bankoku Shinryō bell (quote) | 1458; 書き下し 「琉球国は南海の勝地にして……舟楫を以て万国の津梁と為し、異産至宝は十方刹に充満せり」 | https://lp.p.pia.jp/article/news/230438/index.html ; https://san-tatsu.jp/pressrelease/484978/ ; https://intojapanwaraku.com/rock/art-rock/199347/ ; https://okimu.jp/userfiles/files/autoupload/2025/10/PWcard01.pdf | VERIFIED for date, object and meaning; HEDGED for the exact 書き下し wording (standard reading; not shown verbatim in results — readings vary slightly between sources). Translation: Tabi Guides. |
 | Okinawan phrases | めんそーれ, はいさい/はいたい, にふぇーでーびる, まくとぅそーけー なんくるないさ | — | UNSEARCHED (language; checked in the earlier review) |
-| Coordinates | unchanged (Shuri 26.2169, 127.7194; airport 26.1956, 127.6458; Kokusai-dōri 26.2158, 127.6862; Zamami port 26.2287, 127.3037; Churaumi 26.6942, 127.8781; Sēfa-utaki 26.1729, 127.8273; Peace Park 26.0958, 127.7264) | — | UNSEARCHED; ⚠ Zamami port and Kokusai-dōri still want an OSM check. |
+| Coordinates (place pages) | unchanged (Shuri 26.2169, 127.7194; Zamami port 26.2287, 127.3037; Churaumi 26.6942, 127.8781) | — | UNSEARCHED; ⚠ Zamami port still wants an OSM check. |
 
 ## Open items
 
 1. After 23 Nov 2026: check the reopened Seiden's hours and whether the paid area's closing times change; refresh the Shuri place page and Costs.
 2. Sēfa-utaki: confirm ¥300 against the Nanjō City site (one listing mentions ¥600 at some periods).
-3. Coordinates: Zamami port and Kokusai-dōri on OpenStreetMap.
+3. Coordinates: Zamami port (Kerama place page) on OpenStreetMap.
 4. Photos: candidate titles still unconfirmed (see below); a post-23-Nov photo of the rebuilt Seiden would suit the Shuri slot.
 
 ## Changed vs the old brochure
@@ -140,3 +140,52 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (spread, pages 4–5) | Kerama Islands / 慶良間諸島 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
 | Caption (full page, page 10) | Through the vermilion gates of Shuri Castle, seat of the Ryūkyū kings, Naha | src/data/photos/manifest/okinawa-coral-islands.json → `okinawa-fullpage` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (full page, page 10) | Shuri Castle / 首里城 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (`p8`, "Where it all is") was replaced in the same position by a photo gallery, **Coral
+walls, red tiles**: real photographs of 懐かしい (natsukashii) Okinawa — a royal stone road, an old
+farmhouse and a red-tiled island village. Each caption names the place and gives one short detail;
+nothing else is printed. The map's pins (Naha Airport, Kokusai-dōri, Sēfa-utaki, Peace Memorial Park)
+and its body text are gone with it; the place pages keep their own `lat`/`lng`.
+
+Searched with web search only (WebFetch/curl blocked): searches N1–N9 of 22 shared with the Naoshima
+brochure. Tsuboya and Bise were left out because the "Old Ryūkyū, everyday Okinawa" gallery (`p7`)
+already shows them.
+
+### Searches
+
+| # | Query (abridged) | Key result |
+| --- | --- | --- |
+| N1 | site:commons … Kinjo-cho stone-paved road Shuri | No Commons pages; road built 1522 under King Shō Shin as part of the royal road from Shuri Castle to Naha port, ≈ 300 m survives, survived the Battle of Okinawa (samurai-archives.com; gltjp.com) |
+| N2 | commons 首里金城町石畳道 jpg | No Commons pages; 1522, part of the royal 真珠道 ("Pearl Road"), one of Japan's 100 Roads (tabi-mag.jp; rurubu.jp; mlit.go.jp) |
+| N3 | "Kinjo" Ishidatami Shuri Naha commons | No Commons file of the road; ≈ 300 m of Okinawan limestone downhill from the castle (japantravel.com) |
+| N4 | site:commons … Taketomi village street stone wall | No Commons pages; coral-limestone walls along white-sand roads (samurai-archives.com; en.wikipedia.org "Taketomi, Okinawa") |
+| N5 | "File:" Taketomijima jpg Wikimedia Commons village | No Commons pages; red clay-tiled roofs with shīsā and low coral walls (en.wikivoyage.org; mlit.go.jp) |
+| N6 | Taketomi Island village red tile roofs coral stone wall (commons.wikimedia.org only) | File:Village in Taketomi Island - located at southwest Japan.jpg; File:Taketomi Island01s3s7000.jpg; File:Taketomi Island05s5s4592.jpg; Category:Taketomijima (Yaeyama Islands; Important Preservation District for Groups of Historic Buildings) |
+| N7 | Kinjo-cho stone-paved road Shuri Naha (commons only) | File:Kinjocho ishidatami-michi Shuri Naha01n4272.jpg; File:Kinjocho ishidatami-michi Shuri Naha04n4272.jpg (captioned "Shuri Kinjocho-ishidatami-michi … 首里金城町石畳道") |
+| N8 | Nakamura House Kitanakagusuku Okinawa residence (commons only) | File:Nakamura House Kitanakagusuku23n3104.jpg; File:Nakamura House Kitanakagusuku19n3000.jpg; Category:Nakamura House (Kitanakagusuku) (Important Cultural Property; 18th century; Ryūkyū architecture) |
+| N9 | 中村家住宅 北中城村 重要文化財 18世紀 石垣 フクギ | Mid-18th-century house of a wealthy farming family; Important Cultural Property since 1972; coral-limestone walls and red tiles (tabi-mag.jp; rurubu.jp; sitereports.nabunken.go.jp) |
+
+### Facts
+
+| Place (photo slot) | Japanese | Claim in caption | Sources | Status |
+| --- | --- | --- | --- | --- |
+| Shuri Kinjō-chō stone-paved road (`okinawa-nostalgia-kinjocho`) | 首里金城町石畳道（きんじょうちょう いしだたみみち） | Laid in 1522; runs down from Shuri Castle | https://samurai-archives.com/wiki/Shuri_Kinjo_stone-paved_road ; https://tabi-mag.jp/on0017/ ; https://www.gltjp.com/en/directory/item/14034/ ; https://en.jal.japantravel.com/okinawa/kinjo-cho-ishidatami-michi-naha/8273 ; https://rurubu.jp/andmore/spot/80042496 | VERIFIED (1522: 2 sources; "down from the castle": 3). Length (≈ 300 m), its survival through the war and the 100 Roads listing are not printed. Sources note the stones are slippery when wet. |
+| Nakamura House, Kitanakagusuku (`okinawa-nostalgia-nakamura-house`) | 中村家住宅（北中城村） | An 18th-century farmhouse of red tiles and coral-stone walls | https://commons.wikimedia.org/wiki/Category:Nakamura_House_(Kitanakagusuku) ; https://tabi-mag.jp/on0049/ ; https://rurubu.jp/andmore/spot/80043323 | VERIFIED ("18th century": Commons + 2 guides; walls of porous coral limestone and red roof tiles: tabi-mag). Exact year (c. 1720 vs c. 1750) and the fukugi trees' age (180 vs 300 years) conflict between sources — not printed. Important Cultural Property (1972) not printed. |
+| Taketomi Island (`okinawa-nostalgia-taketomi`) | 竹富島（八重山諸島） | Red-tiled houses, coral-stone walls and white-sand lanes, in the Yaeyama Islands | https://commons.wikimedia.org/wiki/Category:Taketomijima ; https://samurai-archives.com/wiki/Taketomi ; https://en.wikipedia.org/wiki/Taketomi,_Okinawa ; https://en.wikivoyage.org/wiki/Taketomi | VERIFIED. Taketomi lies far from the brochure's Naha–Kerama–Motobu focus, so the caption names the Yaeyama Islands. Preservation-district status and water-buffalo carts not printed. |
+
+### Photos
+
+Candidates are exact Commons titles whose file pages appeared in the search results (N6–N8);
+nothing was guessed. Each slot also has a Commons `query` for the app's automatic fallback.
+
+| Slot | Candidates | Why / caveats |
+| --- | --- | --- |
+| `okinawa-nostalgia-kinjocho` (any) | 1. File:Kinjocho ishidatami-michi Shuri Naha01n4272.jpg · 2. File:Kinjocho ishidatami-michi Shuri Naha04n4272.jpg | 663highland's series (4272 px wide); the category Streets in Naha › Kinjō-chō has about 12 files for the curator to compare. Query: "Kinjocho ishidatami-michi Shuri". |
+| `okinawa-nostalgia-nakamura-house` (any) | 1. File:Nakamura House Kitanakagusuku23n3104.jpg · 2. File:Nakamura House Kitanakagusuku19n3000.jpg | 663highland, about 3000 px wide. Curator: prefer an exterior showing the roof and the stone wall over interiors. Query: "Nakamura House Kitanakagusuku". |
+| `okinawa-nostalgia-taketomi` (wide) | 1. File:Village in Taketomi Island - located at southwest Japan.jpg · 2. File:Taketomi Island01s3s7000.jpg · 3. File:Taketomi Island05s5s4592.jpg | #1's description says the village keeps the old Okinawan townscape; #2/#3 are 663highland (7000 / 4592 px). Contents not seen — the curator checks that one shows the red roofs and stone walls. Query: "Taketomi Island village". |
+
+Considered but not used: Tsuboya Yachimun-dōri and Bise's fukugi lanes (already in `p7`); a
+water-buffalo cart on Taketomi (File:Suigyusha-Taketomijima.jpg is only 800 px wide and was seen on a
+mirror, not on Commons).

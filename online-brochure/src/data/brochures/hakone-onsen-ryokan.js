@@ -202,16 +202,27 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'The Hakone loop, mapped',
-      body: 'Train, cable car, ropeway and boat link the sights in a loop — every leg covered by the Hakone Freepass.',
-      places: [
-        { name: 'Hakone-Yumoto', nameJp: '箱根湯本', lat: 35.2334, lng: 139.1037, note: 'Romancecar terminus, info centre' },
-        { name: 'Hakone Open-Air Museum', nameJp: '彫刻の森美術館', lat: 35.2447, lng: 139.0514, note: 'Sculpture park, since 1969' },
-        { name: 'Sōunzan', nameJp: '早雲山', lat: 35.2465, lng: 139.0359, note: 'Cable car meets the ropeway' },
-        { name: 'Ōwakudani', nameJp: '大涌谷', lat: 35.2419, lng: 139.0207, note: 'Sulphur vents, black eggs' },
-        { name: 'Hakone Shrine', nameJp: '箱根神社', lat: 35.2039, lng: 139.0256, note: 'Peace Torii in the lake' },
-        { name: 'Hakone Checkpoint', nameJp: '箱根関所', lat: 35.1925, lng: 139.0261, note: 'Edo-era barrier, rebuilt' },
+      type: 'gallery',
+      heading: 'Where old travellers rested',
+      items: [
+        {
+          photo: 'hakone-nostalgia-cedar-avenue',
+          art: 'asanoha',
+          seed: 57,
+          caption: 'Ancient Cedar Avenue — towering cedars on the old Tōkaidō in Hakone',
+        },
+        {
+          photo: 'hakone-nostalgia-amazake-chaya',
+          art: 'enso',
+          seed: 64,
+          caption: 'Amazake-chaya — a thatched teahouse on the old Tōkaidō, still serving sweet amazake',
+        },
+        {
+          photo: 'hakone-nostalgia-fujiya-hotel',
+          art: 'sakura',
+          seed: 78,
+          caption: 'Fujiya Hotel, Miyanoshita — a classic hotel that opened in 1878',
+        },
       ],
     },
     {

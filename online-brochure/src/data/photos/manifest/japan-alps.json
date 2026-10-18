@@ -127,6 +127,61 @@
       "place": "Takayama",
       "focus": "50% 50%",
       "query": "Takayama Festival float yatai"
+    },
+    {
+      "id": "alps-nostalgia-furukawa",
+      "use": "any",
+      "candidates": [
+        "File:Hida Furukawa 20200620 P2 (cropped).jpg",
+        "File:Setogawa River flowing behind Enkoji Temple in Fukukawa, Hida, Gifu.JPG"
+      ],
+      "alt": "A narrow stone-lined canal running past white-walled storehouses and old wooden buildings",
+      "caption": "Hida-Furukawa — the Seto River canal and its white-walled storehouses, where carp swim from spring to autumn",
+      "place": "Hida-Furukawa, Gifu",
+      "focus": "50% 55%",
+      "query": "Hida Furukawa Setogawa canal white wall storehouses"
+    },
+    {
+      "id": "alps-nostalgia-nakamachi",
+      "use": "wide",
+      "candidates": [
+        "File:Nakamachi street Matsumoto Nagano pref Japan01s3.jpg",
+        "File:Nakamachi street Matsumoto Nagano pref Japan02s3.jpg",
+        "File:Nakamachi street Matsumoto Nagano pref Japan06n.jpg"
+      ],
+      "alt": "A quiet street of old two-storey storehouses with white plaster and black-and-white diagonal-tiled walls",
+      "caption": "Nakamachi, Matsumoto — a merchant street of kura storehouses with black-and-white namako walls",
+      "place": "Nakamachi, Matsumoto",
+      "focus": "50% 50%",
+      "query": "Nakamachi street Matsumoto kura storehouses"
+    },
+    {
+      "id": "alps-nostalgia-narai",
+      "use": "wide",
+      "candidates": [
+        "File:Nakasendo Narai-juku08n4272.jpg",
+        "File:220729 Nakasendo Narai-juku Shiojiri Nagano pref Japan03s5.jpg",
+        "File:Narai post town.JPG"
+      ],
+      "alt": "A long, straight street of dark two-storey wooden inns and shops with deep eaves",
+      "caption": "Narai-juku — a long street of wooden inns and shops on the old Nakasendō, in the Kiso Valley",
+      "place": "Narai-juku, Shiojiri",
+      "focus": "50% 50%",
+      "query": "Narai-juku Nakasendo townscape"
+    },
+    {
+      "id": "alps-nostalgia-tsumago",
+      "use": "wide",
+      "candidates": [
+        "File:Tsumago-juku 1.jpg",
+        "File:Tsumago-juku 3.jpg",
+        "File:Tsumago 2009 4.JPG"
+      ],
+      "alt": "A gently sloping street of old wooden houses with latticed fronts and low eaves",
+      "caption": "Tsumago-juku — a Nakasendō post town kept much as it looked in the Edo period",
+      "place": "Tsumago-juku, Nagiso",
+      "focus": "50% 50%",
+      "query": "Tsumago-juku Nakasendo street"
     }
   ]
 }

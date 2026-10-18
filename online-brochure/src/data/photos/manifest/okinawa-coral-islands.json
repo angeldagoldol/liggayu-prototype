@@ -156,6 +156,46 @@
       "caption": "Through the vermilion gates of Shuri Castle, seat of the Ryūkyū kings, Naha",
       "place": "Shuri Castle",
       "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-nostalgia-kinjocho",
+      "use": "any",
+      "candidates": [
+        "File:Kinjocho ishidatami-michi Shuri Naha01n4272.jpg",
+        "File:Kinjocho ishidatami-michi Shuri Naha04n4272.jpg"
+      ],
+      "query": "Kinjocho ishidatami-michi Shuri",
+      "alt": "A worn limestone-paved lane sloping between old stone walls and trees",
+      "caption": "Shuri Kinjō-chō — a stone-paved road laid in 1522, winding down from Shuri Castle",
+      "place": "Shuri Kinjō-chō stone-paved road, Naha",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "okinawa-nostalgia-nakamura-house",
+      "use": "any",
+      "candidates": [
+        "File:Nakamura House Kitanakagusuku23n3104.jpg",
+        "File:Nakamura House Kitanakagusuku19n3000.jpg"
+      ],
+      "query": "Nakamura House Kitanakagusuku",
+      "alt": "A low Okinawan farmhouse with a red-tiled roof behind walls of grey coral stone",
+      "caption": "Nakamura House, Kitanakagusuku — an 18th-century farmhouse of red tiles and coral-stone walls",
+      "place": "Nakamura House, Kitanakagusuku",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-nostalgia-taketomi",
+      "use": "wide",
+      "candidates": [
+        "File:Village in Taketomi Island - located at southwest Japan.jpg",
+        "File:Taketomi Island01s3s7000.jpg",
+        "File:Taketomi Island05s5s4592.jpg"
+      ],
+      "query": "Taketomi Island village",
+      "alt": "Low houses with red-tiled roofs behind coral-stone walls along sandy village lanes",
+      "caption": "Taketomi Island, Yaeyama — red-tiled houses, coral-stone walls and white-sand lanes",
+      "place": "Taketomi Island",
+      "focus": "50% 55%"
     }
   ]
 }

@@ -153,6 +153,60 @@
       "place": "Kabukichō, Shinjuku",
       "focus": "50% 45%",
       "query": "Kabukicho Ichiban-gai arch neon night"
+    },
+    {
+      "id": "tokyo-nostalgia-yanaka",
+      "use": "wide",
+      "candidates": [
+        "File:Yūyake Dandan.jpg",
+        "File:Yanaka Ginza shopping street (4041690725).jpg",
+        "File:Twilight Yanaka, Tokyo.jpg"
+      ],
+      "alt": "Steps leading down to a narrow street of small, low-rise shops in Yanaka",
+      "caption": "Yūyake Dandan, Yanaka — the “sunset steps” down to Yanaka Ginza",
+      "place": "Yūyake Dandan and Yanaka Ginza",
+      "focus": "50% 55%",
+      "query": "Yanaka Ginza Yuyake Dandan"
+    },
+    {
+      "id": "tokyo-nostalgia-denboin-dori",
+      "use": "wide",
+      "candidates": [
+        "File:2018-09-24 Denboin Street, Asakusa.jpg",
+        "File:Denboin Street, Asakusa, Tokyo.jpg",
+        "File:08 Denpoin-dori, Asakusa (Tòquio), decoració pictòrica a les portes de les botigues.jpg"
+      ],
+      "alt": "A pedestrian street of low shops with tiled roofs and hanging signboards in Asakusa",
+      "caption": "Denbōin-dōri, Asakusa — Edo-style shopfronts west of Nakamise",
+      "place": "Denbōin-dōri, Asakusa",
+      "focus": "50% 50%",
+      "query": "Denpoin Street Asakusa"
+    },
+    {
+      "id": "tokyo-nostalgia-hanayashiki",
+      "use": "any",
+      "candidates": [
+        "File:Asakusa Hanayashiki -01.jpg",
+        "File:Asakusa Hanayashiki -03.jpg"
+      ],
+      "alt": "The small, old-fashioned rides of Hanayashiki amusement park packed among Asakusa’s buildings",
+      "caption": "Hanayashiki, Asakusa — rides in a garden first opened in 1853",
+      "place": "Hanayashiki, Asakusa",
+      "focus": "50% 45%",
+      "query": "Asakusa Hanayashiki"
+    },
+    {
+      "id": "tokyo-nostalgia-shibamata",
+      "use": "any",
+      "candidates": [
+        "File:Taishakuten Sando -02.jpg",
+        "File:Shibamata street.jpg"
+      ],
+      "alt": "A narrow approach street lined with low, old-fashioned shops leading to Taishakuten temple in Shibamata",
+      "caption": "Taishakuten Sandō, Shibamata — the dango-shop street of the Tora-san films",
+      "place": "Shibamata Taishakuten Sandō",
+      "focus": "50% 50%",
+      "query": "Shibamata Taishakuten Sando"
     }
   ]
 }

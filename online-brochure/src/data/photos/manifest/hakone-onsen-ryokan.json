@@ -145,6 +145,44 @@
       "place": "Hakone Shrine",
       "focus": "50% 45%",
       "query": "Hakone Shrine torii"
+    },
+    {
+      "id": "hakone-nostalgia-cedar-avenue",
+      "use": "any",
+      "candidates": [
+        "File:Ancient Cedar Avenue, Hakone old road - Hakone, Japan - DSC05952.jpg",
+        "File:Ancient Cedar Avenue, Hakone old road - Hakone, Japan - DSC05938.jpg"
+      ],
+      "alt": "A path running between the massive trunks of ancient cedar trees on the old Tōkaidō in Hakone",
+      "caption": "Ancient Cedar Avenue — towering cedars on the old Tōkaidō in Hakone",
+      "place": "Hakone old road (old Tōkaidō)",
+      "focus": "50% 50%",
+      "query": "Ancient Cedar Avenue Hakone old road"
+    },
+    {
+      "id": "hakone-nostalgia-amazake-chaya",
+      "use": "any",
+      "candidates": [
+        "File:Amazake-cyaya 01.jpg"
+      ],
+      "alt": "A traditional thatched-roof teahouse among trees beside the old Tōkaidō in Hakone",
+      "caption": "Amazake-chaya — a thatched teahouse on the old Tōkaidō, still serving sweet amazake",
+      "place": "Amazake-chaya, Hakone",
+      "focus": "50% 50%",
+      "query": "Amasake Chaya Hakone"
+    },
+    {
+      "id": "hakone-nostalgia-fujiya-hotel",
+      "use": "any",
+      "candidates": [
+        "File:Fujiya Hotel Hana-goten.JPG",
+        "File:Happiness Hill - Fujiya Hotel - Hakone, Japan - DSC06142.jpg"
+      ],
+      "alt": "Historic wooden buildings of the Fujiya Hotel with traditional Japanese roofs at Miyanoshita",
+      "caption": "Fujiya Hotel, Miyanoshita — a classic hotel that opened in 1878",
+      "place": "Fujiya Hotel, Miyanoshita",
+      "focus": "50% 45%",
+      "query": "Fujiya Hotel Hakone"
     }
   ]
 }

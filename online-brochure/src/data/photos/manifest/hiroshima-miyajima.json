@@ -133,6 +133,57 @@
       "place": "Itsukushima Shrine, Miyajima",
       "focus": "50% 50%",
       "query": "Itsukushima torii sunset"
+    },
+    {
+      "id": "miyajima-nostalgia-machiya-dori",
+      "use": "wide",
+      "candidates": [
+        "File:Machiya street. Miyajima.jpg",
+        "File:Machiya-dori Street on Itsukushima Island.jpg"
+      ],
+      "alt": "A quiet lane between old two-storey wooden townhouses with tiled roofs on Miyajima",
+      "caption": "Machiya-dōri, Miyajima — the island’s old main street of long, narrow townhouses",
+      "place": "Machiya-dōri, Miyajima",
+      "focus": "50% 55%",
+      "query": "Machiya-dori Miyajima street"
+    },
+    {
+      "id": "hiroshima-nostalgia-takehara",
+      "use": "any",
+      "candidates": [
+        "File:Takehara Matsuzaka-tei 2013-08.JPG",
+        "File:Takehara Shorenji Temple 2013-08A.JPG"
+      ],
+      "alt": "Old wooden merchant houses with tiled roofs and latticed fronts in Takehara’s historic district",
+      "caption": "Takehara — the old town of salt and sake merchants known as the “Little Kyoto of Aki”",
+      "place": "Takehara Townscape Preservation District",
+      "focus": "50% 50%",
+      "query": "Takehara townscape preservation district Hiroshima"
+    },
+    {
+      "id": "hiroshima-nostalgia-onomichi",
+      "use": "any",
+      "candidates": [
+        "File:Tenneiji Onomichi01s3872.jpg",
+        "File:Tennei-ji Temple 天寧寺 - panoramio.jpg"
+      ],
+      "alt": "The wooden three-storey pagoda of Tennei-ji on a hillside above the rooftops of Onomichi",
+      "caption": "Onomichi — Tennei-ji’s three-storey pagoda on the temple-dotted slope of Mount Senkō-ji",
+      "place": "Tennei-ji, Onomichi",
+      "focus": "50% 45%",
+      "query": "Tenneiji pagoda Onomichi"
+    },
+    {
+      "id": "hiroshima-nostalgia-tomonoura",
+      "use": "wide",
+      "candidates": [
+        "File:Tomonoura08bs3200.jpg"
+      ],
+      "alt": "The old harbour of Tomonoura on the Seto Inland Sea, with traditional buildings along the water",
+      "caption": "Tomonoura, Fukuyama — an old Inland Sea port that still keeps its stone lantern of 1859",
+      "place": "Tomonoura, Fukuyama",
+      "focus": "50% 50%",
+      "query": "Tomonoura harbour joyato lantern"
     }
   ]
 }

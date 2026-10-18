@@ -124,6 +124,61 @@
       "place": "Tennōji Park",
       "focus": "50% 50%",
       "query": "Tennoji Park illumination Abeno Harukas"
+    },
+    {
+      "id": "osaka-nostalgia-hozenji-yokocho",
+      "use": "any",
+      "candidates": [
+        "File:Hozenji Yokocho at night.jpg",
+        "File:Alleyway In Old Town Osaka (254929879).jpeg"
+      ],
+      "alt": "A narrow stone-paved alley lined with small wooden restaurant fronts and glowing lanterns in the evening",
+      "caption": "Hōzenji Yokochō — a lantern-lit, stone-paved lane of small restaurants beside Hōzen-ji",
+      "place": "Hōzenji Yokochō, Minami",
+      "focus": "50% 55%",
+      "query": "Hozenji Yokocho alley Osaka"
+    },
+    {
+      "id": "osaka-nostalgia-shinsekai",
+      "use": "any",
+      "candidates": [
+        "File:Tsutenkaku-Hondori Shopping Street and Tsutenkaku Tower at night 3.jpg",
+        "File:Tsutenkaku-Hondori Shopping Street at night.jpg",
+        "File:Shinsekai and Tsutenkaku at night 2019-04-12.jpg"
+      ],
+      "alt": "A shopping street of bright neon signs at night, with the lit-up Tsūtenkaku tower rising at its far end",
+      "caption": "Shinsekai — the neon of Tsūtenkaku Hondōri, the shop street below the tower of 1956",
+      "place": "Tsūtenkaku Hondōri, Shinsekai",
+      "focus": "50% 40%",
+      "query": "Tsutenkaku Hondori shopping street Shinsekai"
+    },
+    {
+      "id": "osaka-nostalgia-tenjinbashisuji",
+      "use": "wide",
+      "candidates": [
+        "File:Tenjinbashisuji Shopping Street - Jul 14, 2011.jpg",
+        "File:Tenjimbashi6 on Tenjimbashisuji-Mall.JPG",
+        "File:Tenjinbashi-suji Syotengai1.jpg"
+      ],
+      "alt": "A long covered shopping arcade lined with small shops and hanging signs, stretching into the distance",
+      "caption": "Tenjinbashi-suji — some 2.6 km of arcade, called Japan’s longest shopping street",
+      "place": "Tenjinbashi-suji Shopping Street, Kita",
+      "focus": "50% 50%",
+      "query": "Tenjinbashisuji shopping street Osaka"
+    },
+    {
+      "id": "osaka-nostalgia-hankai-tram",
+      "use": "wide",
+      "candidates": [
+        "File:View of Ebisucho Station (Hankai Line).jpg",
+        "File:Hankai Ebisucho Station.JPG",
+        "File:Ebisucho Station Home DSCN3438 20120922.JPG"
+      ],
+      "alt": "The small street-level tram station of the Hankai Line at Ebisuchō",
+      "caption": "Ebisuchō — the Hankai Tramway’s station on the edge of Shinsekai",
+      "place": "Ebisuchō Station (Hankai Tramway)",
+      "focus": "50% 55%",
+      "query": "Hankai Tramway Ebisucho tram"
     }
   ]
 }

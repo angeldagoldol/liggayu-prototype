@@ -156,6 +156,60 @@
       "place": "Arashiyama Bamboo Grove",
       "focus": "50% 50%",
       "query": "Arashiyama bamboo grove path"
+    },
+    {
+      "id": "kyoto-nostalgia-ninenzaka",
+      "use": "wide",
+      "candidates": [
+        "File:Ninenzaka-kyoto.JPG",
+        "File:Sannenzaka street, Kyoto (3811257874).jpg",
+        "File:Gion - Nineizaka (Ninenzaka), Kyoto, Japan (48923272228).jpg"
+      ],
+      "alt": "A stone-paved lane sloping between old two-storey wooden shop houses with tiled roofs",
+      "caption": "Ninenzaka & Sannenzaka — stone-paved slopes of wooden shops below Kiyomizu-dera",
+      "place": "Ninenzaka & Sannenzaka, Higashiyama",
+      "focus": "50% 55%",
+      "query": "Ninenzaka Sannenzaka Kyoto street"
+    },
+    {
+      "id": "kyoto-nostalgia-shirakawa",
+      "use": "any",
+      "candidates": [
+        "File:Next to the Gion Tatsumi Bridge (44600422074).jpg",
+        "File:Shirakara Canal, Gion, Kyoto.jpg"
+      ],
+      "alt": "A shallow canal lined with willows and the wooden backs of old teahouses",
+      "caption": "Gion Shirakawa — willows and old teahouses along the canal by Tatsumi Bridge",
+      "place": "Shirakawa, Gion",
+      "focus": "50% 50%",
+      "query": "Gion Shirakawa Tatsumi bridge"
+    },
+    {
+      "id": "kyoto-nostalgia-pontocho",
+      "use": "any",
+      "candidates": [
+        "File:Pontocho Alley, Kyoto - Flickr - Sergiy Galyonkin.jpg",
+        "File:Pontocho Alley, Kyoto (53589184823).jpg",
+        "File:Pontocho, Kyoto (3810354565).jpg"
+      ],
+      "alt": "A narrow paved alley between wooden restaurant fronts hung with lanterns and noren curtains",
+      "caption": "Pontochō — a narrow lane of traditional restaurants beside the Kamo River",
+      "place": "Pontochō",
+      "focus": "50% 50%",
+      "query": "Pontocho alley Kyoto"
+    },
+    {
+      "id": "kyoto-nostalgia-fushimi",
+      "use": "wide",
+      "candidates": [
+        "File:Gekkeikan Okura Sake Museum02s4592.jpg",
+        "File:Gekkeikan Okura Sake Museum03st3200.jpg"
+      ],
+      "alt": "Old sake-brewery buildings with dark timber, white plaster walls and tiled roofs on a quiet street",
+      "caption": "Fushimi — Gekkeikan’s old sake brewery, now the Okura Sake Museum",
+      "place": "Gekkeikan Okura Sake Museum, Fushimi",
+      "focus": "50% 50%",
+      "query": "Gekkeikan Okura Sake Museum Fushimi"
     }
   ]
 }

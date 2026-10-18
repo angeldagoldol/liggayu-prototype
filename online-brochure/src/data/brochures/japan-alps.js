@@ -196,15 +196,18 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'The Alps, mapped',
-      body: 'The Hida limited express climbs from Nagoya to Takayama; buses link the valleys; Matsumoto lies on the far side of the Northern Alps.',
-      places: [
-        { name: 'Nagoya', nameJp: '名古屋', lat: 35.1709, lng: 136.8815, note: 'Hida limited express, about 2 h 20 min to Takayama' },
-        { name: 'Takayama', nameJp: '高山', lat: 36.141, lng: 137.2615, note: 'Sanmachi, morning markets, the Jinya' },
-        { name: 'Shirakawa-gō', nameJp: '白川郷', lat: 36.2575, lng: 136.9064, note: 'Gasshō farmhouses, UNESCO 1995' },
-        { name: 'Kamikochi', nameJp: '上高地', lat: 36.2489, lng: 137.6378, note: 'Kappa Bridge, car-free valley' },
-        { name: 'Matsumoto Castle', nameJp: '松本城', lat: 36.2386, lng: 137.9689, note: 'National Treasure keep' },
+      type: 'gallery',
+      heading: 'Old streets of the Alps',
+      items: [
+        {
+          photo: 'alps-nostalgia-furukawa',
+          art: 'seigaiha',
+          seed: 41,
+          caption: 'Hida-Furukawa — the Seto River canal and its white-walled storehouses, where carp swim from spring to autumn',
+        },
+        { photo: 'alps-nostalgia-nakamachi', art: 'ichimatsu', seed: 58, caption: 'Nakamachi, Matsumoto — a merchant street of kura storehouses with black-and-white namako walls' },
+        { photo: 'alps-nostalgia-narai', art: 'asanoha', seed: 34, caption: 'Narai-juku — a long street of wooden inns and shops on the old Nakasendō, in the Kiso Valley' },
+        { photo: 'alps-nostalgia-tsumago', art: 'kumo', seed: 42, caption: 'Tsumago-juku — a Nakasendō post town kept much as it looked in the Edo period' },
       ],
     },
     {

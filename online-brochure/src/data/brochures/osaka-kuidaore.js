@@ -211,16 +211,28 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where to eat',
-      body: 'Dōtonbori, Hōzen-ji and Kuromon Market are a short walk apart in Minami. Shinsekai is one stop south of Nippombashi on the Sakaisuji Line; the castle is a short metro ride to the north-east.',
-      places: [
-        { name: 'Osaka Castle', nameJp: '大阪城', lat: 34.6873, lng: 135.5259, note: 'Main tower and park' },
-        { name: 'Dōtonbori', nameJp: '道頓堀', lat: 34.6687, lng: 135.5013, note: 'Canal, neon and takoyaki' },
-        { name: 'Hōzen-ji', nameJp: '法善寺', lat: 34.6681, lng: 135.5025, note: 'Mossy Fudō and a stone lane' },
-        { name: 'Kuromon Market', nameJp: '黒門市場', lat: 34.6658, lng: 135.5065, note: 'Market grazing' },
-        { name: 'Shinsekai & Tsūtenkaku', nameJp: '新世界・通天閣', lat: 34.6525, lng: 135.5062, note: 'Kushikatsu under the tower' },
-        { name: 'Shin-Osaka Station', nameJp: '新大阪駅', lat: 34.7334, lng: 135.5002, note: 'Shinkansen' },
+      type: 'gallery',
+      heading: 'Old streets of Osaka',
+      items: [
+        {
+          photo: 'osaka-nostalgia-hozenji-yokocho',
+          art: 'shippo',
+          seed: 44,
+          caption: 'Hōzenji Yokochō — a lantern-lit, stone-paved lane of small restaurants beside Hōzen-ji',
+        },
+        {
+          photo: 'osaka-nostalgia-shinsekai',
+          art: 'hinomaru',
+          seed: 56,
+          caption: 'Shinsekai — the neon of Tsūtenkaku Hondōri, the shop street below the tower of 1956',
+        },
+        {
+          photo: 'osaka-nostalgia-tenjinbashisuji',
+          art: 'ichimatsu',
+          seed: 63,
+          caption: 'Tenjinbashi-suji — some 2.6 km of arcade, called Japan’s longest shopping street',
+        },
+        { photo: 'osaka-nostalgia-hankai-tram', art: 'kumo', seed: 71, caption: 'Ebisuchō — the Hankai Tramway’s station on the edge of Shinsekai' },
       ],
     },
     {

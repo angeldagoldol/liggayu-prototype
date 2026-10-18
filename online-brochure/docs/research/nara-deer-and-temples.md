@@ -48,15 +48,14 @@ least two sources unless marked **single source**.
 | Kintetsu Kyoto–Nara | express ~45 min ¥760; limited express ~35 min ¥1,280 total (¥760 + ¥520) | https://www.japan-guide.com/e/e4107.html ; https://www.kintetsu.co.jp/foreign/english/aoniyoshi/ | |
 | JR Kyoto–Nara | Miyakoji Rapid ~45 min, ¥720; JR Pass valid on JR, not Kintetsu | https://www.japan-guide.com/e/e4107.html ; https://www.gltjp.com/ja/article/item/20942/ (Feb 2025 fare) | No 2025–26 JR West change found for this section. Since Mar 2026 the Miyakoji Rapid also stops at Inari. |
 | Kintetsu Osaka-Namba–Nara | ¥680; ~40 min | https://www.kintetsu.co.jp/foreign/english/aoniyoshi/ ; https://narashikanko.or.jp/en/access/index.html | Visit Nara says ~34 min. |
-| JR and Kintetsu Nara stations | 15–20 min apart on foot | https://www.japan-guide.com/e/e4107.html | **Single source.** |
 | Tourist information | Nara City TIC (Sanjō-honmachi, near JR Nara) 9:00–19:00; Kintetsu Nara Station TIC ~5 min from the station, 9:00–19:00 | https://www.visitnara.jp/venues/CAR009/ ; https://www.visitnara.jp/venues/A00564/ ; https://narashikanko.or.jp/en/news/13403/ | Older pages give 9:00–18:00. Phone numbers omitted. |
 | Man'yōshū poem | あをによし奈良の都は咲く花のにほふがごとく今盛りなり — Ono no Oyu, Man'yōshū book 3, no. 328 | https://en.wikipedia.org/wiki/Ono_no_Oyu ; https://vsarpj.orinst.ox.ac.uk/lexicon/glosses/MYS.3.328.html ; https://www.asahi-net.or.jp/~SG2H-YMST/manyok/manyok03.html | Original script 青丹吉 寧楽乃京師者 咲花乃 薫如 今盛有; we print the standard modern kana reading. **Fact-check:** the first English version ("The capital at Nara, / fair in blue and red, / flourishes now / as flowers glow / in full bloom.") followed Ian Hideo Levy’s published translation line for line (opening line and “flourishes now” identical), so it was replaced with an independent one: "Nara, the capital, / glows like blossoms / in their fullest bloom: / now it is at its height." — 奈良の都は = the capital, Nara; 咲く花のにほふがごとく = like the radiance of flowers in bloom; 今盛りなり = is now at its height. The pillow word あをによし (“good blue-green earth”) is left untranslated, as is usual. Role now reads “book 3, poem 328”. Translation: Tabi Guides. |
-| Coordinates | Tōdai-ji 34.6892, 135.8397; Kasuga Taisha 34.6814, 135.8483; Kōfuku-ji 34.6833, 135.8312; Gangō-ji 34.6781, 135.8311 | https://en.wikipedia.org/wiki/T%C5%8Ddai-ji ; https://en.wikipedia.org/wiki/Kasuga-taisha ; https://en.wikipedia.org/wiki/K%C5%8Dfuku-ji ; https://en.wikipedia.org/wiki/Historic_Monuments_of_Ancient_Nara | Station pins deliberately left off the map (coordinates not verified this session). |
+| Coordinates (place pages, brochure location) | Tōdai-ji 34.6892, 135.8397; Kasuga Taisha 34.6814, 135.8483; Kōfuku-ji 34.6833, 135.8312 | https://en.wikipedia.org/wiki/T%C5%8Ddai-ji ; https://en.wikipedia.org/wiki/Kasuga-taisha ; https://en.wikipedia.org/wiki/K%C5%8Dfuku-ji | The map page (which also pinned Gangō-ji and said the two Nara stations are 15–20 minutes apart on foot) was replaced by the *Old merchant lanes of Nara* gallery (18 October 2026); those map-only facts are no longer published. |
 
 ## Not verified / left out
 
 - Emperor Shōmu as founder, "largest wooden building", Nigatsu-dō (hours/fee), the Shōsō-in exhibition dates for autumn 2026, seasonal deer warnings (rut / fawning), bus fares, Gangō-ji fee, walking time to Tōdai-ji. The web-search budget ran out before these could be checked; they can be added in a follow-up pass.
-- "Short walk from Kintetsu-Nara" (Kōfuku-ji) and "Through Nara Park from Kintetsu-Nara" (Tōdai-ji) are directions without times; Kōfuku-ji's proximity is from the map, not a quoted source.
+- "Short walk from Kintetsu-Nara" (Kōfuku-ji) and "Through Nara Park from Kintetsu-Nara" (Tōdai-ji) are directions without times; Kōfuku-ji's proximity is from its coordinates, not a quoted source.
 
 ## Photos
 
@@ -106,9 +105,8 @@ plausible and twice-sourced above but could not be confirmed independently in th
 | Naramachi Kōshi-no-Ie: free, 9:00–17:00, closed Mondays | Confirmed | |
 | Ukimidō: hexagonal pavilion on Sagi-ike | Confirmed | |
 | Kintetsu Kyoto–Nara express ¥760, ~45 min; limited express ~35 min, ¥1,280; Osaka-Namba ¥680, ~40 min; JR Miyakoji Rapid ¥720, ~45 min; JR Pass not valid on Kintetsu | Confirmed (fares: **VERIFIED** in the live check) | Fares match the post-April-2023 Kintetsu tables; no later revision known to the reviewer. |
-| JR Nara ↔ Kintetsu-Nara 15–20 min on foot | Plausible | About 1 km; single source. |
 | Tourist information 9:00–19:00 | **VERIFIED** in the live check | Hours at Nara’s centres have changed several times since 2020; single official page. No phone numbers printed. |
-| Coordinates (4 places + location) | Confirmed | All fall inside Nara Prefecture in the polygon test; relative layout is right (Kōfuku-ji → Tōdai-ji ≈ 1 km NE; Gangō-ji ≈ 600 m south of Kōfuku-ji; Kasuga ≈ 1.6 km east of Kōfuku-ji). |
+| Coordinates (3 place pages + location) | Confirmed | All fall inside Nara Prefecture in the polygon test; relative layout is right (Kōfuku-ji → Tōdai-ji ≈ 1 km NE; Kasuga ≈ 1.6 km east of Kōfuku-ji). (The map page and its Gangō-ji pin were removed on 18 October 2026.) |
 | Phrasebook (5 entries) | Confirmed | Natural, polite Japanese; macrons correct (Tōdai-ji). |
 | Publisher / people / businesses / phone numbers | Clean | Published by Tabi Guides; no invented people, businesses, testimonials or phone numbers. Shika senbei vendors are mentioned generically. |
 | Copy length | Within limits | Every field is within the Studio editor’s limits; place bodies (340–389 chars) match the other brochures. |
@@ -154,3 +152,34 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (spread, pages 4–5) | Nara Park / 奈良公園 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
 | Caption (full page, page 8) | Kōfuku-ji’s Five-storey Pagoda, rebuilt in 1426, rising above the trees of Nara Park | src/data/photos/manifest/nara-deer-and-temples.json → `nara-fullpage` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (full page, page 8) | Kōfuku-ji / 興福寺 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (`p8`, "Where it all is") was replaced in the same position by a photo gallery, **Old
+merchant lanes of Nara**: real photographs of 懐かしい (natsukashii) places — two small museums in
+old Naramachi town houses and the Edo-period merchant town of Imai-chō. Each caption names the
+place and gives one short detail; nothing else is printed. Searched with web search only (Commons
+file pages and guide excerpts; 16 searches shared with the Kyoto brochure).
+
+| Place (photo slot) | Japanese | Claim in caption | Sources | Notes |
+| --- | --- | --- | --- | --- |
+| Naramachi Shiryōkan (`nara-nostalgia-shiryokan`) | 奈良町資料館 | A free museum of old shop signs and red cloth monkeys (migawari-zaru) | https://narashikanko.or.jp/en/spot/detail_10044.html (Nara City Tourism: private museum founded 1985, free) ; https://www.japanvisitor.com/japan-city-guides/naramachi ; https://artessere.com/nara-naramachi-museum | Hours (10:00–16:00 in one directory) and the founding year are **not printed**. The link between the monkeys and Kōshin-dō rests on one blog, so it is not printed either. |
+| Naramachi Karakuri Omochakan (`nara-nostalgia-karakuri`) | 奈良町からくりおもちゃ館 | Replicas of Edo-period toys, in an old town house | https://narashikanko.or.jp/en/spot/museum/naramachi-karakuriomchakan/ (hands-on reproductions of Edo-period toys in a traditional Naramachi town house; free) ; https://www.kansai.meti.go.jp/english/tvlist/kohyo/e844.html (free) ; https://commons.wikimedia.org/wiki/File:Naramachi_Karakuri_Omocha_Kan_20141001.jpg | The Commons description dates the main building to 1890 (Meiji 23) and one blog says Edo period, so **no date is printed**. Hours (9:00–17:00, closed Wednesdays) are not printed. |
+| Imai-chō, Kashihara (`nara-nostalgia-imaicho`) | 今井町（橿原市）・称念寺 | An Edo-period merchant town that grew up around Shōnen-ji | https://www.japan.travel/en/japans-local-treasures/imai-cho-japanese-architecture/ ; https://nara-sightseeing.com/blog/imai-cho-explore-a-prosperous-commercial-town-of-the-edo-period/ (temple town around Shōnen-ji, founded 1533; moats) ; https://jl-db.nfaj.go.jp/en/location/290200046/ (preserved Edo-period merchant town, Important Preservation District for Groups of Traditional Buildings) ; Commons category "Imaichō, Kashihara" | In Kashihara, south of Nara city. Building counts (500+), area and the number of Important Cultural Properties differ between sources, so **no numbers are printed**. |
+
+### Photos
+
+Candidates are exact Commons titles whose file pages appeared in the search results; nothing was
+guessed. Only one verified candidate could be found for each slot, so each has a specific Commons
+`query` for the app's automatic fallback.
+
+| Slot | Candidates | Why / caveats |
+| --- | --- | --- |
+| `nara-nostalgia-shiryokan` (any) | 1. File:Naramachi-shiryokan Nara02n3200.jpg | 663highland, Naramachi series. Query: "Naramachi Shiryokan Nara". |
+| `nara-nostalgia-karakuri` (any) | 1. File:Naramachi Karakuri Omocha Kan 20141001.jpg | Exterior of the museum's town house (Commons description). Query: "Naramachi Karakuri Omocha Kan". |
+| `nara-nostalgia-imaicho` (wide) | 1. File:Imaicho Kashihara.jpg | 4288×3216, own work (2011), CC BY-SA 3.0, "old townscape of Imai-chō". The category also lists "Imaichō Kashihara JPN 001–007", but their file pages did not appear in the searches, so they are not listed. Query: "Imaicho Kashihara townscape". |
+
+Considered but not used: Naramachi Kōshi-no-Ie, the free lattice-house replica (no Commons file
+found under its English or Japanese name, 格子の家), and a second Naramachi street view (the
+*Nara in four frames* gallery already has `nara-naramachi`, and the only other street file found,
+File:Naramachii01n3200.jpg, is one of that slot's candidates).

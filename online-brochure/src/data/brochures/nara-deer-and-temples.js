@@ -200,14 +200,12 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where it all is',
-      body: 'The sights sit in and around Nara Park, east of the stations. JR Nara and Kintetsu-Nara stations are 15–20 minutes apart on foot.',
-      places: [
-        { name: 'Kōfuku-ji', nameJp: '興福寺', lat: 34.6833, lng: 135.8312, note: 'Golden halls and treasure hall' },
-        { name: 'Tōdai-ji', nameJp: '東大寺', lat: 34.6892, lng: 135.8397, note: 'The Great Buddha' },
-        { name: 'Kasuga Taisha', nameJp: '春日大社', lat: 34.6814, lng: 135.8483, note: 'Lantern-lined shrine' },
-        { name: 'Gangō-ji (Naramachi)', nameJp: '元興寺', lat: 34.6781, lng: 135.8311, note: 'Merchant lanes and old roof tiles' },
+      type: 'gallery',
+      heading: 'Old merchant lanes of Nara',
+      items: [
+        { photo: 'nara-nostalgia-shiryokan', art: 'asanoha', seed: 41, caption: 'Naramachi Shiryōkan — a free museum of old shop signs and red cloth monkeys' },
+        { photo: 'nara-nostalgia-karakuri', art: 'shippo', seed: 9, caption: 'Karakuri Omochakan, Naramachi — replica Edo-period toys in an old town house' },
+        { photo: 'nara-nostalgia-imaicho', art: 'ichimatsu', seed: 33, caption: 'Imai-chō, Kashihara — an Edo-period merchant town that grew around Shōnen-ji' },
       ],
     },
     {

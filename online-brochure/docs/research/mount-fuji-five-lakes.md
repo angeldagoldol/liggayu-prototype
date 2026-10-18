@@ -25,7 +25,7 @@ be verified, not printed.
 
 | # | Claim (where used) | Value used | Sources | Status |
 |---|---|---|---|---|
-| 1 | Height and rank (intro, map) | 3,776 m, highest mountain in Japan | https://whc.unesco.org/en/decisions/5157 (UNESCO: 3,776 m) · https://www.yamanashi-kankou.jp/fujisanwatcher/world_heritage (highest peak in Japan) | VERIFIED |
+| 1 | Height and rank (intro) | 3,776 m, highest mountain in Japan | https://whc.unesco.org/en/decisions/5157 (UNESCO: 3,776 m) · https://www.yamanashi-kankou.jp/fujisanwatcher/world_heritage (highest peak in Japan) | VERIFIED |
 | 2 | Solitary volcanic cone ~100 km south-west of Tokyo (intro) | as printed | UNESCO decision 5157 ("solitary strato-volcano … around 100 km south-west of Tokyo") | VERIFIED |
 | 3 | UNESCO 2013, cultural site, official name, 25 component parts (intro) | "Fujisan, sacred place and source of artistic inspiration", 2013, 25 parts | https://whc.unesco.org/en/decisions/5157 · https://www.fujisan-whc.jp/en/about/parts/index.html (Yamanashi Prefectural Fujisan World Heritage Center) · https://whc.unesco.org/document/152623 | VERIFIED — inscribed June 2013, criteria (iii)(vi). |
 | 4 | Pilgrims; Hokusai and Hiroshige prints carried its image abroad (intro) | as printed | UNESCO decision 5157 (worship; Hokusai and Hiroshige prints' effect on Western art) · https://www.pref.yamanashi.jp/documents/82948/worship.pdf | VERIFIED |
@@ -56,7 +56,6 @@ be verified, not printed.
 | 29 | JR passes don't cover the Fujikyu section (costs) | as printed | https://hiddenjapan-gems.com/fujikyu-railway-pass/ · shinkansentickets.net (above) | VERIFIED |
 | 30 | Highway bus Busta Shinjuku → Kawaguchiko Station (costs) | about ¥2,200, 1 h 45 min | https://kosokubus.com/_en/bus_list/00013/00022/ (rate listing, March 2026) · https://hiddenjapan-gems.com/shinjuku-kawaguchiko-bus/ (¥2,200, some online fares ¥2,000) | VERIFIED ("about"). Booking split between Keio and Fujikyu sites from 1 Oct 2026 (single source) → not printed. |
 | 31 | Bus Kawaguchiko → Fuji Subaru Line 5th Station (costs) | about ¥2,000 one way in season, about 50 min | https://www.japan-guide.com/bus/fuji_season.html (¥2,000 / ¥3,400 return in season; ¥1,780 / ¥2,800 off-season; 45–55 min) | HEDGED — one current source, printed with "about". |
-| 32 | Map: the Yoshida trail starts at the Subaru Line 5th Station (map) | as printed | Yamanashi 2026 leaflet (5th Station trailhead) · fujisan-climb.jp/en/info/28/ | VERIFIED |
 | 33 | Quote (p12) | 蝸牛そろそろ登れ富士の山 — Kobayashi Issa (1763–1828) | https://www.takase.com/shop/haiku/issa-snail-ever-so-slowly-climb-mt-fuji-katatsuburi-sorosoro-nobore-fuji-no-yama/ · https://kanji.jepang.org/en/kanji/登/kalimat?page=4 | VERIFIED wording and attribution. Source collection/year not confirmed → not printed. English is Tabi Guides' own literal translation (labelled). Issa's dates are standard reference data, not separately searched. |
 | 34 | Websites | fujisan-climb.jp, fujisan-whc.jp, fujisan.ne.jp (/en/pages/287/ seen), whc.unesco.org (decision 5157 seen; list/1418 is Fujisan's listing page) | — | VERIFIED except `https://www.fujisan.ne.jp/en/` root and `whc.unesco.org/en/list/1418`, which follow from URLs seen but were not themselves returned — re-open at the next check. Chūreitō has no `website`: no official Fujiyoshida page was returned. |
 
@@ -64,14 +63,19 @@ be verified, not printed.
 
 | Place | lat, lng | Source / note | Status |
 |---|---|---|---|
-| Summit (Kengamine) | 35.3606, 138.7274 | Editor's Wikipedia geodata (35°21′38″N 138°43′39″E) | HEDGED (not searched) |
-| Fuji Subaru Line 5th Station | 35.3955, 138.7330 | Editor's Wikipedia geodata | HEDGED (±200 m; not searched) |
-| Kawaguchiko Station | 35.4986, 138.7686 | Editor's Wikipedia geodata | HEDGED (not searched) |
+| Summit (Kengamine) — brochure `location` | 35.3606, 138.7274 | Editor's Wikipedia geodata (35°21′38″N 138°43′39″E) | HEDGED (not searched) |
 | Lake Kawaguchi | 35.5140, 138.7550 | A point on the lake; Wikipedia gives 35°31′N 138°45′E | HEDGED |
 | Chūreitō Pagoda | 35.5012, 138.8014 | Editor's Wikipedia geodata | HEDGED (not searched) |
 | Oshino Hakkai | 35.4603, 138.8330 | Editor's Wikipedia geodata | HEDGED (not searched) |
 
-All pins pass `src/data/geo/geography.test.js`; none is a price, hour, date or access detail.
+These are the brochure `location` and the `lat`/`lng` printed beside each place name; none is a
+price, hour, date or access detail.
+
+The map page (p8, "Around the mountain") was replaced on 18 October 2026 by the **Fuji, the old
+way** photo gallery (see *Nostalgic streets* below). Its map-only pins (Kawaguchiko Station, Fuji
+Subaru Line 5th Station), their coordinates and pin notes — including the old row 32, "the Yoshida
+trail starts at the Subaru Line 5th Station" — are no longer printed anywhere, so those rows were
+removed. The 5th Station bus fare (row 31) is still printed on the costs page.
 
 ### Not printed (REMOVED)
 
@@ -109,3 +113,37 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (spread, pages 4–5) | Fuji Five Lakes / 富士五湖 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
 | Caption (full page, page 7) | Evening on Honchō-dōri, Fujiyoshida, where the old pilgrims’ town runs straight towards the mountain | src/data/photos/manifest/mount-fuji-five-lakes.json → `fuji-fullpage` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (full page, page 7) | Fujiyoshida / 富士吉田 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (`p8`) is now a photo gallery, **Fuji, the old way**: four real photographs of
+懐かしい (natsukashii) places on Fuji's northern side — a Shōwa-era shopping town, an Edo-period
+pilgrims' inn, an old teahouse on the climbing trail and a rebuilt thatched village (the reader
+asked for real pictures of nostalgic places, not maps). Live web searches, 18 October 2026;
+outside pages could not be opened, so values come from search-result extracts. Each caption names
+the place and gives one short detail; anything that could not be confirmed was left out.
+Searches: 12 for this brochure (21 shared with `japan-alps`).
+
+| Place (photo slot) | Japanese | Claim in caption | Sources | Notes |
+| --- | --- | --- | --- | --- |
+| Shimoyoshida, Fujiyoshida (`fuji-nostalgia-shimoyoshida`) | 下吉田（富士吉田市） | An old silk-trading town whose Shōwa-era shop streets run towards the mountain | https://fujiyoshida.net/en/see-and-do/32 (Fujiyoshida city tourism: Shimoyoshida prospered as the centre of the textile trade, "Kinuya-machi"; Showa-era townscape) · https://digjapan.travel/en/blog/id=12696 · https://www.gltjp.com/en/directory/item/18017/ (Honchō-dōri, "Fujimichi", runs toward the mountain) | Nishiura bar count (200 in the 1950s vs about 100 today), Shinsekai street's c. 1965 heyday and the 2024 tourist-information centre are **not printed**. Visitors must not photograph from the roadway (city) — worth adding if the page ever gets body text. The full-page photo (`fuji-fullpage`, Honchō-dōri) shows a similar view; the curator should pick a candidate that differs from it. |
+| Former Togawa house, Kamiyoshida (`fuji-nostalgia-togawa`) | 御師 旧外川家住宅 | An oshi's inn of 1768 where Fuji pilgrims lodged | https://fujiyoshida.net/en/see-and-do/26 (city tourism: oshi lodged and guided pilgrims; main house built 1768; Important Cultural Property and World Heritage component) · https://commons.wikimedia.org/wiki/Category:Togawa_Oshi_House (oshi lodging house, inception 1768, Important Cultural Property) · https://www.yamanashi-kankou.jp/english/explore-by-area/fujisan-fujigoko/oshi-former-togawa-family-house.html · https://www.japan-guide.com/e/e6924.html | 86 oshi houses in Kamiyoshida (city) vs "more than 80", the date of the rear wing, admission (¥100) and closing day are **not printed**. |
+| Nakanochaya, Yoshidaguchi trail (`fuji-nostalgia-nakanochaya`) | 中の茶屋（吉田口登山道） | A teahouse of more than 300 years on the old Yoshida trail, where pilgrims rested | https://fujisan.sfc.keio.ac.jp/en/spot/?fid=67 (Keio University Fujisan guide) · https://digjapan.travel/en/blog/id=12695 (history of more than 300 years; first floor renovated May 2025) · https://www.mlit.go.jp/tagengo-db/R1-00146.html (MLIT: Yoshidaguchi trail, rest stops for climbers) | The founding year 1707 (single source), the Fujikō stone monuments, opening months (April–October vs April–November) and the food served are **not printed**. The Commons title spells it "Nakano-cyaya". |
+| Saiko Iyashi-no-Sato Nenba (`fuji-nostalgia-nenba`) | 西湖いやしの里根場 | Thatched farmhouses rebuilt where a village was lost to a landslide in 1966 | https://www.japan-guide.com/e/e6923.html (hamlet destroyed by a typhoon landslide in 1966; reopened about 40 years later as an open-air museum) · https://www.gltjp.com/en/directory/item/10887/ · https://elb.japandeluxetours.com/experiences/yamanashi-saiko-iyashinosato-neba · https://www.japankuru.com/en/tour/e2290.html · https://commons.wikimedia.org/wiki/Category:Iyashinosato (open-air museum in Fujikawaguchiko, opened 15 July 2006) | Casualty figures and houses lost (single blog), number of houses today (~20) and admission (¥500, one listing) are **not printed**. |
+
+### Photos (gallery p8)
+
+Candidates are exact Commons titles from the search results; nothing was guessed. Each slot also
+has a Commons `query` for the app's automatic fallback. Only one candidate could be found per slot
+here, so the `query` matters more than usual. Image sizes were not shown except where noted.
+
+| Slot (id) | Candidates | Notes |
+| --- | --- | --- |
+| `fuji-nostalgia-shimoyoshida` (wide) | `File:Street towards Fuji in Shimoyoshida 3 in Fujiyoshida, Yamanashi, Japan, 2024 May - 3.jpg` | Quality image, 5,000 × 3,333 (Ximonic, May 2024). **Caveat:** the title was read from the Commons category "Fujiyoshida, Yamanashi", the Quality-images archive (11 March 2025) and the uploader's talk page in the results — its own file page was not returned. Curator: confirm the exact title; the `query` "Street towards Fuji in Shimoyoshida Fujiyoshida" finds it otherwise. |
+| `fuji-nostalgia-togawa` (any) | `File:The former-Togawa family house.JPG` | 4,000 × 3,000 (2012); the only file in the Commons category. Query: "Togawa Oshi House Fujiyoshida". |
+| `fuji-nostalgia-nakanochaya` (any) | `File:Nakano-cyaya-teahouse and Mt. Fuji-Yoshidaguchi-mountain trail,Fujiyoshida-city,Japan.JPG` | Query: "Nakanochaya teahouse Yoshidaguchi trail Fujiyoshida". |
+| `fuji-nostalgia-nenba` (wide) | `File:Iyashinosato village 06.jpg` | Two panoramio files are listed on the category page but their file pages were not returned, so they are not candidates. Query: "Iyashinosato Nenba Saiko thatched houses". |
+
+Considered but not used: Honchō-dōri (already the full-page photo), the thatched farmhouses at
+Oshino (already in the Oshino Hakkai place photo), Gekkōji's Shōwa-era bookshop street and
+Shinsekai alley (no Commons file page found).

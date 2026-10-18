@@ -202,16 +202,18 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Around the mountain',
-      body: 'The lakes and springs lie on Fuji’s northern side, in Yamanashi. Trains and buses from Tokyo end at Kawaguchiko; the Yoshida trail starts at the Subaru Line 5th Station.',
-      places: [
-        { name: 'Kawaguchiko Station', nameJp: '河口湖駅', lat: 35.4986, lng: 138.7686, note: 'Fujikyu terminus, tourist information' },
-        { name: 'Lake Kawaguchi', nameJp: '河口湖', lat: 35.514, lng: 138.755, note: 'Panoramic Ropeway, World Heritage Center' },
-        { name: 'Chūreitō Pagoda', nameJp: '忠霊塔', lat: 35.5012, lng: 138.8014, note: '398 steps above Fujiyoshida' },
-        { name: 'Oshino Hakkai', nameJp: '忍野八海', lat: 35.4603, lng: 138.833, note: 'Eight spring-fed ponds' },
-        { name: 'Fuji Subaru Line 5th Station', nameJp: '富士スバルライン五合目', lat: 35.3955, lng: 138.733, note: 'Start of the Yoshida trail' },
-        { name: 'Summit (Kengamine)', nameJp: '剣ヶ峰', lat: 35.3606, lng: 138.7274, note: '3,776 m, the top of Japan' },
+      type: 'gallery',
+      heading: 'Fuji, the old way',
+      items: [
+        {
+          photo: 'fuji-nostalgia-shimoyoshida',
+          art: 'ichimatsu',
+          seed: 19,
+          caption: 'Shimoyoshida, Fujiyoshida — an old silk-trading town whose Shōwa-era shop streets run towards the mountain',
+        },
+        { photo: 'fuji-nostalgia-togawa', art: 'asanoha', seed: 68, caption: 'Former Togawa house, Kamiyoshida — an oshi’s inn of 1768 where Fuji pilgrims lodged' },
+        { photo: 'fuji-nostalgia-nakanochaya', art: 'enso', seed: 25, caption: 'Nakanochaya — a teahouse of more than 300 years on the old Yoshida trail, where pilgrims rested' },
+        { photo: 'fuji-nostalgia-nenba', art: 'shippo', seed: 66, caption: 'Iyashi-no-Sato Nenba — thatched farmhouses rebuilt where a village was lost to a landslide in 1966' },
       ],
     },
     {

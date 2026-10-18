@@ -138,6 +138,54 @@
       "place": "Fujiyoshida",
       "focus": "50% 40%",
       "query": "Honcho Street Fujiyoshida Mount Fuji"
+    },
+    {
+      "id": "fuji-nostalgia-shimoyoshida",
+      "use": "wide",
+      "candidates": [
+        "File:Street towards Fuji in Shimoyoshida 3 in Fujiyoshida, Yamanashi, Japan, 2024 May - 3.jpg"
+      ],
+      "alt": "A straight town street of low shops and signs, with snow-capped Mount Fuji at its end",
+      "caption": "Shimoyoshida, Fujiyoshida — an old silk-trading town whose Shōwa-era shop streets run towards the mountain",
+      "place": "Shimoyoshida, Fujiyoshida",
+      "focus": "50% 45%",
+      "query": "Street towards Fuji in Shimoyoshida Fujiyoshida"
+    },
+    {
+      "id": "fuji-nostalgia-togawa",
+      "use": "any",
+      "candidates": [
+        "File:The former-Togawa family house.JPG"
+      ],
+      "alt": "The front of an old wooden house set back from the street behind a small entrance",
+      "caption": "Former Togawa house, Kamiyoshida — an oshi’s inn of 1768 where Fuji pilgrims lodged",
+      "place": "Oshi House of the Former Togawa Family, Fujiyoshida",
+      "focus": "50% 50%",
+      "query": "Togawa Oshi House Fujiyoshida"
+    },
+    {
+      "id": "fuji-nostalgia-nakanochaya",
+      "use": "any",
+      "candidates": [
+        "File:Nakano-cyaya-teahouse and Mt. Fuji-Yoshidaguchi-mountain trail,Fujiyoshida-city,Japan.JPG"
+      ],
+      "alt": "A small old wooden teahouse beside a forest trail at the foot of Mount Fuji",
+      "caption": "Nakanochaya — a teahouse of more than 300 years on the old Yoshida trail, where pilgrims rested",
+      "place": "Nakanochaya, Yoshidaguchi trail",
+      "focus": "50% 50%",
+      "query": "Nakanochaya teahouse Yoshidaguchi trail Fujiyoshida"
+    },
+    {
+      "id": "fuji-nostalgia-nenba",
+      "use": "wide",
+      "candidates": [
+        "File:Iyashinosato village 06.jpg"
+      ],
+      "alt": "Steep thatched-roof farmhouses along a village lane among trees",
+      "caption": "Iyashi-no-Sato Nenba — thatched farmhouses rebuilt where a village was lost to a landslide in 1966",
+      "place": "Saiko Iyashi-no-Sato Nenba",
+      "focus": "50% 50%",
+      "query": "Iyashinosato Nenba Saiko thatched houses"
     }
   ]
 }

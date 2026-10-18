@@ -154,6 +154,42 @@
       "place": "Kōfuku-ji",
       "focus": "50% 40%",
       "query": "Kofuku-ji five-storied pagoda"
+    },
+    {
+      "id": "nara-nostalgia-shiryokan",
+      "use": "any",
+      "candidates": [
+        "File:Naramachi-shiryokan Nara02n3200.jpg"
+      ],
+      "alt": "The old wooden front of a small museum on a narrow street in Naramachi",
+      "caption": "Naramachi Shiryōkan — a free museum of old shop signs and red cloth monkeys",
+      "place": "Naramachi Shiryōkan, Naramachi",
+      "focus": "50% 50%",
+      "query": "Naramachi Shiryokan Nara"
+    },
+    {
+      "id": "nara-nostalgia-karakuri",
+      "use": "any",
+      "candidates": [
+        "File:Naramachi Karakuri Omocha Kan 20141001.jpg"
+      ],
+      "alt": "A traditional wooden town house with a tiled roof on a quiet Naramachi street",
+      "caption": "Karakuri Omochakan, Naramachi — replica Edo-period toys in an old town house",
+      "place": "Naramachi Karakuri Omochakan",
+      "focus": "50% 50%",
+      "query": "Naramachi Karakuri Omocha Kan"
+    },
+    {
+      "id": "nara-nostalgia-imaicho",
+      "use": "wide",
+      "candidates": [
+        "File:Imaicho Kashihara.jpg"
+      ],
+      "alt": "A quiet street of old wooden merchant houses with dark lattices and tiled roofs",
+      "caption": "Imai-chō, Kashihara — an Edo-period merchant town that grew around Shōnen-ji",
+      "place": "Imai-chō, Kashihara",
+      "focus": "50% 50%",
+      "query": "Imaicho Kashihara townscape"
     }
   ]
 }

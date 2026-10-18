@@ -210,17 +210,27 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where it all is',
-      body: 'Ferries reach Naoshima’s Miyanoura port from Uno (Okayama) in about 20 minutes and from Takamatsu in about 50. Teshima lies to the east.',
-      places: [
-        { name: 'Uno Port', nameJp: '宇野港', lat: 34.4907, lng: 133.9548, note: 'Ferries from the Okayama side' },
-        { name: 'Miyanoura Port', nameJp: '宮浦港', lat: 34.4588, lng: 133.9738, note: 'Red Pumpkin, I♥湯' },
-        { name: 'Honmura', nameJp: '本村', lat: 34.4568, lng: 133.9985, note: 'Art House Project' },
-        { name: 'Chichu Art Museum', nameJp: '地中美術館', lat: 34.447, lng: 133.9963, note: 'Monet, Turrell, De Maria' },
-        { name: 'Benesse House', nameJp: 'ベネッセハウス', lat: 34.4425, lng: 133.9915, note: 'Museum, hotel, Yellow Pumpkin' },
-        { name: 'Teshima Art Museum', nameJp: '豊島美術館', lat: 34.491, lng: 134.092, note: 'Matrix by Rei Naito, Karato' },
-        { name: 'Takamatsu Port', nameJp: '高松港', lat: 34.351, lng: 134.0478, note: 'Ferries from Shikoku' },
+      type: 'gallery',
+      heading: 'Islands of old Setouchi',
+      items: [
+        {
+          photo: 'naoshima-nostalgia-inujima',
+          art: 'kumo',
+          seed: 27,
+          caption: 'Inujima, Okayama — the ruins of a copper refinery, now the Seirensho Art Museum',
+        },
+        {
+          photo: 'naoshima-nostalgia-megijima',
+          art: 'seigaiha',
+          seed: 33,
+          caption: 'Megijima, nicknamed Onigashima (Ogre Island) — its harbour looks across to Takamatsu',
+        },
+        {
+          photo: 'naoshima-nostalgia-ogijima',
+          art: 'asanoha',
+          seed: 12,
+          caption: 'Ogijima — a tiny island of Takamatsu, home to fewer than 200 people',
+        },
       ],
     },
     {

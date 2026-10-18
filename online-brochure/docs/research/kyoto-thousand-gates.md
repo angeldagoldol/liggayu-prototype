@@ -56,7 +56,7 @@ sources unless marked **single source** in the notes.
 | **Upcoming: two-tier bus fares** | Planned FY2027: residents ¥200, non-residents ~¥350–400 (latest report ¥360) | https://www.city.kyoto.lg.jp/kotsu/cmsfiles/contents/0000351/351261/20260317.pdf ; https://unseen-japan.com/kyoto-buses-two-tier-pricing/ ; https://www.travelvoice.jp/20260908-160368 | Ordinance not yet passed (to go to assembly ~Nov 2026); brochure says only "plans higher fares for non-residents from 2027". |
 | Tourist information | Kyoto Tourist Information Center (Kyo Navi), JR Kyoto Station Building 2F, 8:30–19:00 | https://kyoto.travel/en/information-center/ ; https://global.kyoto.travel/en/faq/detail.php?faq_id=3003 | Phone number deliberately omitted. |
 | Haiku | 京にても京なつかしやほととぎす — Matsuo Bashō | https://wdsreviewofbooks.webdelsol.com/Kousky.html ; https://poemanalysis.com/matsuo-basho/in-kyoto/ ; https://ctgl.uiowa.edu/sites/ctgl.uiowa.edu/files/2025-04/Matsuo%20Basho%CC%84_Haiku.pdf | Romaji: Kyō nite mo / Kyō natsukashi ya / hototogisu. **Fact-check:** the first English version ("Even in Kyoto — / hearing the cuckoo’s cry, / I long for Kyoto.") was Robert Hass’s published translation (*The Essential Haiku*, 1994) almost word for word, so labelling it "Translation: Tabi Guides" misattributed it. Replaced with our own: "Here in Kyoto, / still I yearn for Kyoto — / a cuckoo calls." (京にても = even in Kyoto; 京なつかしや = how I long for Kyoto; ほととぎす = lesser cuckoo, a summer bird). Year (usually 1690) left out. |
-| Coordinates | Fushimi Inari 34.9672, 135.7728; Kiyomizu 34.9950, 135.7850; Kinkaku-ji 35.0395, 135.7285; Tenryū-ji 35.0160, 135.6738; bamboo grove 35.0168, 135.6716; Yasaka Shrine 35.0036, 135.7786 | en.wikipedia.org infoboxes (Fushimi Inari-taisha, Kiyomizu-dera, Kinkaku-ji, Tenryū-ji, Bamboo Forest (Kyoto), Yasaka Shrine) | Kyoto Station 34.9858, 135.7588 taken from the schema's own placeholder. Fact-check: matches the Wikipedia infobox value as I know it (34°59′09″N 135°45′32″E) and falls inside Kyoto Prefecture in the offline polygon test — still worth one live look. |
+| Coordinates (place pages, brochure location) | Fushimi Inari 34.9672, 135.7728; Kiyomizu 34.9950, 135.7850; bamboo grove 35.0168, 135.6716 | en.wikipedia.org infoboxes (Fushimi Inari-taisha, Kiyomizu-dera, Bamboo Forest (Kyoto)) | The map page that also pinned Kyoto Station, Yasaka Shrine, Kinkaku-ji and Tenryū-ji was replaced by the *Old streets of Kyoto* gallery (18 October 2026); those map-only coordinates are no longer published. |
 
 ## Removed from the old brochure
 
@@ -66,7 +66,7 @@ sources unless marked **single source** in the notes.
 ## Not verified / left out
 
 - Yasaka Shrine hours/admission; Gangō-ji-style detail for Gion; Nishiki Market facts; Kinkaku-ji bus times; Arashiyama grove length.
-- Search budget ran out before checking the Bashō date and the Kyoto Station coordinates.
+- Search budget ran out before checking the Bashō date.
 
 ## Photos
 
@@ -115,7 +115,7 @@ plausible and twice-sourced above but could not be confirmed independently in th
 | Lodging tax tiers from 1 March 2026 (¥200 / 400 / 1,000 / 4,000 / 10,000) | Confirmed | Matches the approved ordinance as reported in 2025. |
 | Two-tier bus fares planned for 2027 | Confirmed as a plan | Copy says “plans”, which is right while the ordinance is pending. |
 | Kyoto Tourist Information Center, Kyoto Station Building 2F, 8:30–19:00 | Confirmed | No phone number printed. |
-| Coordinates (7 places) | Confirmed | All fall inside Kyoto Prefecture in the polygon test; distances between them match the real layout (e.g. Kyoto Station → Fushimi Inari ≈ 2.4 km SSE; Kiyomizu → Yasaka ≈ 1.1 km). Kinkaku-ji pin is ~80 m west of the pavilion, still within the grounds. |
+| Coordinates (3 place pages) | Confirmed | Fushimi Inari, Kiyomizu-dera and the bamboo grove fall inside Kyoto Prefecture in the polygon test. (The map page and its other pins were removed on 18 October 2026.) |
 | Phrasebook (6 entries) | Confirmed | Natural, polite Japanese; romaji with macrons is correct (Ohayō, Arigatō, Kiyomizu-dera). |
 | Publisher / people / businesses / phone numbers | Clean | Published by Tabi Guides; no invented people, businesses, testimonials or phone numbers. |
 | Copy length | Within limits | Every field is within the Studio editor’s limits; place bodies (373–379 chars) match the other brochures. |
@@ -133,8 +133,7 @@ confirmed, copy loosened; **REMOVED** = taken out of the brochure.
 | Kiyomizu-dera night openings (place p4) | Spring 2026: 27 Mar–5 Apr, 18:00–21:30 (last entry 21:00); summer 14–16 Aug 2026; autumn 2026: **dates not printed** | https://kiyomizudera.or.jp/ (spring 2026 notice) · https://tabi-mag.jp/kiyomizu-springlightup/ · https://tabi-mag.jp/kiyomizu-autumn/ (autumn 2025 ran 22 Nov–7 Dec, reception 17:30–21:00) · https://ja.kyoto.travel/tourism/article/asakanko-yorukanko/post/single.php?id=472 · https://www.pref.kyoto.jp/furusatokifu/kiyomizu.html (20 Nov 2026 is a 30-person paid prefecture event, not the public opening) | HEDGED — the "21–30 November 2026, until 21:30" sentence was replaced by "In late November the maples turn, and the temple opens on autumn nights — check this year’s dates" (the Visitor information page already says to check the official sites for seasonal night openings) |
 | Maples in late November (place p4) | Late November | https://tabi-mag.jp/kiyomizu-autumn/ (見頃は例年11月下旬〜12月上旬) | VERIFIED |
 | JR Kyoto–Inari fare (Costs) | ¥150 | https://mileasia.com/japan/kyoto-station-to-fushimi-inari/ (2026: 5 min, ¥150) · https://www.kyotostation.com/jr-nara-line-for-tofukuji-inari-uji-nara/ · https://ekitan.com/ (2026 route search: JR Nara Line 1.1 km section ¥150) | VERIFIED. Outlier: https://japanuncharted.com/nara/train/nara-line-local-stops says ¥140 (older fare). |
-| JR Kyoto–Saga-Arashiyama fare and time (Costs, map) | ¥240, 15 min | https://hiddenjapan-gems.com/kyoto-station-access-guide/ ("JR Sagano Line (Rapid) 15 min ¥240") · first-pass japan-guide e3912 | VERIFIED |
-| Kyoto Station coordinates (map) | 34.9858, 135.7588 | Not searched (budget); matches the Wikipedia infobox (34°59′09″N 135°45′32″E) as known to the editor and passes the prefecture polygon test | Unchanged (not a price/hour/date) |
+| JR Kyoto–Saga-Arashiyama fare and time (Costs) | ¥240, 15 min | https://hiddenjapan-gems.com/kyoto-station-access-guide/ ("JR Sagano Line (Rapid) 15 min ¥240") · first-pass japan-guide e3912 | VERIFIED |
 
 **Decision on `factsChecked`:** kept as `"October 2026"` and the back-page tagline as "Facts checked
 October 2026 · Tabi Guides". After this pass every price, hour, date and access detail printed in
@@ -151,3 +150,33 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (spread, pages 4–5) | Kiyomizu-dera / 清水寺 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
 | Caption (full page, page 10) | Arashiyama’s bamboo grove in the quiet of early morning, before the first visitors arrive | src/data/photos/manifest/kyoto-thousand-gates.json → `kyoto-fullpage` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (full page, page 10) | Arashiyama Bamboo Grove / 竹林の小径 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (`p8`, "Where it all is") was replaced in the same position by a photo gallery, **Old
+streets of Kyoto**: real photographs of 懐かしい (natsukashii) places — stone slopes, a willow-lined
+canal, a lantern alley and an old sake brewery. Each caption names the place and gives one short
+detail; nothing else is printed. Searched with web search only (Commons file pages and guide
+excerpts; 16 searches shared with the Nara brochure).
+
+| Place (photo slot) | Japanese | Claim in caption | Sources | Notes |
+| --- | --- | --- | --- | --- |
+| Ninenzaka & Sannenzaka (`kyoto-nostalgia-ninenzaka`) | 二寧坂（二年坂）・産寧坂（三年坂） | Stone-paved slopes of wooden shops below Kiyomizu-dera | https://kyoto.travel/en/travel-inspiration/things-to-keep-in-mind-while-exploring-kyoto-and-its-kiyomizu-arashiyama-and-gion-areas/ ; https://kyoto.travel/en/itineraries/higashiyama-at-dawn/ ; Commons categories "Ninen-zaka" and "Sannei-zaka" | Same claim as the *Ninenzaka & Sannenzaka* feature (Facts table). The caption names both slopes because the candidates show one or the other. |
+| Gion Shirakawa (`kyoto-nostalgia-shirakawa`) | 祇園白川・巽橋 | Willows and old teahouses (ochaya) along the canal, crossed by Tatsumi Bridge | https://www.japan-experience.com/city-kyoto/shirakawa-district (canal lined with weeping willows, crossed by bridges; machiya and ochaya on both sides) ; https://en.japantravel.com/kyoto/gion-shirakawa-kyoto/15349 ; https://commons.wikimedia.org/wiki/File:Shirakara_Canal,_Gion,_Kyoto.jpg (description: rear of ochaya along the canal) | The exact position of Tatsumi Bridge is described differently by guides, so the caption only says "by Tatsumi Bridge". |
+| Pontochō (`kyoto-nostalgia-pontocho`) | 先斗町 | A narrow lane of traditional restaurants beside (parallel to) the Kamo River | https://www.insidekyoto.com/pontocho-alley ; https://cdn.gltjp.com/en/directory/item/12635 ; https://mai-ko.com/travel/japan/kyoto/pontocho-kyoto/ | Guides agree it runs between Shijō and Sanjō, one block west of the river (not printed). |
+| Fushimi sake district (`kyoto-nostalgia-fushimi`) | 伏見・月桂冠大倉記念館 | Gekkeikan's old sake-brewery buildings, now the Gekkeikan Okura Sake Museum | https://www.japan-guide.com/e/e3938.html (museum in a converted Meiji-era brewery on the Horikawa) ; https://www.gekkeikan.co.jp/enjoy/bunko/inari-momoyama/en/aruku.html ; https://www.nomadotravel.app/en/attractions/fushimi-sake-district ; https://commons.wikimedia.org/wiki/File:Gekkeikan_Okura_Sake_Museum02s4592.jpg (description: museum, Okura family main house and former head office) | Building dates (1909 museum, 1828 main house) and Gekkeikan's founding year (1637 vs 1673 in different sources) are **not printed**. |
+
+### Photos
+
+Candidates are exact Commons titles whose file pages appeared in the search results; nothing was
+guessed. Each slot also has a Commons `query` for the app's automatic fallback.
+
+| Slot | Candidates | Why / caveats |
+| --- | --- | --- |
+| `kyoto-nostalgia-ninenzaka` (wide) | 1. File:Ninenzaka-kyoto.JPG · 2. File:Sannenzaka street, Kyoto (3811257874).jpg · 3. File:Gion - Nineizaka (Ninenzaka), Kyoto, Japan (48923272228).jpg | #1 4000×2664, own work (2013); #2 4272×2848 from Flickr; #3 CC BY-SA 2.0 (Domenico Convertini). Curator: check how crowded each one is. Query: "Ninenzaka Sannenzaka Kyoto street". |
+| `kyoto-nostalgia-shirakawa` (any) | 1. File:Next to the Gion Tatsumi Bridge (44600422074).jpg · 2. File:Shirakara Canal, Gion, Kyoto.jpg | #1 CC BY 2.0 (Flickr, 2018); #2 is an HDR shot (2007), so it is second choice. Only two found. Query: "Gion Shirakawa Tatsumi bridge". |
+| `kyoto-nostalgia-pontocho` (any) | 1. File:Pontocho Alley, Kyoto - Flickr - Sergiy Galyonkin.jpg · 2. File:Pontocho Alley, Kyoto (53589184823).jpg · 3. File:Pontocho, Kyoto (3810354565).jpg | #1/#2 CC BY-SA 2.0 (Sergiy Galyonkin). Avoided "Friday evening in Pontocho Alley" (likely crowds). Query: "Pontocho alley Kyoto". |
+| `kyoto-nostalgia-fushimi` (wide) | 1. File:Gekkeikan Okura Sake Museum02s4592.jpg · 2. File:Gekkeikan Okura Sake Museum03st3200.jpg | 663highland, 4592×3056 and 3200×2130. A Matsumoto Sake Brewing file was also found but left out: it is a different brewery and would not match the caption. Query: "Gekkeikan Okura Sake Museum Fushimi". |
+
+Considered but not used: Saga-Toriimoto (only one Commons file found, and it shows a torii, not
+the thatched street).

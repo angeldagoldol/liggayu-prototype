@@ -201,17 +201,18 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where it all is',
-      body: 'Kyoto Station is the hub. Fushimi Inari is two stops south on the JR Nara Line; Arashiyama is 15 minutes west on the JR Sagano Line.',
-      places: [
-        { name: 'Kyoto Station', nameJp: '京都駅', lat: 34.9858, lng: 135.7588, note: 'JR, subway and city-bus hub' },
-        { name: 'Fushimi Inari Taisha', nameJp: '伏見稲荷大社', lat: 34.9672, lng: 135.7728, note: 'Torii tunnels, open 24 hours' },
-        { name: 'Kiyomizu-dera', nameJp: '清水寺', lat: 34.995, lng: 135.785, note: 'Hillside stage, opens 6:00' },
-        { name: 'Yasaka Shrine', nameJp: '八坂神社', lat: 35.0036, lng: 135.7786, note: 'Gateway to Gion' },
-        { name: 'Kinkaku-ji', nameJp: '金閣寺', lat: 35.0395, lng: 135.7285, note: 'The Golden Pavilion' },
-        { name: 'Tenryū-ji', nameJp: '天龍寺', lat: 35.016, lng: 135.6738, note: 'Zen temple and pond garden' },
-        { name: 'Arashiyama Bamboo Grove', nameJp: '竹林の小径', lat: 35.0168, lng: 135.6716, note: 'Free, open at all hours' },
+      type: 'gallery',
+      heading: 'Old streets of Kyoto',
+      items: [
+        {
+          photo: 'kyoto-nostalgia-ninenzaka',
+          art: 'ichimatsu',
+          seed: 52,
+          caption: 'Ninenzaka & Sannenzaka — stone-paved slopes of wooden shops below Kiyomizu-dera',
+        },
+        { photo: 'kyoto-nostalgia-shirakawa', art: 'seigaiha', seed: 61, caption: 'Gion Shirakawa — willows and old teahouses along the canal by Tatsumi Bridge' },
+        { photo: 'kyoto-nostalgia-pontocho', art: 'shippo', seed: 29, caption: 'Pontochō — a narrow lane of traditional restaurants beside the Kamo River' },
+        { photo: 'kyoto-nostalgia-fushimi', art: 'kumo', seed: 14, caption: 'Fushimi — Gekkeikan’s old sake brewery, now the Okura Sake Museum' },
       ],
     },
     {

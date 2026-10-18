@@ -3,7 +3,8 @@
  * Real places, written October 2026 and live-verified with web search on 17 October 2026: every
  * price, hour, date and access detail is sourced in docs/research/hokkaido-powder-snow.md. The Aurora
  * icebreaker's 2027 fares were not yet confirmed, so the Costs page gives the 2026 fares as a range.
- * Photo slots: src/data/photos/manifest/hokkaido-powder-snow.json (no Commons candidates yet).
+ * Photo slots: src/data/photos/manifest/hokkaido-powder-snow.json. Page p8 (once a map) is a gallery of
+ * nostalgic streets — real photographs, logged under "Nostalgic streets" in the research file.
  */
 export default {
   id: 'b_hokkaido-powder-snow',
@@ -211,18 +212,23 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Where it all is',
-      body: 'Sapporo is the hub, about 40 minutes by JR from New Chitose Airport. For Abashiri and Shiretoko, fly east to Memanbetsu or allow 5½ hours by train.',
-      places: [
-        { name: 'Ōdōri Park, Sapporo', nameJp: '大通公園', lat: 43.06, lng: 141.348, note: 'Snow Festival, 4–11 Feb 2027' },
-        { name: 'Otaru Canal', nameJp: '小樽運河', lat: 43.199, lng: 141.001, note: 'Snow Light Path, 6–13 Feb 2027' },
-        { name: 'Niseko Hirafu', nameJp: 'ニセコひらふ', lat: 42.86, lng: 140.7, note: 'Powder, facing Mount Yōtei' },
-        { name: 'Upopoy, Shiraoi', nameJp: 'ウポポイ', lat: 42.556, lng: 141.361, note: 'National Ainu Museum and Park' },
-        { name: 'Abashiri', nameJp: '網走', lat: 44.017, lng: 144.283, note: 'Icebreaker cruises into the drift ice' },
-        { name: 'Utoro, Shiretoko', nameJp: 'ウトロ', lat: 44.068, lng: 144.988, note: 'Guided drift-ice walks, Feb–Mar' },
-        { name: 'Tsurui-Itō Tanchō Sanctuary', nameJp: '鶴居・伊藤タンチョウサンクチュアリ', lat: 43.23, lng: 144.32, note: 'Cranes in winter; free, Oct–Mar' },
-        { name: 'New Chitose Airport', nameJp: '新千歳空港', lat: 42.7753, lng: 141.6922, note: 'Main gateway to Hokkaidō' },
+      type: 'gallery',
+      heading: 'Hokkaidō, a century ago',
+      items: [
+        { photo: 'hokkaido-nostalgia-hachimanzaka', art: 'seigaiha', seed: 18, caption: 'Hachiman-zaka, Hakodate — a stone-paved slope running straight down to the harbour' },
+        {
+          photo: 'hokkaido-nostalgia-sakaimachi',
+          art: 'ichimatsu',
+          seed: 26,
+          caption: 'Sakaimachi-dōri, Otaru — old stone warehouses and merchant houses, now glass and music-box shops',
+        },
+        { photo: 'hokkaido-nostalgia-kanemori', art: 'shippo', seed: 44, caption: 'Kanemori Red Brick Warehouses, Hakodate — harbour warehouses rebuilt in 1909, now shops and halls' },
+        {
+          photo: 'hokkaido-nostalgia-kaitaku',
+          art: 'kumo',
+          seed: 57,
+          caption: 'Historical Village of Hokkaido, Sapporo — an open-air museum of buildings from the Meiji to early Shōwa eras',
+        },
       ],
     },
     {

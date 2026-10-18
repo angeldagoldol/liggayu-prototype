@@ -3,7 +3,8 @@
  * Real festivals, written October 2026 and live-verified with web search on 17 October 2026: every
  * price, hour, date and access detail is sourced in docs/research/tohoku-summer-festivals.md. Seat
  * prices other than Nebuta's, the WA-RASSE fee and costume-rental prices could not be confirmed and
- * are left out. Photo slots: src/data/photos/manifest/tohoku-summer-festivals.json (no candidates yet).
+ * are left out. Photo slots: src/data/photos/manifest/tohoku-summer-festivals.json. Page p8 (once a
+ * map) is a gallery of nostalgic old towns, logged under "Nostalgic streets" in the research file.
  */
 export default {
   id: 'b_tohoku-summer-festivals',
@@ -214,18 +215,18 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Festival week on the map',
-      body: 'Tokyo to Sendai is about 1½ hours by shinkansen and Tokyo to Shin-Aomori about 3; Akita and Yamagata have their own mini-shinkansen branches.',
-      places: [
-        { name: 'Aomori', nameJp: '青森', lat: 40.8287, lng: 140.7356, note: 'Nebuta, 2–7 August' },
-        { name: 'Hirosaki', nameJp: '弘前', lat: 40.6078, lng: 140.4642, note: 'Neputa, 1–7 August' },
-        { name: 'Goshogawara', nameJp: '五所川原', lat: 40.808, lng: 140.447, note: 'Tachineputa, 4–8 August' },
-        { name: 'Akita', nameJp: '秋田', lat: 39.7195, lng: 140.1205, note: 'Kantō, 3–6 August' },
-        { name: 'Morioka', nameJp: '盛岡', lat: 39.7015, lng: 141.148, note: 'Sansa Odori, 1–4 August' },
-        { name: 'Sendai', nameJp: '仙台', lat: 38.261, lng: 140.876, note: 'Tanabata, 6–8 August' },
-        { name: 'Yamagata', nameJp: '山形', lat: 38.253, lng: 140.336, note: 'Hanagasa, 5–7 August' },
-        { name: 'Yamadera', nameJp: '山寺', lat: 38.3126, lng: 140.4377, note: 'Bashō’s cicada haiku' },
+      type: 'gallery',
+      heading: 'Old towns of Tōhoku',
+      items: [
+        { photo: 'tohoku-nostalgia-ginzan', art: 'seigaiha', seed: 33, caption: 'Ginzan Onsen, Yamagata — Taishō-era wooden inns lining the Ginzan River' },
+        {
+          photo: 'tohoku-nostalgia-kakunodate',
+          art: 'sakura',
+          seed: 41,
+          caption: 'Kakunodate, Akita — a samurai street of black board fences, famous for its weeping cherries',
+        },
+        { photo: 'tohoku-nostalgia-ouchijuku', art: 'ichimatsu', seed: 52, caption: 'Ōuchi-juku, Fukushima — thatched-roof houses along an Edo-period post town' },
+        { photo: 'tohoku-nostalgia-kuroishi', art: 'kumo', seed: 68, caption: 'Kuroishi, Aomori — komise, the covered arcades of Nakamachi, dating from the Edo period' },
       ],
     },
     {

@@ -12,7 +12,7 @@ back-page tagline "Facts checked October 2026 · Tabi Guides").
 > the sources did not settle; **REMOVED** = taken out of the copy.
 >
 > Every price, hour, date and access detail now printed is VERIFIED, so `factsChecked` stays
-> set. The only things not re-checked live are the map coordinates (see the last rows).
+> set. The only things not re-checked live are the place-page coordinates (see the last row).
 >
 > **2025–2026 changes found:** Osaka Castle main tower doubled to ¥1,200 (April 2025) and
 > now opens 9:00–18:00. Tsūtenkaku's decks now open from 9:00, and an adult ticket costs ¥1,500
@@ -44,7 +44,6 @@ back-page tagline "Facts checked October 2026 · Tabi Guides").
 | Kuromon age and name (p4) | "since the 1820s"; named after the black gate of a temple (Enmyō-ji) that stood nearby | https://osaka-info.jp/experience/ja/osaka/spot/208 ; https://jw-webmagazine.com/tips/kuromon-market/ ; https://tabi-mag.jp/os0080/ | VERIFIED | Fish trading began c. 1822; called Enmyō-ji Market until a 1912 fire. **Changed** "since the 19th century" → "since the 1820s". |
 | Kuromon hours (p4) | Most shops from about 9:00; closing times vary | https://kuromon.com/en/information-center/ ; https://kuromon.com/en/yamacho/ ; https://kuromon.com/en/maru/ ; https://kuromon.com/en/osaka-daika/ | VERIFIED | Information Center 9:00–18:00; shops 9:00–17:30 / 19:00 / 20:00 / 21:00; some close on Sundays. **Changed** from "morning to early evening". |
 | Kuromon access (p4) | Nippombashi Station exit 10, about 3 min walk | https://osaka-info.jp/experience/en/osaka/spot/208 ; https://discover.osaka-info.jp/en/spots/kuromon-market ; https://osaka-info.jp/en/discover-kansai/osaka-kuromon-market/ | VERIFIED | OSAKA-INFO gives 2, 3 and "about 5" minutes from exit 10. **Changed** from "2 min". |
-| Map body (p8) | Shinsekai is one stop south of Nippombashi on the Sakaisuji Line; the castle is "a short metro ride to the north-east" | https://www.osakastation.com/the-sakaisuji-subway-line/ ; https://index.japanstation.com/station/nippombashi/ | VERIFIED / HEDGED | Station order verified. **Changed** "about 20 minutes by metro" → "a short metro ride" (no source for the door-to-door time). |
 | Takoyaki (p6) | "Usually credited to an Osaka stall of 1935" | https://en.wikipedia.org/wiki/Takoyaki ; https://unseen-japan.com/takoyaki-japan-history/ | VERIFIED | Credited to Endō Tomekichi (Aizuya); business not named. |
 | Takoyaki per tray (p2, p10) | "sold by the tray" | — | REMOVED (number) | "usually 6–10 to a tray" was not checked, so the number came out. |
 | Okonomiyaki (p6) | Osaka style is mixed; cooked on a hotplate; "grilled as you like" | https://en.wikipedia.org/wiki/Okonomiyaki | VERIFIED (not re-searched) | Description and etymology, no price/hour/date. |
@@ -54,7 +53,7 @@ back-page tagline "Facts checked October 2026 · Tabi Guides").
 | Tourist information (p13) | **Tourist Information Osaka**, JR Osaka Station 1F, in front of the central gate; maps and multilingual staff | https://osaka-info.jp/en/spot/tourist-information-osaka/ ; https://osaka-info.jp/experience/en/osaka/spot/579 | VERIFIED | **Changed** from "Osaka Visitors' Information Center". Open 7:00–22:00 with English, Chinese and Korean support (hours not printed; no phone numbers). |
 | Paid-sights note (p10) | "Adult ticket prices as of October 2026" | (rows above) | VERIFIED | Osaka Metro fares and IC-card line **REMOVED** from Costs (not re-checked). |
 | Websites (p3–p5, p13, sources) | osaka-info.jp/en/, kuromon.com/en/, tsutenkaku.co.jp, osakacastle.net, osakacastlepark.jp | https://osaka-info.jp/en/spot/tourist-information-osaka/ ; https://kuromon.com/en/information-center/ ; https://www.tsutenkaku.co.jp/annai/index.html ; https://www.osakacastle.net/pdf/leaflet/english_201904.pdf?lang=en ; https://www.osakacastlepark.jp/springfes/en/event/ | VERIFIED | **Changed** osakacastle.net/english/ → osakacastle.net/: the /english/ path did not appear in results. subway.osakametro.co.jp/en/ (sources list only) not re-checked. |
-| Coordinates (location, p3–p5, p8) | Dōtonbori (Ebisu-bashi) 34.6687, 135.5013; Hōzen-ji 34.6681, 135.5025; Kuromon 34.6658, 135.5065; Tsūtenkaku 34.6525, 135.5062; Osaka Castle main tower 34.6873, 135.5259; Shin-Osaka Station 34.7334, 135.5002 | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://en.wikipedia.org/wiki/Ts%C5%ABtenkaku ; https://en.wikipedia.org/wiki/Osaka_Castle | NOT RE-CHECKED | Not searched (budget kept for prices and hours); from Wikipedia/OSM positions, within ~50–100 m. Map pins only; not a price, hour, date or access detail. |
+| Coordinates (location, p3–p5) | Dōtonbori (Ebisu-bashi) 34.6687, 135.5013; Kuromon 34.6658, 135.5065; Tsūtenkaku 34.6525, 135.5062 | https://en.wikipedia.org/wiki/D%C5%8Dtonbori ; https://en.wikipedia.org/wiki/Ts%C5%ABtenkaku | NOT RE-CHECKED | Not searched (budget kept for prices and hours); from Wikipedia/OSM positions, within ~50–100 m. Printed beside the place names only. The map page (`p8`) that also pinned Hōzen-ji, Osaka Castle and Shin-Osaka Station was replaced by the *Old streets of Osaka* gallery on 18 October 2026; those map-only coordinates, and its Sakaisuji Line access note, are no longer published. |
 
 ## Not printed
 
@@ -65,7 +64,7 @@ back-page tagline "Facts checked October 2026 · Tabi Guides").
 ## Changed from the old brochure
 
 - Publisher "Teppan Tours Osaka" (fictional), its email, its invented food-walk prices (¥9,800 / ¥16,500) and meeting point removed; now **Tabi Guides** with a Visitor information page of official sites.
-- The stats page was replaced by three real `place` pages, a map and a Costs page with real, live-checked admission fees.
+- The stats page was replaced by three real `place` pages, a map and a Costs page with real, live-checked admission fees. The map page was itself replaced on 18 October 2026 by the *Old streets of Osaka* photo gallery (see **Nostalgic streets** below).
 - The proverb moved into a proper quote page (`quoteJp` + translation).
 
 ## Photos
@@ -98,3 +97,34 @@ The double-page spread and the full-page photo print a magazine caption: the pla
 | Place name / Japanese name (spread, pages 4–5) | Osaka Castle / 大阪城 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
 | Caption (full page, page 8) | Winter lights in Tennōji Park beneath Abeno Harukas, a short walk from the kushikatsu counters of Shinsekai | src/data/photos/manifest/osaka-kuidaore.json → `osaka-fullpage` (caption, place) | Copied from the manifest; no new facts. |
 | Place name / Japanese name (full page, page 8) | Tennōji Park / 天王寺公園 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
+
+## Nostalgic streets — 18 October 2026
+
+The map page (`p8`, "Where to eat") was replaced in the same position by a photo gallery, **Old
+streets of Osaka**: real photographs of 懐かしい (natsukashii) places — a lantern-lit stone alley, the
+neon street under Tsūtenkaku, the long Tenjinbashi-suji arcade and the little tram station at
+Ebisuchō. Each caption names the place and gives one short detail; nothing else is printed.
+Searched with web search only (Commons file pages and guide excerpts; 22 searches shared with
+`hiroshima-miyajima`).
+
+| Place (photo slot) | Japanese | Claim in caption | Sources | Notes |
+| --- | --- | --- | --- | --- |
+| Hōzenji Yokochō (`osaka-nostalgia-hozenji-yokocho`) | 法善寺横丁 | A lantern-lit, stone-paved lane of small restaurants beside Hōzen-ji | https://osaka-info.jp/en/spot/hozenji-yokocho/ and https://en.osaka-info.jp/spot/gastronomy-hozenjiyokocho (Osaka tourism: stone-paved alleys of eateries) ; https://www.gltjp.com/en/directory/item/11897/ (two stone-paved alleys, about 80 m long, either side of Hōzen-ji) ; Commons: File:Hozenji Yokocho at night.jpg, Category:Red paper lanterns in Japan (lists a Hōzenji Yokochō file) | Same lane as the *Hōzenji Yokochō* feature (p6). Length and width **not printed**. |
+| Shinsekai — Tsūtenkaku Hondōri (`osaka-nostalgia-shinsekai`) | 新世界・通天閣本通 | The neon of Tsūtenkaku Hondōri, the shop street below the tower of 1956 | Commons file pages "Tsutenkaku-Hondori Shopping Street and Tsutenkaku Tower at night 3.jpg" and "…at night.jpg" (the street with the tower lit up) ; tower date: the Shinsekai row above (https://www.tsutenkaku.co.jp/ ; https://en.wikipedia.org/wiki/Shinsekai) | 1956 is the date already printed on p5. |
+| Tenjinbashi-suji (`osaka-nostalgia-tenjinbashisuji`) | 天神橋筋商店街 | Some 2.6 km of arcade, called Japan's longest shopping street | https://osaka-info.jp/en/spot/tenjimbashisuji-shopping-street/ and https://osaka-info.jp/en/page/tenjimbashisuji-shopping-street (official: about 2.6 km, Japan's longest) ; https://cdn.gltjp.com/en/directory/item/11625/ | "Called" because the "longest" title is the street's own claim, repeated by the city's tourism bureau. Shop count (600 vs 800) and its origin as the approach to Osaka Tenmangū **not printed**. Official English spelling is "Tenjimbashisuji"; the brochure uses "Tenjinbashi-suji". |
+| Ebisuchō, Hankai Tramway (`osaka-nostalgia-hankai-tram`) | 阪堺電気軌道 恵美須町駅 | The Hankai Tramway's station on the edge of Shinsekai | Commons: Category:Ebisucho Station (Hankai Tramway) ; File:View of Ebisucho Station (Hankai Line).jpg ; File:Hankai Ebisucho Station.JPG ; Shinsekai access (Ebisuchō Station, 3 min walk) in the Facts table above | Thinly sourced: no tourism page was searched (budget). The caption therefore claims only that the station exists and is beside Shinsekai; "terminus", tram ages and car types are **not printed**. |
+
+### Photos
+
+Candidates are exact Commons titles whose file pages appeared in the search results; nothing was
+guessed. Each slot also has a Commons `query` for the app's automatic fallback.
+
+| Slot | Candidates | Why / caveats |
+| --- | --- | --- |
+| `osaka-nostalgia-hozenji-yokocho` (any) | 1. File:Hozenji Yokocho at night.jpg · 2. File:Alleyway In Old Town Osaka (254929879).jpeg | #1 5312×2988, 6 Jun 2017, own work; #2 1365×2048 (under the ~2000 px guide, so second), Andrew Braun, in Category:Hōzenji Yokochō. Both are evening shots; the lane is lantern-lit, not black. "Hozenji Yokocho 2023-11.jpg" was seen only in a category listing. Query: "Hozenji Yokocho alley Osaka". |
+| `osaka-nostalgia-shinsekai` (any) | 1. File:Tsutenkaku-Hondori Shopping Street and Tsutenkaku Tower at night 3.jpg · 2. File:Tsutenkaku-Hondori Shopping Street at night.jpg · 3. File:Shinsekai and Tsutenkaku at night 2019-04-12.jpg | #1/#2 own work (そらみみ), 1 Feb 2019; #3 4000×6000, Dick Thomas Johnson, CC BY 2.0. Night neon shots — bright, not mostly black — so the gallery shows the street rather than repeating the p5 tower view. Query: "Tsutenkaku Hondori shopping street Shinsekai". |
+| `osaka-nostalgia-tenjinbashisuji` (wide) | 1. File:Tenjinbashisuji Shopping Street - Jul 14, 2011.jpg · 2. File:Tenjimbashi6 on Tenjimbashisuji-Mall.JPG · 3. File:Tenjinbashi-suji Syotengai1.jpg | #1 2592×1936, Flickr (bytemarks), 2011; #3 2448×3264 portrait, KENPEI 2008, GFDL / CC BY-SA 2.1 JP. Curator: check how crowded each is. Query: "Tenjinbashisuji shopping street Osaka". |
+| `osaka-nostalgia-hankai-tram` (wide) | 1. File:View of Ebisucho Station (Hankai Line).jpg · 2. File:Hankai Ebisucho Station.JPG · 3. File:Ebisucho Station Home DSCN3438 20120922.JPG | Subjects not described in the results; curator: prefer a frame with a tram at the platform. "Hankai 161 type 701 tupe Ebisucho Station 2019-11-17 (49929304496).jpg" (5056×3792) was seen only in a category listing — the `query` should reach it. Query: "Hankai Tramway Ebisucho tram". |
+
+Considered but not used: Nakazakichō (no Commons file of its old houses turned up — only station
+photos).

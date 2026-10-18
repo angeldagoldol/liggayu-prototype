@@ -208,18 +208,33 @@ export default {
     },
     {
       id: 'p8',
-      type: 'map',
-      heading: 'Tokyo by night, mapped',
-      body: 'Shibuya and Shinjuku in the west, Asakusa by the Sumida River in the east — all linked by the subway and the JR Yamanote Line.',
-      places: [
-        { name: 'Shibuya Crossing', nameJp: '渋谷スクランブル交差点', lat: 35.6595, lng: 139.7005, note: 'The scramble, every green light' },
-        { name: 'Shibuya Sky', nameJp: '渋谷スカイ', lat: 35.6585, lng: 139.7022, note: 'Open-air roof, 229 m' },
-        { name: 'Shinjuku Golden Gai', nameJp: '新宿ゴールデン街', lat: 35.6939, lng: 139.7047, note: 'About 200 tiny bars' },
-        { name: 'Omoide Yokochō', nameJp: '思い出横丁', lat: 35.6932, lng: 139.6995, note: 'Yakitori alley, West Exit' },
-        { name: 'Yūrakuchō arches', nameJp: '有楽町ガード下', lat: 35.675, lng: 139.763, note: 'Izakaya under the tracks' },
-        { name: 'Tokyo Tower', nameJp: '東京タワー', lat: 35.6586, lng: 139.7454, note: '333 m, since 1958' },
-        { name: 'Tokyo Skytree', nameJp: '東京スカイツリー', lat: 35.7101, lng: 139.8107, note: '634 m' },
-        { name: 'Sensō-ji', nameJp: '浅草寺', lat: 35.7148, lng: 139.7967, note: 'Lit until about 23:00' },
+      type: 'gallery',
+      heading: 'Old Tokyo, still standing',
+      items: [
+        {
+          photo: 'tokyo-nostalgia-yanaka',
+          art: 'kumo',
+          seed: 52,
+          caption: 'Yūyake Dandan, Yanaka — the “sunset steps” down to Yanaka Ginza',
+        },
+        {
+          photo: 'tokyo-nostalgia-denboin-dori',
+          art: 'ichimatsu',
+          seed: 61,
+          caption: 'Denbōin-dōri, Asakusa — Edo-style shopfronts west of Nakamise',
+        },
+        {
+          photo: 'tokyo-nostalgia-hanayashiki',
+          art: 'shippo',
+          seed: 70,
+          caption: 'Hanayashiki, Asakusa — rides in a garden first opened in 1853',
+        },
+        {
+          photo: 'tokyo-nostalgia-shibamata',
+          art: 'seigaiha',
+          seed: 83,
+          caption: 'Taishakuten Sandō, Shibamata — the dango-shop street of the Tora-san films',
+        },
       ],
     },
     {
