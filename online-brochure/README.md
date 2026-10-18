@@ -2,17 +2,21 @@
 
 **Tabi** (旅, "journey") is an online brochure system about Japan. Visitors
 browse a library of interactive travel brochures (Kyoto, Tokyo, Hokkaidō,
-Okinawa, Osaka, Hakone, Naoshima, Hiroshima, Tōhoku, the Japan Alps), read
-them in a flipbook with real 3D page-turns, and design their own Japan
-brochure in the Studio. It is a static single-page app: no server, no
-account. Everything a visitor makes is stored in their own browser.
+Okinawa, Osaka, Hakone, Naoshima, Hiroshima, Tōhoku, the Japan Alps, Nara,
+Mount Fuji), read them in a flipbook with real 3D page-turns, and design their
+own Japan brochure in the Studio. The built-in brochures describe **real
+places**: every fact is checked against official sources (logged in
+`docs/research/`), every photograph is a credited, free-licence picture from
+Wikimedia Commons, and the maps are drawn from Natural Earth. It is a static
+single-page app: no server, no account. Everything a visitor makes is stored
+in their own browser.
 
 ## Feature tour
 
 | Route | What you get |
 | --- | --- |
 | `#/` **Home** | A 3D tri-fold hero of real photographs (Fuji, Fushimi Inari, Shibuya; credited) that unfolds and follows the pointer, a live Tokyo clock, a bilingual word marquee, a featured-brochure carousel, the four seasons with a photograph each (opening on the current season in Japan), the eight regions on the accurate map of Japan (keyboard-navigable, a photo card per region), "how it works" sketches, Japan in numbers, five classic haiku as postcards (original, romaji, our translation) and a Studio call to action. Facts are logged in `docs/research/home.md`. |
-| `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones, where "Continue reading" reopens the page you left off on. |
+| `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work; the places inside a brochure count too, so `Shirakawa-gō` or `伏見稲荷` find theirs), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones, where "Continue reading" reopens the page you left off on. |
 | `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones: drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet), share/deep link (`?p=` is the page index), favourites, a private "Plan this trip" planner kept on your device (dates, travellers, interests, notes, copy as text, the official sites to check; nothing is sent), "About this brochure" with a full-bleed photograph, the fact-check date, numbered sources and every photo credit, and "More like this". |
 | `#/credits` **Credits** | 奥付: every photograph's credit grouped by where it appears (author, licence, source, plus the photos still to download), how the facts are checked with links to the standard and each brochure's research log, the Natural Earth map data, the typefaces and the rest. |
 | `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview — places with coordinates checked against the map of Japan, a live map of your pins, sources and a facts-checked date — choose real photos from the library or upload your own (resized in the browser, with alt text and credit), change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
@@ -74,7 +78,9 @@ src/
   lib/                     motion presets, cn, ids/slugs, storage, formatting
   hooks/                   useHotkey, useFocusTrap, useLockBodyScroll, useMediaQuery…
   context/                 ThemeContext, ToastContext, BrochureContext
-  data/                    schema.js (the data contract), brochures.js, categories, regions, seasons
+  data/                    schema.js (the data contract), categories, regions, seasons
+    brochures/             one module per built-in brochure (+ index.js: the order)
+    catalog.js             what the app loads: light outlines + each brochure's pages on demand
     photos/                photo registry: manifest/<brochure>.json + photos.generated.json
     geo/                   japan.js (generated prefecture outlines) + projection.js
   components/
@@ -91,8 +97,10 @@ src/
 scripts/
   photos/                  fetch.mjs, candidates.mjs, import-local.mjs (+ lib.mjs, process.mjs, io.mjs)
   geo/build-japan.mjs      Natural Earth → src/data/geo/japan.js
+  build/brochure-outline.mjs  the Vite plugin that makes the brochure outlines
 public/photos/             resized photos, <id>-<480|960|1600>.webp (written by the scripts)
 docs/REAL_CONTENT.md       the standard for real places, facts and photos
+docs/research/<slug>.md    each brochure's fact log (claim → value → sources → date checked)
 ```
 
 [`ARCHITECTURE.md`](./ARCHITECTURE.md) has the conventions, routes, shared
@@ -158,7 +166,10 @@ Built-in brochures describe real places with verified facts and real,
 credited photographs: follow [`docs/REAL_CONTENT.md`](./docs/REAL_CONTENT.md)
 (sources, `factsChecked`, the 12–14 page outline, photo manifests).
 
-1. Add a module in `src/data/brochures/` and list it in
+1. Research first: log every fact in `docs/research/<slug>.md` (the Credits
+   page links that file by the brochure's slug) and list the photos in
+   `src/data/photos/manifest/<slug>.json` (see "Real photos").
+2. Add a module in `src/data/brochures/` and list it in
    `src/data/brochures/index.js`. The shape is documented in `src/data/schema.js`:
 
    ```js
@@ -191,17 +202,24 @@ credited photographs: follow [`docs/REAL_CONTENT.md`](./docs/REAL_CONTENT.md)
    }
    ```
 
-2. Page types and their fields: `cover, intro, features, gallery, place, map,
+3. Page types and their fields: `cover, intro, features, gallery, place, map,
    stats, agenda, pricing, phrases, quote, contact, back`.
    `PAGE_TYPES[type].create()` in `schema.js` returns a filled example of
    each. Start with a `cover`, end with a `back`. Icons are names from the
    registry in `src/components/ui/Icon.jsx`. Photos are ids from the photo
    registry (`photo: 'kanazawa-kenrokuen'`, see below).
-3. Run `npm test`. `src/data/brochures.test.js` checks the schema, unique ids
-   and slugs, cover/back placement, icon names, `.example` contact domains, no
-   dialable phone numbers (Japan has no fictional number range) and palette
-   contrast (ink ≥ 7:1, muted ≥ 4.5:1, accent ≥ 3:1 on the paper).
-4. Look at it in `/playground.html?section=pages&b=<slug>` and in the viewer.
+4. Run `npm test`. `src/data/brochures.test.js` checks the schema, unique ids
+   and slugs, 12–15 pages with the cover first and the back last, icon names
+   and palette contrast (ink ≥ 7:1, muted ≥ 4.5:1, accent ≥ 3:1 on the paper),
+   and the real-content rules: published by Tabi Guides, a main `location`
+   with Japanese name and coordinates in Japan, at least two `https` sources,
+   place and map coordinates inside Japan, `https` official websites, no e-mail
+   addresses or phone numbers on Visitor information, `factsChecked` set
+   whenever the back page claims it, and every photo id present in a manifest.
+   `scripts/build/brochure-outline.test.mjs` checks the brochure still
+   outlines (keep the file a plain `export default { … }` literal).
+5. Look at it in `/playground.html?section=reader&rb=<slug>&audit=1` (every
+   page at reader size, with the clipped-text audit) and in the viewer.
 
 Renderers never crash on missing or empty fields, because user-made
 brochures are often half-finished.
@@ -247,16 +265,63 @@ runs a photo you own or have licensed through the same resizing (add
 
 Until a photo is downloaded — or if it fails to load — pages show the
 brochure's generative art in its place, so every brochure always renders.
+**Today no photo is downloaded yet**: the manifests list the candidates, and
+`#/credits` counts the photographs still to come (as does each brochure's
+"About this brochure"). After a fetch, check:
+
+- `#/credits` — every downloaded photo listed with author, licence and source;
+- `/playground.html?section=reader&rb=all&audit=1` — no clipped text with the
+  real pictures in place, on light and dark paper;
+- each manifest's `caption`/`alt` still describe the file that was chosen
+  (several candidates were picked from search results, not by eye).
 
 **Credits.** Each photo is credited where it appears ("Photo: Author ·
 CC BY-SA 4.0", linking to the Commons file page and the licence deed, in a
 new tab); the credit comes from the Commons metadata, never typed by hand.
 `creditsFor(brochure)` in `src/data/photos` lists every credit a brochure
-needs (with the work's title); the back page prints them all. A long credit
+needs (with the work's title); the back page prints them all, the Viewer's
+"About this brochure" lists them with thumbnails, and `#/credits` gathers
+every credit in Tabi (Home and each brochure). A long credit
 wraps rather than being cut off, and the licence never breaks. Credits are plain text (HTML
 in Commons metadata is stripped) and carry only http(s) links. CC BY / BY-SA
 photos without a licence link (Commons' or the deed for their version) are
 rejected. CC BY-SA photos are only resized and re-encoded.
+
+## Facts and sources
+
+Each built-in brochure carries `sources` (official sites first) and
+`factsChecked` (e.g. `"October 2026"`). Readers see them in three places:
+"About this brochure" under the reader (the check date, how it was checked
+and every source, numbered and linked), the back page's colophon ("Facts
+checked October 2026 · 8 sources") and the facts table on `#/credits`, which
+also links each brochure's research log. The build publishes
+`docs/REAL_CONTENT.md` and `docs/research/<slug>.md` as plain Markdown files
+for those links (some hosts download `.md` instead of showing it).
+
+Brochures made in the Studio can list their own sources and a facts-checked
+date (Details panel); the reader shows that date as the author's claim ("…,
+says the author"), never as a Tabi Guides check.
+
+## Your photos in the Studio
+
+Every photo field in the Studio (cover, intro, place, gallery and feature
+items) opens a photo picker — a side drawer, or a bottom sheet on phones:
+
+- **Library**: every registry photo, grouped by the brochure that uses it,
+  with search, a region filter and suggestions matched to the place being
+  edited. Photos not downloaded yet say so; the cover art stands in for them.
+- **Your photos**: drop, choose or paste an image. It is resized in the
+  browser to a JPEG of at most 1600 px (quality 0.82, then lower quality,
+  1280 px or 1024 px until it is under ~1.2 MB of data), asks for alt text
+  (required) and a credit ("Your photo" unless you name an author and
+  licence), and is stored inside the brochure as `userPhotos`; pages point at
+  it as `user:<key>`. A meter shows the 3 MB-per-brochure budget (24 photos at
+  most) and warns when browser storage (about 5 MB per site) is nearly full.
+
+Uploads never leave the browser. They travel with Export JSON, and an import
+keeps only JPEG, PNG or WebP data within the same limits (files up to 4.5 MB).
+Uploads with an author or licence are credited on the back page like any
+other photo. Removing an upload clears every field that used it.
 
 ## Map of Japan
 
@@ -296,9 +361,14 @@ Recipes:
   base already handles the `/<repo>/` sub-path.
 - **Anything else**: copy `dist/` to any static file host or bucket.
 
-The production bundle is split into a small entry chunk, two long-lived
-vendor chunks (`react`, `motion`) and one lazy chunk per route. The command
-palette, the cover-art generator and the icon registry are loaded on demand.
+The production bundle is split into a small entry chunk (about 40 KB
+gzipped), two long-lived vendor chunks (`react`, `motion`) and one lazy chunk
+per route. The entry carries only an outline of each built-in brochure
+(titles, covers, places, sources); each brochure's pages are a chunk of their
+own (about 5 KB gzipped), fetched when the reader opens it — straight away for
+a deep link, on hover or focus from a card. The command palette, the
+cover-art generator, the icon registry, the photo registry and the map are
+loaded on demand.
 
 ## Credits
 

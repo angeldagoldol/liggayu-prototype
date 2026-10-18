@@ -10,7 +10,7 @@
  */
 import { CATEGORY_MAP } from './categories.js';
 import { hasKey } from './lookup.js';
-import { safeImageSrc } from './photos/registry.js';
+import { safeImageSrc } from './photos/safeImageSrc.js';
 import { REGION_MAP } from './regions.js';
 import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
 import { SEASON_MAP } from './seasons.js';

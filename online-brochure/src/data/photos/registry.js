@@ -13,6 +13,7 @@
  * leaves the photo unavailable, so its fallback art shows. resolvePhoto(id,
  * brochure) answers both kinds of id with the same record shape.
  */
+import { safeImageSrc } from './safeImageSrc.js';
 
 /** Widths the pipeline writes (public/photos/<id>-<w>.webp). */
 export const PHOTO_WIDTHS = [480, 960, 1600];
@@ -51,14 +52,7 @@ export function isUserPhotoId(id) {
   return typeof id === 'string' && id.trim().startsWith(USER_PHOTO_PREFIX) && id.trim().length > USER_PHOTO_PREFIX.length;
 }
 
-/** The image URL of an uploaded photo, or '' — only inline data:image/… (raster) and blob: URLs; never http(s). */
-export function safeImageSrc(value) {
-  if (typeof value !== 'string') return '';
-  const src = value.trim();
-  if (/^data:image\/(?:png|jpeg|jpg|webp|gif|avif);base64,[A-Za-z0-9+/]+={0,2}$/i.test(src)) return src;
-  if (/^blob:(?:https?:\/\/[^\s"'()<>\\]+|null)\/[0-9a-f-]{8,}$/i.test(src)) return src;
-  return '';
-}
+export { safeImageSrc };
 
 const positive = (value) => (Number.isFinite(value) && value > 0 ? Math.round(value) : null);
 /** "50% 40%" / "left top" style object-position: letters, digits, %, ., spaces, minus only. */

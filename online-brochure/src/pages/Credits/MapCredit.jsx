@@ -32,7 +32,8 @@ export function MapCredit({ brochures }) {
     <div className={styles.mapCredit}>
       <figure className={styles.mapFigure}>
         <div className={styles.mapPlate}>
-          <LazyJapanMap pins={pins} focus="japan" aspect={1.05} labelScale={1.1} label={`Map of Japan with the ${pins.length} brochures’ main places`} />
+          {/* Numbers only: the index beside the map names each pin, and twelve labels at country scale collide. */}
+          <LazyJapanMap pins={pins} focus="japan" aspect={1.05} labelScale={1.1} showLabels={false} label={`Map of Japan with the ${pins.length} brochures’ main places`} />
         </div>
         <figcaption className={styles.mapCaption}>
           Natural Earth · 1:10m · Lambert conformal conic · Okinawa &amp; Amami inset
