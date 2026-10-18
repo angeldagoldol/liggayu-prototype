@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useContext, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { UNSAFE_LocationContext as LocationContext, useLocation, useOutlet } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useHotkey } from '../../hooks/useHotkey.js';
@@ -11,6 +11,12 @@ import { CommandPalette } from './CommandPalette.jsx';
 import { RoutePage } from './RouteTransition.jsx';
 import { RouteErrorBoundary } from './RouteErrorBoundary.jsx';
 import styles from './AppShell.module.css';
+
+// The photo notice needs the photo registry (the cover-art chunk), so it loads late and on its own;
+// a chunk that fails to load just means no notice.
+const PhotoNotice = lazy(() => import('../photo/PhotoNotice.jsx').catch(() => ({ default: () => null })));
+/** The notice is only about photos that failed to arrive: nothing to say in the first seconds. */
+const PHOTO_NOTICE_DELAY_MS = 2500;
 
 /**
  * Persistent chrome (navbar, footer, command palette, grain) around animated
@@ -32,6 +38,9 @@ import styles from './AppShell.module.css';
  * Each route renders inside its own error boundary: a page that crashes, or
  * whose chunk cannot be downloaded, shows <RouteError> while the navbar,
  * footer and palette keep working, and navigating away clears it.
+ *
+ * A few seconds in, the shell also mounts <PhotoNotice> (lazy), which explains
+ * placeholder art when the real photographs could not load.
  */
 export function AppShell() {
   const location = useLocation();
@@ -62,6 +71,12 @@ export function AppShell() {
   );
 
   useHotkey('mod+k', togglePalette, { allowInInputs: true });
+
+  const [photoNotice, setPhotoNotice] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setPhotoNotice(true), PHOTO_NOTICE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Runs while the curtain fully covers the screen.
   const onExitComplete = () => {
@@ -96,6 +111,11 @@ export function AppShell() {
         </main>
         {!immersive && <Footer />}
         <CommandPalette open={paletteOpen} onClose={closePalette} />
+        {photoNotice && (
+          <Suspense fallback={null}>
+            <PhotoNotice />
+          </Suspense>
+        )}
         <div className="grain" aria-hidden="true" />
       </div>
     </PaletteContext.Provider>

@@ -424,15 +424,16 @@ describe('outputs', () => {
 describe('manifests and arguments', () => {
   it('checks manifests and reports problems', () => {
     const { photos, problems, brochure } = readManifest(
-      { brochure: 'kyoto-thousand-gates', photos: [{ id: 'kyoto-senbon-torii', candidates: ['File:A.jpg'] }, { id: 'Bad Id' }, null, { id: 'kyoto-empty', candidates: [] }] },
+      { brochure: 'kyoto-thousand-gates', photos: [{ id: 'kyoto-senbon-torii', candidates: ['File:A.jpg'] }, { id: 'Bad Id' }, null, { id: 'kyoto-empty', candidates: [] }, { id: 'kyoto-search-only', query: 'Kiyomizu-dera' }] },
       'kyoto.json',
     );
     expect(brochure).toBe('kyoto-thousand-gates');
-    expect(photos.map((p) => p.id)).toEqual(['kyoto-senbon-torii', 'kyoto-empty']);
+    // A slot with only a search query is fine: the download searches Commons for it.
+    expect(photos.map((p) => p.id)).toEqual(['kyoto-senbon-torii', 'kyoto-empty', 'kyoto-search-only']);
     expect(problems).toEqual([
       'kyoto.json: photo 2 needs a kebab-case "id"',
       'kyoto.json: photo 3 is not an object',
-      'kyoto.json: kyoto-empty has no usable "file" or "candidates"',
+      'kyoto.json: kyoto-empty has no usable "file", "candidates" or "query"',
     ]);
     expect(readManifest({}, 'x.json').problems).toEqual(['x.json: no "photos" array']);
   });

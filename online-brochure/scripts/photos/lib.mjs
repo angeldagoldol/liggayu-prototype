@@ -244,6 +244,97 @@ export function retryDelay(attempt, retryAfter) {
   return Math.min(2000 * 2 ** attempt, 60_000);
 }
 
+/* ----------------------------------------------------------------- search */
+
+/**
+ * What a Commons search for a slot's `query` asks for: the words, restricted
+ * to bitmap files (photographs, not diagrams or SVG maps). Shared by the
+ * browser (live photos) and the download, so both find the same pictures.
+ */
+export function searchText(query) {
+  return `${String(query ?? '').trim()} filetype:bitmap`;
+}
+
+/**
+ * generator=search URL for the download: the first `limit` files Commons
+ * finds for `query` (namespace 6, File:), with their imageinfo and a
+ * thumbnail `thumbWidth` wide (snapped to a standard step).
+ */
+export function searchImageInfoUrl(query, { limit = 20, thumbWidth = DOWNLOAD_WIDTH, maxlag = 5, cont } = {}) {
+  const params = new URLSearchParams({
+    action: 'query',
+    format: 'json',
+    formatversion: '2',
+    generator: 'search',
+    gsrnamespace: '6',
+    gsrsearch: searchText(query),
+    gsrlimit: String(limit),
+    prop: 'imageinfo',
+    iiprop: 'url|size|mime|extmetadata',
+    iiurlwidth: String(thumbStep(thumbWidth)),
+    iiextmetadatafilter: EXT_FIELDS.join('|'),
+    iiextmetadatalanguage: 'en',
+    maxlag: String(maxlag),
+  });
+  if (cont && typeof cont === 'object') for (const [key, value] of Object.entries(cont)) params.set(key, String(value));
+  return `${COMMONS_API}?${params}`;
+}
+
+/**
+ * Whether a `continue` object still owes imageinfo for this query. Search
+ * continuation alone (`gsroffset`: the next page of results) is not followed.
+ */
+export function owesImageInfo(cont) {
+  return Boolean(cont) && typeof cont === 'object' && !Array.isArray(cont) && Object.keys(cont).some((key) => key !== 'continue' && !key.startsWith('gsr'));
+}
+
+/** Search results of a merged generator=search response, with their rank (`index`), best first. */
+export function searchResults(merged, parsed) {
+  const pages = Array.isArray(merged?.query?.pages) ? merged.query.pages : [];
+  return pages
+    .filter((page) => page && typeof page.title === 'string' && parsed.has(page.title))
+    .map((page) => ({ ...parsed.get(page.title), index: Number(page.index) || 0 }))
+    .sort((a, b) => a.index - b.index);
+}
+
+/**
+ * How well a picture's shape suits a slot: 2 = right shape, 1 = acceptable,
+ * 0 = wrong. `cover`/`full` pages are portrait (or near-square) frames — a
+ * page is 1 : 1.414 — `wide`/`spread` landscape ones (1.4–2.4 : 1; a spread
+ * is 1.414 : 1, so a long panorama strip would lose most of its width to the
+ * crop, and a sliver-thin portrait most of its height); `any` takes anything.
+ */
+export function orientationFit(use, width, height) {
+  if (!(width > 0 && height > 0)) return 0;
+  const ratio = width / height;
+  if (use === 'cover' || use === 'full') return ratio >= 0.5 && ratio <= 1.1 ? 2 : ratio >= 0.4 && ratio <= 1.35 ? 1 : 0;
+  if (use === 'wide' || use === 'spread') return ratio >= 1.4 && ratio <= 2.4 ? 2 : ratio >= 1.2 && ratio <= 3.2 ? 1 : 0;
+  return 2;
+}
+
+/**
+ * Search results for a slot, best first: only those `evaluate` accepts (the
+ * licence and size policy; evaluateCandidate by default, the browser passes
+ * its stricter evaluateLive) and whose file is not in `exclude` (a Set of
+ * "File:…" titles another slot already shows), ordered by the fit of their
+ * shape for the slot's `use`, then size, then the search's own ranking.
+ * `results` are parsed imageinfo results with `index` (searchResults()).
+ *   → [{ result, verdict, file, fit, area, index }]
+ */
+export function rankSearchResults(results, use, { evaluate = evaluateCandidate, exclude } = {}) {
+  const ranked = [];
+  for (const result of Array.isArray(results) ? results : []) {
+    const verdict = evaluate(result);
+    if (!verdict?.ok) continue;
+    const file = normalizeFileTitle(verdict.title) ?? verdict.title;
+    if (exclude?.has(file)) continue;
+    const width = Number(result.info?.width) || 0;
+    const height = Number(result.info?.height) || 0;
+    ranked.push({ result, verdict, file, fit: orientationFit(use, width, height), area: width * height, index: Number(result.index) || 0 });
+  }
+  return ranked.sort((a, b) => b.fit - a.fit || b.area - a.area || a.index - b.index);
+}
+
 /* --------------------------------------------------------------- licences */
 
 /**
@@ -466,8 +557,12 @@ export function toHex({ r, g, b } = {}) {
   return `#${part(r)}${part(g)}${part(b)}`;
 }
 
-/** The record written to photos.generated.json for one photo. */
-export function buildRecord({ id, file, width, height, widths, lqip, color, credit, fetchedAt }) {
+/**
+ * The record written to photos.generated.json for one photo. A photo found by
+ * searching Commons (not one of the slot's researched candidates) also keeps
+ * `via: 'search'` and the `query` that found it.
+ */
+export function buildRecord({ id, file, width, height, widths, lqip, color, credit, fetchedAt, via, query }) {
   return {
     id,
     file: file ?? null,
@@ -483,6 +578,7 @@ export function buildRecord({ id, file, width, height, widths, lqip, color, cred
     licenseUrl: credit.licenseUrl ?? '',
     sourceUrl: credit.sourceUrl ?? '',
     attributionRequired: Boolean(credit.attributionRequired),
+    ...(via === 'search' ? { via: 'search', query: String(query ?? '') } : {}),
     fetchedAt,
   };
 }
@@ -507,7 +603,9 @@ export function readManifest(json, name = 'manifest') {
   json.photos.forEach((photo, i) => {
     if (!photo || typeof photo !== 'object') return problems.push(`${name}: photo ${i + 1} is not an object`);
     if (typeof photo.id !== 'string' || !ID.test(photo.id)) return problems.push(`${name}: photo ${i + 1} needs a kebab-case "id"`);
-    if (candidateTitles(photo).length === 0) problems.push(`${name}: ${photo.id} has no usable "file" or "candidates"`);
+    if (candidateTitles(photo).length === 0 && !(typeof photo.query === 'string' && photo.query.trim())) {
+      problems.push(`${name}: ${photo.id} has no usable "file", "candidates" or "query"`);
+    }
     photos.push(photo);
   });
   return { brochure: typeof json.brochure === 'string' ? json.brochure : null, photos, problems };

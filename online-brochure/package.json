@@ -8,7 +8,9 @@
     "node": ">=20.19"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
+    "dev:vite": "vite",
+    "prebuild": "node scripts/photos/fetch.mjs --auto",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",

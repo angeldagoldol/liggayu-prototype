@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { brochureOutlines } from './scripts/build/brochure-outline.mjs';
+import { photoDownloadStatus } from './scripts/build/photo-status.mjs';
 
 /**
  * Photo manifests (src/data/photos/manifest/*.json) list Commons candidates for
@@ -37,7 +38,11 @@ function photoManifests() {
 // works from any host or sub-path (Vercel, Netlify, GitHub Pages, a USB stick).
 export default defineConfig({
   base: './',
-  plugins: [react(), photoManifests(), brochureOutlines()],
+  // `npm run dev` shares the terminal with the photo download (scripts/dev.mjs): Vite must not
+  // clear it when it is ready, or a slow first start would wipe the download's first lines.
+  clearScreen: false,
+  // photoDownloadStatus (dev only): what `npm run dev`'s background photo download is doing, for the photo notice.
+  plugins: [react(), photoManifests(), brochureOutlines(), photoDownloadStatus()],
   server: { port: 5173, host: true },
   preview: { port: 4173, host: true },
   build: {
@@ -55,6 +60,9 @@ export default defineConfig({
           const has = (file) => chunk.moduleIds.some((id) => id.replace(/\\/g, '/').endsWith(`/src/components/brochure/${file}`));
           if (has('CoverArt.jsx')) return 'assets/cover-art-[hash].js';
           if (has('BrochurePage.jsx')) return 'assets/BrochurePage-[hash].js';
+          // The photo registry (manifests, photos.generated.json, live photos): shared by the
+          // cover-art chunk and the lazy photo notice, so Rollup gives it a chunk of its own.
+          if (chunk.moduleIds.some((id) => id.replace(/\\/g, '/').endsWith('/src/data/photos/index.js'))) return 'assets/photos-[hash].js';
           return 'assets/[name]-[hash].js';
         },
         // Two long-lived vendor chunks that change far less often than app

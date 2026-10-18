@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
-import { creditsFor, getPhoto, isUserPhotoId, listPhotos, livePhotos, photoIdsIn, resolvePhoto } from '../../data/photos/index.js';
+import { creditsFor, getPhoto, isUserPhotoId, listPhotos, livePhotos, photoIdsIn, photosSnapshot, resolvePhoto, subscribePhotos } from '../../data/photos/index.js';
 
 /** The ids the live resolver knows (manifest slots without a bundled photo), once each, as one string key. */
 function liveKey(ids) {
@@ -13,7 +13,7 @@ function liveKey(ids) {
 
 /** What a snapshot says, plus registry lookups whose identity changes with it (so memos that use them recompute). */
 function view(snapshot) {
-  const [flags, codes = ''] = snapshot.split(':');
+  const [flags, codes = ''] = snapshot.slice(snapshot.indexOf('|') + 1).split(':');
   let loading = 0;
   let ready = 0;
   let failed = 0;
@@ -54,9 +54,9 @@ function view(snapshot) {
 export function useLivePhotos(ids) {
   const key = liveKey(ids);
   const snapshot = useSyncExternalStore(
-    livePhotos.subscribe,
-    () => livePhotos.snapshot(key),
-    () => livePhotos.snapshot(key),
+    subscribePhotos,
+    () => photosSnapshot(key),
+    () => photosSnapshot(key),
   );
   useEffect(() => {
     if (key) livePhotos.request(key.split('\n'));

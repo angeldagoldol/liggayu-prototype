@@ -1,12 +1,28 @@
 /**
  * File and network plumbing for the photo scripts: project paths, manifests,
- * the generated registry, and a polite Commons client (descriptive
- * User-Agent, maxlag, Retry-After, small concurrency).
+ * the generated registry, the download's own state (.cache/photo-fetch/:
+ * journal, failures, status, lock) and a polite Commons client (descriptive
+ * User-Agent, maxlag, Retry-After, API requests one at a time, timeouts,
+ * HTTPS_PROXY).
  */
-import { readdir, readFile, rename, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { apiError, chunk, DOWNLOAD_WIDTH, imageInfoUrl, mergeQueryResponses, parseImageInfoResponse, readManifest, retryDelay, sortRecords } from './lib.mjs';
+import {
+  COMMONS_API,
+  apiError,
+  chunk,
+  DOWNLOAD_WIDTH,
+  imageInfoUrl,
+  mergeQueryResponses,
+  owesImageInfo,
+  parseImageInfoResponse,
+  readManifest,
+  retryDelay,
+  searchImageInfoUrl,
+  searchResults,
+  sortRecords,
+} from './lib.mjs';
 
 export const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 /** PHOTOS_MANIFEST_DIR points the scripts at another manifest folder (for trying things out). */
@@ -14,6 +30,25 @@ export const MANIFEST_DIR = process.env.PHOTOS_MANIFEST_DIR ? path.resolve(proce
 export const GENERATED_FILE = path.join(ROOT, 'src/data/photos/photos.generated.json');
 export const PUBLIC_DIR = path.join(ROOT, 'public/photos');
 export const CANDIDATE_DIR = path.join(ROOT, '.cache/photo-candidates');
+/** The download's own bookkeeping (gitignored): never shipped, safe to delete. */
+export const STATE_DIR = path.join(ROOT, '.cache/photo-fetch');
+/** Photos downloaded but not yet published in photos.generated.json (resumed by the next run). */
+export const JOURNAL_FILE = path.join(STATE_DIR, 'journal.json');
+/** Slots that recently found no usable picture: { [id]: { at, sig, reason } }. */
+export const FAILURES_FILE = path.join(STATE_DIR, 'failures.json');
+/** What the download is doing, for the dev server's notice (vite.config.js: tabi-photo-status). */
+export const STATUS_FILE = path.join(STATE_DIR, 'status.json');
+/**
+ * A copy of what the download last published in photos.generated.json. Unzipping
+ * a newer copy of the project over this folder replaces that file (with `{}`) but
+ * leaves public/photos and .cache/ alone: the next run takes the photos back from
+ * here instead of downloading them all again.
+ */
+export const BACKUP_FILE = path.join(STATE_DIR, 'published.json');
+/** One download at a time: { pid, at }. */
+export const LOCK_FILE = path.join(STATE_DIR, 'lock.json');
+
+const UPLOAD_ORIGIN = 'https://upload.wikimedia.org';
 
 /**
  * Wikimedia asks API clients for a descriptive User-Agent with a way to reach
@@ -21,8 +56,334 @@ export const CANDIDATE_DIR = path.join(ROOT, '.cache/photo-candidates');
  */
 export function userAgent() {
   const contact = process.env.PHOTOS_CONTACT?.trim();
-  return `TabiBrochures-PhotoFetch/1.0 (static travel-brochure site; downloads freely licensed photos once at build time${contact ? `; ${contact}` : ''}) node/${process.versions.node}`;
+  return `TabiBrochures-PhotoFetch/1.1 (static travel-brochure site; downloads freely licensed photos once, then serves them itself${contact ? `; ${contact}` : '; set PHOTOS_CONTACT to add a contact'}) node/${process.versions.node}`;
 }
+
+/* ----------------------------------------------------------------- routing */
+
+/**
+ * FOR TESTS ONLY. TABI_COMMONS_API (a stand-in for https://commons.wikimedia.org/w/api.php)
+ * and TABI_COMMONS_UPLOAD (for https://upload.wikimedia.org) send the download's
+ * requests to a fake Commons server; the URLs recorded in photos.generated.json
+ * stay Wikimedia's. Never set them for real use.
+ */
+export function testRoutes(env = process.env) {
+  const api = typeof env.TABI_COMMONS_API === 'string' ? env.TABI_COMMONS_API.trim() : '';
+  const upload = typeof env.TABI_COMMONS_UPLOAD === 'string' ? env.TABI_COMMONS_UPLOAD.trim().replace(/\/+$/, '') : '';
+  return api || upload ? { api, upload } : null;
+}
+
+/** Where a Commons URL is really fetched from (itself, unless a test routes it elsewhere). */
+export function routeUrl(url, routes = testRoutes()) {
+  if (!routes) return url;
+  if (routes.api && url.startsWith(COMMONS_API)) return routes.api + url.slice(COMMONS_API.length);
+  if (routes.upload && url.startsWith(`${UPLOAD_ORIGIN}/`)) return routes.upload + url.slice(UPLOAD_ORIGIN.length);
+  return url;
+}
+
+/* ------------------------------------------------------------------ proxy */
+
+/** The proxy the environment names (HTTPS_PROXY, HTTP_PROXY, either case), or ''. */
+export function proxyFromEnv(env = process.env) {
+  return env.HTTPS_PROXY || env.https_proxy || env.HTTP_PROXY || env.http_proxy || '';
+}
+
+let transportPromise = null;
+
+/**
+ * The fetch the scripts use. Node's built-in fetch ignores HTTPS_PROXY unless
+ * it was started with NODE_USE_ENV_PROXY=1 (Node ≥ 22.21 / 24): behind a proxy
+ * the scripts use undici's EnvHttpProxyAgent (undici comes with the project's
+ * test tools), which honours HTTPS_PROXY, HTTP_PROXY and NO_PROXY.
+ * → { fetch, proxy: 'none' | 'node' | 'undici' | 'unused' }
+ */
+export function transport() {
+  transportPromise ??= (async () => {
+    if (!proxyFromEnv()) return { fetch: globalThis.fetch, proxy: 'none' };
+    if (process.env.NODE_USE_ENV_PROXY === '1') return { fetch: globalThis.fetch, proxy: 'node' };
+    try {
+      const undici = await import('undici');
+      if (typeof undici.EnvHttpProxyAgent === 'function' && typeof undici.fetch === 'function') {
+        const dispatcher = new undici.EnvHttpProxyAgent();
+        return { fetch: (url, init) => undici.fetch(url, { ...init, dispatcher }), proxy: 'undici' };
+      }
+    } catch {
+      // not installed: fall through
+    }
+    return { fetch: globalThis.fetch, proxy: 'unused' };
+  })();
+  return transportPromise;
+}
+
+/* ---------------------------------------------------------------- network */
+
+const OFFLINE_CODES = new Set(['ENOTFOUND', 'EAI_AGAIN', 'ECONNREFUSED', 'ENETUNREACH', 'EHOSTUNREACH', 'ENETDOWN', 'ECONNRESET', 'UND_ERR_CONNECT_TIMEOUT', 'UND_ERR_SOCKET', 'CERT_HAS_EXPIRED', 'SELF_SIGNED_CERT_IN_CHAIN', 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY']);
+
+/** The low-level code of a network error (fetch wraps it in `cause`), or ''. */
+export function errorCode(error) {
+  let e = error;
+  for (let i = 0; i < 4 && e; i += 1) {
+    if (typeof e.code === 'string' && e.code) return e.code;
+    e = e.cause;
+  }
+  return '';
+}
+
+/** True when a request never reached Commons at all (no internet, DNS, a firewall, a proxy that refused). */
+export function isOfflineError(error) {
+  if (!error || error.status) return false;
+  if (OFFLINE_CODES.has(errorCode(error))) return true;
+  return error.name === 'TypeError' && /fetch failed/i.test(error.message ?? '');
+}
+
+/** A timer that an AbortSignal cuts short. */
+function sleep(ms, signal) {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) return reject(signal.reason);
+    const timer = setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      clearTimeout(timer);
+      reject(signal.reason);
+    };
+    signal?.addEventListener('abort', onAbort, { once: true });
+  });
+}
+
+/** The host a Commons URL names ('upload.wikimedia.org'), for messages and the per-host pause. */
+function hostOf(url) {
+  try {
+    return new URL(url).host;
+  } catch {
+    return 'Commons';
+  }
+}
+
+/**
+ * When a host said "slow down" (429/503 with Retry-After), every request to
+ * it waits until then — not only the one that was told: three image downloads
+ * run at once, and the other two must not carry on hammering it.
+ */
+const pausedUntil = new Map();
+async function waitForHost(host, signal) {
+  const wait = (pausedUntil.get(host) ?? 0) - Date.now();
+  if (wait > 0) await sleep(wait, signal);
+}
+
+/**
+ * GET with retries on 429/5xx/maxlag (honouring Retry-After, for every request
+ * to that host) and on network errors, a `timeout` per attempt, and `signal`
+ * to stop at once. A request that cannot reach Commons at all is tried twice,
+ * not five times, so an offline run ends quickly. Returns the Response (ok) or
+ * throws; an HTTP error carries `status` and names only the host, not the
+ * whole URL. `fetchImpl` is for tests.
+ */
+export async function politeFetch(url, { retries = 4, accept = '*/*', timeout = 30_000, signal, fetchImpl } = {}) {
+  const doFetch = fetchImpl ?? (await transport()).fetch;
+  const host = hostOf(url);
+  let lastError;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    if (signal?.aborted) throw signal.reason;
+    await waitForHost(host, signal);
+    let response;
+    try {
+      const timer = AbortSignal.timeout(timeout);
+      response = await doFetch(routeUrl(url), {
+        headers: { 'User-Agent': userAgent(), 'Api-User-Agent': userAgent(), Accept: accept },
+        signal: signal ? AbortSignal.any([signal, timer]) : timer,
+      });
+    } catch (error) {
+      if (signal?.aborted) throw signal.reason;
+      lastError = error;
+      const offline = isOfflineError(error);
+      if (attempt === retries || (offline && attempt >= 1)) break;
+      await sleep(offline ? 1000 : retryDelay(attempt), signal);
+      continue;
+    }
+    if (response.ok) return response;
+    // Release the connection: an unread body keeps the socket busy.
+    await response.body?.cancel().catch(() => {});
+    lastError = Object.assign(new Error(`HTTP ${response.status} from ${host}`), { status: response.status, url });
+    if (response.status !== 429 && response.status < 500) throw lastError;
+    if (attempt < retries) {
+      const retryAfter = response.headers.get('retry-after');
+      const delay = retryDelay(attempt, retryAfter);
+      if (retryAfter || response.status === 429) pausedUntil.set(host, Math.max(pausedUntil.get(host) ?? 0, Date.now() + delay));
+      await sleep(delay, signal);
+    }
+  }
+  throw lastError;
+}
+
+/**
+ * Why a request failed, when the file itself is not to blame — so the slot is
+ * neither given up on nor "remembered" as having no picture:
+ *   'refused'   401/403/407/451: Commons (or a filter on this network) turned the download away
+ *   'throttled' 429, or no answer in time: asked to slow down
+ *   'server'    5xx: trouble on Wikimedia's side
+ * → one of those, or null (a 404, a broken image: the next candidate is tried).
+ */
+export function requestTrouble(error) {
+  const status = Number(error?.status) || 0;
+  if ([401, 403, 407, 451].includes(status)) return 'refused';
+  if (status === 429 || error?.name === 'TimeoutError') return 'throttled';
+  if (status >= 500) return 'server';
+  return null;
+}
+
+// Wikimedia's API etiquette: one request at a time, even while images download in parallel.
+let apiQueue = Promise.resolve();
+function oneAtATime(task) {
+  const run = apiQueue.then(task, task);
+  apiQueue = run.catch(() => {});
+  return run;
+}
+
+/** One API request, repeated while Commons answers maxlag/ratelimited. → parsed JSON */
+async function apiGet(url, fetchImpl, { signal } = {}) {
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    const { json, retryAfter } = await oneAtATime(async () => {
+      const response = await fetchImpl(url, { accept: 'application/json', signal });
+      return { json: await response.json(), retryAfter: response.headers?.get?.('retry-after') };
+    });
+    const error = apiError(json);
+    if (error && (error.code === 'maxlag' || error.code === 'ratelimited')) {
+      await sleep(retryDelay(attempt, retryAfter ?? (error.code === 'maxlag' ? 5 : undefined)), signal);
+      continue;
+    }
+    if (error) throw new Error(`Commons API error ${error.code}: ${error.info}`);
+    return json;
+  }
+  throw new Error('Commons kept answering "maxlag" (it is busy); try again later');
+}
+
+/**
+ * imageinfo for many titles → Map(title → result). Batches of 50, one request
+ * at a time (Wikimedia's API etiquette), maxlag-aware, following `continue`
+ * until each batch is complete. `fetchImpl` is for tests.
+ */
+export async function queryImageInfo(titles, { thumbWidth = DOWNLOAD_WIDTH, fetchImpl = politeFetch, maxRounds = 20, signal } = {}) {
+  const results = new Map();
+  for (const batch of chunk([...new Set(titles)])) {
+    const rounds = [];
+    let cont;
+    do {
+      const json = await apiGet(imageInfoUrl(batch, { thumbWidth, cont }), fetchImpl, { signal });
+      rounds.push(json);
+      cont = json?.continue && typeof json.continue === 'object' ? json.continue : undefined;
+    } while (cont && rounds.length < maxRounds);
+    if (cont) throw new Error(`Commons kept sending "continue" for ${batch.length} titles; try fewer at once (--only)`);
+    for (const [title, result] of parseImageInfoResponse(mergeQueryResponses(rounds), batch)) results.set(title, result);
+  }
+  return results;
+}
+
+/**
+ * One page of a Commons search for `query` (bitmap files, `limit` a page, with
+ * imageinfo and a 1920 px thumbnail), following `continue` while imageinfo is
+ * owed. `offset` asks for a later page (a previous answer's `nextOffset`).
+ *   → { results: [parsed result + index, best-ranked first], nextOffset }
+ */
+export async function searchImageInfo(query, { offset, limit = 20, fetchImpl = politeFetch, maxRounds = 10, signal } = {}) {
+  const rounds = [];
+  let cont = offset ? { gsroffset: offset, continue: 'gsroffset||' } : undefined;
+  let last;
+  do {
+    const json = await apiGet(searchImageInfoUrl(query, { limit, cont }), fetchImpl, { signal });
+    rounds.push(json);
+    last = json?.continue;
+    cont = owesImageInfo(last) ? { ...cont, ...last } : undefined;
+  } while (cont && rounds.length < maxRounds);
+  const merged = mergeQueryResponses(rounds);
+  const nextOffset = Number(last?.gsroffset) || null;
+  return { results: searchResults(merged, parseImageInfoResponse(merged)), nextOffset };
+}
+
+/** Run `fn` over `items` with at most `limit` in flight. */
+export async function pool(items, limit, fn) {
+  const queue = [...items];
+  const workers = Array.from({ length: Math.min(limit, queue.length) }, async () => {
+    while (queue.length) await fn(queue.shift());
+  });
+  await Promise.all(workers);
+}
+
+const CERT_CODES = new Set(['CERT_HAS_EXPIRED', 'SELF_SIGNED_CERT_IN_CHAIN', 'UNABLE_TO_GET_ISSUER_CERT_LOCALLY']);
+
+/** A friendly explanation for a network failure (lines, without a trailing newline). */
+export function networkHint(error, { proxy = 'none' } = {}) {
+  const code = errorCode(error);
+  const cause = code || error?.status || error?.message || 'no answer';
+  if (CERT_CODES.has(code)) {
+    return [
+      `Could not reach Wikimedia Commons securely (${code}): something on this network (a school or office filter, antivirus) replaces its HTTPS certificate.`,
+      'Ask for its certificate file and point Node at it, then run the download again:',
+      '  macOS/Linux: NODE_EXTRA_CA_CERTS=/path/to/cert.pem npm run photos:fetch',
+      '  Windows PowerShell: $env:NODE_EXTRA_CA_CERTS="C:\\path\\to\\cert.pem"; npm run photos:fetch',
+      'Until then the site shows placeholder art where a photo is missing.',
+    ].join('\n');
+  }
+  const lines = [
+    `Could not reach Wikimedia Commons (${cause}) — is this computer offline?`,
+    'Check the internet connection, then run `npm run photos:fetch` (or restart `npm run dev`) to get the real photos.',
+    'Until then the site shows placeholder art where a photo is missing.',
+  ];
+  if (proxy === 'unused') {
+    lines.push('HTTPS_PROXY is set, but this Node cannot use it by itself. Use Node 22.21 or newer and run', '  NODE_USE_ENV_PROXY=1 npm run photos:fetch   (Windows PowerShell: $env:NODE_USE_ENV_PROXY=1; npm run photos:fetch)');
+  } else if (proxy === 'undici' || proxy === 'node') {
+    lines.push(`A proxy is set (${redactProxy(proxyFromEnv())}): check that it lets commons.wikimedia.org and upload.wikimedia.org through.`);
+  }
+  lines.push('If wikimedia.org is blocked on this network, `npm run photos:import` adds a photo you own or licensed.');
+  return lines.join('\n');
+}
+
+/**
+ * What to say when Commons answered but turned the download away (401/403/407/451)
+ * or kept asking it to slow down (429), so the run stopped rather than keep
+ * asking (lines, without a trailing newline).
+ */
+export function stopHint(error) {
+  const status = Number(error?.status) || 0;
+  const from = `HTTP ${status || '?'} from ${hostOf(error?.url ?? '')}`;
+  const kept = 'Photos saved so far are kept; the site shows placeholder art where one is missing until the next run.';
+  if (requestTrouble(error) !== 'refused') {
+    const why =
+      error?.name === 'TimeoutError'
+        ? 'Wikimedia Commons answered too slowly again and again'
+        : status === 429
+          ? `Wikimedia Commons is busy and asked the download to slow down (${from})`
+          : `Wikimedia Commons had trouble answering (${from})`;
+    return [`${why}, so it stopped for now.`, 'Run `npm run photos:fetch` (or restart `npm run dev`) a little later; it carries on where it stopped.', kept].join('\n');
+  }
+  const lines = [`Wikimedia Commons turned the download away (${from}), so it stopped rather than keep asking.`];
+  if (status === 407) {
+    lines.push('The proxy wants a user name and password: put them in HTTPS_PROXY, e.g. http://user:password@proxy.example:8080.');
+  } else {
+    lines.push(
+      'Wikimedia asks downloaders to say who they are: run it again with your e-mail or website in PHOTOS_CONTACT,',
+      '  macOS/Linux: PHOTOS_CONTACT=you@example.com npm run photos:fetch',
+      '  Windows PowerShell: $env:PHOTOS_CONTACT="you@example.com"; npm run photos:fetch',
+      'On a school or office network a filter may block wikimedia.org: try another network, or ask for commons.wikimedia.org and upload.wikimedia.org to be allowed.',
+    );
+  }
+  lines.push(kept);
+  return lines.join('\n');
+}
+
+/** A proxy URL without its password. */
+export function redactProxy(value) {
+  try {
+    const url = new URL(value);
+    if (url.password) url.password = '***';
+    return url.href.replace(/\/$/, '');
+  } catch {
+    return 'set';
+  }
+}
+
+/* ------------------------------------------------------------------ files */
 
 /** Every manifest: [{ name, file, brochure, photos, problems }], sorted by name. */
 export async function loadManifests() {
@@ -71,95 +432,98 @@ export async function loadGenerated(file = GENERATED_FILE) {
   return json;
 }
 
-/** Write the registry atomically (temp file + rename), so an interrupted run never leaves half a file. */
-export async function saveGenerated(records, file = GENERATED_FILE) {
+/**
+ * Write JSON atomically (temp file + rename), so an interrupted run never
+ * leaves half a file. On Windows a rename fails while another program (the
+ * dev server reading the file, an antivirus scan) has the target open: it is
+ * tried again a few times.
+ */
+export async function writeJsonAtomic(file, value) {
+  await mkdir(path.dirname(file), { recursive: true });
   const temp = `${file}.${process.pid}.tmp`;
-  await writeFile(temp, `${JSON.stringify(sortRecords(records), null, 2)}\n`);
-  await rename(temp, file);
-}
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-/** GET with retries on 429/5xx/maxlag, honouring Retry-After. Returns the Response (ok) or throws. */
-export async function politeFetch(url, { retries = 4, accept = '*/*' } = {}) {
-  let lastError;
-  for (let attempt = 0; attempt <= retries; attempt += 1) {
-    let response;
+  await writeFile(temp, `${JSON.stringify(value, null, 2)}\n`);
+  for (let attempt = 0; ; attempt += 1) {
     try {
-      response = await fetch(url, { headers: { 'User-Agent': userAgent(), 'Api-User-Agent': userAgent(), Accept: accept } });
+      await rename(temp, file);
+      return;
     } catch (error) {
-      lastError = error;
-      if (attempt === retries) break;
-      await sleep(retryDelay(attempt));
-      continue;
+      if (attempt >= 8 || !['EPERM', 'EBUSY', 'EACCES'].includes(error.code)) {
+        await unlink(temp).catch(() => {});
+        throw error;
+      }
+      await sleep(50 * (attempt + 1));
     }
-    if (response.ok) return response;
-    // Release the connection: an unread body keeps the socket busy.
-    await response.body?.cancel().catch(() => {});
-    lastError = new Error(`HTTP ${response.status} for ${url}`);
-    lastError.status = response.status;
-    if (response.status !== 429 && response.status < 500) throw lastError;
-    if (attempt < retries) await sleep(retryDelay(attempt, response.headers.get('retry-after')));
   }
-  throw lastError;
 }
 
-/** One API request, repeated while Commons answers maxlag/ratelimited. → parsed JSON */
-async function apiGet(url, fetchImpl) {
-  for (let attempt = 0; attempt < 6; attempt += 1) {
-    const response = await fetchImpl(url, { accept: 'application/json' });
-    const json = await response.json();
-    const error = apiError(json);
-    if (error && (error.code === 'maxlag' || error.code === 'ratelimited')) {
-      await sleep(retryDelay(attempt, response.headers.get('retry-after') ?? (error.code === 'maxlag' ? 5 : undefined)));
-      continue;
-    }
-    if (error) throw new Error(`Commons API error ${error.code}: ${error.info}`);
-    return json;
-  }
-  throw new Error('Commons kept answering "maxlag"; try again later');
+/** Write the registry atomically, sorted by id so it diffs cleanly. */
+export async function saveGenerated(records, file = GENERATED_FILE) {
+  await writeJsonAtomic(file, sortRecords(records));
 }
 
 /**
- * imageinfo for many titles → Map(title → result). Batches of 50, one request
- * at a time (Wikimedia's API etiquette), maxlag-aware, following `continue`
- * until each batch is complete. `fetchImpl` is for tests.
+ * Publish `records` ({ [id]: record }) into photos.generated.json as it is on
+ * disk now (merged, so a photo another tool added meanwhile is kept). → the merged registry
  */
-export async function queryImageInfo(titles, { thumbWidth = DOWNLOAD_WIDTH, fetchImpl = politeFetch, maxRounds = 20 } = {}) {
-  const results = new Map();
-  for (const batch of chunk([...new Set(titles)])) {
-    const rounds = [];
-    let cont;
-    do {
-      const json = await apiGet(imageInfoUrl(batch, { thumbWidth, cont }), fetchImpl);
-      rounds.push(json);
-      cont = json?.continue && typeof json.continue === 'object' ? json.continue : undefined;
-    } while (cont && rounds.length < maxRounds);
-    if (cont) throw new Error(`Commons kept sending "continue" for ${batch.length} titles; try fewer at once (--only)`);
-    for (const [title, result] of parseImageInfoResponse(mergeQueryResponses(rounds), batch)) results.set(title, result);
-  }
-  return results;
+export async function publishRecords(records, file = GENERATED_FILE) {
+  const merged = { ...(await loadGenerated(file)), ...records };
+  await saveGenerated(merged, file);
+  return merged;
 }
 
-/** Run `fn` over `items` with at most `limit` in flight. */
-export async function pool(items, limit, fn) {
-  const queue = [...items];
-  const workers = Array.from({ length: Math.min(limit, queue.length) }, async () => {
-    while (queue.length) await fn(queue.shift());
-  });
-  await Promise.all(workers);
+/** JSON from a file, or `fallback` when it is missing or unreadable (the download's own state files). */
+export async function readJson(file, fallback) {
+  try {
+    const json = JSON.parse(await readFile(file, 'utf8'));
+    return json && typeof json === 'object' && !Array.isArray(json) ? json : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
-/** A friendly explanation for a network failure. */
-export function networkHint(error) {
-  const cause = error?.cause?.code || error?.cause?.message || error?.code || error?.status || error?.message;
-  const lines = [`Could not reach Wikimedia Commons (${cause}).`];
-  if (process.env.HTTPS_PROXY && !process.env.NODE_USE_ENV_PROXY) {
-    lines.push('HTTPS_PROXY is set: Node’s fetch only uses it with NODE_USE_ENV_PROXY=1 (Node ≥ 22.21), e.g.', '  NODE_USE_ENV_PROXY=1 npm run photos:fetch');
+/** True while a process with this pid runs (a lock or status left by a crashed run is stale). */
+export function processAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error.code === 'EPERM';
   }
-  lines.push(
-    'If commons.wikimedia.org / upload.wikimedia.org are blocked on this network, the app keeps showing each',
-    'brochure’s generative art. You can still add a photo you own or licensed with `npm run photos:import`.',
-  );
-  return lines.join('\n');
+}
+
+/** A lock not refreshed for this long belongs to a download that died (a crash, a killed terminal). */
+export const LOCK_STALE_MS = 60_000;
+
+/**
+ * Take the download lock (false when another live download holds it). A lock
+ * whose process is gone, or that has not been refreshed (heartbeatLock) for
+ * LOCK_STALE_MS, is taken over.
+ */
+export async function acquireLock(file = LOCK_FILE, { now = Date.now() } = {}) {
+  await mkdir(path.dirname(file), { recursive: true });
+  const mine = JSON.stringify({ pid: process.pid, at: now });
+  try {
+    await writeFile(file, mine, { flag: 'wx' });
+    return true;
+  } catch (error) {
+    if (error.code !== 'EEXIST') throw error;
+  }
+  const held = await readJson(file, null);
+  const fresh = Number.isFinite(held?.at) && now - held.at < LOCK_STALE_MS;
+  if (held && held.pid !== process.pid && fresh && processAlive(held.pid)) return false;
+  await writeFile(file, mine);
+  return true;
+}
+
+/** Refresh our lock (a running download calls it every few seconds). */
+export async function heartbeatLock(file = LOCK_FILE) {
+  const held = await readJson(file, null);
+  if (held?.pid === process.pid) await writeFile(file, JSON.stringify({ pid: process.pid, at: Date.now() })).catch(() => {});
+}
+
+/** Give the lock back (only if it is ours). */
+export async function releaseLock(file = LOCK_FILE) {
+  const held = await readJson(file, null);
+  if (held?.pid === process.pid) await unlink(file).catch(() => {});
 }

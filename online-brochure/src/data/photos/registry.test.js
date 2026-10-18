@@ -358,3 +358,40 @@ describe('live photos in the registry (bundled > live > art)', () => {
     expect(broken.getPhoto('kyoto-kiyomizu').available).toBe(false);
   });
 });
+
+describe('photos the download found by searching Commons', () => {
+  it('use the work’s title as alt text, like a live search find', () => {
+    const found = {
+      'kyoto-kiyomizu': { ...generated['kyoto-senbon-torii'], id: 'kyoto-kiyomizu', file: 'File:Kiyomizu-dera landscape.jpg', title: 'Kiyomizu-dera in autumn', via: 'search', query: 'Kiyomizu-dera' },
+    };
+    const registry = createPhotoRegistry(manifests, found);
+    expect(registry.getPhoto('kyoto-kiyomizu')).toMatchObject({ available: true, alt: 'Kiyomizu-dera in autumn', caption: 'Kiyomizu-dera', via: 'search' });
+    // A researched candidate keeps the manifest's words.
+    expect(registry.getPhoto('kyoto-senbon-torii')).toMatchObject({ alt: 'A tunnel of vermilion torii gates' });
+    expect(registry.getPhoto('kyoto-senbon-torii').via).toBeUndefined();
+  });
+});
+
+describe('the app registry takes in newly downloaded photos (npm run dev)', () => {
+  it('swaps a slot to its bundled photo, stops asking Commons for it, and tells subscribers', () => {
+    const id = live.listPhotos().find((p) => !p.available)?.id;
+    expect(id).toBeTruthy();
+    expect(live.livePhotos.has(id)).toBe(true);
+    const before = live.photosSnapshot(id);
+    let calls = 0;
+    const off = live.subscribePhotos(() => {
+      calls += 1;
+    });
+    const { bundled, total } = live.bundledCount();
+    live.updateBundledPhotos({ [id]: { ...generated['kyoto-senbon-torii'], id, file: 'File:A.jpg' } });
+    expect(calls).toBe(1);
+    expect(live.photosSnapshot(id)).not.toBe(before);
+    expect(live.getPhoto(id)).toMatchObject({ available: true, widths: [480, 960, 1600] });
+    expect(live.getPhoto(id).src(960)).toBe(`photos/${id}-960.webp`);
+    expect(live.livePhotos.has(id)).toBe(false);
+    expect(live.bundledCount()).toEqual({ bundled: bundled + 1, total });
+    off();
+    live.updateBundledPhotos({});
+    expect(calls).toBe(1);
+  });
+});

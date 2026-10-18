@@ -393,4 +393,27 @@ describe('createLivePhotos', () => {
     expect(live.snapshot(['a'])).toBe(before);
     expect(live.snapshot('a\nb')).toBe('10:ir');
   });
+
+  it('reports its health for the photo notice: what was asked, found, failed, and why nothing is asked', async () => {
+    let online = true;
+    const blocked = fakeCommons({
+      respond: () => {
+        throw new TypeError('Failed to fetch');
+      },
+    });
+    const { live } = setup({ commons: blocked, online: () => online, photos: [{ id: 'a', candidates: [TORII] }, { id: 'b', candidates: [PAGODA] }] });
+    expect(live.health()).toMatchObject({ asked: 0, ready: 0, enabled: true, online: true, blocked: false, transport: true });
+    live.request(['a', 'b', 'not-a-slot']);
+    await settle();
+    expect(live.health()).toMatchObject({ asked: 2, ready: 0, waiting: 2, blocked: true });
+    online = false;
+    expect(live.health()).toMatchObject({ online: false });
+
+    const ok = setup({ photos: [{ id: 'a', candidates: [TORII] }, { id: 'm', candidates: [MISSING] }] });
+    ok.live.request(['a', 'm']);
+    await settle();
+    expect(ok.live.health()).toMatchObject({ asked: 2, ready: 1, failed: 1, loading: 0, waiting: 0, blocked: false });
+    expect(setup({ fetch: null, photos: [] }).live.health().transport).toBe(false);
+  });
 });
+

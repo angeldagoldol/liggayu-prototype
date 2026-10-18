@@ -34,6 +34,7 @@
  *   live.status(id)       // 'none' | 'off' | 'idle' | 'loading' | 'ready' | 'failed'
  *   live.subscribe(fn)    // called after every change; → unsubscribe
  *   live.snapshot(ids)    // a string that changes when any of these ids does (useSyncExternalStore)
+ *   live.health()         // { asked, ready, failed, loading, waiting, enabled, online, blocked } (the photo notice)
  */
 import {
   BATCH_SIZE,
@@ -300,6 +301,27 @@ export function createLivePhotos({
     return () => listeners.delete(listener);
   }
 
+  /**
+   * How the slots asked for so far are doing, for the photo notice:
+   * { asked, ready, failed, loading, waiting, enabled, online, blocked, transport }.
+   * `asked` counts slots still known (bundled ones are dropped from `slots`);
+   * `waiting` = asked but not looked up yet (offline, off, blocked or not sent).
+   */
+  function health() {
+    hydrate();
+    const out = { asked: 0, ready: 0, failed: 0, loading: 0, waiting: 0 };
+    for (const id of wanted) {
+      if (!slots.has(id)) continue;
+      out.asked += 1;
+      const s = state.get(id);
+      if (!s) out.waiting += 1;
+      else if (s.status === 'ready') out.ready += 1;
+      else if (s.status === 'failed') out.failed += 1;
+      else out.loading += 1;
+    }
+    return { ...out, enabled: isEnabled(), online: online(), blocked: apiBlocked || imagesBlocked, transport: Boolean(transport) };
+  }
+
   /* --------------------------------------------------------- requests */
 
   /** Asks for these slots soon (same tick by default), together with any other ids asked for meanwhile. */
@@ -528,6 +550,7 @@ export function createLivePhotos({
     reportImageError,
     reportImageLoad,
     resume,
+    health,
     /** Counters for diagnostics and tests: { requests (API calls), batches, cached (entries read back from storage) }. */
     stats: () => ({ ...stats }),
     has: (id) => slots.has(str(id)),

@@ -122,14 +122,21 @@ export function resolveUserPhoto(id, brochure) {
   return Object.hasOwn(brochure.userPhotos, key) ? userPhotoRecord(key, brochure.userPhotos[key]) : null;
 }
 
+/**
+ * A manifest entry merged with its generated record. A photo the download
+ * found by searching Commons (`via: 'search'`, not a researched candidate)
+ * takes the work's own title as alt text, as a live one does: the manifest's
+ * may not describe it.
+ */
 function mergePhoto(id, entry, record) {
   const widths = Array.isArray(record?.widths) ? record.widths.filter((w) => Number.isInteger(w) && w > 0).sort((a, b) => a - b) : [];
   const available = widths.length > 0;
   const width = available && Number.isFinite(record.width) ? record.width : null;
   const height = available && Number.isFinite(record.height) ? record.height : null;
+  const searched = available && record.via === 'search';
   return Object.freeze({
     id,
-    alt: str(entry?.alt),
+    alt: searched ? str(record.title) || str(entry?.caption) || str(entry?.alt) : str(entry?.alt),
     caption: str(entry?.caption),
     place: str(entry?.place),
     focus: str(entry?.focus) || '50% 50%',
@@ -151,6 +158,7 @@ function mergePhoto(id, entry, record) {
     attributionRequired: record?.attributionRequired !== false,
     available,
     user: false,
+    ...(searched ? { via: 'search' } : {}),
     token: available ? widths.join(',') : 'none',
     /** URL for a slot `w` px wide (null until downloaded). */
     src: (w) => (available ? photoUrl(id, pickWidth(widths, w)) : null),

@@ -11,9 +11,19 @@
  * also be a web image (JPEG, PNG or WebP), and only ever point at
  * upload.wikimedia.org thumbnails on Wikimedia's standard steps.
  */
-import { MIN_LONG_EDGE, evaluateCandidate, normalizeFileTitle } from '../../../scripts/photos/lib.mjs';
+import { MIN_LONG_EDGE, evaluateCandidate, normalizeFileTitle, rankSearchResults, searchText } from '../../../scripts/photos/lib.mjs';
 
-export { BATCH_SIZE, apiError, chunk, mergeQueryResponses, normalizeFileTitle, parseImageInfoResponse } from '../../../scripts/photos/lib.mjs';
+export {
+  BATCH_SIZE,
+  apiError,
+  chunk,
+  mergeQueryResponses,
+  normalizeFileTitle,
+  orientationFit,
+  owesImageInfo,
+  parseImageInfoResponse,
+  searchResults,
+} from '../../../scripts/photos/lib.mjs';
 
 export const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
 /** iiurlwidth: the thumbnail the API describes (its URL is the template for the other steps). */
@@ -65,17 +75,9 @@ export function imageInfoUrl(titles, cont) {
 /** The first `limit` bitmap files Commons' search finds for `query`, with their imageinfo. */
 export function searchUrl(query, { limit = SEARCH_LIMIT, cont } = {}) {
   return withContinue(
-    new URLSearchParams({ ...baseParams(), generator: 'search', gsrnamespace: '6', gsrsearch: `${str(query)} filetype:bitmap`, gsrlimit: String(limit) }),
+    new URLSearchParams({ ...baseParams(), generator: 'search', gsrnamespace: '6', gsrsearch: searchText(query), gsrlimit: String(limit) }),
     cont,
   );
-}
-
-/**
- * Whether a `continue` object still owes imageinfo for this query. Search
- * continuation alone (`gsroffset`: the next page of results) is not followed.
- */
-export function owesImageInfo(cont) {
-  return isRecord(cont) && Object.keys(cont).some((key) => key !== 'continue' && !key.startsWith('gsr'));
 }
 
 /* --------------------------------------------------------------- policy */
@@ -221,44 +223,13 @@ export function liveImageSet(record) {
 /* -------------------------------------------------------------- search */
 
 /**
- * How well a picture's shape suits a slot: 2 = right shape, 1 = acceptable,
- * 0 = wrong. `cover`/`full` pages are portrait (or near-square) frames — a
- * page is 1 : 1.414 — `wide`/`spread` landscape ones (1.4–2.4 : 1; a spread
- * is 1.414 : 1, so a long panorama strip would lose most of its width to the
- * crop, and a sliver-thin portrait most of its height); `any` takes anything.
- */
-export function orientationFit(use, width, height) {
-  if (!(width > 0 && height > 0)) return 0;
-  const ratio = width / height;
-  if (use === 'cover' || use === 'full') return ratio >= 0.5 && ratio <= 1.1 ? 2 : ratio >= 0.4 && ratio <= 1.35 ? 1 : 0;
-  if (use === 'wide' || use === 'spread') return ratio >= 1.4 && ratio <= 2.4 ? 2 : ratio >= 1.2 && ratio <= 3.2 ? 1 : 0;
-  return 2;
-}
-
-/**
  * The best search result for a slot: of the results that pass the live
  * policy (and are not already shown by another slot — `exclude`, a Set of
  * file titles), the best fit for the slot's `use`, then the largest; ties go to
- * the search's own ranking. `results` are parsed imageinfo results with
+ * the search's own ranking (rankSearchResults in scripts/photos/lib.mjs, which
+ * `npm run photos:fetch` uses too). `results` are parsed imageinfo results with
  * `index` (the search rank). Returns a record (evaluateLive) or null.
  */
 export function pickSearchResult(results, use, { exclude } = {}) {
-  const ranked = [];
-  for (const result of results) {
-    const verdict = evaluateLive(result, 'search');
-    if (!verdict.ok || exclude?.has(verdict.record.file)) continue;
-    const { width, height } = verdict.record;
-    ranked.push({ record: verdict.record, fit: orientationFit(use, width, height), area: width * height, index: Number(result.index) || 0 });
-  }
-  ranked.sort((a, b) => b.fit - a.fit || b.area - a.area || a.index - b.index);
-  return ranked[0]?.record ?? null;
-}
-
-/** Search results of a merged generator=search response, with their rank (`index`), best first. */
-export function searchResults(merged, parsed) {
-  const pages = Array.isArray(merged?.query?.pages) ? merged.query.pages : [];
-  return pages
-    .filter((page) => page && typeof page.title === 'string' && parsed.has(page.title))
-    .map((page) => ({ ...parsed.get(page.title), index: Number(page.index) || 0 }))
-    .sort((a, b) => a.index - b.index);
+  return rankSearchResults(results, use, { evaluate: (result) => evaluateLive(result, 'search'), exclude })[0]?.verdict.record ?? null;
 }
