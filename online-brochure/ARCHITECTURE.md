@@ -60,9 +60,10 @@ chunk prefetched when the browser is idle. Code several routes share gets its
 own lazy chunk: `cover-art`, `Icon` (the named lucide registry), `BrochurePage`,
 `BrochureCard`, and small ones Rollup names after a module inside them
 (`progress`, `pageMeta`, `Switch`). The photo registry (`data/photos`, with
-the manifests and `photos.generated.json`) and `<Photo>` live in the
-`BrochureCard` chunk (cards show the cover photo), which the `BrochurePage`
-chunk imports; the map (`JapanMap` + `data/geo/japan.js`,
+the manifests and `photos.generated.json`) and `<Photo>` share a `Photo`
+chunk (cards, pages and the Studio's photo fields all import it); the
+Studio's photo picker (`PhotoPicker`) and coordinate preview
+(`CoordsPreview`) are lazy chunks of their own; the map (`JapanMap` + `data/geo/japan.js`,
 ~46 KB of paths) is its own chunk, loaded through `blocks/LazyJapanMap.jsx`
 (`React.lazy`) only when a place or map page is drawn. The `tabi-photo-manifests` plugin in `vite.config.js`
 strips the curation-only `candidates`/`file` fields from manifests before

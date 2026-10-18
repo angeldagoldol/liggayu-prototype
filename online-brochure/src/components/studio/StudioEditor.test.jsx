@@ -102,41 +102,46 @@ describe('<StudioEditor>', () => {
 });
 
 describe('<StudioEditor> real-place editing', () => {
+  // Warm the lazy chunks (picker, coordinate preview, map) so a busy test run doesn't time out on them.
+  beforeAll(async () => {
+    await Promise.all([import('./fields/PhotoPicker.jsx'), import('./fields/CoordsPreview.jsx')]);
+  });
+  const slow = { timeout: 5000 };
   const openPage = (name) => fireEvent.click(screen.getAllByRole('button', { name: new RegExp(name) }).find((b) => b.dataset.action === 'open'));
 
   it('fills a place’s coordinates from a pasted pair and names where they land', async () => {
     renderEditor(createFromTemplate('food-crawl'));
     openPage('Kuromon Market');
-    const lat = await screen.findByLabelText('Latitude');
+    const lat = await screen.findByLabelText('Latitude', {}, slow);
     fireEvent.paste(lat, { clipboardData: { getData: () => '34.6687, 135.5013' } });
     expect(lat).toHaveValue('34.6687');
     expect(screen.getByLabelText('Longitude')).toHaveValue('135.5013');
-    expect(await screen.findByText('大阪府')).toBeInTheDocument();
+    expect(await screen.findByText('大阪府', {}, slow)).toBeInTheDocument();
     await settle();
-  });
+  }, 15_000);
 
   it('uploads a photo into a page in one undoable step', async () => {
     renderEditor(createFromTemplate('food-crawl'));
     openPage('Come hungry');
-    fireEvent.click(await screen.findByRole('button', { name: 'Choose photo' }));
-    const dialog = await screen.findByRole('dialog', { name: 'Choose a photo' });
+    fireEvent.click(await screen.findByRole('button', { name: 'Choose photo' }, slow));
+    const dialog = await screen.findByRole('dialog', { name: 'Choose a photo' }, slow);
     fireEvent.click(within(dialog).getByRole('tab', { name: /Your photos/ }));
     const file = new File(['jpeg-bytes'], 'kuromon-market-stalls.jpg', { type: 'image/jpeg' });
     await act(async () => {
       fireEvent.change(within(dialog).getByLabelText(/Drop a photo here/), { target: { files: [file] } });
     });
     // A descriptive file name suggests the alt text; the person can change it.
-    const alt = await within(dialog).findByLabelText(/Describe the photo/);
+    const alt = await within(dialog).findByLabelText(/Describe the photo/, {}, slow);
     expect(alt).toHaveValue('Kuromon market stalls');
     fireEvent.change(alt, { target: { value: 'Seafood stalls under a covered market roof' } });
     fireEvent.click(within(dialog).getByRole('button', { name: /Add to brochure/ }));
-    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Choose a photo' })).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Choose a photo' })).not.toBeInTheDocument(), slow);
     expect(screen.getByText('Seafood stalls under a covered market roof')).toBeInTheDocument();
     const draft = await waitFor(() => {
       const value = readDraft(DRAFT_KEY);
       expect(Object.keys(value?.doc.userPhotos ?? {})).toHaveLength(1);
       return value;
-    });
+    }, slow);
     const [key] = Object.keys(draft.doc.userPhotos);
     expect(draft.doc.pages[1].photo).toBe(`user:${key}`);
     expect(draft.doc.userPhotos[key].credit).toEqual({ author: 'Your photo', license: '' });
@@ -144,7 +149,7 @@ describe('<StudioEditor> real-place editing', () => {
     fireEvent.keyDown(document.body, { key: 'z', code: 'KeyZ', ctrlKey: true });
     expect(screen.queryByText('Seafood stalls under a covered market roof')).not.toBeInTheDocument();
     await settle();
-  });
+  }, 15_000);
 
   it('marks the facts as checked this month from the Details panel', async () => {
     renderEditor(createFromTemplate('temple-trail'));

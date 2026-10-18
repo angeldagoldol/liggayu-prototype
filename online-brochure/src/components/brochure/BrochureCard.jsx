@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, BadgeCheck, Heart, PenLine } from 'lucide-react';
 import { Badge, Hanko, IconButton, Tilt, VerticalText } from '../ui/index.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
+import { preloadBrochure } from '../../data/catalog.js';
 import { getCategory } from '../../data/categories.js';
 import { getRegion } from '../../data/regions.js';
 import { FORMATS } from '../../data/schema.js';
@@ -248,9 +249,15 @@ export function BrochureCard({ brochure, index, variant = 'grid', layout = false
         className={styles.link}
         aria-labelledby={titleId}
         aria-describedby={metaId}
-        onPointerEnter={() => setLive(true)}
+        onPointerEnter={() => {
+          setLive(true);
+          preloadBrochure(brochure); // a built-in's pages are their own chunk
+        }}
         onPointerLeave={() => setLive(false)}
-        onFocus={() => setLive(true)}
+        onFocus={() => {
+          setLive(true);
+          preloadBrochure(brochure);
+        }}
         onBlur={() => setLive(false)}
       >
         {isList && index != null && (

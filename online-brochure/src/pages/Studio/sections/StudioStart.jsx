@@ -7,6 +7,7 @@ import { useToast } from '../../../context/ToastContext.jsx';
 import { useDocumentTitle } from '../../../hooks/useDocumentTitle.js';
 import { clearDraft, DRAFT_KEY, readDraft, writeDraft } from '../../../components/studio/draftStore.js';
 import { createBlank, createFromTemplate, createRemix, TEMPLATES } from '../../../components/studio/templates.js';
+import { loadBrochure } from '../../../data/catalog.js';
 import { stagger, viewportOnce } from '../../../lib/motion.js';
 import { BlankArt } from './BlankArt.jsx';
 import { ContinueDraft } from './ContinueDraft.jsx';
@@ -42,10 +43,22 @@ export function StudioStart() {
     navigate('/studio?draft=1');
   };
 
+  /** Open what `make` returns; a library brochure's pages may still have to load (a promise). */
+  const run = (make) => {
+    const doc = make();
+    if (typeof doc?.then !== 'function') {
+      open(doc);
+      return;
+    }
+    doc.then(open, () =>
+      toast({ title: 'That brochure didn’t load', description: 'Check your connection and try again.', tone: 'error' }),
+    );
+  };
+
   /** Run `make` now, or after confirming that the current draft may be replaced. */
   const start = (label, make) => {
     if (draft) setPending({ label, make });
-    else open(make());
+    else run(make);
   };
 
   const discardDraft = () => {
@@ -96,7 +109,7 @@ export function StudioStart() {
         brochures={builtins}
         onPick={(brochure) => {
           setRemixOpen(false);
-          start(`a remix of “${brochure.title}”`, () => createRemix(brochure));
+          start(`a remix of “${brochure.title}”`, () => loadBrochure(brochure).then((full) => createRemix(full)));
         }}
       />
 
@@ -111,7 +124,7 @@ export function StudioStart() {
             <Button variant="ghost" onClick={() => setPending(null)}>
               Keep my draft
             </Button>
-            <Button variant="accent" onClick={() => open(pending.make())}>
+            <Button variant="accent" onClick={() => run(pending.make)}>
               Replace draft
             </Button>
           </>

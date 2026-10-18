@@ -6,6 +6,7 @@ import { StudioEditor } from '../../components/studio/StudioEditor.jsx';
 import { contentSignature, DRAFT_KEY, editDraftKey, readDraft, writeDraft } from '../../components/studio/draftStore.js';
 import { createRemix } from '../../components/studio/templates.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
+import { useFullBrochure } from '../../hooks/useFullBrochure.js';
 import { StudioMessage } from './sections/StudioMessage.jsx';
 import { StudioStart } from './sections/StudioStart.jsx';
 
@@ -20,7 +21,8 @@ function DraftSession() {
 function RemixSession({ slug }) {
   const navigate = useNavigate();
   const { getBySlug } = useBrochures();
-  const source = getBySlug(slug);
+  // A built-in is an outline until its pages load (suspends meanwhile).
+  const source = useFullBrochure(getBySlug(slug));
   const [existing] = useState(() => readDraft(DRAFT_KEY));
   const [confirmed, setConfirmed] = useState(false);
   const ready = Boolean(source) && (!existing || confirmed);

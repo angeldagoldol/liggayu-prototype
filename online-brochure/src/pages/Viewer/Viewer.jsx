@@ -5,6 +5,7 @@ import { PrintPages, TripPlanner } from '../../components/viewer/index.js';
 import { Button } from '../../components/ui/index.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
+import { useFullBrochure } from '../../hooks/useFullBrochure.js';
 import { AboutBrochure } from './AboutBrochure.jsx';
 import { findBySlug } from './findBySlug.js';
 import { MoreLikeThis } from './MoreLikeThis.jsx';
@@ -80,5 +81,10 @@ export default function Viewer() {
   }, [canonical, navigate, search]);
 
   if (!brochure) return <ViewerNotFound slug={slug} />;
-  return <BrochureViewer key={brochure.id} brochure={brochure} />;
+  return <FullBrochureViewer key={brochure.id} brochure={brochure} />;
+}
+
+/** Waits (suspends) for a built-in's pages, then shows the viewer. */
+function FullBrochureViewer({ brochure }) {
+  return <BrochureViewer brochure={useFullBrochure(brochure)} />;
 }

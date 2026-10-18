@@ -638,7 +638,8 @@ export const TEMPLATE_MAP = Object.fromEntries(TEMPLATES.map((t) => [t.id, t]));
 
 /** Turn brochure content into a fresh user draft: new ids, no slug, now as the edit date. */
 function toDraft(content, { makeId, now }) {
-  const copy = structuredClone(content);
+  // `outline` marks a catalog stub (src/data/catalog.js); a draft is always complete.
+  const { outline: _outline, ...copy } = structuredClone(content);
   return {
     ...copy,
     id: makeId('b'),

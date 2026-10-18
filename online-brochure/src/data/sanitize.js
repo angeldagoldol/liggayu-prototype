@@ -10,6 +10,7 @@
  */
 import { CATEGORY_MAP } from './categories.js';
 import { hasKey } from './lookup.js';
+import { safeImageSrc } from './photos/registry.js';
 import { REGION_MAP } from './regions.js';
 import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
 import { SEASON_MAP } from './seasons.js';
@@ -214,6 +215,29 @@ export function sanitizePages(pages) {
     .map(normalizePage);
 }
 
+const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/**
+ * brochure.userPhotos (photos uploaded in the Studio): the entries that are
+ * objects with a safe inline image src (data:image/… or blob:, see
+ * safeImageSrc), or null when none is left. Fields that point at a dropped
+ * key fall back to the cover art, as any missing photo does.
+ */
+export function sanitizeUserPhotoMap(value) {
+  if (!isRecord(value)) return null;
+  let changed = false;
+  const out = {};
+  for (const [key, entry] of Object.entries(value)) {
+    if (UNSAFE_KEYS.has(key) || !isRecord(entry) || !safeImageSrc(entry.src)) {
+      changed = true;
+      continue;
+    }
+    out[key] = entry;
+  }
+  if (!Object.keys(out).length) return null;
+  return changed ? out : value;
+}
+
 function sanitizeCover(cover) {
   if (!isRecord(cover)) return { ...DEFAULT_COVER };
   const art = ART_STYLES.includes(cover.art) ? cover.art : DEFAULT_COVER.art;
@@ -228,8 +252,9 @@ function sanitizeCover(cover) {
  * no readable pages. Fields that are present with the wrong type are reset:
  * text to '', unknown category/region/format to a default, seasons and tags
  * to their valid string entries, a non-object theme to {}, a location that is
- * not an object is removed, sources keep their http(s) entries, and each page
- * goes through normalizePage (photo ids, coordinates, links).
+ * not an object is removed, sources keep their http(s) entries, uploads keep
+ * the entries with a safe inline image, and each page goes through
+ * normalizePage (photo ids, coordinates, links).
  */
 export function normalizeBrochure(value) {
   if (!isRecord(value)) return null;
@@ -258,6 +283,11 @@ export function normalizeBrochure(value) {
     else delete out.location;
   }
   if ('sources' in out) out.sources = sanitizeSources(out.sources);
+  if ('userPhotos' in out) {
+    const photos = sanitizeUserPhotoMap(out.userPhotos);
+    if (photos) out.userPhotos = photos;
+    else delete out.userPhotos;
+  }
   return out;
 }
 

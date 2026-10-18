@@ -131,14 +131,16 @@ describe('real places (docs/REAL_CONTENT.md)', () => {
   });
 });
 
-// Only the Studio templates' testimonials are fictional now: Home's postcards
-// are real haiku (docs/research/home.md §1.1; checked in pages/Home/homeContent.test.js).
-describe('fictional readers', () => {
-  it('never reuse a first name across template testimonials (regression)', () => {
-    const quotes = TEMPLATES.map((t) => t.brochure).flatMap((b) => b.pages.filter((p) => p.type === 'quote').map((p) => p.author));
-    const people = quotes.flatMap((name) => name.split(/\s*&\s*/));
-    const firstNames = people.map((person) => person.trim().split(/\s+/)[0]);
-    expect(firstNames.length).toBeGreaterThan(1);
-    expect(firstNames.filter((name, i) => firstNames.indexOf(name) !== i)).toEqual([]);
+// Nothing quoted is invented any more: the Studio templates quote verified
+// poets and a proverb (docs/research/*.md), and Home's postcards are real haiku
+// (docs/research/home.md §1.1; checked in pages/Home/homeContent.test.js).
+describe('template quotes', () => {
+  it('each quote a different, named author', () => {
+    const authors = TEMPLATES.map((t) => t.brochure)
+      .flatMap((b) => b.pages.filter((p) => p.type === 'quote'))
+      .map((p) => (typeof p.author === 'string' ? p.author.trim() : ''));
+    expect(authors.length).toBeGreaterThan(1);
+    expect(authors.filter((name) => !name)).toEqual([]);
+    expect(authors.filter((name, i) => authors.indexOf(name) !== i)).toEqual([]);
   });
 });

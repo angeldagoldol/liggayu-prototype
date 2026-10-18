@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { BrochurePage } from '../../../components/brochure/BrochurePage.jsx';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
+import { useLoadedBrochure } from '../../../hooks/useFullBrochure.js';
 import { spring } from '../../../lib/motion.js';
 import { useStill } from '../homeMotion.js';
 import { FIRST_SPREAD, canFlip, nextSpread, spreadPages } from './flipLoop.js';
@@ -9,9 +10,9 @@ import styles from './FlipSketch.module.css';
 
 const PAUSE_MS = 1500;
 
-/** A static, non-interactive page (or blank paper when the index is out of range). */
+/** A static, non-interactive page (or blank paper when the index is out of range or the pages are still loading). */
 function Sheet({ brochure, index }) {
-  const page = brochure.pages[index];
+  const page = brochure?.pages[index];
   if (!page) return <div className={styles.blank} />;
   return <BrochurePage brochure={brochure} page={page} index={index} total={brochure.pages.length} isStatic />;
 }
@@ -23,8 +24,10 @@ function Sheet({ brochure, index }) {
  */
 export function FlipSketch() {
   const { builtins } = useBrochures();
-  const brochure = builtins.find((b) => canFlip(b.pages?.length ?? 0));
-  const total = brochure?.pages.length ?? 0;
+  // The catalog's outline names the brochure; its pages load in their own chunk.
+  const outline = builtins.find((b) => canFlip(b.pages?.length ?? 0));
+  const brochure = useLoadedBrochure(outline);
+  const total = outline?.pages.length ?? 0;
   const ref = useRef(null);
   const inView = useInView(ref, { amount: 0.4 });
   const still = useStill();
@@ -53,11 +56,11 @@ export function FlipSketch() {
     };
   }, [running, spread, total, turn]);
 
-  if (!brochure) return null;
+  if (!outline) return null;
   const pages = spreadPages(spread);
 
   return (
-    <div ref={ref} className={styles.sketch} role="img" aria-label={`Sketch: turning the pages of the “${brochure.title}” brochure`}>
+    <div ref={ref} className={styles.sketch} role="img" aria-label={`Sketch: turning the pages of the “${outline.title}” brochure`}>
       <div className={styles.book} aria-hidden="true">
         <div className={styles.left}>
           <Sheet brochure={brochure} index={pages.left} />

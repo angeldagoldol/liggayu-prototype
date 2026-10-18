@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BROCHURES } from './brochures.js';
-import { normalizeBrochure, normalizePage, safeUrl, sanitizePages, sanitizeStoredBrochure, toLat, toLng } from './sanitize.js';
+import { normalizeBrochure, normalizePage, safeUrl, sanitizePages, sanitizeStoredBrochure, sanitizeUserPhotoMap, toLat, toLng } from './sanitize.js';
 
 const cover = { id: 'p1', type: 'cover', title: 'Hi' };
 
@@ -212,5 +212,38 @@ describe('brochure-level real-place fields', () => {
     expect(doc.factsChecked).toBe('');
     expect(doc.cover).toEqual({ art: 'torii', seed: 5, photo: '' });
     expect(normalizeBrochure({ location: 'Kyoto', sources: 'x', pages: [page] })).toEqual({ sources: [], pages: [page] });
+  });
+});
+
+describe('sanitizeUserPhotoMap (Studio uploads in a published brochure)', () => {
+  const ok = { src: 'data:image/jpeg;base64,/9j/AAAA', alt: 'Moss garden', width: 4, height: 3, credit: { author: 'Me', license: 'Your photo' } };
+
+  it('keeps entries with a safe inline image and the same object when nothing changes', () => {
+    const photos = { ph_a: ok };
+    expect(sanitizeUserPhotoMap(photos)).toBe(photos);
+  });
+
+  it('drops web links, SVG, non-objects and prototype keys; null when nothing is left', () => {
+    const photos = JSON.parse(
+      JSON.stringify({
+        ph_a: ok,
+        ph_web: { ...ok, src: 'https://example.com/x.jpg' },
+        ph_svg: { ...ok, src: 'data:image/svg+xml;base64,PHN2Zz4=' },
+        ph_str: 'data:image/png;base64,AAAA',
+      }),
+    );
+    photos.__proto__ = ok; // own key, as JSON.parse makes it
+    const clean = sanitizeUserPhotoMap(photos);
+    expect(Object.keys(clean)).toEqual(['ph_a']);
+    expect(Object.getPrototypeOf(clean)).toBe(Object.prototype);
+    expect(sanitizeUserPhotoMap({ ph_web: { src: 'javascript:alert(1)' } })).toBeNull();
+    expect(sanitizeUserPhotoMap([ok])).toBeNull();
+  });
+
+  it('is applied to stored brochures', () => {
+    const stored = { id: 'b_x', slug: 'x', pages: [cover], userPhotos: { ph_bad: { src: 'https://x.test/a.png' } } };
+    expect('userPhotos' in sanitizeStoredBrochure(stored)).toBe(false);
+    const good = { id: 'b_x', slug: 'x', pages: [cover], userPhotos: { ph_a: ok } };
+    expect(sanitizeStoredBrochure(good).userPhotos).toBe(good.userPhotos);
   });
 });

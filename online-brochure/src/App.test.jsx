@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MotionGlobalConfig } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
@@ -10,17 +10,22 @@ import App from './App.jsx';
  * Smoke test across slices: every route renders inside the real shell
  * (navbar, footer, route transition, lazy pages) with exactly one <h1>.
  */
-function renderAt(hash) {
+async function renderAt(hash) {
   window.location.hash = hash;
-  return render(
-    <ThemeProvider>
-      <ToastProvider>
-        <BrochureProvider>
-          <App />
-        </BrochureProvider>
-      </ToastProvider>
-    </ThemeProvider>,
-  );
+  let view;
+  // Awaited: lazy routes and a built-in's pages (src/data/catalog.js) suspend.
+  await act(async () => {
+    view = render(
+      <ThemeProvider>
+        <ToastProvider>
+          <BrochureProvider>
+            <App />
+          </BrochureProvider>
+        </ToastProvider>
+      </ThemeProvider>,
+    );
+  });
+  return view;
 }
 
 const darkPaper = BROCHURES.find((b) => b.slug === 'tokyo-after-dark');
@@ -47,7 +52,7 @@ describe('<App> routes', () => {
 
   it.each(ROUTES)('renders %s with one h1', async (hash, heading) => {
     const errors = vi.spyOn(console, 'error');
-    renderAt(hash);
+    await renderAt(hash);
     const h1 = await screen.findByRole('heading', { level: 1 }, { timeout: 4000 });
     expect(h1).toHaveTextContent(heading);
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
@@ -63,7 +68,7 @@ describe('<App> routes', () => {
     const own = { ...BROCHURES[0], id: 'b_own', slug: 'my-own-kyoto', title: 'My own Kyoto', source: 'user', featured: false };
     window.localStorage.setItem('tabi:brochures', JSON.stringify([own]));
     const osaka = BROCHURES.find((b) => b.slug === 'osaka-kuidaore');
-    renderAt('#/brochures?q=osaka');
+    await renderAt('#/brochures?q=osaka');
     await screen.findByRole('heading', { level: 1 }, { timeout: 4000 });
     await waitFor(() => expect(document.querySelector(`main a[href="#/brochures/${osaka.slug}"]`)).not.toBeNull(), { timeout: 4000 });
     fireEvent.click(document.querySelector(`main a[href="#/brochures/${osaka.slug}"]`));
@@ -72,7 +77,7 @@ describe('<App> routes', () => {
   });
 
   it('remembers the page the reader is on, for the Library’s “Continue reading”', async () => {
-    renderAt(`#/brochures/${darkPaper.slug}?p=3`);
+    await renderAt(`#/brochures/${darkPaper.slug}?p=3`);
     await screen.findByRole('heading', { level: 1 }, { timeout: 4000 });
     await waitFor(() => expect(JSON.parse(window.localStorage.getItem('tabi:progress'))).toEqual({ [darkPaper.id]: 3 }));
   });

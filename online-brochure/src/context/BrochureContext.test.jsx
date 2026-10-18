@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
-import { BROCHURES } from '../data/brochures.js';
+import { BUILTINS as BROCHURES, isOutline } from '../data/catalog.js';
+import { BROCHURES as FULL } from '../data/brochures.js';
 import { BrochureProvider, sanitizeIds, sanitizeUserBrochures, useBrochures } from './BrochureContext.jsx';
 
 const wrapper = ({ children }) => <BrochureProvider>{children}</BrochureProvider>;
@@ -26,6 +27,16 @@ describe('BrochureContext', () => {
     expect(result.current.getBySlug('kyoto-thousand-gates')?.title).toBeTruthy();
     expect(result.current.getBySlug('nope')).toBeNull();
     expect(result.current.getById(BROCHURES[0].id)).toBe(BROCHURES[0]);
+  });
+
+  it('holds the built-ins as outlines of the full brochures, in the same order', () => {
+    const { result } = setup();
+    expect(result.current.builtins.map((b) => b.slug)).toEqual(FULL.map((b) => b.slug));
+    result.current.builtins.forEach((b, i) => {
+      expect(isOutline(b)).toBe(true);
+      expect(b.title).toBe(FULL[i].title);
+      expect(b.pages.map((p) => p.id)).toEqual(FULL[i].pages.map((p) => p.id));
+    });
   });
 
   it('throws a helpful error outside the provider', () => {

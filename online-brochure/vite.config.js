@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { brochureOutlines } from './scripts/build/brochure-outline.mjs';
 
 /**
  * Photo manifests (src/data/photos/manifest/*.json) list Commons candidates for
@@ -28,7 +29,7 @@ function photoManifests() {
 // works from any host or sub-path (Vercel, Netlify, GitHub Pages, a USB stick).
 export default defineConfig({
   base: './',
-  plugins: [react(), photoManifests()],
+  plugins: [react(), photoManifests(), brochureOutlines()],
   server: { port: 5173, host: true },
   preview: { port: 4173, host: true },
   build: {
@@ -40,10 +41,13 @@ export default defineConfig({
         // their importers instead of shipping a dozen sub-kilobyte requests.
         experimentalMinChunkSize: 8_000,
         // Shared chunks are otherwise named after whichever module Rollup
-        // picks first; give the cover-art chunk a recognisable name.
+        // picks first; give the cover-art and page-renderer chunks recognisable names.
         chunkFileNames(chunk) {
-          const coverArt = chunk.moduleIds.some((id) => /[\\/]components[\\/]brochure[\\/]CoverArt\.jsx$/.test(id));
-          return coverArt && !chunk.isDynamicEntry ? 'assets/cover-art-[hash].js' : 'assets/[name]-[hash].js';
+          if (chunk.isDynamicEntry) return 'assets/[name]-[hash].js';
+          const has = (file) => chunk.moduleIds.some((id) => id.replace(/\\/g, '/').endsWith(`/src/components/brochure/${file}`));
+          if (has('CoverArt.jsx')) return 'assets/cover-art-[hash].js';
+          if (has('BrochurePage.jsx')) return 'assets/BrochurePage-[hash].js';
+          return 'assets/[name]-[hash].js';
         },
         // Two long-lived vendor chunks that change far less often than app
         // code. A function (not the object form) so sub-paths such as

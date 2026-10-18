@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { BROCHURES } from '../data/brochures.js';
+import { BUILTINS as BROCHURES } from '../data/catalog.js';
 import { sanitizeStoredBrochure } from '../data/sanitize.js';
 import { readStorage, writeStorage } from '../lib/storage.js';
 import { createId, uniqueSlug } from '../lib/id.js';
@@ -32,9 +32,10 @@ const STORAGE_READERS = {
 };
 
 /**
- * The brochure library: built-in brochures (src/data/brochures.js) plus the
- * ones a visitor makes in the Studio (persisted to localStorage), favourites
- * and recently-viewed history.
+ * The brochure library: built-in brochures plus the ones a visitor makes in
+ * the Studio (persisted to localStorage), favourites and recently-viewed
+ * history. Built-ins are outlines from src/data/catalog.js (every field, but
+ * pages without their text): render pages through useFullBrochure().
  */
 export function BrochureProvider({ children }) {
   const [userBrochures, setUserBrochures] = useState(STORAGE_READERS.brochures);

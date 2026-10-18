@@ -142,6 +142,12 @@
   text-wrap: pretty;
 }
 
+/* The overlay chip keeps its inset from both edges; `.credit` above would
+   otherwise let a long author name run it edge to edge, clipping "Photo:". */
+.credit.chip {
+  max-width: min(calc(100% - 1.4em), 34em);
+}
+
 .creditLabel,
 .creditSep,
 .creditLicense {
