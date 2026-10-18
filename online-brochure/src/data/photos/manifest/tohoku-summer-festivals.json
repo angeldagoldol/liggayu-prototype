@@ -4,83 +4,146 @@
     {
       "id": "tohoku-nebuta-float",
       "use": "cover",
-      "candidates": [],
+      "candidates": [
+        "File:Float at Nebuta Museum Waarasse I.JPG",
+        "File:Aomori, Nebuta-matsuri 12.jpg",
+        "File:Nebuta house Warasse Aomori Japan06s5.jpg"
+      ],
       "alt": "A towering illuminated float of a painted warrior glowing against the night sky",
       "caption": "A Nebuta float lit from within, Aomori",
       "place": "Aomori Nebuta Matsuri",
-      "focus": "50% 40%"
+      "focus": "50% 40%",
+      "query": "Aomori Nebuta float"
     },
     {
       "id": "tohoku-hanagasa",
       "use": "wide",
-      "candidates": [],
+      "candidates": [
+        "File:YAMAGATA HANAGASA MATSURI 2008 Day3 (2740825277).jpg"
+      ],
       "alt": "Rows of dancers in straw hats decorated with red flowers parading down a city street",
       "caption": "Yamagata Hanagasa Matsuri",
       "place": "Yamagata",
-      "focus": "50% 45%"
+      "focus": "50% 45%",
+      "query": "Yamagata Hanagasa Festival"
     },
     {
       "id": "tohoku-nebuta-parade",
       "use": "wide",
-      "candidates": [],
+      "candidates": [
+        "File:Aomori, Nebuta-matsuri 12.jpg",
+        "File:Nebuta banner.jpg"
+      ],
       "alt": "A huge lantern float of warriors moving through a crowded street at night",
       "caption": "The Nebuta parade, Aomori",
       "place": "Aomori Nebuta Matsuri",
-      "focus": "50% 45%"
+      "focus": "50% 45%",
+      "query": "Aomori Nebuta Festival parade"
     },
     {
       "id": "tohoku-kanto-poles",
       "use": "wide",
-      "candidates": [],
+      "candidates": [
+        "File:Akita kanto matsuri xl.jpg",
+        "File:Akita Kanto Festival 2023b.jpg"
+      ],
       "alt": "Tall bamboo poles hung with rows of glowing paper lanterns above a night street",
       "caption": "Kantō poles over Kantō Ōdōri, Akita",
       "place": "Akita Kantō Matsuri",
-      "focus": "50% 40%"
+      "focus": "50% 40%",
+      "query": "Akita Kanto Festival lanterns"
     },
     {
       "id": "tohoku-tanabata-streamers",
       "use": "wide",
-      "candidates": [],
+      "candidates": [
+        "File:Sendai-tanabata-streamers-aug2008.jpg",
+        "File:Sendai Tanabata 2005.jpg",
+        "File:Sendai Tanabata Festival 2010.jpg"
+      ],
       "alt": "Long, colourful paper streamers hanging from bamboo poles in a covered shopping arcade",
       "caption": "Tanabata streamers in a Sendai arcade",
       "place": "Sendai Tanabata Matsuri",
-      "focus": "50% 40%"
+      "focus": "50% 40%",
+      "query": "Sendai Tanabata Festival decorations"
     },
     {
       "id": "tohoku-hirosaki-neputa",
       "use": "any",
-      "candidates": [],
+      "candidates": [
+        "File:Ōgi Neputa 2.jpg"
+      ],
       "alt": "A fan-shaped float painted with a warrior, lit from within at night",
       "caption": "A fan-shaped neputa in Hirosaki",
       "place": "Hirosaki Neputa Matsuri",
-      "focus": "50% 45%"
+      "focus": "50% 45%",
+      "query": "Hirosaki Neputa Festival"
     },
     {
       "id": "tohoku-goshogawara-tachineputa",
       "use": "any",
-      "candidates": [],
+      "candidates": [
+        "File:Tachineputa Float.jpg"
+      ],
       "alt": "An extremely tall standing float towering over the buildings of a street",
       "caption": "Tachineputa towering over Goshogawara",
       "place": "Goshogawara Tachineputa",
-      "focus": "50% 35%"
+      "focus": "50% 35%",
+      "query": "Goshogawara Tachineputa"
     },
     {
       "id": "tohoku-nebuta-warasse",
       "use": "any",
-      "candidates": [],
+      "candidates": [
+        "File:Nebuta house Warasse Aomori Japan05s5.jpg",
+        "File:Nebuta house Warasse Aomori Japan08s5.jpg",
+        "File:Nebuta Museum Wa Rasse 20200621.jpg"
+      ],
       "alt": "Large painted lantern floats on display in a dark exhibition hall",
       "caption": "Floats on show at Nebuta Museum WA-RASSE, Aomori",
       "place": "Nebuta Museum WA-RASSE, Aomori",
-      "focus": "50% 50%"
+      "focus": "50% 50%",
+      "query": "Nebuta Museum Wa Rasse"
     },
     {
       "id": "tohoku-yamadera",
       "use": "any",
-      "candidates": [],
+      "candidates": [
+        "File:宝珠山立石寺 Hojusan Risshakuji Temple - panoramio.jpg",
+        "File:Yamagata Risshaku-ji Konjoin 01.jpg",
+        "File:Yamadera 2006 Midahora-01.jpg"
+      ],
       "alt": "A small wooden temple pavilion on a cliff edge above a green forested valley",
       "caption": "Yamadera (Risshaku-ji), Yamagata",
       "place": "Yamadera (Risshaku-ji)",
-      "focus": "50% 45%"
+      "focus": "50% 45%",
+      "query": "Yamadera Risshaku-ji Godaido"
+    },
+    {
+      "id": "tohoku-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Yamadera Panorama 2011.jpg"
+      ],
+      "alt": "A green mountain valley with a small town far below, seen from a wooden temple balcony high on a cliff",
+      "caption": "The view from the Godaidō at Yamadera, a thousand steps above the Yamagata valley",
+      "place": "Yamadera (Risshaku-ji)",
+      "focus": "50% 50%",
+      "query": "View from Godaido Yamadera"
+    },
+    {
+      "id": "tohoku-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Nebuta house Warasse Aomori Japan06s5.jpg",
+        "File:Float at Nebuta Museum Waarasse I.JPG",
+        "File:Nebuta house Warasse Aomori Japan08s5.jpg"
+      ],
+      "alt": "A giant painted paper float of fierce figures glowing from within in a darkened hall",
+      "caption": "A nebuta lit from within at WA-RASSE, Aomori — wire, washi and light, built to be paraded through the August nights",
+      "place": "Nebuta Museum WA-RASSE, Aomori",
+      "focus": "50% 45%",
+      "query": "Nebuta float Wa Rasse Aomori"
     }
   ]
 }

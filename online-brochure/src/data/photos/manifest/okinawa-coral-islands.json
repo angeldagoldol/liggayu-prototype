@@ -5,10 +5,10 @@
       "id": "okinawa-kerama-beach",
       "use": "cover",
       "candidates": [
-        "File:Furuzamami Beach.jpg",
-        "File:古座間味ビーチ.jpg",
-        "File:Furuzamami beach, Zamami, Okinawa.jpg"
+        "File:Furuzamami beach Okinawa Zamami.jpg",
+        "File:JAP Zamami Furuzamami Beach.jpg"
       ],
+      "query": "Furuzamami Beach Zamami",
       "alt": "Clear turquoise shallows over white sand on a beach in the Kerama Islands",
       "caption": "Furuzamami Beach, Zamami Island",
       "place": "Furuzamami Beach",
@@ -18,10 +18,11 @@
       "id": "okinawa-shisa",
       "use": "wide",
       "candidates": [
-        "File:Shisa on roof.jpg",
-        "File:シーサー.jpg",
-        "File:Shisa Okinawa.jpg"
+        "File:2013-07-23 Shisa on roof at Taketomijima.jpg",
+        "File:Shisa Okinawa.jpg",
+        "File:Shisa on a roof.jpg"
       ],
+      "query": "Shisa on roof Okinawa",
       "alt": "A ceramic shīsā lion-dog guarding a red-tiled roof",
       "caption": "A shīsā on a red-tiled roof, Okinawa",
       "place": "Okinawa",
@@ -31,10 +32,12 @@
       "id": "okinawa-shureimon",
       "use": "wide",
       "candidates": [
-        "File:Shureimon.jpg",
-        "File:守礼門.jpg",
-        "File:Shurei-mon Gate, Shuri Castle.jpg"
+        "File:Naha Shuri Castle02s5s3200.jpg",
+        "File:Shureimon, 2017-09-03.jpg",
+        "File:Shurei-mon 2023.jpg",
+        "File:Shureimon 20150211.jpg"
       ],
+      "query": "Shureimon Shuri Castle Naha",
       "alt": "The red-lacquered, double-roofed Shureimon gate with its gold-lettered plaque",
       "caption": "Shureimon, the gate to Shuri Castle",
       "place": "Shuri Castle",
@@ -44,10 +47,12 @@
       "id": "okinawa-zamami",
       "use": "wide",
       "candidates": [
-        "File:Zamami Island.jpg",
-        "File:座間味島.jpg",
-        "File:Kerama Islands.jpg"
+        "File:View from Zamami Island.jpg",
+        "File:Cliffs at Chishi observatory, Zamami.jpg",
+        "File:View from Zamami Island 2.jpg",
+        "File:Okinawa kerama islands.jpg"
       ],
+      "query": "Zamami Island view Kerama Islands",
       "alt": "Green islands rising from clear turquoise water, seen from a hilltop",
       "caption": "The Kerama Islands from Zamami",
       "place": "Zamami Island",
@@ -57,10 +62,11 @@
       "id": "okinawa-churaumi-kuroshio",
       "use": "wide",
       "candidates": [
-        "File:Okinawa Churaumi Aquarium.jpg",
-        "File:Churaumi Aquarium Kuroshio Sea.jpg",
-        "File:沖縄美ら海水族館.jpg"
+        "File:Churaumi Aquarium main tank 'Kuroshio Sea'.jpg",
+        "File:Whale Shark - Churaumi aquarium, Okinawa, Japan.jpg",
+        "File:Main tank of the Kuroshio Sea in Okinawa Churaumi Aquarium.JPG"
       ],
+      "query": "Churaumi Aquarium Kuroshio Sea whale shark",
       "alt": "A whale shark swimming past the vast blue viewing window of the Kuroshio Sea tank",
       "caption": "The Kuroshio Sea tank, Okinawa Churaumi Aquarium",
       "place": "Okinawa Churaumi Aquarium",
@@ -70,10 +76,10 @@
       "id": "okinawa-sefa-utaki",
       "use": "any",
       "candidates": [
-        "File:Sefa-utaki.jpg",
-        "File:斎場御嶽.jpg",
-        "File:Sefa Utaki Sangui.jpg"
+        "File:Side view of Sangui (Triangle Rock) with Shikiyodayuru-Amaganubi and Amadayuru-Ashikanubi in Sefa-Utaki.JPG",
+        "File:Sefa Utaki 2009 (7462).jpg"
       ],
+      "query": "Sefa-utaki Sangui",
       "alt": "Two huge rock slabs leaning together to form a triangular passage in the forest",
       "caption": "Sangūi, the rock gap at Sēfa-utaki",
       "place": "Sēfa-utaki",
@@ -83,10 +89,12 @@
       "id": "okinawa-tsuboya",
       "use": "any",
       "candidates": [
+        "File:Tsuboya Pottery Museum03s5s3200.jpg",
+        "File:Tsuboya Pottery Museum06n4272.jpg",
         "File:Tsuboya Yachimun Street.jpg",
-        "File:壺屋やちむん通り.jpg",
-        "File:Tsuboya, Naha.jpg"
+        "File:JP-47 Naha Tsuboya-Yachimun-dori street.jpg"
       ],
+      "query": "Tsuboya Yachimun Naha",
       "alt": "A stone-paved lane lined with pottery shops and old walls",
       "caption": "Tsuboya Yachimun-dōri, the pottery street of Naha",
       "place": "Tsuboya, Naha",
@@ -96,10 +104,11 @@
       "id": "okinawa-kokusai-dori",
       "use": "any",
       "candidates": [
-        "File:Kokusai-dori.jpg",
-        "File:Kokusai Street, Naha.jpg",
-        "File:国際通り (那覇市).jpg"
+        "File:Kokusai-dori08s3s4440.jpg",
+        "File:Kokusai-dori01ss4272.jpg",
+        "File:Kokusai-dori02ss3200.jpg"
       ],
+      "query": "Kokusai-dori Naha",
       "alt": "A long shopping street lined with palm trees and shop signs",
       "caption": "Kokusai-dōri, Naha’s main street",
       "place": "Kokusai-dōri, Naha",
@@ -109,13 +118,43 @@
       "id": "okinawa-bise-fukugi",
       "use": "any",
       "candidates": [
-        "File:Bise Fukugi Namiki.jpg",
-        "File:備瀬のフクギ並木.jpg",
-        "File:Fukugi trees in Bise, Motobu.jpg"
+        "File:Bise Fukugi Tree Road 01.JPG",
+        "File:Bise Fukugi Tree Road 02.JPG",
+        "File:Fukugi Path Motobu.jpg",
+        "File:Fukugi trees at Bise Village, Okinawa.jpg"
       ],
+      "query": "Bise Fukugi Tree Road Motobu",
       "alt": "A sandy lane through a tunnel of tall, dense fukugi trees",
       "caption": "Fukugi-tree lanes of Bise, near Churaumi",
       "place": "Bise, Motobu",
+      "focus": "50% 50%"
+    },
+    {
+      "id": "okinawa-spread",
+      "use": "spread",
+      "candidates": [
+        "File:Zamami Island, Japan (Panorama).jpg",
+        "File:Aharen Beach On Tokashiki Island 2009 (7373).JPG",
+        "File:Aharen Beach On Tokashiki Island 2009 (7384).jpg"
+      ],
+      "query": "Zamami Island panorama Kerama",
+      "alt": "A wide view of turquoise reef water, white sand and green hills in the Kerama Islands",
+      "caption": "Kerama blue: reef, sand and island hills in the Kerama archipelago, an hour by boat from Naha",
+      "place": "Kerama Islands",
+      "focus": "50% 55%"
+    },
+    {
+      "id": "okinawa-fullpage",
+      "use": "full",
+      "candidates": [
+        "File:Naha Okinawa Japan Shuri-Castle-02.jpg",
+        "File:Naha Shuri Castle16s5s3200.jpg",
+        "File:Naha Shuri Castle22s5s3200.jpg"
+      ],
+      "query": "Shuri Castle gate Naha",
+      "alt": "A vermilion-lacquered Ryūkyū gate with a tiled roof set in the stone walls of Shuri Castle",
+      "caption": "Through the vermilion gates of Shuri Castle, seat of the Ryūkyū kings, Naha",
+      "place": "Shuri Castle",
       "focus": "50% 50%"
     }
   ]
