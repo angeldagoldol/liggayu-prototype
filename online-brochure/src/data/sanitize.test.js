@@ -182,6 +182,20 @@ describe('normalizePage', () => {
   });
 });
 
+describe('normalizePage — photo pages', () => {
+  it('returns a valid photo page and spread halves unchanged', () => {
+    const full = { id: 'ph', type: 'photo', photo: 'kyoto-fullpage', name: 'Arashiyama', nameJp: '嵐山', caption: 'Early morning', captionPlacement: 'below', creditPlacement: 'edge' };
+    const half = { id: 'sl', type: 'photo', photo: 'kyoto-spread', span: 'left' };
+    expect(normalizePage(full)).toBe(full);
+    expect(normalizePage(half)).toBe(half);
+  });
+
+  it('resets broken text and placements and drops an unknown span', () => {
+    const page = normalizePage({ id: 'ph', type: 'photo', photo: 4, name: [], nameJp: null, caption: 9, captionPlacement: 'top', creditPlacement: 'x', span: 'middle' });
+    expect(page).toEqual({ id: 'ph', type: 'photo', photo: '', name: '', nameJp: '', caption: '', captionPlacement: 'overlay', creditPlacement: 'caption' });
+  });
+});
+
 describe('brochure-level real-place fields', () => {
   const page = { id: 'p1', type: 'cover', title: 'Hi' };
 

@@ -129,3 +129,14 @@ array, and the brochure shows its generative art until real titles are added. Su
 Copyright note for the curator: Nebuta and Neputa floats are artworks by named living artists, and Japanese freedom of
 panorama does not cover non-permanent artworks. Prefer Commons files that have survived review, or scenes where the
 float is part of the parade rather than a flat reproduction of the painting. Avoid close portraits of dancers.
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (full page, page 4) | A nebuta lit from within at WA-RASSE, Aomori — wire, washi and light, built to be paraded through the August nights | src/data/photos/manifest/tohoku-summer-festivals.json → `tohoku-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 4) | Nebuta Museum WA-RASSE, Aomori / ねぶたの家 ワ・ラッセ | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
+| Caption (spread, pages 8–9) | The view from the Godaidō at Yamadera, a thousand steps above the Yamagata valley | src/data/photos/manifest/tohoku-summer-festivals.json → `tohoku-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 8–9) | Yamadera / 山寺 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

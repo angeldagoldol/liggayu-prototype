@@ -485,3 +485,70 @@ describe('mergePage', () => {
     expect(studioReducer(start, A.mergePage('pl', [], null))).toBe(start);
   });
 });
+
+describe('double-page photo spreads', () => {
+  const left = { id: 'sl', type: 'photo', span: 'left', photo: 'kyoto-spread', captionPlacement: 'overlay', creditPlacement: 'caption' };
+  const right = { id: 'sr', type: 'photo', span: 'right', photo: 'kyoto-spread', name: 'Kiyomizu-dera', captionPlacement: 'overlay', creditPlacement: 'caption' };
+  const withSpread = () => {
+    const doc = makeDoc();
+    // cover, spread (pages 2–3), intro, features, pricing, back
+    return createStudioState({ ...doc, pages: [doc.pages[0], left, right, ...doc.pages.slice(1)] }, 'sl');
+  };
+
+  it('adds both halves in one undo step and selects the left one', () => {
+    const state = createStudioState(makeDoc(), 'p1');
+    const next = studioReducer(state, A.addPages([{ ...left }, { ...right }], 1));
+    expect(ids(next)).toEqual(['p1', 'sl', 'sr', 'p2', 'p3', 'p4', 'p5']);
+    expect(next.selectedId).toBe('sl');
+    expect(studioReducer(next, A.undo()).doc).toBe(state.doc);
+    // Duplicate or unknown pages are refused.
+    expect(studioReducer(next, A.addPages([{ ...left }], 1))).toBe(next);
+    expect(studioReducer(state, A.addPages([{ id: 'x', type: 'hologram' }], 1))).toBe(state);
+  });
+
+  it('keeps one photo and one layout across both halves', () => {
+    let state = withSpread();
+    state = studioReducer(state, A.placePhoto({ kind: 'page', id: 'sl', path: ['photo'] }, 'kyoto-fullpage'));
+    expect(state.doc.pages.find((p) => p.id === 'sr').photo).toBe('kyoto-fullpage');
+    state = studioReducer(state, A.updatePage('sr', ['captionPlacement'], 'below'));
+    expect(state.doc.pages.find((p) => p.id === 'sl').captionPlacement).toBe('below');
+    state = studioReducer(state, A.updatePage('sl', ['creditPlacement'], 'edge'));
+    expect(state.doc.pages.find((p) => p.id === 'sr').creditPlacement).toBe('edge');
+    // Captions belong to each half.
+    state = studioReducer(state, A.updatePage('sr', ['caption'], 'The view'));
+    expect(state.doc.pages.find((p) => p.id === 'sl').caption).toBeUndefined();
+    // Uploads placed on a half land on both, and removing one clears both.
+    state = studioReducer(state, A.addUserPhoto('pic', { src: 'data:image/jpeg;base64,AAAA', alt: 'x', width: 10, height: 5, credit: { author: 'Me', license: 'Own' } }, { kind: 'page', id: 'sr', path: ['photo'] }));
+    expect(state.doc.pages.filter((p) => p.span).map((p) => p.photo)).toEqual(['user:pic', 'user:pic']);
+    state = studioReducer(state, A.removeUserPhoto('pic'));
+    expect(state.doc.pages.filter((p) => p.span).map((p) => p.photo)).toEqual(['', '']);
+  });
+
+  it('never edits span directly, and duplicates a half as a full-page photo', () => {
+    const state = withSpread();
+    expect(studioReducer(state, A.updatePage('sl', ['span'], 'right'))).toBe(state);
+    const copy = studioReducer(state, A.duplicatePage('sl', 'copy'));
+    const page = copy.doc.pages.find((p) => p.id === 'copy');
+    expect(page).toMatchObject({ type: 'photo', photo: 'kyoto-spread' });
+    expect(page).not.toHaveProperty('span');
+  });
+
+  it('moves a spread by both halves, a spread at a time', () => {
+    const state = withSpread();
+    const later = studioReducer(state, A.moveSpread('sr', 1));
+    expect(ids(later)).toEqual(['p1', 'p2', 'p3', 'sl', 'sr', 'p4', 'p5']);
+    expect(studioReducer(later, A.moveSpread('sl', 1))).toBe(later);
+    expect(studioReducer(state, A.moveSpread('sl', -1))).toBe(state);
+    expect(studioReducer(state, A.moveSpread('p2', 1))).toBe(state);
+  });
+
+  it('lines up spreads after a reorder, in one undo step', () => {
+    let state = withSpread();
+    state = studioReducer(state, A.movePage('p2', 1)); // intro in front: the spread now starts on page 3
+    expect(ids(state)).toEqual(['p1', 'p2', 'sl', 'sr', 'p3', 'p4', 'p5']);
+    const fixed = studioReducer(state, A.fixSpreads());
+    expect(ids(fixed)).toEqual(['p1', 'p2', 'p3', 'sl', 'sr', 'p4', 'p5']);
+    expect(studioReducer(fixed, A.fixSpreads())).toBe(fixed);
+    expect(studioReducer(fixed, A.undo()).doc).toBe(state.doc);
+  });
+});

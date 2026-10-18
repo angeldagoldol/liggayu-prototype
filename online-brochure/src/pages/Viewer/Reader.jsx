@@ -16,6 +16,7 @@ import {
   computeBookLayout,
   pageAtPosition,
   positionOfPage,
+  requestPrint,
   spreadAnnouncement,
   spreadCaption,
   spreadLabel,
@@ -332,7 +333,7 @@ export function Reader({ brochure, onPlan, planOpen = false }) {
           onReset: () => setZoom(1),
         }}
         fullscreen={{ supported: fullscreen.supported, active: fullscreen.active, onToggle: fullscreen.toggle }}
-        onPrint={() => window.print()}
+        onPrint={requestPrint}
         onPlan={plan}
       />
 

@@ -4,11 +4,19 @@ import { brochureOutlines } from './scripts/build/brochure-outline.mjs';
 
 /**
  * Photo manifests (src/data/photos/manifest/*.json) list Commons candidates for
- * curation; the app only needs what each photo shows (alt, caption, place,
- * focus, use). Drop `candidates` and `file` before the JSON reaches the bundle.
+ * curation. The app needs what each photo shows (alt, caption, place, focus,
+ * use) and, for live photos (src/data/photos/live.js), the Commons titles to
+ * try and the search words (`query`). The curated `file`, when set, is folded
+ * in front of `candidates` so it is tried first.
  */
 function photoManifests() {
   const manifest = /[\\/]src[\\/]data[\\/]photos[\\/]manifest[\\/][^\\/]+\.json$/;
+  const slim = (photo) => {
+    if (!photo || typeof photo !== 'object') return photo;
+    const { file, candidates, ...keep } = photo;
+    const titles = [file, ...(Array.isArray(candidates) ? candidates : [])].filter((t) => typeof t === 'string' && t.trim());
+    return titles.length ? { ...keep, candidates: [...new Set(titles)] } : keep;
+  };
   return {
     name: 'tabi-photo-manifests',
     enforce: 'pre',
@@ -16,7 +24,7 @@ function photoManifests() {
       if (!manifest.test(id.split('?')[0])) return null;
       try {
         const json = JSON.parse(code);
-        const photos = Array.isArray(json?.photos) ? json.photos.map(({ candidates: _candidates, file: _file, ...keep }) => keep) : [];
+        const photos = Array.isArray(json?.photos) ? json.photos.map(slim) : [];
         return { code: JSON.stringify({ ...json, photos }), map: null };
       } catch {
         return null; // let Vite report the broken JSON

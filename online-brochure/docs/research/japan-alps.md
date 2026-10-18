@@ -99,3 +99,14 @@ generative art (`sakura`, seed 23) stands in.
 | `alps-shirakawago-gassho` | place: Shirakawa-gō | One gasshō farmhouse close up. |
 | `alps-kamikochi-taisho-pond` | place: Kamikochi | Drowned trees in Taishō Pond. |
 | `alps-matsumoto-castle` | place: Matsumoto Castle | Black keep reflected in the moat. |
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (full page, page 4) | Takayama Matsuri: a carved and lacquered yatai, one of the floats paraded through the old town each April and October | src/data/photos/manifest/japan-alps.json → `alps-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 4) | Takayama / 高山 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (spread, pages 8–9) | Clear morning in Kamikochi: the Hotaka range stands over the Azusa valley | src/data/photos/manifest/japan-alps.json → `alps-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 8–9) | Kamikochi / 上高地 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

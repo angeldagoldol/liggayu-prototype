@@ -4,18 +4,29 @@ import { PhotoCredit } from '../../photo/PhotoCredit.jsx';
 import { usePhotoRecord } from '../../photo/photoContext.js';
 import { CoverArt } from '../CoverArt.jsx';
 import { usePage } from './pageContext.js';
-import { sealChars } from '../../../lib/format.js';
+import { pad, sealChars } from '../../../lib/format.js';
 import { fitSize, formatEdition, formatLatLng, text } from './pageUtils.js';
 import { Reveal } from './Reveal.jsx';
 import styles from './CoverBlock.module.css';
+
+/** Cover lines: the places inside (place pages with a name), with their page numbers — at most four. */
+function coverLines(brochure) {
+  const pages = Array.isArray(brochure.pages) ? brochure.pages : [];
+  return pages
+    .map((page, i) => ({ name: page?.type === 'place' ? text(page.name) : '', number: i + 1 }))
+    .filter((line) => line.name)
+    .slice(0, 4);
+}
 
 /**
  * Front cover, set like a travel magazine: a full-bleed photograph of the
  * place (page.photo, else brochure.cover.photo — or the generative art while
  * there is none) under a soft scrim, the masthead and edition at the top, the
  * Japanese title in tall vertical mincho with the place's coordinates, and the
- * eyebrow, headline and standfirst at the foot beside a vermilion seal. The
- * photographer's credit runs in small type along the bottom edge.
+ * eyebrow, headline and standfirst at the foot beside a vermilion seal. Cover
+ * lines list the places inside with their page numbers ("In this issue"),
+ * when the brochure has place pages. The photographer's credit runs in small
+ * type along the bottom edge.
  */
 export function CoverBlock({ page, brochure }) {
   const { isStatic, active } = usePage();
@@ -32,6 +43,7 @@ export function CoverBlock({ page, brochure }) {
   const record = usePhotoRecord(photo);
   const art = <CoverArt style={cover.art} seed={cover.seed} theme={brochure.theme} animated={active && !isStatic} />;
   const jpChars = Array.from(titleJp).length;
+  const lines = coverLines(brochure);
 
   return (
     <div className={styles.cover} data-photo={record?.available || undefined}>
@@ -55,6 +67,23 @@ export function CoverBlock({ page, brochure }) {
           {organization && <span className={styles.org}>{organization}</span>}
           {organization && edition && <span className={styles.mastRule} aria-hidden="true" />}
           {edition && <span className={styles.edition}>{edition}</span>}
+        </Reveal>
+      )}
+
+      {lines.length > 0 && (
+        <Reveal variant="fade" className={styles.lines} data-fit="" data-fit-min="0.5">
+          <p className={styles.linesHead}>
+            <span>In this issue</span>
+            <span lang="ja">目次</span>
+          </p>
+          <ol className={styles.linesList}>
+            {lines.map((line) => (
+              <li key={line.number}>
+                <span className={styles.lineNum}>{pad(line.number)}</span>
+                <span className={styles.lineName}>{line.name}</span>
+              </li>
+            ))}
+          </ol>
         </Reveal>
       )}
 

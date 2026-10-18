@@ -1,8 +1,8 @@
-import { creditsFor } from '../../../data/photos/index.js';
 import { FORMATS } from '../../../data/schema.js';
 import { Hanko } from '../../ui/index.js';
 import { Photo } from '../../photo/Photo.jsx';
 import { PhotoCredit } from '../../photo/PhotoCredit.jsx';
+import { useLiveCredits } from '../../photo/useLivePhotos.js';
 import { CoverArt } from '../CoverArt.jsx';
 import { usePage } from './pageContext.js';
 import { pluralize } from '../../../lib/format.js';
@@ -18,7 +18,8 @@ const SWATCHES = ['--b-ink', '--b-accent', '--b-accent2', '--b-muted', '--b-pape
  * it is downloaded), the closing line, and a colophon (奥付, okuzuke) — title,
  * publisher, edition, format, when the facts were checked and against how
  * many sources — with the publisher's seal, then the credit of every
- * photograph in the brochure (creditsFor), linked to its source and licence.
+ * photograph in the brochure (creditsFor, live Commons photos included as
+ * they arrive), linked to its source and licence.
  */
 export function BackBlock({ page, brochure, total }) {
   const { isStatic } = usePage();
@@ -38,7 +39,7 @@ export function BackBlock({ page, brochure, total }) {
     { jp: '判型', en: 'Format', value: [format, total > 1 ? `${total} pages` : ''].filter(Boolean).join(' · ') },
     { jp: '確認', en: 'Facts checked', value: checked },
   ].filter((row) => row.value);
-  const credits = creditsFor(brochure);
+  const credits = useLiveCredits(brochure);
   const art = <CoverArt style={cover.art} seed={cover.seed} theme={brochure.theme} />;
 
   return (

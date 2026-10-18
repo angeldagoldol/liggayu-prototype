@@ -61,6 +61,18 @@ describe('autoFix', () => {
     expect(autoFix(doc, { makeId, title: '  Yuki  ' }).title).toBe('Yuki');
   });
 
+  it('lines up a double-page spread that a reorder pushed onto the wrong side', () => {
+    const left = page('photo', { span: 'left', photo: 'kyoto-spread' });
+    const right = page('photo', { span: 'right', photo: 'kyoto-spread' });
+    const doc = { title: 'Kyoto', pages: [page('cover'), page('intro'), left, right, page('place'), page('back')] };
+    expect(issueIds(doc)).toEqual(['spreads']);
+    expect(validateForPublish(doc)[0]).toMatchObject({ fixable: true });
+    const fixed = autoFix(doc, { makeId });
+    expect(issueIds(fixed)).toEqual([]);
+    expect(fixed.pages.indexOf(left)).toBe(3);
+    expect(fixed.pages.indexOf(right)).toBe(4);
+  });
+
   it('leaves a valid brochure untouched apart from a copy', () => {
     const doc = { title: 'Nara', pages: [page('cover'), page('intro'), page('back')] };
     const fixed = autoFix(doc, { makeId });

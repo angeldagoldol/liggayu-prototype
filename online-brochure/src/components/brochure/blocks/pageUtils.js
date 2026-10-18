@@ -25,6 +25,7 @@ export const SECTION_EN = dict({
   place: 'Spotlight',
   map: 'Map',
   contact: 'Contact',
+  photo: 'Photograph',
   back: 'Colophon',
 });
 
@@ -88,6 +89,8 @@ export function pageHeading(page, brochure) {
     }
     case 'place':
       return text(p.name) || text(p.heading) || 'Place';
+    case 'photo':
+      return text(p.name) || text(p.caption) || (p.span ? 'Photo spread' : 'Photo');
     case 'back':
       return text(p.title) || 'Back cover';
     default:

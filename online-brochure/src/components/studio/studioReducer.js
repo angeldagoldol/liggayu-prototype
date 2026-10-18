@@ -7,6 +7,8 @@
  * editor back to the page where the change happened. Rapid typing into one
  * field (actions flagged `typing`) coalesces into a single undo step.
  */
+import { spanOf } from '../../data/photoSpreads.js';
+import { fixSpreadPlacement, moveSpread } from '../../data/photoSpreadEdits.js';
 import { PAGE_TYPES } from '../../data/schema.js';
 import { listLimit } from './pageLimits.js';
 
@@ -36,7 +38,9 @@ const PHOTO_KEY = /^[A-Za-z0-9_-]{1,40}$/;
 /** Fields of an upload the editor may change (src, size and key are fixed). */
 const USER_PHOTO_FIELDS = new Set(['alt', 'caption', 'focus', 'credit']);
 const THEME_FIELDS = new Set(['paper', 'ink', 'accent', 'accent2', 'muted', 'typeface']);
-const LOCKED_PAGE_KEYS = new Set(['id', 'type']);
+const LOCKED_PAGE_KEYS = new Set(['id', 'type', 'span']);
+/** Fields the two halves of a photo spread share: setting one on either half sets both. */
+const SPREAD_SHARED_KEYS = new Set(['photo', 'captionPlacement', 'creditPlacement']);
 
 /** Fresh state for a document; history starts empty. */
 export function createStudioState(doc, selectedId) {
@@ -86,6 +90,23 @@ function withPages(state, pages) {
 
 function pageIndex(state, id) {
   return state.doc.pages.findIndex((p) => p.id === id);
+}
+
+/** Index of the other half of the photo spread page `index` is half of — beside it, whichever side it is bound on — or -1. */
+function adjacentHalf(pages, index) {
+  const span = spanOf(pages[index]);
+  if (span === 'left') return spanOf(pages[index + 1]) === 'right' ? index + 1 : -1;
+  if (span === 'right') return spanOf(pages[index - 1]) === 'left' ? index - 1 : -1;
+  return -1;
+}
+
+/** `pages` with a shared spread field (photo, placements) copied from page `index` to its other half. */
+function syncSpread(pages, index, key) {
+  const other = adjacentHalf(pages, index);
+  if (other === -1 || !SPREAD_SHARED_KEYS.has(key) || Object.is(pages[other][key], pages[index][key])) return pages;
+  const next = [...pages];
+  next[other] = { ...pages[other], [key]: pages[index][key] };
+  return next;
 }
 
 /** Where a new page goes: after the selection, but never after a closing back cover. */
@@ -142,7 +163,8 @@ function placePhotoIn(doc, target, id) {
     if (Object.is(getIn(page, path), value)) return doc;
     const pages = [...doc.pages];
     pages[index] = setIn(page, path, value);
-    return { ...doc, pages };
+    // A spread is one picture: its other half shows the same photo.
+    return { ...doc, pages: path.length === 1 ? syncSpread(pages, index, 'photo') : pages };
   }
   return doc;
 }
@@ -219,10 +241,33 @@ export function studioReducer(state, action) {
       return commit(state, withPages(state, pages), { selectedId: action.page.id, at });
     }
 
+    case 'addPages': {
+      // Several pages as one step (the two halves of a photo spread).
+      const added = Array.isArray(action.pages) ? action.pages : [];
+      const ids = new Set(added.map((p) => p?.id));
+      if (!added.length || ids.size !== added.length || added.some((p) => !p?.id || !PAGE_TYPES[p.type] || pageIndex(state, p.id) !== -1)) return state;
+      const pages = [...state.doc.pages];
+      const index = Number.isInteger(action.index) ? clamp(action.index, 0, pages.length) : insertionIndex(pages, state.selectedId);
+      pages.splice(index, 0, ...added);
+      return commit(state, withPages(state, pages), { selectedId: added[0].id, at });
+    }
+
+    case 'moveSpread': {
+      const pages = moveSpread(state.doc.pages, pageIndex(state, action.id), action.dir);
+      return pages === state.doc.pages ? state : commit(state, withPages(state, pages), { at });
+    }
+
+    case 'fixSpreads': {
+      const pages = fixSpreadPlacement(state.doc.pages);
+      return pages === state.doc.pages ? state : commit(state, withPages(state, pages), { at });
+    }
+
     case 'duplicatePage': {
       const index = pageIndex(state, action.id);
       if (index === -1 || !action.newId || pageIndex(state, action.newId) !== -1) return state;
-      const copy = { ...structuredClone(state.doc.pages[index]), id: action.newId };
+      const { span: _span, ...original } = state.doc.pages[index];
+      // A copy of half a spread is a full-page photo of the same picture (a lone half has no other half).
+      const copy = { ...structuredClone(original), id: action.newId };
       const pages = [...state.doc.pages];
       pages.splice(index + 1, 0, copy);
       return commit(state, withPages(state, pages), { selectedId: copy.id, at });
@@ -257,10 +302,11 @@ export function studioReducer(state, action) {
     case 'updatePage': {
       const path = action.path ?? [];
       if (path.length === 0 || LOCKED_PAGE_KEYS.has(path[0])) return state;
-      const doc = updatePageAt(state, action.id, (page) =>
+      const updated = updatePageAt(state, action.id, (page) =>
         Object.is(getIn(page, path), action.value) ? page : setIn(page, path, action.value),
       );
-      if (!doc) return state;
+      if (!updated) return state;
+      const doc = path.length === 1 ? { ...updated, pages: syncSpread(updated.pages, pageIndex(state, action.id), path[0]) } : updated;
       const key = action.typing ? `page:${action.id}:${path.join('.')}` : null;
       return commit(state, doc, { selectedId: action.id, key, at });
     }
@@ -438,6 +484,12 @@ export const studioActions = {
   applyPalette: (theme) => ({ type: 'applyPalette', theme }),
   setCover: (cover) => ({ type: 'setCover', ...cover }),
   addPage: (page, index) => ({ type: 'addPage', page, index }),
+  /** Several new pages in one undo step, inserted together at `index` (the halves of a photo spread). */
+  addPages: (pages, index) => ({ type: 'addPages', pages, index }),
+  /** Move the photo spread page `id` belongs to — both halves — one spread earlier (-1) or later (+1). */
+  moveSpread: (id, dir) => ({ type: 'moveSpread', id, dir }),
+  /** Line up every double-page photo spread (data/photoSpreads.js fixSpreadPlacement). */
+  fixSpreads: () => ({ type: 'fixSpreads' }),
   duplicatePage: (id, newId) => ({ type: 'duplicatePage', id, newId }),
   removePage: (id) => ({ type: 'removePage', id }),
   movePage: (id, to) => ({ type: 'movePage', id, to }),

@@ -3,7 +3,7 @@ import { animate, motion, useMotionValue, useReducedMotion, useSpring, useTransf
 import { CoverArt } from '../../../components/brochure/CoverArt.jsx';
 import { Photo } from '../../../components/photo/Photo.jsx';
 import { VerticalText } from '../../../components/ui/index.js';
-import { getPhoto } from '../../../data/photos/index.js';
+import { useLivePhotos } from '../../../components/photo/useLivePhotos.js';
 import { cn } from '../../../lib/cn.js';
 import { ease, spring } from '../../../lib/motion.js';
 import { HERO_PANELS as PANELS } from '../homeContent.js';
@@ -17,9 +17,11 @@ const PRINT = { paper: '#f4eee2', ink: '#22140f', accent: '#d23a22', accent2: '#
 const TILT = { stiffness: 110, damping: 18, mass: 0.7 };
 const FOLD = { stiffness: 140, damping: 26 };
 
-/** The scene's accessible name: it says "photographs" only once they are all on show. */
-function sceneLabel() {
-  const photos = allAvailable(Object.values(PANELS).map((p) => p.photo), getPhoto);
+const PANEL_PHOTOS = Object.values(PANELS).map((p) => p.photo);
+
+/** The scene's accessible name: it says "photographs" only once they are all on show (bundled or live). */
+function sceneLabel(getPhoto) {
+  const photos = allAvailable(PANEL_PHOTOS, getPhoto);
   return photos
     ? 'A tri-fold brochure about Japan, unfolding: photographs of Mount Fuji, the torii of Fushimi Inari and Shibuya Crossing at night'
     : 'A tri-fold brochure about Japan, unfolding: panels on Mount Fuji, the torii of Fushimi Inari and Shibuya Crossing';
@@ -103,6 +105,7 @@ function BackPanel() {
  */
 export function TriFold({ pointerX, pointerY, fold }) {
   const reduce = useReducedMotion();
+  const live = useLivePhotos(PANEL_PHOTOS);
   const leftOpen = useMotionValue(reduce ? 1 : 0);
   const rightOpen = useMotionValue(reduce ? 1 : 0);
   // 1 while motion is allowed: scroll-folding is multiplied by it, so the
@@ -149,7 +152,7 @@ export function TriFold({ pointerX, pointerY, fold }) {
     <div
       className={styles.scene}
       role="img"
-      aria-label={sceneLabel()}
+      aria-label={sceneLabel(live.getPhoto)}
       style={{
         '--p-paper': PRINT.paper,
         '--p-ink': PRINT.ink,

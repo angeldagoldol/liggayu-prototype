@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Check, ImagePlus, Images, Pencil, Search, Trash2, X } from 'lucide-react';
 import { Button, Chip, Drawer } from '../../ui/index.js';
 import { Photo } from '../../photo/Photo.jsx';
+import { usePhotoRecord } from '../../photo/photoContext.js';
 import { PhotoCredit } from '../../photo/PhotoCredit.jsx';
 import { CoverArt } from '../../brochure/index.js';
 import { resolvePhoto } from '../../../data/photos/index.js';
@@ -95,7 +96,13 @@ function Selection({ entry, tab, value, brochure, uses, confirmRemove, onUse, on
       </div>
     );
   }
-  const record = entry.photo;
+  return <SelectionBody entry={entry} value={value} brochure={brochure} uses={uses} confirmRemove={confirmRemove} onUse={onUse} onEdit={onEdit} onRemove={onRemove} editing={editing} />;
+}
+
+/** The chosen photo's proof, credit and actions (a library photo may have turned live meanwhile). */
+function SelectionBody({ entry, value, brochure, uses, confirmRemove, onUse, onEdit, onRemove, editing }) {
+  const fresh = usePhotoRecord(entry.user ? '' : entry.id);
+  const record = entry.user || !fresh ? entry.photo : fresh;
   const isCurrent = entry.id === value;
   return (
     <div className={styles.footInner}>

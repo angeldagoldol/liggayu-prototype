@@ -6,9 +6,11 @@ import { fitRegions } from './blocks/fit.js';
  * render that changes the page, once web fonts arrive (their metrics differ
  * from the fallback's), and when the page is laid out at a new width (px
  * minimums such as hairlines do not scale). Batched to one pass per frame.
- * `page` and `brochure` are what the page draws: a new one refits.
+ * `page` and `brochure` are what the page draws: a new one refits, and so
+ * does a new `extra` (anything else that changes the copy, such as the live
+ * photos whose credits the page prints).
  */
-export function useFit(ref, page, brochure) {
+export function useFit(ref, page, brochure, extra) {
   useLayoutEffect(() => {
     const root = ref.current;
     if (!root) return undefined;
@@ -44,5 +46,5 @@ export function useFit(ref, page, brochure) {
       fonts?.removeEventListener?.('loadingdone', schedule);
       observer?.disconnect();
     };
-  }, [ref, page, brochure]);
+  }, [ref, page, brochure, extra]);
 }

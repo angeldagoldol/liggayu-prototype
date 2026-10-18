@@ -129,3 +129,14 @@ All from Wikimedia Commons, to be confirmed by the curation step (`npm run photo
 | `okinawa-tsuboya` → gallery | File:Tsuboya Yachimun Street.jpg · File:壺屋やちむん通り.jpg · File:Tsuboya, Naha.jpg | Category:Tsuboya; Category:Tsuboya ware | Stone-paved lane; an old kiln (Ara-yachi / Nishi-no-kama) is also fine. |
 | `okinawa-kokusai-dori` → gallery | File:Kokusai-dori.jpg · File:Kokusai Street, Naha.jpg · File:国際通り (那覇市).jpg | Category:Kokusai-dori | Street view without people as the main subject. |
 | `okinawa-bise-fukugi` → gallery | File:Bise Fukugi Namiki.jpg · File:備瀬のフクギ並木.jpg · File:Fukugi trees in Bise, Motobu.jpg | Category:Bise, Motobu; Category:Garcinia subelliptica | Lane through the fukugi windbreak trees. |
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Kerama blue: reef, sand and island hills in the Kerama archipelago, an hour by boat from Naha | src/data/photos/manifest/okinawa-coral-islands.json → `okinawa-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Kerama Islands / 慶良間諸島 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 10) | Through the vermilion gates of Shuri Castle, seat of the Ryūkyū kings, Naha | src/data/photos/manifest/okinawa-coral-islands.json → `okinawa-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Shuri Castle / 首里城 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

@@ -6,7 +6,7 @@ import { Photo } from '../../../components/photo/Photo.jsx';
 import { VerticalText } from '../../../components/ui/index.js';
 import { japanMonth, seasonIdForMonth } from '../../../components/layout/japanTime.js';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
-import { getPhoto } from '../../../data/photos/index.js';
+import { useLivePhotos } from '../../../components/photo/useLivePhotos.js';
 import { SEASONS, SEASON_MAP } from '../../../data/seasons.js';
 import { pluralize } from '../../../lib/format.js';
 import { ease } from '../../../lib/motion.js';
@@ -48,7 +48,8 @@ const plateFade = {
 function SeasonPanel({ season, count, active, isNow, ids, onChoose, onHover, onKeyDown, buttonRef }) {
   const reduce = useReducedMotion();
   const photoId = SEASON_PHOTOS[season.id];
-  const photo = getPhoto(photoId);
+  const live = useLivePhotos([photoId]);
+  const photo = live.getPhoto(photoId);
   const hasPhoto = Boolean(photo?.available);
   return (
     <motion.div

@@ -155,3 +155,14 @@ the sources above; **HEDGED** = could not be confirmed, copy loosened; **REMOVED
 October 2026 · Tabi Guides": the two prices that rested only on first-pass extracts are now
 confirmed live (the subway rise by the operators' own notices), and every other price, hour,
 date and access detail in the brochure already had current sources (rows 1–25).
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Evening falls over Minato: Tokyo Tower glows among the towers of Roppongi and Azabudai | src/data/photos/manifest/tokyo-after-dark.json → `tokyo-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Tokyo Tower / 東京タワー | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 10) | Neon hour in Shinjuku: the red gate of Kabukichō Ichiban-gai after dark | src/data/photos/manifest/tokyo-after-dark.json → `tokyo-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Kabukichō, Shinjuku / 歌舞伎町 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |

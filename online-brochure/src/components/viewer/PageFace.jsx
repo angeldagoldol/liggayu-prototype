@@ -31,8 +31,10 @@ function Endpaper({ brochure }) {
  * - `live`: the face is on show at the current spread: it plays its
  *   entrance and is interactive; every other face is inert and hidden from
  *   assistive tech.
+ * - `facing`: the book shows two pages at a time, so a double-page photo
+ *   spread draws its halves (BrochurePage `facing`).
  */
-export const PageFace = memo(function PageFace({ brochure, face, mounted, rich = true, live, onCta }) {
+export const PageFace = memo(function PageFace({ brochure, face, mounted, rich = true, live, onCta, facing = false }) {
   if (!mounted || face === null || face === undefined) return <div className={styles.paper} aria-hidden="true" />;
   if (face === BLANK) return <Endpaper brochure={brochure} />;
   const pages = brochure.pages ?? [];
@@ -46,6 +48,7 @@ export const PageFace = memo(function PageFace({ brochure, face, mounted, rich =
         active={live}
         isStatic={!rich}
         onCta={live ? onCta : undefined}
+        facing={facing}
       />
     </div>
   );

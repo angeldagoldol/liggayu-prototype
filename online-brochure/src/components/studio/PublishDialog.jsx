@@ -10,6 +10,7 @@ const FIX_NOTES = {
   pages: 'We’ll add introduction pages',
   cover: 'We’ll move or add a cover',
   back: 'We’ll move or add a back cover',
+  spreads: 'We’ll line up the spread so its halves face each other',
 };
 
 /**
@@ -30,7 +31,7 @@ export function PublishDialog({ open, issues, mode = 'new', onClose, onFix }) {
       onClose={onClose}
       size="sm"
       title={`Nearly ready to ${verb}`}
-      description="A brochure needs a title, at least three pages, a cover first and a back cover last."
+      description="A brochure needs a title, at least three pages, a cover first and a back cover last — and photo spreads on facing pages."
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>

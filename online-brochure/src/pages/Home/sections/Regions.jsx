@@ -7,7 +7,7 @@ import { Photo } from '../../../components/photo/Photo.jsx';
 import { Button, IconButton, VerticalText } from '../../../components/ui/index.js';
 import { useBrochures } from '../../../context/BrochureContext.jsx';
 import { hasKey } from '../../../data/lookup.js';
-import { getPhoto } from '../../../data/photos/index.js';
+import { useLivePhotos } from '../../../components/photo/useLivePhotos.js';
 import { REGIONS, REGION_MAP } from '../../../data/regions.js';
 import { pad, pluralize } from '../../../lib/format.js';
 import { ease, fadeUp, viewportOnce } from '../../../lib/motion.js';
@@ -64,7 +64,8 @@ function MapUnavailable() {
  */
 function RegionCard({ region, index, count, onStep }) {
   const note = REGION_NOTES[region.id];
-  const photo = getPhoto(note?.photo);
+  const live = useLivePhotos([note?.photo]);
+  const photo = live.getPhoto(note?.photo);
   const hasPhoto = Boolean(photo?.available);
   const prev = REGION_MAP[stepId(IDS, region.id, -1)];
   const next = REGION_MAP[stepId(IDS, region.id, 1)];

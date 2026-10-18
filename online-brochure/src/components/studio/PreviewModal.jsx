@@ -61,7 +61,7 @@ function Reader({ brochure, startIndex }) {
               if (!isPageFace(face) || !pages[face]) return null;
               return (
                 <div key={pages[face].id} className={styles.page} data-side={side}>
-                  <BrochurePage brochure={brochure} page={pages[face]} index={face} total={pages.length} active />
+                  <BrochurePage brochure={brochure} page={pages[face]} index={face} total={pages.length} active facing={!single} />
                 </div>
               );
             })}

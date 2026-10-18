@@ -130,6 +130,10 @@
   transform: translateX(3px);
 }
 
+.livePhotos {
+  margin-top: var(--space-5);
+}
+
 /* --- Link columns ------------------------------------------------------- */
 .columns {
   grid-area: columns;

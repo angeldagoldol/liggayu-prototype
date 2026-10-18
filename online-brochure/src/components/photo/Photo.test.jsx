@@ -1,3 +1,4 @@
+import { act } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createPhotoRegistry } from '../../data/photos/registry.js';
@@ -211,5 +212,64 @@ describe('<Photo> with a brochure’s own photos ("user:<key>")', () => {
     const { container } = render(<PhotoCredit credit={{ author: 'Aiko', license: 'CC0' }} label="" links={false} />);
     expect(container.textContent).toBe('Aiko · CC0');
     expect(render(<PhotoCredit credit={{}} />).container.textContent).toBe('');
+  });
+});
+
+describe('<Photo> with a live photo from Wikimedia Commons', () => {
+  afterEach(() => vi.useRealTimers());
+  const base = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Torii_path_at_dawn.jpg/';
+  const image = {
+    file: 'File:Torii path at dawn.jpg',
+    width: 4000,
+    height: 2667,
+    widths: [500, 960, 1280, 1920],
+    srcSet: [500, 960, 1280, 1920].map((w) => `${base}${w}px-Torii_path_at_dawn.jpg ${w}w`).join(', '),
+    src: (w) => `${base}${[500, 960, 1280, 1920].find((s) => s >= w) ?? 1920}px-Torii_path_at_dawn.jpg`,
+    credit: { title: 'Torii path at dawn', author: 'Jane', license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', sourceUrl: 'https://commons.wikimedia.org/wiki/File:Torii_path_at_dawn.jpg' },
+    attributionRequired: true,
+    via: 'candidate',
+  };
+  const liveRegistry = createPhotoRegistry({ m: [{ id: 'test-live', alt: 'Vermilion gates', focus: '50% 60%' }] }, {}, { live: { get: () => image } });
+  const record = liveRegistry.getPhoto('test-live');
+
+  it('draws Commons thumbnails on the standard steps, sized to avoid layout shift', () => {
+    const { container } = render(<Photo photo={record} sizes="50vw" fallback={<Art />} />);
+    const img = screen.getByRole('img', { name: 'Vermilion gates' });
+    expect(img).toHaveAttribute('srcset', image.srcSet);
+    expect(img).toHaveAttribute('src', `${base}960px-Torii_path_at_dawn.jpg`);
+    expect(img).toHaveAttribute('width', '4000');
+    expect(img).toHaveAttribute('height', '2667');
+    expect(container.firstChild).toHaveAttribute('data-live', 'true');
+    expect(container.firstChild.style.getPropertyValue('--photo-focus')).toBe('50% 60%');
+  });
+
+  it('keeps the art under the picture while it travels, then sharpens in and lets the art go', () => {
+    vi.useFakeTimers();
+    const { container } = render(<Photo photo={record} fallback={<Art />} />);
+    expect(container.querySelector('[data-photo-underlay]')).not.toBeNull();
+    expect(screen.getByTestId('art')).toBeInTheDocument();
+    fireEvent.load(container.querySelector('img'));
+    expect(container.firstChild).toHaveAttribute('data-state', 'loaded');
+    expect(container.querySelector('[data-photo-underlay]')).not.toBeNull();
+    act(() => vi.advanceTimersByTime(1000));
+    expect(container.querySelector('[data-photo-underlay]')).toBeNull();
+  });
+
+  it('credits it with links to the Commons file page and the licence deed', () => {
+    render(<Photo photo={record} credit="overlay" />);
+    expect(screen.getByRole('link', { name: /Jane/ })).toHaveAttribute('href', 'https://commons.wikimedia.org/wiki/File:Torii_path_at_dawn.jpg');
+    expect(screen.getByRole('link', { name: /CC BY-SA 4\.0/ })).toHaveAttribute('href', 'https://creativecommons.org/licenses/by-sa/4.0');
+  });
+
+  it('falls back to the art if the picture fails to load', () => {
+    const { container } = render(<Photo photo={record} fallback={<Art />} />);
+    fireEvent.error(container.querySelector('img'));
+    expect(container.firstChild).toHaveAttribute('data-state', 'fallback');
+    expect(container.querySelector('img')).toBeNull();
+  });
+
+  it('asks nothing of Wikimedia in tests (no network), so slots keep their art', () => {
+    render(<Photo id="kyoto-senbon-torii" fallback={<Art />} />);
+    expect(screen.getByTestId('art')).toBeInTheDocument();
   });
 });

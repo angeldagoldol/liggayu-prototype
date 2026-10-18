@@ -12,6 +12,11 @@
  * data:image/… URL (png, jpeg, webp, gif, avif) or a blob: URL; anything else
  * leaves the photo unavailable, so its fallback art shows. resolvePhoto(id,
  * brochure) answers both kinds of id with the same record shape.
+ *
+ * Live photos (live.js): a slot without a bundled file can be shown straight
+ * from Wikimedia Commons once the visitor's browser has looked it up. Pass
+ * `{ live }` (an object with get(id) → live image | null) and every lookup
+ * prefers, in order: the bundled photo, the live photo, nothing (the art).
  */
 import { safeImageSrc } from './safeImageSrc.js';
 
@@ -154,12 +159,59 @@ function mergePhoto(id, entry, record) {
 }
 
 /**
+ * A registry photo shown live from Commons: the manifest's words (alt,
+ * caption, place, focus, use) with the live image's size, sources and credit.
+ * `live: true`; no LQIP or colour (<Photo> keeps the art under it while it loads).
+ * A photo found by searching Commons (not a researched candidate) takes the
+ * work's own title as alt text, since the manifest's may not describe it.
+ */
+function mergeLive(base, image) {
+  const widths = Array.isArray(image?.widths) ? image.widths.filter((w) => Number.isInteger(w) && w > 0) : [];
+  const width = positive(image?.width);
+  const height = positive(image?.height);
+  if (!widths.length || !width || !height || typeof image.src !== 'function' || !str(image.srcSet)) return null;
+  const credit = isRecord(image.credit) ? image.credit : {};
+  const searched = image.via === 'search';
+  return Object.freeze({
+    id: base.id,
+    alt: searched ? str(credit.title) || base.caption || base.alt : base.alt,
+    caption: base.caption,
+    place: base.place,
+    focus: base.focus,
+    use: base.use,
+    width,
+    height,
+    widths,
+    lqip: '',
+    color: '',
+    credit: Object.freeze({
+      title: str(credit.title),
+      author: str(credit.author),
+      authorUrl: webUrl(credit.authorUrl),
+      license: str(credit.license),
+      licenseUrl: webUrl(credit.licenseUrl),
+      sourceUrl: webUrl(credit.sourceUrl),
+    }),
+    attributionRequired: image.attributionRequired !== false,
+    available: true,
+    user: false,
+    live: true,
+    via: searched ? 'search' : 'candidate',
+    file: str(image.file),
+    token: `live:${str(image.file)}`,
+    src: (w) => image.src(w) ?? null,
+    srcSet: image.srcSet,
+  });
+}
+
+/**
  * Build a registry from manifest modules ({ path: { brochure, photos: [...] } }
  * or their `photos` arrays) and generated records ({ [id]: record }).
  * The first manifest entry for an id wins; ids only in the generated file
  * (an import not listed yet) still resolve, without alt text.
+ * `options.live` (live.js) supplies Commons photos for slots not bundled.
  */
-export function createPhotoRegistry(manifests = {}, generated = {}) {
+export function createPhotoRegistry(manifests = {}, generated = {}, { live = null } = {}) {
   const entries = new Map();
   for (const key of Object.keys(manifests ?? {}).sort()) {
     const value = manifests[key];
@@ -175,14 +227,24 @@ export function createPhotoRegistry(manifests = {}, generated = {}) {
     if (!photos.has(id) && isRecord(records[id])) photos.set(id, mergePhoto(id, null, records[id]));
   }
 
-  /** The merged photo for an id, or null for unknown ids (and non-strings). */
+  // One merged record per live image, so re-renders keep the same record (and <Photo> its loading state).
+  const liveRecords = new WeakMap();
+  function withLive(photo) {
+    if (!photo || photo.available || !live) return photo;
+    const image = live.get(photo.id);
+    if (!isRecord(image)) return photo;
+    if (!liveRecords.has(image)) liveRecords.set(image, mergeLive(photo, image));
+    return liveRecords.get(image) ?? photo;
+  }
+
+  /** The merged photo for an id — bundled, else live, else not available — or null for unknown ids (and non-strings). */
   function getPhoto(id) {
-    return typeof id === 'string' ? (photos.get(id.trim()) ?? null) : null;
+    return typeof id === 'string' ? withLive(photos.get(id.trim()) ?? null) : null;
   }
 
   /** Every known photo, sorted by id. */
   function listPhotos() {
-    return [...photos.values()].sort((a, b) => a.id.localeCompare(b.id));
+    return [...photos.values()].map(withLive).sort((a, b) => a.id.localeCompare(b.id));
   }
 
   /**

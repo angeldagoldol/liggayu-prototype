@@ -1,3 +1,4 @@
+import { spreadPartner } from '../../data/photoSpreads.js';
 import { PAGE_TYPES } from '../../data/schema.js';
 import { sealChars } from '../../lib/format.js';
 import { BLANK } from './spreads.js';
@@ -10,9 +11,11 @@ export function pageMeta(page, face) {
   return { label: PAGE_TYPES[type]?.label ?? 'Page', jp: PAGE_TYPES[type]?.jp ?? '頁' };
 }
 
-/** "Introduction · Features" for the pages of a spread. */
+/** "Introduction · Features" for the pages of a spread; "Photo spread" for the two halves of one picture. */
 export function spreadCaption(spread, pages) {
-  return (spread?.pages ?? []).map((i) => pageMeta(pages?.[i]).label).join(' · ');
+  const shown = spread?.pages ?? [];
+  if (shown.length === 2 && spreadPartner(pages, shown[0]) === shown[1]) return 'Photo spread';
+  return shown.map((i) => pageMeta(pages?.[i]).label).join(' · ');
 }
 
 /** Seal characters for a brochure: up to two characters of its Japanese title. */

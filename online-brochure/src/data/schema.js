@@ -80,6 +80,10 @@
 
 import { dict } from './lookup.js';
 
+/** Where a photo page sets its caption, and its photo credit (see `photo` below). */
+export const CAPTION_PLACEMENTS = ['overlay', 'below'];
+export const CREDIT_PLACEMENTS = ['caption', 'edge'];
+
 /** Cover art styles understood by <CoverArt>. */
 export const ART_STYLES = ['seigaiha', 'asanoha', 'hinomaru', 'fuji', 'sakura', 'torii', 'shippo', 'enso', 'kumo', 'ichimatsu'];
 
@@ -133,6 +137,16 @@ export const FORMATS = [
  *  contact:  { heading, body, cta, ctaUrl, details: [{ icon, label, value, url }] }   2–4 details;
  *            for built-ins this is "Visitor information": official websites and tourist
  *            information centres (no phone numbers)
+ *  photo:    { photo, name, nameJp, caption, captionPlacement, creditPlacement, span? }
+ *            a magazine photo page: the photograph to the trim with a small caption — the place
+ *            in small caps, its Japanese name and one line of text. captionPlacement 'overlay'
+ *            (set over the foot of the picture on a scrim) | 'below' (on the paper, under it);
+ *            creditPlacement 'caption' (the credit ends the caption) | 'edge' (set vertically
+ *            along the outer trim). span 'left' | 'right': a DOUBLE-PAGE SPREAD — this page and
+ *            its neighbour show one wide photo across the gutter. The left half must be at an
+ *            odd index (page 2, 4, 6…) with the right half right after it, showing the same
+ *            photo (data/photoSpreadEdits.js validates and repairs that); a half that is not placed
+ *            so, or is read one page at a time (phones, print), is drawn as a page of its own.
  *  back:     { title, body, tagline }
  */
 export const PAGE_TYPES = dict({
@@ -311,6 +325,20 @@ export const PAGE_TYPES = dict({
         { icon: 'Clock', label: 'Hours', value: 'Mon–Fri 10:00–18:00 JST' },
         { icon: 'MapPin', label: 'Visit', value: '1-2-3 Example-chō, Kyoto' },
       ],
+    }),
+  },
+  photo: {
+    label: 'Photo',
+    jp: '写真頁',
+    description: 'A full-bleed photograph with a magazine caption — or half of a double-page spread',
+    icon: 'Mountain',
+    create: () => ({
+      photo: '',
+      name: 'Kiyomizu-dera',
+      nameJp: '清水寺',
+      caption: 'One line on what the picture shows — the place, the season, the hour.',
+      captionPlacement: 'overlay',
+      creditPlacement: 'caption',
     }),
   },
   back: {

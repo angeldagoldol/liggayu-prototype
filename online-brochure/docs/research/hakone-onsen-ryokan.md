@@ -166,3 +166,14 @@ the sources above; **HEDGED** = could not be confirmed, kept approximate; **REMO
 October 2026 · Tabi Guides": every printed fare and admission is now confirmed by a current
 official or press source, and the only unconfirmed figure (black eggs) is printed as an
 approximation backed by a 2026 source.
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Lake Ashi, the caldera lake at the heart of Hakone, held between wooded ridges | src/data/photos/manifest/hakone-onsen-ryokan.json → `hakone-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Lake Ashi / 芦ノ湖 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 10) | Beneath the vermilion gates of Hakone Shrine, in the cedar woods above Lake Ashi | src/data/photos/manifest/hakone-onsen-ryokan.json → `hakone-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Hakone Shrine / 箱根神社 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

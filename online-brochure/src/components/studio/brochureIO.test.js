@@ -202,6 +202,25 @@ describe('import of real-place fields', () => {
   });
 });
 
+describe('import of magazine photo pages', () => {
+  it('keeps full-page photos and double-page spreads, lined up as they were', () => {
+    const pages = [
+      { id: 'a', type: 'cover', title: 'Kyoto' },
+      { id: 'b', type: 'photo', photo: 'kyoto-spread', span: 'left' },
+      { id: 'c', type: 'photo', photo: 'kyoto-spread', span: 'right', name: 'Kiyomizu-dera', nameJp: '清水寺', caption: 'The city below', captionPlacement: 'below', creditPlacement: 'edge' },
+      { id: 'd', type: 'photo', photo: 'kyoto-fullpage', name: 'Arashiyama', caption: 'Bamboo', captionPlacement: 'sideways', span: 'up' },
+      { id: 'e', type: 'back', title: 'Bye' },
+    ];
+    const result = parseBrochureJson(JSON.stringify({ title: 'Spreads', pages }), { makeId, now });
+    expect(result.ok).toBe(true);
+    const [, l, r, full] = result.doc.pages;
+    expect(l).toMatchObject({ type: 'photo', photo: 'kyoto-spread', span: 'left' });
+    expect(r).toMatchObject({ span: 'right', name: 'Kiyomizu-dera', nameJp: '清水寺', caption: 'The city below', captionPlacement: 'below', creditPlacement: 'edge' });
+    expect(full).toMatchObject({ photo: 'kyoto-fullpage', captionPlacement: 'overlay' });
+    expect(full).not.toHaveProperty('span');
+  });
+});
+
 describe('the brochure’s own photos (userPhotos)', () => {
   const photo = (src = 'data:image/jpeg;base64,QUJD') => ({ src, alt: 'A lantern', width: 1600, height: 1067, credit: { author: 'Your photo', license: '' } });
   const withPhotos = (userPhotos, extra = {}) =>

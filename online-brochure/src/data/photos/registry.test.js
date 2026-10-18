@@ -292,3 +292,69 @@ describe('the app registry (src/data/photos)', () => {
     expect(live.getPhoto('definitely-not-a-photo')).toBeNull();
   });
 });
+
+describe('live photos in the registry (bundled > live > art)', () => {
+  const image = Object.freeze({
+    file: 'File:Kiyomizu live.jpg',
+    width: 3000,
+    height: 2000,
+    widths: [500, 960, 1280, 1920],
+    srcSet: 'https://upload.wikimedia.org/a 500w, https://upload.wikimedia.org/b 1920w',
+    src: (w) => (w > 960 ? 'https://upload.wikimedia.org/b' : 'https://upload.wikimedia.org/a'),
+    credit: { title: 'Kiyomizu in autumn', author: 'Jane', authorUrl: 'javascript:alert(1)', license: 'CC BY 4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', sourceUrl: 'https://commons.wikimedia.org/wiki/File:Kiyomizu_live.jpg' },
+    attributionRequired: true,
+    via: 'candidate',
+  });
+  const images = new Map([
+    ['kyoto-kiyomizu', image],
+    ['kyoto-senbon-torii', { ...image, file: 'File:Ignored.jpg' }],
+  ]);
+  const withLive = createPhotoRegistry(manifests, generated, { live: { get: (id) => images.get(id) ?? null } });
+
+  it('shows a live photo where nothing is bundled, with the manifest’s words', () => {
+    const photo = withLive.getPhoto('kyoto-kiyomizu');
+    expect(photo).toMatchObject({
+      id: 'kyoto-kiyomizu',
+      alt: 'A wooden temple stage over maples',
+      caption: 'Kiyomizu-dera',
+      use: 'wide',
+      available: true,
+      live: true,
+      user: false,
+      width: 3000,
+      height: 2000,
+      lqip: '',
+      token: 'live:File:Kiyomizu live.jpg',
+    });
+    expect(photo.src(1600)).toBe('https://upload.wikimedia.org/b');
+    expect(photo.srcSet).toBe(image.srcSet);
+    expect(photo.credit.authorUrl).toBe(''); // only http(s) links
+    expect(photo.credit.sourceUrl).toBe('https://commons.wikimedia.org/wiki/File:Kiyomizu_live.jpg');
+    expect(withLive.getPhoto('kyoto-kiyomizu')).toBe(photo);
+  });
+
+  it('prefers the bundled photo, and lists live ones too', () => {
+    expect(withLive.getPhoto('kyoto-senbon-torii').live).toBeUndefined();
+    expect(withLive.getPhoto('kyoto-senbon-torii').src(480)).toBe('photos/kyoto-senbon-torii-480.webp');
+    expect(withLive.listPhotos().find((p) => p.id === 'kyoto-kiyomizu').live).toBe(true);
+    expect(withLive.getPhoto('tokyo-shibuya').available).toBe(false);
+  });
+
+  it('credits live photos with the rest', () => {
+    const brochure = { cover: { photo: 'kyoto-senbon-torii' }, pages: [{ id: 'p', type: 'place', photo: 'kyoto-kiyomizu' }] };
+    expect(withLive.creditsFor(brochure).map((c) => [c.id, c.author, c.license])).toEqual([
+      ['kyoto-senbon-torii', 'Example Photographer', 'CC BY-SA 4.0'],
+      ['kyoto-kiyomizu', 'Jane', 'CC BY 4.0'],
+    ]);
+  });
+
+  it('uses the work’s title as alt text for a photo found by search', () => {
+    const searched = createPhotoRegistry(manifests, {}, { live: { get: () => ({ ...image, via: 'search' }) } });
+    expect(searched.getPhoto('kyoto-kiyomizu')).toMatchObject({ alt: 'Kiyomizu in autumn', via: 'search' });
+  });
+
+  it('ignores a live image it cannot draw', () => {
+    const broken = createPhotoRegistry(manifests, {}, { live: { get: () => ({ ...image, widths: [], srcSet: '' }) } });
+    expect(broken.getPhoto('kyoto-kiyomizu').available).toBe(false);
+  });
+});

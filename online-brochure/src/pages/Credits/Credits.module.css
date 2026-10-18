@@ -362,6 +362,25 @@ a.licenceChip:hover {
   color: var(--ink-3);
 }
 
+/* "Load photos from Wikimedia Commons" and what the lookup is doing. */
+.livePanel {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 62rem;
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.liveStatus {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
 .notice {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

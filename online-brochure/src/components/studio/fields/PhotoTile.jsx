@@ -1,5 +1,6 @@
 import { memo, useRef } from 'react';
 import { Photo } from '../../photo/Photo.jsx';
+import { useLivePhotos } from '../../photo/useLivePhotos.js';
 import { CoverArt } from '../../brochure/index.js';
 import { idSeed } from '../photoLibrary.js';
 import { DEFAULT_CREDIT, formatBytes } from '../photoUpload.js';
@@ -20,13 +21,17 @@ const ORIENTATION = { portrait: 'Portrait', landscape: 'Landscape', any: '' };
 export const PhotoTile = memo(function PhotoTile({ entry, selected, current, tabIndex, onSelect, onUse, brochure, theme, art }) {
   const ref = useRef(null);
   const near = useNearViewport(ref);
+  // Library entries are built once; a photo not bundled can turn live (Commons) while the picker is open.
+  const live = useLivePhotos(near && !entry.user && !entry.available ? [entry.id] : []);
+  const photo = entry.user || entry.available ? entry.photo : (live.getPhoto(entry.id) ?? entry.photo);
+  const available = Boolean(entry.available || photo?.available);
   const source = entry.brochure;
   const fallback = near ? (
     <CoverArt style={source?.cover?.art ?? art?.style ?? 'hinomaru'} seed={idSeed(entry.id)} theme={source?.theme ?? theme} />
   ) : (
     <span className={styles.hold} style={{ background: (source?.theme ?? theme)?.paper }} />
   );
-  const credit = entry.photo?.credit;
+  const credit = photo?.credit;
   const orientation = ORIENTATION[entry.orientation] ?? '';
   const meta = (entry.user ? [orientation, entry.bytes ? formatBytes(entry.bytes) : ''] : [entry.place, orientation]).filter(Boolean).join(' · ');
   // An upload credited only as "Your photo" says nothing a reader needs; anything more is shown.
@@ -42,7 +47,7 @@ export const PhotoTile = memo(function PhotoTile({ entry, selected, current, tab
       tabIndex={tabIndex}
       className={styles.tile}
       data-photo-id={entry.id}
-      data-pending={!entry.available || undefined}
+      data-pending={!available || undefined}
       data-current={current || undefined}
       onClick={() => onSelect(entry.id)}
       onDoubleClick={() => onUse(entry.id)}
@@ -54,8 +59,8 @@ export const PhotoTile = memo(function PhotoTile({ entry, selected, current, tab
       }}
     >
       <span className={styles.frame} data-orientation={entry.orientation}>
-        {near ? <Photo photo={entry.photo} brochure={brochure} alt="" sizes="(min-width: 900px) 220px, 45vw" fallback={fallback} className={styles.fill} /> : fallback}
-        {!entry.available && <span className={styles.pending}>{entry.user ? 'Can’t be shown' : 'Not downloaded'}</span>}
+        {near ? <Photo photo={photo} brochure={brochure} alt="" sizes="(min-width: 900px) 220px, 45vw" fallback={fallback} className={styles.fill} /> : fallback}
+        {!available && <span className={styles.pending}>{entry.user ? 'Can’t be shown' : 'Not downloaded'}</span>}
         {current && (
           <span className={styles.inUse} lang="ja" aria-hidden="true">
             使用中
@@ -66,7 +71,7 @@ export const PhotoTile = memo(function PhotoTile({ entry, selected, current, tab
       <span className={styles.tileText}>
         <span className={styles.caption}>{entry.caption || entry.alt || 'Untitled photo'}</span>
         {meta && <span className={styles.meta}>{meta}</span>}
-        {entry.available && (author || license) && (
+        {available && (author || license) && (
           <span className={styles.tileCredit}>
             {author}
             {author && license ? ' · ' : ''}
@@ -75,7 +80,7 @@ export const PhotoTile = memo(function PhotoTile({ entry, selected, current, tab
           </span>
         )}
         <span className="sr-only">
-          {entry.available ? '' : entry.user ? ', can’t be shown' : ', not downloaded yet — the cover art shows until it is'}
+          {available ? '' : entry.user ? ', can’t be shown' : ', not downloaded yet — the cover art shows until it is'}
           {current ? ', on this page now' : ''}
         </span>
       </span>

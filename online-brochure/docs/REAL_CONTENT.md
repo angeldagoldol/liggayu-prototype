@@ -50,7 +50,10 @@ writing them. Data shapes are in `src/data/schema.js`.
 
 All photos come from **Wikimedia Commons** under free licences (CC0, public
 domain, CC BY, CC BY-SA). They are downloaded, resized and credited by
-`scripts/photos/fetch.mjs`; nothing is hotlinked.
+`scripts/photos/fetch.mjs`, or — until they are — shown live from Wikimedia
+Commons by the visitor's browser under the same licence and size policy
+(`src/data/photos/live.js`), using each slot's `candidates` and then its
+`query` (Commons search words), so write a `query` that finds the place.
 
 Each brochure lists its photos in `src/data/photos/manifest/<slug>.json`:
 
@@ -95,15 +98,32 @@ Each brochure lists its photos in `src/data/photos/manifest/<slug>.json`:
   brochure's generative art in its place, so brochures always render.
 
 Typical photo budget per brochure: cover 1, intro 1, each `place` page 1,
-gallery 3–4 (about 8–10 in total).
+gallery 3–4, plus a full-page photo (`<prefix>-fullpage`, `use: "full"`,
+portrait or near-square) and a double-page spread (`<prefix>-spread`,
+`use: "spread"`, a wide landscape that still works cut down the middle) —
+about 10–12 in total.
 
-## 3. Brochure outline (12–14 pages)
+## 3. Brochure outline (16–18 pages)
 
 `cover` (photo) → `intro` (photo) → 2–3 × `place` → `features` → `gallery` →
 `map` → `agenda` (a realistic day or trip plan using real opening hours and
 travel times) → `pricing` as **Costs** (real admission fees, passes, fares) →
 `phrases` → `quote` (real) → `contact` as **Visitor information** → `back`
 (sign-off, `tagline` = "Facts checked <month year> · Tabi Guides").
+
+Between them, two magazine **photo pages** (`type: "photo"`):
+
+- a **double-page spread** — two pages with `span: "left"` and `span: "right"`
+  and the same `photo` — usually just after the opening pages, beside the
+  place it shows. The left half must be at an odd index (page 2, 4, 6…) with
+  the right half right after it, or the halves will not face each other in
+  the booklet (`src/data/brochures.test.js` checks it, with
+  `src/data/photoSpreadEdits.js`);
+- a **full-page photo**, often facing the map or a place page.
+
+Their captions come from the manifest: `caption` is the slot's caption,
+`name` its place, `nameJp` the place's Japanese name — log it in the research
+file like any other fact. Don't add facts the manifest and research log don't have.
 
 The brochure-level `location`, `sources` (official sites first) and
 `factsChecked` fields are required for built-ins.

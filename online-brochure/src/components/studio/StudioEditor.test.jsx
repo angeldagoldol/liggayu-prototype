@@ -332,3 +332,82 @@ describe('Studio popovers', () => {
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 });
+
+describe('<PagesPanel> double-page photo spreads', () => {
+  const base = createFromTemplate('food-crawl');
+  const rows = (container) => [...container.querySelectorAll('[data-page-id]')];
+  const spans = (container) => rows(container).map((row) => row.querySelector('[data-action="open"]').textContent.match(/Spread, (left|right) half/)?.[1] ?? '-');
+
+  it('adds a spread on facing pages from the Add page menu, in one step', async () => {
+    const { container } = render(<PanelHarness doc={base} />);
+    // The cover is selected: the spread goes on pages 2–3, never between the cover and page 2's partner.
+    fireEvent.click(screen.getByRole('button', { name: 'Add page' }));
+    fireEvent.click(await screen.findByRole('menuitem', { name: /Double-page spread/ }));
+    await waitFor(() => expect(spans(container).slice(0, 4)).toEqual(['-', 'left', 'right', '-']));
+    expect(screen.queryByText(/out of place/)).toBeNull();
+    // A single photo page added on the left half goes after the pair, then the arrows move the pair together.
+    fireEvent.click(screen.getByRole('button', { name: 'Add page' }));
+    fireEvent.click(await screen.findByRole('menuitem', { name: /Photo page/ }));
+    await waitFor(() => expect(rows(container)).toHaveLength(base.pages.length + 3));
+  });
+
+  it('warns when a spread is out of place, and lines it up', async () => {
+    const [cover, ...rest] = base.pages;
+    const left = { id: 'sl', type: 'photo', span: 'left', photo: 'kyoto-spread' };
+    const right = { id: 'sr', type: 'photo', span: 'right', photo: 'kyoto-spread', name: 'Kiyomizu-dera' };
+    // Pages 3–4: the left half is on a right-hand page.
+    const doc = { ...base, pages: [cover, rest[0], left, right, ...rest.slice(1)] };
+    const { container } = render(<PanelHarness doc={doc} />);
+    expect(screen.getByText(/A photo spread is out of place\./)).toBeInTheDocument();
+    expect(rows(container).filter((row) => row.dataset.warning)).toHaveLength(2);
+    fireEvent.click(screen.getByRole('button', { name: 'Line up' }));
+    await waitFor(() => expect(screen.queryByText(/out of place/)).toBeNull());
+    const index = rows(container).findIndex((row) => row.dataset.pageId === 'sl');
+    expect(index % 2).toBe(1);
+    expect(rows(container)[index + 1].dataset.pageId).toBe('sr');
+  });
+
+  it('moves both halves with the arrows, a spread at a time', async () => {
+    const [cover, ...rest] = base.pages;
+    const left = { id: 'sl', type: 'photo', span: 'left', photo: 'kyoto-spread' };
+    const right = { id: 'sr', type: 'photo', span: 'right', photo: 'kyoto-spread', name: 'Kiyomizu-dera' };
+    const doc = { ...base, pages: [cover, rest[0], rest[1], left, right, ...rest.slice(2)] };
+    const { container } = render(<PanelHarness doc={doc} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Move the spread “Kiyomizu-dera” up' }));
+    await waitFor(() => expect(spans(container).slice(0, 3)).toEqual(['-', 'left', 'right']));
+    expect(screen.getByRole('button', { name: 'Move the spread “Kiyomizu-dera” up' })).toBeDisabled();
+    expect(screen.queryByText(/out of place/)).toBeNull();
+  });
+});
+
+describe('<StudioEditor> photo page editor', () => {
+  it('explains a spread half, warns when it is out of place and lines it up', async () => {
+    const base = createFromTemplate('food-crawl');
+    const [cover, ...rest] = base.pages;
+    const left = { id: 'sl', type: 'photo', span: 'left', photo: 'kyoto-spread', captionPlacement: 'overlay', creditPlacement: 'caption' };
+    const right = { id: 'sr', type: 'photo', span: 'right', photo: 'kyoto-spread', name: 'Kiyomizu-dera', caption: 'The city', captionPlacement: 'overlay', creditPlacement: 'caption' };
+    const doc = { ...base, pages: [cover, rest[0], left, right, ...rest.slice(1)] };
+    render(
+      <MemoryRouter initialEntries={['/studio?draft=1']}>
+        <ToastProvider>
+          <BrochureProvider>
+            <StudioEditor mode="new" initial={{ doc, selectedId: 'sr', savedAt: 0 }} storageKey="studio-draft" />
+          </BrochureProvider>
+        </ToastProvider>
+      </MemoryRouter>,
+    );
+    // The page list warns first; opening the half shows the editor's own warning.
+    expect(screen.getByText(/A photo spread is out of place\./)).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button', { name: /Kiyomizu-dera/ }).find((button) => button.dataset.action === 'open'));
+    expect(await screen.findByText(/Until then it reads as a page of its own\./)).toBeInTheDocument();
+    expect(screen.getByRole('radiogroup', { name: 'Caption' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: /Up the edge/ })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Line up spreads' }));
+    await waitFor(() => expect(screen.getByText(/The right half of a double-page spread on pages 4–5/)).toBeInTheDocument());
+    // Layout choices apply to both halves.
+    fireEvent.click(screen.getByRole('radio', { name: /Under it/ }));
+    await settle();
+    const saved = () => readDraft(DRAFT_KEY)?.doc;
+    await waitFor(() => expect(saved()?.pages.filter((p) => p.span).map((p) => p.captionPlacement)).toEqual(['below', 'below']), { timeout: 4000 });
+  });
+});

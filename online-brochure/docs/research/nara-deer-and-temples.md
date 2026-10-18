@@ -143,3 +143,14 @@ a single event announcement, so it was left out.
 October 2026 · Tabi Guides": every price, hour, date and access detail printed in the brochure is
 now backed by at least one current source (two for the surprising ones: the record deer count and
 the Kōfuku-ji price rise).
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Nara Park from above — temple roofs and forest running east towards Mount Wakakusa | src/data/photos/manifest/nara-deer-and-temples.json → `nara-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Nara Park / 奈良公園 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
+| Caption (full page, page 8) | Kōfuku-ji’s Five-storey Pagoda, rebuilt in 1426, rising above the trees of Nara Park | src/data/photos/manifest/nara-deer-and-temples.json → `nara-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 8) | Kōfuku-ji / 興福寺 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

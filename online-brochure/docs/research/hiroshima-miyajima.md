@@ -87,3 +87,14 @@ identifiable children; the memorials should be the subject.
 | `hiroshima-childrens-peace-monument` → gallery | 1. File:Children's Peace Monument.jpg · 2. File:Children's Peace Monument, Hiroshima.jpg · 3. File:Childrens Peace Monument Hiroshima.jpg | Category:Children's Peace Monument | Monument and the crane booths. Low–medium confidence. |
 | `miyajima-pagoda` → gallery | 1. File:Itsukushima Gojunoto.jpg · 2. File:Five-storied Pagoda of Itsukushima.jpg · 3. File:Miyajima five-storied pagoda.jpg | Category:Five-storied pagoda (Itsukushima) ; Category:Senjōkaku | Low confidence. |
 | `miyajima-misen-view` → gallery | 1. File:View from Mount Misen.jpg · 2. File:Mount Misen, Miyajima.jpg · 3. File:Misen summit observatory.jpg | Category:Mount Misen | Island-studded Inland Sea from the summit. Low confidence. |
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 6–7) | Looking back to the mainland — the great torii of Itsukushima with Hiroshima across the bay, late spring | src/data/photos/manifest/hiroshima-miyajima.json → `hiroshima-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 6–7) | Itsukushima Shrine / 厳島神社 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 10) | The great torii at sunset, as the tide comes in around its pillars on a summer evening | src/data/photos/manifest/hiroshima-miyajima.json → `hiroshima-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Miyajima / 宮島 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

@@ -95,7 +95,7 @@ export const Leaf = memo(function Leaf({
         style={{ width, height, left: double ? width : 0, rotateY: angle, z: lift, zIndex }}
       >
         <motion.div className={styles.face} data-side="front" style={{ visibility: frontVisibility }}>
-          <PageFace brochure={brochure} face={front} mounted={mounted} rich={rich} live={frontLive} onCta={onCta} />
+          <PageFace brochure={brochure} face={front} mounted={mounted} rich={rich} live={frontLive} onCta={onCta} facing={double} />
           {frontGutter && <span className={styles.gutter} data-side="front" aria-hidden="true" />}
           <motion.span className={styles.curl} data-side="front" style={{ opacity: curl }} aria-hidden="true" />
           <motion.span className={styles.sheen} data-side="front" style={{ opacity: frontSheen }} aria-hidden="true" />
@@ -103,7 +103,7 @@ export const Leaf = memo(function Leaf({
         </motion.div>
         <motion.div className={styles.face} data-side="back" style={{ visibility: backVisibility, opacity: backOpacity }}>
           {double ? (
-            <PageFace brochure={brochure} face={back} mounted={mounted} rich={rich} live={backLive} onCta={onCta} />
+            <PageFace brochure={brochure} face={back} mounted={mounted} rich={rich} live={backLive} onCta={onCta} facing />
           ) : (
             <div className={styles.verso} aria-hidden="true" />
           )}

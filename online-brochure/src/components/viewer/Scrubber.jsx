@@ -127,8 +127,8 @@ export function Scrubber({ brochure, book, position, onChange, bubble = true, on
             aria-hidden="true"
           >
             <span className={styles.bubblePages}>
-              <MiniPage brochure={brochure} face={shown.left} />
-              <MiniPage brochure={brochure} face={shown.right} />
+              <MiniPage brochure={brochure} face={shown.left} facing={book.mode === 'double'} />
+              <MiniPage brochure={brochure} face={shown.right} facing={book.mode === 'double'} />
             </span>
             <span className={styles.bubbleText}>
               <span className={styles.bubbleLabel}>{spreadLabel(shown)}</span>

@@ -1,5 +1,5 @@
 import { PhotoCredit } from '../../../components/photo/PhotoCredit.jsx';
-import { getPhoto } from '../../../data/photos/index.js';
+import { useLivePhotos } from '../../../components/photo/useLivePhotos.js';
 import { cn } from '../../../lib/cn.js';
 import { creditEntries } from '../photoCredits.js';
 import styles from './PhotoCredits.module.css';
@@ -11,13 +11,15 @@ import styles from './PhotoCredits.module.css';
  * ("PHOTOS  Mount Fuji: Author · CC BY-SA 4.0").
  * Each entry is the shared <PhotoCredit> (author → Commons file page,
  * licence → deed, new tab; the author shortens before the licence does).
- * Renders nothing until at least one of the photos is downloaded.
+ * Renders nothing until at least one of the photos is on show (bundled, or
+ * live from Wikimedia Commons once resolved).
  *
  * - `slots`  `[{ id, label }]` photo ids with a short label each.
  * - `label`  the line's lead-in ("Photos").
  */
 export function PhotoCredits({ slots, label = 'Photos', className }) {
-  const entries = creditEntries(slots, getPhoto);
+  const live = useLivePhotos((Array.isArray(slots) ? slots : []).map((slot) => (typeof slot === 'string' ? slot : slot?.id)));
+  const entries = creditEntries(slots, live.getPhoto);
   if (entries.length === 0) return null;
   return (
     <p className={cn(styles.credits, className)}>

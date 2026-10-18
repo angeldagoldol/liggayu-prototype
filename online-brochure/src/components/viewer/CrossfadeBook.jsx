@@ -76,7 +76,7 @@ export function CrossfadeBook({ brochure, book, position, onNavigate, layout, on
         >
           {faces.map((face, i) => (
             <div key={i} className={styles.flatPage} data-empty={face === null || undefined} style={{ width, height }}>
-              {face !== null && <PageFace brochure={brochure} face={face} mounted live onCta={onCta} />}
+              {face !== null && <PageFace brochure={brochure} face={face} mounted live onCta={onCta} facing={double} />}
               {double && isInner(face) && <span className={styles.gutter} data-side={i === 0 ? 'back' : 'front'} aria-hidden="true" />}
             </div>
           ))}

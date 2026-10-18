@@ -17,9 +17,9 @@ in their own browser.
 | --- | --- |
 | `#/` **Home** | A 3D tri-fold hero of real photographs (Fuji, Fushimi Inari, Shibuya; credited) that unfolds and follows the pointer, a live Tokyo clock, a bilingual word marquee, a featured-brochure carousel, the four seasons with a photograph each (opening on the current season in Japan), the eight regions on the accurate map of Japan (keyboard-navigable, a photo card per region), "how it works" sketches, Japan in numbers, five classic haiku as postcards (original, romaji, our translation) and a Studio call to action. Facts are logged in `docs/research/home.md`. |
 | `#/brochures` **Library** | Search in English or Japanese (accent-, width- and kana-insensitive: `tohoku`, `ＫＹＯＴＯ` and `きょうと` all work; the places inside a brochure count too, so `Shirakawa-gō` or `伏見稲荷` find theirs), multi-season toggles, region, category, favourites, four sorts, and grid or list views. Every filter lives in the URL, so views are shareable and Back steps through them. Also shelves for your own brochures and recently viewed ones, where "Continue reading" reopens the page you left off on. |
-| `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones: drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet), share/deep link (`?p=` is the page index), favourites, a private "Plan this trip" planner kept on your device (dates, travellers, interests, notes, copy as text, the official sites to check; nothing is sent), "About this brochure" with a full-bleed photograph, the fact-check date, numbered sources and every photo credit, and "More like this". |
-| `#/credits` **Credits** | 奥付: every photograph's credit grouped by where it appears (author, licence, source, plus the photos still to download), how the facts are checked with links to the standard and each brochure's research log, the Natural Earth map data, the typefaces and the rest. |
-| `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview — places with coordinates checked against the map of Japan, a live map of your pins, sources and a facts-checked date — choose real photos from the library or upload your own (resized in the browser, with alt text and credit), change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
+| `#/brochures/:slug` **Viewer** | A flipbook with spreads on wide screens and single pages on phones, laid out like a magazine: every brochure has a full-page photograph and a double-page photo spread whose picture runs across the fold (on a phone, the spread's halves become the photo on its own page and the whole wide view): drag a corner, click or tap a page edge, swipe, or use ← → / PageUp / PageDown / Home / End. Also a scrubber with a thumbnail filmstrip that rises on hover or focus, an all-pages overview, zoom (100–400%) with pan, fullscreen, print to A4 (one page per sheet; the Print button and ⌘/Ctrl+P wait for the photographs before the print dialog opens), share/deep link (`?p=` is the page index), favourites, a private "Plan this trip" planner kept on your device (dates, travellers, interests, notes, copy as text, the official sites to check; nothing is sent), "About this brochure" with a full-bleed photograph, the fact-check date, numbered sources and every photo credit, and "More like this". |
+| `#/credits` **Credits** | 奥付: every photograph's credit grouped by where it appears (author, licence, source, plus the photos still to come — live photos from Wikimedia Commons are looked up and credited here too), the "Load photos from Wikimedia Commons" switch, how the facts are checked with links to the standard and each brochure's research log, the Natural Earth map data, the typefaces and the rest. |
+| `#/studio` **Studio** | Start from five Japan templates, a blank brochure or a remix of any library brochure (`?from=<slug>`). Edit every page with a live preview — places with coordinates checked against the map of Japan, a live map of your pins, sources and a facts-checked date — choose real photos from the library or upload your own (resized in the browser, with alt text and credit), add full-page photos and double-page spreads (placed on facing pages, with a warning and a one-click "Line up" if a reorder pushes one out of place), change palette, colours (with contrast warnings and auto-fix), typeface and generative cover art, and reorder pages by drag or keyboard. Undo/redo, autosave, JSON import/export, then publish (a hanko stamp) to your shelf. `#/studio/:id` edits a published brochure. |
 | **⌘K / Ctrl K** | The command palette searches brochures, the places inside them (opening the brochure at that page), seasons, library filters, the Credits page and actions from anywhere. |
 | `#/anything-else` | A 404 page ("迷子 — maigo, lost") with a suggested brochure. |
 
@@ -50,7 +50,7 @@ npm test           # vitest run (unit, component and route smoke tests)
 npm run test:watch
 npm run lint       # eslint .
 
-npm run photos:fetch       # download + credit the brochure photos from Wikimedia Commons
+npm run photos:fetch       # bundle + credit the brochure photos (otherwise they load live from Commons)
 npm run photos:candidates  # contact sheets of every candidate, for curation
 npm run photos:import      # add a photo you own or licensed (fallback)
 npm run geo:build          # rebuild the map of Japan from Natural Earth
@@ -164,7 +164,8 @@ static states (the flipbook becomes a cross-fade).
 
 Built-in brochures describe real places with verified facts and real,
 credited photographs: follow [`docs/REAL_CONTENT.md`](./docs/REAL_CONTENT.md)
-(sources, `factsChecked`, the 12–14 page outline, photo manifests).
+(sources, `factsChecked`, the 16–18 page outline with a full-page photo and a
+double-page spread, photo manifests).
 
 1. Research first: log every fact in `docs/research/<slug>.md` (the Credits
    page links that file by the brochure's slug) and list the photos in
@@ -202,14 +203,15 @@ credited photographs: follow [`docs/REAL_CONTENT.md`](./docs/REAL_CONTENT.md)
    }
    ```
 
-3. Page types and their fields: `cover, intro, features, gallery, place, map,
+3. Page types and their fields: `cover, intro, features, gallery, place, map, photo,
    stats, agenda, pricing, phrases, quote, contact, back`.
    `PAGE_TYPES[type].create()` in `schema.js` returns a filled example of
    each. Start with a `cover`, end with a `back`. Icons are names from the
    registry in `src/components/ui/Icon.jsx`. Photos are ids from the photo
    registry (`photo: 'kanazawa-kenrokuen'`, see below).
 4. Run `npm test`. `src/data/brochures.test.js` checks the schema, unique ids
-   and slugs, 12–15 pages with the cover first and the back last, icon names
+   and slugs, 16–18 pages with the cover first and the back last, every
+   double-page photo spread on facing pages (`data/photoSpreadEdits.js`), icon names
    and palette contrast (ink ≥ 7:1, muted ≥ 4.5:1, accent ≥ 3:1 on the paper),
    and the real-content rules: published by Tabi Guides, a main `location`
    with Japanese name and coordinates in Japan, at least two `https` sources,
@@ -229,8 +231,61 @@ brochures are often half-finished.
 Photos come from **Wikimedia Commons** under free licences only — CC0,
 public domain, CC BY, CC BY-SA (any version or port). NonCommercial,
 NoDerivatives, "fair use" and unrecognised licences are rejected, and so are
-images under 1600 px on the long edge. Nothing is hotlinked: each photo is
-downloaded once and served from this site.
+images under 1600 px on the long edge. Each photo slot shows, in order of
+preference: a photo **bundled** with the site (downloaded once by
+`npm run photos:fetch`, served from `public/photos/`), else the same kind of
+photo shown **live from Wikimedia Commons** by the visitor's browser, else the
+brochure's generative art.
+
+### Live photos (no build step)
+
+Run the app with an internet connection (`npm run dev`, or any deploy) and
+every slot without a bundled photo shows a real photograph straight away:
+the browser asks the Commons API for the slot's `candidates` (and, if none
+qualifies, searches Commons for its `query`), checks the licence and size,
+and shows Wikimedia's own thumbnails with the photographer's credit and
+licence — on the page, on the back page, in "About this brochure" and on
+`#/credits`. Nothing needs to be configured: the Commons API answers
+anonymous requests from any origin.
+
+- **Few requests.** Photos asked for together go out together (a brochure's
+  pages, a page of library cards, the Home page): usually one API request
+  per brochure, plus one search for each slot whose candidates all fail.
+  Images come in Wikimedia's standard thumbnail sizes (500, 960, 1280,
+  1920 px), as large as the slot needs and never upscaled.
+- **Cached.** Results are kept in the browser (`localStorage`,
+  `tabi:live-photos:v1`): found photos for 30 days, "nothing usable" for a
+  day, so a reload makes no API request. Editing a slot's candidates or query
+  in a manifest makes it look again.
+- **Fails quietly.** Offline, nothing is asked until the browser is back
+  online. If Commons cannot be reached (a network or a Content-Security-Policy
+  that blocks it, as in some sandboxed previews), the app tries once and then
+  keeps the art, without filling the console. Switching live photos off stops
+  any lookup already under way.
+- **Privacy.** With live photos, each visitor's browser requests the
+  pictures and their metadata from Wikimedia's servers
+  (commons.wikimedia.org and upload.wikimedia.org), which see the visitor's
+  IP address and browser like any website they visit (see the
+  [Wikimedia privacy policy](https://foundation.wikimedia.org/wiki/Policy:Privacy_policy)).
+  The API requests are sent without cookies, and browsers send only the
+  site's origin as the referrer (never the brochure being read: it lives in
+  the URL's hash). Visitors can switch it off with **Load photos
+  from Wikimedia Commons** (in the footer and on `#/credits`; remembered as
+  `tabi:live-photos-enabled`); the art then shows wherever no photo is
+  bundled.
+- **Bundling instead.** To serve every photo from your own site — no
+  third-party requests, the blurred preview while loading, photos that never
+  change under you — run `npm run photos:fetch` (below) and commit
+  `public/photos/` with `photos.generated.json`. Bundled photos always win
+  over live ones, slot by slot, so you can bundle some and leave the rest live.
+  A strict CSP needs `connect-src https://commons.wikimedia.org` and
+  `img-src https://upload.wikimedia.org` for live photos.
+
+Live photos found by search (not one of the researched candidates) use the
+work's title as alt text; check them before you bundle (see "After a fetch"
+below).
+
+### Bundling photos with the site
 
 1. Researchers list candidates per brochure in
    `src/data/photos/manifest/<brochure>.json` — `id`, `use`, `candidates`
@@ -263,11 +318,11 @@ If Commons cannot be reached, `npm run photos:import -- photo.jpg --id <id>
 runs a photo you own or have licensed through the same resizing (add
 `--permission` for a photo that is yours but not under a free licence).
 
-Until a photo is downloaded — or if it fails to load — pages show the
-brochure's generative art in its place, so every brochure always renders.
-**Today no photo is downloaded yet**: the manifests list the candidates, and
-`#/credits` counts the photographs still to come (as does each brochure's
-"About this brochure"). After a fetch, check:
+Until a photo is bundled or found live — or if it fails to load — pages
+show the brochure's generative art in its place, so every brochure always
+renders. **Today no photo is bundled yet** (`photos.generated.json` is
+empty): with an internet connection every slot is shown live from Commons,
+and `#/credits` counts the photographs still to come. After a fetch, check:
 
 - `#/credits` — every downloaded photo listed with author, licence and source;
 - `/playground.html?section=reader&rb=all&audit=1` — no clipped text with the

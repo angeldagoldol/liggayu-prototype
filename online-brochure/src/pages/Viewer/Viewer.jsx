@@ -1,11 +1,13 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import { PrintPages, TripPlanner } from '../../components/viewer/index.js';
 import { Button } from '../../components/ui/index.js';
+import { useRequestLivePhotos } from '../../components/photo/useLivePhotos.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useFullBrochure } from '../../hooks/useFullBrochure.js';
+import { photoIdsIn } from '../../data/photos/index.js';
 import { AboutBrochure } from './AboutBrochure.jsx';
 import { findBySlug } from './findBySlug.js';
 import { MoreLikeThis } from './MoreLikeThis.jsx';
@@ -24,6 +26,9 @@ const BrochureViewer = memo(function BrochureViewer({ brochure }) {
   const readerRef = useRef(null);
   const openPlan = useCallback(() => setPlanOpen(true), []);
   const closePlan = useCallback(() => setPlanOpen(false), []);
+  // Every photo the brochure shows goes to Wikimedia Commons in one batch (the pages ask only for what they draw).
+  const photoIds = useMemo(() => photoIdsIn(brochure), [brochure]);
+  useRequestLivePhotos(photoIds);
 
   return (
     <div className={styles.viewer}>

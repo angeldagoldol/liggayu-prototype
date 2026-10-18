@@ -10,11 +10,14 @@ import styles from './FlipSketch.module.css';
 
 const PAUSE_MS = 1500;
 
-/** A static, non-interactive page (or blank paper when the index is out of range or the pages are still loading). */
+/**
+ * A static, non-interactive page (or blank paper when the index is out of range or the pages are still loading).
+ * The sketch always shows the booklet's facing pairs (1–2, 3–4…), so a double-page photo spread draws as one picture.
+ */
 function Sheet({ brochure, index }) {
   const page = brochure?.pages[index];
   if (!page) return <div className={styles.blank} />;
-  return <BrochurePage brochure={brochure} page={page} index={index} total={brochure.pages.length} isStatic />;
+  return <BrochurePage brochure={brochure} page={page} index={index} total={brochure.pages.length} isStatic facing />;
 }
 
 /**

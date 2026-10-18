@@ -7,8 +7,10 @@ import styles from './PageThumb.module.css';
 /**
  * A static miniature of one page with its number, used in the page strip.
  * Memoised: typing on one page only redraws that page's thumbnail.
+ * `partner`: the other half when the page is half of a placed photo spread
+ * (the strip draws each page on its own, so a half shows as a whole page).
  */
-export const PageThumb = memo(function PageThumb({ brochure, page, index, total, selected, onSelect }) {
+export const PageThumb = memo(function PageThumb({ brochure, page, partner = null, index, total, selected, onSelect }) {
   return (
     <button
       type="button"
@@ -19,7 +21,7 @@ export const PageThumb = memo(function PageThumb({ brochure, page, index, total,
       data-thumb={page.id}
     >
       <span className={styles.sheet}>
-        <BrochurePage brochure={brochure} page={page} index={index} total={total} isStatic />
+        <BrochurePage brochure={brochure} page={page} index={index} total={total} isStatic partner={partner} />
       </span>
       <span className={styles.number} aria-hidden="true">
         {pad(index + 1)}

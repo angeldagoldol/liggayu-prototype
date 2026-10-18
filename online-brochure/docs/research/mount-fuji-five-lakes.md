@@ -98,3 +98,14 @@ the brochure's generative art (`fuji`, seed 3776) stands in.
 | `fuji-yoshida-trail` | gallery | Switchbacks of the Yoshida trail, no people as main subject. |
 | `fuji-goraiko` | gallery | Sunrise from the summit over a sea of cloud. |
 | `fuji-hokusai-red-fuji` | gallery | Hokusai, *Fine Wind, Clear Morning* (public domain; a museum scan). |
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Dawn over the Fuji Five Lakes: the summit lights up while the forests and water below are still in shadow | src/data/photos/manifest/mount-fuji-five-lakes.json → `fuji-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Fuji Five Lakes / 富士五湖 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
+| Caption (full page, page 7) | Evening on Honchō-dōri, Fujiyoshida, where the old pilgrims’ town runs straight towards the mountain | src/data/photos/manifest/mount-fuji-five-lakes.json → `fuji-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 7) | Fujiyoshida / 富士吉田 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |

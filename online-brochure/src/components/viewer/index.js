@@ -1,6 +1,7 @@
 export { Flipbook } from './Flipbook.jsx';
 export { Overview } from './Overview.jsx';
 export { PrintPages } from './PrintPages.jsx';
+export { requestPrint } from './printBrochure.js';
 export { ReaderToolbar } from './ReaderToolbar.jsx';
 export { Scrubber } from './Scrubber.jsx';
 export { ThumbRail } from './ThumbRail.jsx';

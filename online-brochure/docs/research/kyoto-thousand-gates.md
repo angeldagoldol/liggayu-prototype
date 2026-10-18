@@ -140,3 +140,14 @@ confirmed, copy loosened; **REMOVED** = taken out of the brochure.
 October 2026 · Tabi Guides". After this pass every price, hour, date and access detail printed in
 the brochure is backed by at least one current source; the one unconfirmable date (autumn night
 viewing) is no longer printed.
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | The old capital from the hillside at Kiyomizu-dera — Kyoto laid out beneath the Higashiyama hills | src/data/photos/manifest/kyoto-thousand-gates.json → `kyoto-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Kiyomizu-dera / 清水寺 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 10) | Arashiyama’s bamboo grove in the quiet of early morning, before the first visitors arrive | src/data/photos/manifest/kyoto-thousand-gates.json → `kyoto-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Arashiyama Bamboo Grove / 竹林の小径 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |

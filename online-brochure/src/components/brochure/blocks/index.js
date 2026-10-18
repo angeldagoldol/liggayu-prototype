@@ -8,6 +8,7 @@ import { GalleryBlock } from './GalleryBlock.jsx';
 import { IntroBlock } from './IntroBlock.jsx';
 import { MapBlock } from './MapBlock.jsx';
 import { PlaceBlock } from './PlaceBlock.jsx';
+import { PhotoBlock } from './PhotoBlock.jsx';
 import { PhrasesBlock } from './PhrasesBlock.jsx';
 import { PricingBlock } from './PricingBlock.jsx';
 import { QuoteBlock } from './QuoteBlock.jsx';
@@ -29,10 +30,11 @@ export const BLOCKS = dict({
   phrases: PhrasesBlock,
   quote: QuoteBlock,
   contact: ContactBlock,
+  photo: PhotoBlock,
   back: BackBlock,
 });
 
 /** Full-bleed page types draw their own layout instead of the running head and folio. */
-export const FULL_BLEED = new Set(['cover', 'back']);
+export const FULL_BLEED = new Set(['cover', 'photo', 'back']);
 
 export { FallbackBlock };

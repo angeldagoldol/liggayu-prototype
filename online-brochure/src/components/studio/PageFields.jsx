@@ -1,6 +1,8 @@
 import { memo, useMemo } from 'react';
-import { Palette } from 'lucide-react';
-import { ART_LABELS, ART_STYLES } from '../../data/schema.js';
+import { Palette, Wand2 } from 'lucide-react';
+import { spanOf, spreadPartner } from '../../data/photoSpreads.js';
+import { spreadIssues } from '../../data/photoSpreadEdits.js';
+import { ART_LABELS, ART_STYLES, CAPTION_PLACEMENTS, CREDIT_PLACEMENTS } from '../../data/schema.js';
 import { toLat, toLng } from '../../data/sanitize.js';
 import { Button, Field, Select, Switch } from '../ui/index.js';
 import { CoverArt } from '../brochure/index.js';
@@ -17,11 +19,12 @@ import { StringList } from './fields/StringList.jsx';
 import { TextField } from './fields/TextField.jsx';
 import { UrlField } from './fields/UrlField.jsx';
 import { listLimit } from './pageLimits.js';
+import { SegmentedControl } from './SegmentedControl.jsx';
 import styles from './PageFields.module.css';
 
 /* `api` (from PageEditor) binds every control to the selected page:
    get(path) · set(path, value, typing) · merge(path, patch, typing) · add(path, index) ·
-   remove(path, index) · move(path, from, to) · photos(path) · coverPhotos() */
+   remove(path, index) · move(path, from, to) · photos(path) · coverPhotos() · fixSpreads() */
 
 function Text({ api, path, ...props }) {
   return <TextField value={api.get(path)} onChange={(value) => api.set(path, value, true)} {...props} />;
@@ -479,6 +482,90 @@ function ContactFields({ api, page }) {
   );
 }
 
+const CAPTION_OPTIONS = [
+  { value: 'overlay', label: 'Over the photo', sub: '写真の上', lang: 'ja' },
+  { value: 'below', label: 'Under it', sub: '写真の下', lang: 'ja' },
+].filter((o) => CAPTION_PLACEMENTS.includes(o.value));
+const CREDIT_OPTIONS = [
+  { value: 'caption', label: 'With the caption', sub: '添え書き', lang: 'ja' },
+  { value: 'edge', label: 'Up the edge', sub: '縦書き', lang: 'ja' },
+].filter((o) => CREDIT_PLACEMENTS.includes(o.value));
+
+/** Where a spread half stands: its pair, and what is wrong with its placement (data/photoSpreads.js). */
+function spreadState(pages, index) {
+  const list = Array.isArray(pages) ? pages : [];
+  const page = list[index];
+  const span = spanOf(page);
+  if (!span) return null;
+  const partner = spreadPartner(list, index);
+  const issue = spreadIssues(list).find((i) => i.ids.includes(page.id));
+  const left = span === 'left' ? index : index - 1;
+  return { span, paired: partner !== -1, issue, pair: `pages ${left + 1}–${left + 2}` };
+}
+
+function PhotoFields({ api, page, brochure, index }) {
+  const spread = spreadState(brochure.pages, index);
+  return (
+    <>
+      {spread && !spread.issue && (
+        <Note>
+          {`The ${spread.span} half of a double-page spread on ${spread.pair}: one photograph across both pages. The photo and the caption’s layout are shared by both halves; each half prints its own caption, if it has one — usually only the right-hand half does.`}
+        </Note>
+      )}
+      {spread?.issue && (
+        <Note
+          tone="warning"
+          action={
+            <Button size="sm" variant="secondary" iconLeft={<Wand2 />} onClick={api.fixSpreads}>
+              Line up spreads
+            </Button>
+          }
+        >
+          {`${spread.issue.message} Until then it reads as a page of its own.`}
+        </Note>
+      )}
+      <PhotoField
+        label={spread ? 'Spread photo' : 'Photo'}
+        value={page.photo}
+        brochure={brochure}
+        hints={hintsOf(page.name, page.caption, brochure.location?.name)}
+        preferred={spread ? 'landscape' : 'portrait'}
+        photos={api.photos(['photo'])}
+        hint={spread ? 'A wide picture: it runs across both pages, meeting at the fold.' : 'A tall picture fills the page best.'}
+      />
+      <div className={styles.nameRow}>
+        <Text api={api} path={['name']} label="Place" max={60} placeholder="Kiyomizu-dera" hint="Set in small capitals" />
+        <Text api={api} path={['nameJp']} label="In Japanese" lang="ja" max={20} placeholder="清水寺" />
+      </div>
+      <Text
+        api={api}
+        path={['caption']}
+        label="Caption"
+        multiline
+        rows={2}
+        max={160}
+        hint={spread ? 'One line on what the picture shows. Printed on this half of the spread.' : 'One line on what the picture shows — the place, the season, the hour.'}
+      />
+      <SegmentedControl
+        label="Caption"
+        hideLabel={false}
+        size="sm"
+        value={CAPTION_PLACEMENTS.includes(page.captionPlacement) ? page.captionPlacement : CAPTION_PLACEMENTS[0]}
+        onChange={(value) => api.set(['captionPlacement'], value, false)}
+        options={CAPTION_OPTIONS}
+      />
+      <SegmentedControl
+        label="Photo credit"
+        hideLabel={false}
+        size="sm"
+        value={CREDIT_PLACEMENTS.includes(page.creditPlacement) ? page.creditPlacement : CREDIT_PLACEMENTS[0]}
+        onChange={(value) => api.set(['creditPlacement'], value, false)}
+        options={CREDIT_OPTIONS}
+      />
+    </>
+  );
+}
+
 function BackFields({ api }) {
   return (
     <>
@@ -502,22 +589,24 @@ const EDITORS = {
   phrases: PhrasesFields,
   quote: QuoteFields,
   contact: ContactFields,
+  photo: PhotoFields,
   back: BackFields,
 };
 
 /**
  * The form for one page, generated from its type.
- *   <PageFields page={page} api={api} brochure={doc} onEditDesign={…} onCover={…} />
+ *   <PageFields page={page} index={2} api={api} brochure={doc} onEditDesign={…} onCover={…} />
+ * `index` is the page's place in brochure.pages (photo spreads check where they stand).
  * Unknown types (e.g. from an old import) get a gentle explanation instead.
  */
-export function PageFields({ page, api, brochure, onEditDesign, onCover }) {
+export function PageFields({ page, index = -1, api, brochure, onEditDesign, onCover }) {
   const Editor = EDITORS[page.type];
   if (!Editor) {
     return <Note>This page type can’t be edited here. You can still move or delete it.</Note>;
   }
   return (
     <div className={styles.fields}>
-      <Editor page={page} api={api} brochure={brochure} onEditDesign={onEditDesign} onCover={onCover} />
+      <Editor page={page} index={index} api={api} brochure={brochure} onEditDesign={onEditDesign} onCover={onCover} />
     </div>
   );
 }

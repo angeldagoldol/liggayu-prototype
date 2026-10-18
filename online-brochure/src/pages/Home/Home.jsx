@@ -1,5 +1,7 @@
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
+import { useRequestLivePhotos } from '../../components/photo/useLivePhotos.js';
+import { HERO_PANELS, REGION_NOTES, SEASON_PHOTOS } from './homeContent.js';
 import { useMotionPaused } from './homeMotion.js';
 import { CtaBand } from './sections/CtaBand.jsx';
 import { Featured } from './sections/Featured.jsx';
@@ -22,8 +24,16 @@ import styles from './Home.module.css';
  * `data-motion="paused"` (the hero's "Pause motion" control, homeMotion.js)
  * lets the sections' CSS loops hold still via `:global([data-motion='paused'])`.
  */
+/** Every photograph the page shows: asked for together, so the live ones arrive in one batch. */
+const HOME_PHOTO_IDS = [
+  ...Object.values(HERO_PANELS).map((p) => p.photo),
+  ...Object.values(SEASON_PHOTOS),
+  ...Object.values(REGION_NOTES).map((r) => r.photo),
+];
+
 export default function Home() {
   useDocumentTitle(null);
+  useRequestLivePhotos(HOME_PHOTO_IDS);
   const { brochures } = useBrochures();
   const motionPaused = useMotionPaused();
 

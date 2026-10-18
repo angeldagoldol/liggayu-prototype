@@ -87,3 +87,14 @@ replaced from the Commons category given, preferring *Featured*, *Quality* or *V
 | `osaka-kushikatsu` → gallery | 1. File:Kushikatsu.jpg · 2. File:Kushikatsu 001.jpg · 3. File:Kushi-katsu.jpg | Category:Kushikatsu | Skewers + shared sauce tray ideal. Medium (#1) / low. |
 | `osaka-hozenji-fudo` → gallery | 1. File:Mizukake Fudo of Hozenji.jpg · 2. File:Hozenji Temple Osaka.jpg · 3. File:Hozen-ji (Osaka).jpg | Category:Hōzen-ji (Osaka) | The moss-covered statue is the subject. Low confidence. |
 | `osaka-castle` → gallery | 1. File:Osaka Castle 02bs3200.jpg · 2. File:Osaka Castle Keep Tower in 201904 001.jpg · 3. File:Osaka Castle Nishinomaru Garden April 2005.JPG | Category:Osaka Castle Main Tower | #3 is a well-known Featured Picture (castle over cherry blossom; high confidence it exists) but is landscape and small-ish; #1 is a 663highland series title (medium). If #3 is chosen, change the caption to "Osaka Castle above the Nishinomaru Garden in spring". |
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Old Osaka meets new — the Inui turret over the outer moat of Osaka Castle, with the Business Park skyline beyond, on an autumn afternoon | src/data/photos/manifest/osaka-kuidaore.json → `osaka-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Osaka Castle / 大阪城 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 8) | Winter lights in Tennōji Park beneath Abeno Harukas, a short walk from the kushikatsu counters of Shinsekai | src/data/photos/manifest/osaka-kuidaore.json → `osaka-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 8) | Tennōji Park / 天王寺公園 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |

@@ -19,8 +19,8 @@ const Thumb = memo(function Thumb({ brochure, spread, double, current, previewed
           data-lone-left={(double && spread.left === null) || undefined}
           data-lone-right={(double && spread.right === null) || undefined}
         >
-          <MiniPage brochure={brochure} face={spread.left} />
-          <MiniPage brochure={brochure} face={spread.right} />
+          <MiniPage brochure={brochure} face={spread.left} facing={double} />
+          <MiniPage brochure={brochure} face={spread.right} facing={double} />
         </span>
         <span className={styles.label} aria-hidden="true">
           {spreadLabel(spread)}

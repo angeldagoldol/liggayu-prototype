@@ -37,6 +37,18 @@ describe('outlineBrochureSource', () => {
     expect(JSON.stringify(outline).length).toBeLessThan(JSON.stringify(full).length * 0.5);
   });
 
+  it('keeps the photo ids of full-page photos and double-page spreads (Credits, the photo library)', async () => {
+    const code = `export default { id: 'x', pages: [
+      { id: 'p1', type: 'photo', photo: 'x-spread', span: 'left' },
+      { id: 'p2', type: 'photo', photo: 'x-spread', span: 'right', name: 'Lake Ashi', nameJp: '芦ノ湖', caption: 'Long caption text' },
+      { id: 'p3', type: 'photo', photo: 'x-fullpage', caption: 'Another', captionPlacement: 'below' },
+    ] };`;
+    const outline = await evaluate(outlineBrochureSource(code, 'x'));
+    expect(outline.pages.map((p) => p.photo)).toEqual(['x-spread', 'x-spread', 'x-fullpage']);
+    expect(outline.pages[1]).toEqual({ id: 'p2', type: 'photo', photo: 'x-spread', name: 'Lake Ashi', nameJp: '芦ノ湖' });
+    expect(outline.pages[2]).not.toHaveProperty('caption');
+  });
+
   it('keeps a page whole when it uses a spread, and skips files that are not object literals', async () => {
     const code = `const extra = { body: 'b' };\nexport default { id: 'x', pages: [{ id: 'p1', type: 'intro', body: 'long' }, { id: 'p2', type: 'place', ...extra }] };`;
     const outline = await evaluate(outlineBrochureSource(code, 'x'));

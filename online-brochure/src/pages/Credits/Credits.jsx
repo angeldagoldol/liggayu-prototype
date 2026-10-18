@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Counter, Hanko, RevealText, VerticalText } from '../../components/ui/index.js';
+import { LivePhotosToggle } from '../../components/photo/LivePhotosToggle.jsx';
+import { useLivePhotos } from '../../components/photo/useLivePhotos.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
-import { creditsFor, getPhoto, photoIdsIn, resolvePhoto } from '../../data/photos/index.js';
+import { photoIdsIn } from '../../data/photos/index.js';
 import { pad } from '../../lib/format.js';
 import { ease, fadeUp, stagger } from '../../lib/motion.js';
 import { HERO_PANELS, REGION_NOTES, SEASON_PHOTOS } from '../Home/homeContent.js';
@@ -50,9 +52,22 @@ export default function Credits() {
   const reduceMotion = useReducedMotion();
   const { builtins, userBrochures } = useBrochures();
 
+  // Every photograph Tabi lists: those not bundled with the site are looked up on Wikimedia Commons
+  // (cached on this device), and their credits join the tables as they arrive.
+  const allIds = useMemo(() => [...HOME_PHOTO_IDS, ...builtins.flatMap((b) => photoIdsIn(b))], [builtins]);
+  const live = useLivePhotos(allIds);
   const groups = useMemo(
-    () => creditGroups({ homeIds: HOME_PHOTO_IDS, builtins, userBrochures, getPhoto, resolvePhoto, creditsFor, photoIdsIn }),
-    [builtins, userBrochures],
+    () =>
+      creditGroups({
+        homeIds: HOME_PHOTO_IDS,
+        builtins,
+        userBrochures,
+        getPhoto: live.getPhoto,
+        resolvePhoto: live.resolvePhoto,
+        creditsFor: live.creditsFor,
+        photoIdsIn,
+      }),
+    [builtins, userBrochures, live],
   );
   const totals = useMemo(() => creditTotals(groups), [groups]);
   const licences = useMemo(() => licenceSummary(groups), [groups]);
@@ -60,7 +75,7 @@ export default function Credits() {
 
   const stats = [
     { value: totals.credited, unit: '枚', label: totals.credited === 1 ? 'Photograph credited' : 'Photographs credited' },
-    { value: totals.pending, unit: '枚', label: 'Still to download' },
+    { value: totals.pending, unit: '枚', label: live.loading > 0 ? 'Being looked up' : 'Still to come' },
     { value: checked, unit: '冊', label: 'Brochures checked' },
     { value: totals.sources, unit: '件', label: 'Sources cited' },
   ];
@@ -145,8 +160,21 @@ export default function Credits() {
         num={1}
         title={SECTIONS[0].title}
         jp={SECTIONS[0].jp}
-        lede="Every photograph is a real picture of a real place from Wikimedia Commons, under a free licence: public domain, CC0, CC BY or CC BY-SA. We only resize and re-encode them, never hotlink them, and credit each one where it appears, linking to its file page and its licence. Until a photograph is downloaded, its page shows generated art in its place."
+        lede="Every photograph is a real picture of a real place from Wikimedia Commons, under a free licence: public domain, CC0, CC BY or CC BY-SA, credited where it appears with a link to its file page and its licence. Photographs bundled with the site are resized and re-encoded, never altered; the others are shown straight from Wikimedia’s servers, which your browser asks for them. Until a photograph is found, its page shows generated art in its place."
       >
+        <div className={styles.livePanel}>
+          <LivePhotosToggle />
+          {live.enabled && live.loading > 0 && (
+            <p className={styles.liveStatus} role="status">
+              Looking up {live.loading} {live.loading === 1 ? 'photograph' : 'photographs'} on Wikimedia Commons…
+            </p>
+          )}
+          {live.enabled && live.blocked && (
+            <p className={styles.liveStatus} role="status">
+              Wikimedia Commons can’t be reached from here right now, so generated art stands in for the photographs.
+            </p>
+          )}
+        </div>
         {licences.length > 0 && (
           <ul className={styles.licences} aria-label="Licences in use">
             {licences.map((l) => (
@@ -166,13 +194,14 @@ export default function Credits() {
             ))}
           </ul>
         )}
-        {totals.credited === 0 && (
+        {totals.credited === 0 && live.loading === 0 && (
           <p className={styles.notice}>
             <span lang="ja" className={styles.noticeMark} aria-hidden="true">
               未
             </span>
-            None of the {totals.pending} photographs listed for Tabi has been downloaded from Wikimedia Commons yet, so every
-            picture you see is generated art. Each one will be credited here, with its author and licence, as it arrives.
+            None of the {totals.pending} photographs listed for Tabi is on show yet
+            {live.enabled ? ' (they appear once your browser can reach Wikimedia Commons)' : ' (live photos from Wikimedia Commons are switched off)'}, so
+            every picture you see is generated art. Each one will be credited here, with its author and licence, as it arrives.
           </p>
         )}
         <PhotoGroups groups={groups} />

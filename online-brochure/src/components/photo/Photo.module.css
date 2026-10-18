@@ -176,3 +176,14 @@
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* On paper there is no fade: a photo that has arrived prints sharp, whatever
+   its loading state says (the art or preview under it shows if it has not). */
+@media print {
+  .img {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+}

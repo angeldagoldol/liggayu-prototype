@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { spreadPartnerPage } from '../../data/photoSpreads.js';
 import { PAGE_TYPES } from '../../data/schema.js';
 import { IconButton } from '../ui/index.js';
 import { BrochurePage } from '../brochure/index.js';
@@ -118,7 +119,7 @@ export function PreviewStage({ brochure, pages, selectedIndex, onSelect, view, o
                       aria-label={`Edit page ${face + 1}: ${pageHeading(pages[face], brochure)}`}
                       onClick={() => onSelect(pages[face].id)}
                     >
-                      <BrochurePage brochure={brochure} page={pages[face]} index={face} total={total} isStatic />
+                      <BrochurePage brochure={brochure} page={pages[face]} index={face} total={total} isStatic facing partner={spreadPartnerPage(pages, face)} />
                     </button>
                   );
                 })}
@@ -126,7 +127,7 @@ export function PreviewStage({ brochure, pages, selectedIndex, onSelect, view, o
               </motion.div>
             ) : (
               <motion.div key={page.id} className={styles.frame} custom={nav.dir} variants={turn} initial="enter" animate="center" exit="exit">
-                <BrochurePage brochure={brochure} page={page} index={index} total={total} active />
+                <BrochurePage brochure={brochure} page={page} index={index} total={total} active partner={spreadPartnerPage(pages, index)} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -145,7 +146,7 @@ export function PreviewStage({ brochure, pages, selectedIndex, onSelect, view, o
       <div className={styles.stripWrap}>
         <div ref={stripRef} className={styles.strip} role="group" aria-label="All pages">
           {pages.map((p, i) => (
-            <PageThumb key={p.id} brochure={brochure} page={p} index={i} total={total} selected={i === index} onSelect={onSelect} />
+            <PageThumb key={p.id} brochure={brochure} page={p} partner={spreadPartnerPage(pages, i)} index={i} total={total} selected={i === index} onSelect={onSelect} />
           ))}
         </div>
       </div>

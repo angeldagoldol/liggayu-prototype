@@ -36,6 +36,7 @@ export function PageEditor({ brochure, page, index, total, dispatch, onEditDesig
       move: (path, from, to) => dispatch(A.moveItem(page.id, path, from, to)),
       photos: (path) => photoSlot({ kind: 'page', id: page.id, path }),
       coverPhotos: () => photoSlot({ kind: 'cover', pageId: page.id }),
+      fixSpreads: () => dispatch(A.fixSpreads()),
     };
   }, [page, dispatch]);
 
@@ -79,6 +80,7 @@ export function PageEditor({ brochure, page, index, total, dispatch, onEditDesig
         >
           <PageFields
             page={page}
+            index={index}
             api={api}
             brochure={brochure}
             onEditDesign={onEditDesign}

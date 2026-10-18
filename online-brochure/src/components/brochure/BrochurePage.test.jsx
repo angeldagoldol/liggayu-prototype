@@ -257,6 +257,70 @@ describe('real-place pages', () => {
   });
 });
 
+describe('<BrochurePage> photo pages and double-page spreads', () => {
+  const theme = kyoto.theme;
+  const LEFT = { id: 'sl', type: 'photo', span: 'left', photo: '', captionPlacement: 'overlay', creditPlacement: 'caption' };
+  const RIGHT = { id: 'sr', type: 'photo', span: 'right', photo: '', name: 'Kiyomizu-dera', nameJp: '清水寺', caption: 'The city below the hill', captionPlacement: 'overlay', creditPlacement: 'caption' };
+  const FULL = { id: 'fp', type: 'photo', photo: '', name: 'Arashiyama', nameJp: '竹林の小径', caption: 'Early morning', captionPlacement: 'below', creditPlacement: 'edge' };
+  const book = { title: 'Kyoto', theme, cover: { art: 'torii', seed: 5 }, pages: [{ id: 'c', type: 'cover' }, LEFT, RIGHT, FULL, { id: 'b', type: 'back' }] };
+  const draw = (index, props = {}) => render(<BrochurePage brochure={book} page={book.pages[index]} index={index} total={book.pages.length} isStatic {...props} />);
+  const mode = (container) => container.querySelector('figure[data-mode]')?.dataset.mode;
+
+  it('draws a full-page photo with its magazine caption and a heading', () => {
+    const { container } = draw(3);
+    expect(mode(container)).toBe('full');
+    expect(container.querySelector('figure')).toHaveAttribute('data-placement', 'below');
+    expect(container.querySelector('figcaption')).toHaveTextContent('Arashiyama竹林の小径Early morning');
+    expect(screen.getByRole('heading', { level: 2, name: 'Arashiyama' })).toBeInTheDocument();
+    expect(container.querySelector('article')).not.toHaveAttribute('data-spread-half');
+  });
+
+  it('draws each half of a placed spread as its half of one picture when facing', () => {
+    const left = draw(1, { facing: true });
+    expect(left.container.querySelector('article')).toHaveAttribute('data-spread-half', 'left');
+    expect(mode(left.container)).toBe('half');
+    // The caption is printed on the right half only; both halves share the art across the gutter.
+    expect(left.container.querySelector('figcaption')).toBeNull();
+    const leftArt = left.container.querySelector('svg[data-art]');
+    left.unmount();
+    const right = draw(2, { facing: true });
+    expect(right.container.querySelector('article')).toHaveAttribute('data-spread-half', 'right');
+    expect(right.container.querySelector('figcaption')).toHaveTextContent('Kiyomizu-dera清水寺The city below the hill');
+    const rightArt = right.container.querySelector('svg[data-art]');
+    expect(rightArt.dataset.seed).toBe(leftArt.dataset.seed);
+    expect(right.container.querySelector('figure')).toHaveAttribute('data-span', 'right');
+  });
+
+  it('reads one page at a time: the left half with the caption, the right half as the whole view', () => {
+    const left = draw(1);
+    expect(mode(left.container)).toBe('full');
+    expect(left.container.querySelector('figcaption')).toHaveTextContent('Kiyomizu-dera');
+    expect(left.container).toHaveTextContent('Double-page spread · 1 / 2');
+    left.unmount();
+    const right = draw(2);
+    expect(mode(right.container)).toBe('plate');
+    expect(right.container).toHaveTextContent('the whole view');
+  });
+
+  it('draws a misplaced half as a page of its own, and takes the partner from the host', () => {
+    const moved = { ...book, pages: [book.pages[0], { id: 'x', type: 'intro' }, LEFT, RIGHT, book.pages[4]] };
+    const { container, unmount } = render(<BrochurePage brochure={moved} page={LEFT} index={2} total={5} isStatic facing />);
+    expect(container.querySelector('article')).not.toHaveAttribute('data-spread-half');
+    expect(mode(container)).toBe('full');
+    unmount();
+    // The Studio's shell has no pages: the host passes the other half.
+    const shell = { title: 'Kyoto', theme, cover: book.cover };
+    const withPartner = render(<BrochurePage brochure={shell} page={RIGHT} partner={LEFT} index={2} total={5} isStatic facing />);
+    expect(withPartner.container.querySelector('article')).toHaveAttribute('data-spread-half', 'right');
+  });
+
+  it('survives junk in a photo page', () => {
+    const junk = { id: 'j', type: 'photo', span: 'sideways', photo: 7, name: {}, caption: [], captionPlacement: 'diagonal', creditPlacement: 9 };
+    expect(() => render(<BrochurePage brochure={book} page={junk} index={1} total={2} active facing />)).not.toThrow();
+    expect(() => render(<BrochurePage brochure={{}} page={{ id: 'k', type: 'photo', span: 'left' }} isStatic facing />)).not.toThrow();
+  });
+});
+
 describe('<CoverArt>', () => {
   it('is decorative by default and an image when titled', () => {
     const { container, rerender } = render(<CoverArt style="seigaiha" seed={7} theme={kyoto.theme} />);

@@ -12,7 +12,7 @@ import { CATEGORY_MAP } from './categories.js';
 import { hasKey } from './lookup.js';
 import { safeImageSrc } from './photos/safeImageSrc.js';
 import { REGION_MAP } from './regions.js';
-import { ART_STYLES, FORMATS, PAGE_TYPES } from './schema.js';
+import { ART_STYLES, CAPTION_PLACEMENTS, CREDIT_PLACEMENTS, FORMATS, PAGE_TYPES } from './schema.js';
 import { SEASON_MAP } from './seasons.js';
 
 const TEXT_FIELDS = ['title', 'titleJp', 'subtitle', 'summary', 'organization', 'updatedAt', 'factsChecked'];
@@ -106,6 +106,11 @@ function fixList(value, fix) {
   return changed ? out : value;
 }
 
+/** A present enum field outside `choices` is reset to the first choice. */
+function fixChoice(edit, record, key, choices) {
+  if (key in record && !choices.includes(record[key])) edit.fix(key, choices[0]);
+}
+
 function fixUrlField(edit, record, key) {
   if (key in record && safeUrl(record[key]) !== record[key]) edit.fix(key, safeUrl(record[key]));
 }
@@ -137,7 +142,9 @@ const fixDetail = (detail) => {
 /**
  * The fields of one page, made safe for renderers: photo ids are strings,
  * place/map coordinates are real coordinates, links are http(s) only
- * (place.website, contact.ctaUrl, contact details' url), lists hold records.
+ * (place.website, contact.ctaUrl, contact details' url), lists hold records,
+ * photo pages' caption and credit placements are known values and `span` is
+ * 'left' | 'right' or absent.
  * A valid page comes back as the same object.
  */
 export function normalizePage(page) {
@@ -158,6 +165,13 @@ export function normalizePage(page) {
       break;
     case 'quote':
       fixText(edit, page, ['quoteJp']);
+      break;
+    case 'photo':
+      fixText(edit, page, ['name', 'nameJp', 'caption']);
+      fixChoice(edit, page, 'captionPlacement', CAPTION_PLACEMENTS);
+      fixChoice(edit, page, 'creditPlacement', CREDIT_PLACEMENTS);
+      // A span that is not a known half is dropped: the page is then a full-page photo.
+      if ('span' in page && page.span !== 'left' && page.span !== 'right') edit.drop('span');
       break;
     case 'contact':
       fixUrlField(edit, page, 'ctaUrl');

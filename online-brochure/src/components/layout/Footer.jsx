@@ -6,6 +6,7 @@ import { CATEGORIES } from '../../data/categories.js';
 import { REGIONS } from '../../data/regions.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { VerticalText } from '../ui/index.js';
+import { LivePhotosToggle } from '../photo/LivePhotosToggle.jsx';
 import { cn } from '../../lib/cn.js';
 import { AppearanceSwitch } from './AppearanceSwitch.jsx';
 import { NowInJapan } from './NowInJapan.jsx';
@@ -77,7 +78,7 @@ function Wordmark() {
  * Editorial footer on a sumi-ink band (dark in both themes): statement and
  * proverb, where the content comes from (real places, checked facts,
  * credited photographs, Natural Earth map data) with a link to the Credits
- * page, link columns into the library, a live "Now in Japan" strip, small
+ * page and the "Load photos from Wikimedia Commons" switch, link columns into the library, a live "Now in Japan" strip, small
  * print, and a giant TABI 旅 wordmark that rises on scroll. Hidden on the
  * immersive viewer route by <AppShell>.
  */
@@ -128,6 +129,7 @@ export function Footer() {
               </span>
               <ArrowRight aria-hidden="true" focusable="false" className={styles.creditsArrow} />
             </Link>
+            <LivePhotosToggle className={styles.livePhotos} />
           </div>
         </section>
 

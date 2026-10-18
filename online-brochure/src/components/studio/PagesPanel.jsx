@@ -1,21 +1,27 @@
 import { useRef, useState } from 'react';
 import { Reorder, useDragControls } from 'framer-motion';
-import { ArrowDown, ArrowUp, Copy, GripVertical, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, CircleAlert, Copy, GripVertical, Trash2, Wand2 } from 'lucide-react';
+import { spanOf } from '../../data/photoSpreads.js';
+import { createPhotoSpread, moveSpread, pageInsertIndex, spreadInsertIndex, spreadIssues, spreadPairAt } from '../../data/photoSpreadEdits.js';
 import { PAGE_TYPES } from '../../data/schema.js';
-import { Icon, IconButton } from '../ui/index.js';
+import { Button, Icon, IconButton } from '../ui/index.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import { modKeyLabel } from '../../hooks/useHotkey.js';
 import { createId } from '../../lib/id.js';
 import { pad } from '../../lib/format.js';
 import { spring } from '../../lib/motion.js';
 import { pageHeading, SECTION_JP } from '../brochure/blocks/pageUtils.js';
-import { AddPageMenu } from './AddPageMenu.jsx';
+import { AddPageMenu, SPREAD } from './AddPageMenu.jsx';
+import { Note } from './Note.jsx';
 import { studioActions as A } from './studioReducer.js';
 import styles from './PagesPanel.module.css';
 
-function PageRow({ page, brochure, index, total, selected, compact, onOpen, onMove, onDuplicate, onRemove, onDragEnd }) {
+function PageRow({ page, brochure, index, total, selected, compact, warning, spread, onOpen, onMove, onDuplicate, onRemove, onDragEnd }) {
   const controls = useDragControls();
   const meta = PAGE_TYPES[page.type] ?? { label: 'Page', icon: 'Info' };
+  const span = spanOf(page);
+  // Half of a spread: the arrows move both halves, a spread at a time.
+  const what = spread ? 'the spread' : '';
   const heading = pageHeading(page, brochure);
   // In the compact Tab order only the selected row's actions are tab stops; the
   // others stay one Enter away (and reachable by pointer and screen-reader browse).
@@ -29,6 +35,7 @@ function PageRow({ page, brochure, index, total, selected, compact, onOpen, onMo
       className={styles.row}
       data-page-id={page.id}
       data-selected={selected || undefined}
+      data-warning={warning || undefined}
       whileDrag={{ scale: 1.03, boxShadow: 'var(--shadow-lg)', zIndex: 3 }}
       transition={spring.snappy}
     >
@@ -51,31 +58,37 @@ function PageRow({ page, brochure, index, total, selected, compact, onOpen, onMo
         <span className={styles.text}>
           <span className={styles.heading}>{heading}</span>
           <span className={styles.type}>
-            {meta.label}
-            <span lang="ja"> · {SECTION_JP[page.type] ?? ''}</span>
+            {span ? `Spread, ${span} half` : meta.label}
+            <span lang="ja"> · {span ? '見開き' : (SECTION_JP[page.type] ?? '')}</span>
           </span>
         </span>
+        {warning && (
+          <span className={styles.warn} title={warning}>
+            <CircleAlert size={15} aria-hidden="true" />
+            <span className="sr-only">{` — ${warning}`}</span>
+          </span>
+        )}
       </button>
       <span className={styles.actions}>
         <IconButton
-          label={`Move “${heading}” up`}
+          label={spread ? `Move ${what} “${heading}” up` : `Move “${heading}” up`}
           icon={<ArrowUp />}
           size="sm"
           tooltipSide="top"
           data-action="up"
           tabIndex={actionTab}
-          disabled={index === 0}
-          onClick={() => onMove(index - 1)}
+          disabled={spread ? !spread.up : index === 0}
+          onClick={() => (spread ? spread.move(-1) : onMove(index - 1))}
         />
         <IconButton
-          label={`Move “${heading}” down`}
+          label={spread ? `Move ${what} “${heading}” down` : `Move “${heading}” down`}
           icon={<ArrowDown />}
           size="sm"
           tooltipSide="top"
           data-action="down"
           tabIndex={actionTab}
-          disabled={index === total - 1}
-          onClick={() => onMove(index + 1)}
+          disabled={spread ? !spread.down : index === total - 1}
+          onClick={() => (spread ? spread.move(1) : onMove(index + 1))}
         />
         <IconButton label={`Duplicate “${heading}”`} icon={<Copy />} size="sm" tooltipSide="top" data-action="duplicate" tabIndex={actionTab} onClick={onDuplicate} />
         <IconButton
@@ -111,12 +124,48 @@ export function PagesPanel({ brochure, selectedId, dispatch, onOpenPage, compact
   const byId = new Map(pages.map((p) => [p.id, p]));
   const order = dragOrder && dragOrder.length === pages.length && dragOrder.every((id) => byId.has(id)) ? dragOrder : pages.map((p) => p.id);
   const selectedIndex = pages.findIndex((p) => p.id === selectedId);
+  const issues = spreadIssues(pages);
+  const warnings = new Map(issues.flatMap((issue) => issue.ids.map((id) => [id, issue.message])));
+
+  // New pages go after the selected one, before a closing back cover, and never between the halves of a spread.
+  const after = selectedIndex === -1 ? pages.length : selectedIndex + 1;
+  const base = after === pages.length && pages.at(-1)?.type === 'back' ? Math.max(0, after - 1) : after;
 
   const add = (type) => {
+    if (type === SPREAD) {
+      const at = spreadInsertIndex(pages, base);
+      const spread = createPhotoSpread().map((fields) => ({ id: createId('pg'), type: 'photo', ...fields }));
+      dispatch(A.addPages(spread, at));
+      setMessage(`Added a double-page spread on pages ${at + 1} and ${at + 2}`);
+      onOpenPage?.(spread[0].id, { added: true });
+      return;
+    }
     const page = { id: createId('pg'), type, ...PAGE_TYPES[type].create() };
-    dispatch(A.addPage(page));
+    dispatch(A.addPage(page, pageInsertIndex(pages, base)));
     setMessage(`Added a ${PAGE_TYPES[type].label} page`);
     onOpenPage?.(page.id, { added: true });
+  };
+
+  /** Arrows on a spread half: both halves move, two pages at a time, so the spread keeps facing. */
+  const spreadMoves = (id) => {
+    const at = pages.findIndex((p) => p.id === id);
+    if (!spreadPairAt(pages, at)) return null;
+    const move = (dir) => {
+      const next = moveSpread(pages, at, dir);
+      const nextAt = next.findIndex((p) => p.id === id);
+      const [first] = spreadPairAt(next, nextAt);
+      dispatch(A.moveSpread(id, dir));
+      setMessage(`Moved the spread to pages ${first + 1}–${first + 2}`);
+      // Keep focus on the arrow just pressed, or hand it to the other one at the end of the line.
+      const again = moveSpread(next, nextAt, dir) !== next;
+      focusLater(id, (dir < 0) === again ? 'up' : 'down');
+    };
+    return { up: moveSpread(pages, at, -1) !== pages, down: moveSpread(pages, at, 1) !== pages, move };
+  };
+
+  const lineUp = () => {
+    dispatch(A.fixSpreads());
+    setMessage('Lined up the double-page spreads');
   };
 
   /** Focus a control in a row once React has committed the change. */
@@ -168,6 +217,20 @@ export function PagesPanel({ brochure, selectedId, dispatch, onOpenPage, compact
         <AddPageMenu onAdd={add} where={selectedIndex >= 0 ? `after page ${pad(selectedIndex + 1)}` : 'at the end'} />
       </header>
 
+      {issues.length > 0 && (
+        <Note
+          tone="warning"
+          className={styles.spreadNote}
+          action={
+            <Button size="sm" variant="secondary" iconLeft={<Wand2 />} onClick={lineUp}>
+              Line up
+            </Button>
+          }
+        >
+          <strong>{issues.length === 1 ? 'A photo spread is out of place.' : `${issues.length} photo spreads are out of place.`}</strong> {issues[0].message}
+        </Note>
+      )}
+
       <Reorder.Group
         as="ol"
         axis="y"
@@ -188,6 +251,8 @@ export function PagesPanel({ brochure, selectedId, dispatch, onOpenPage, compact
               total={order.length}
               selected={id === selectedId}
               compact={compact}
+              warning={warnings.get(id)}
+              spread={dragOrder ? null : spreadMoves(id)}
               onOpen={() => onOpenPage?.(id)}
               onMove={(to) => move(id, index, to)}
               onDuplicate={() => {
@@ -201,7 +266,10 @@ export function PagesPanel({ brochure, selectedId, dispatch, onOpenPage, compact
         })}
       </Reorder.Group>
 
-      <p className={styles.hint}>Drag the handle to reorder — or use the arrows. A brochure opens with a cover and closes with a back cover.</p>
+      <p className={styles.hint}>
+        Drag the handle to reorder — or use the arrows. A brochure opens with a cover and closes with a back cover; a double-page spread starts on an even
+        page (2, 4, 6…) so its halves face each other.
+      </p>
       <p className="sr-only" aria-live="polite">
         {message}
       </p>

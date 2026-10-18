@@ -4,7 +4,7 @@ import { Button } from '../../ui/index.js';
 import { Photo } from '../../photo/Photo.jsx';
 import { PhotoCredit } from '../../photo/PhotoCredit.jsx';
 import { CoverArt } from '../../brochure/index.js';
-import { resolvePhoto } from '../../../data/photos/index.js';
+import { usePhotoRecord } from '../../photo/photoContext.js';
 import { photoStatus, suggestPhotos } from '../photoLibrary.js';
 import { usePhotoLibrary } from './usePhotoLibrary.js';
 import styles from './PhotoField.module.css';
@@ -38,7 +38,8 @@ export function PhotoField({ label = 'Photo', value, brochure, hints = [], prefe
   if (open && !opened) setOpened(true);
   const library = usePhotoLibrary();
   const current = typeof value === 'string' ? value.trim() : '';
-  const record = current ? resolvePhoto(current, brochure) : null;
+  // Bundled, uploaded, or live from Wikimedia Commons once resolved.
+  const record = usePhotoRecord(current, brochure);
   const status = photoStatus(current, record);
   const hintKey = hints.filter(Boolean).join('|');
   const suggestions = useMemo(

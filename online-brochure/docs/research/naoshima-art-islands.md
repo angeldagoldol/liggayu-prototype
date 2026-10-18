@@ -126,3 +126,14 @@ All from Wikimedia Commons, to be confirmed by the curation step (`npm run photo
 | `naoshima-honmura` → gallery | File:Minamidera Naoshima.jpg · File:Art House Project Naoshima.jpg · File:Honmura, Naoshima.jpg | Category:Art House Project; Category:Honmura (Naoshima) | A lane of charred-cedar houses, or Minamidera's exterior. |
 | `naoshima-i-love-yu` → gallery | File:I Love Yu Naoshima.jpg · File:Naoshima Bath I Love Yu.jpg · File:直島銭湯「I♥湯」.jpg | Category:Naoshima Bath "I♥湯" | Facade (a building, so FoP-safe). |
 | `naoshima-miyanoura-port` → gallery | File:Naoshima Marine Station.jpg · File:Miyanoura Port Naoshima.jpg · File:Naoshima Pavilion.jpg | Category:Miyanoura (Naoshima); Category:Naoshima Pavilion | SANAA's flat-roofed terminal; if the pavilion is chosen, change alt to describe Fujimoto's white mesh "island". |
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 6–7) | Karato, Teshima: terraced rice fields brought back to life for the Setouchi Triennale, autumn | src/data/photos/manifest/naoshima-art-islands.json → `naoshima-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 6–7) | Karato, Teshima / 豊島 唐櫃 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |
+| Caption (full page, page 10) | Naoshima’s Hachiman shrine, the old island guardian above the village | src/data/photos/manifest/naoshima-art-islands.json → `naoshima-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Hachiman Shrine, Naoshima / 八幡神社 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |

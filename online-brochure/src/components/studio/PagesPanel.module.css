@@ -89,7 +89,7 @@
 
 .main {
   display: grid;
-  grid-template-columns: 1.4rem auto minmax(0, 1fr);
+  grid-template-columns: 1.4rem auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-2);
   min-width: 0;
@@ -216,4 +216,19 @@
   font-size: var(--fs-xs);
   line-height: 1.5;
   color: var(--ink-3);
+}
+
+/* A photo spread out of place: the row says so (and the note above the list offers to line it up). */
+.row[data-warning] {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+
+.warn {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+
+.spreadNote {
+  margin: 0;
 }

@@ -9,6 +9,8 @@ import { SEASONS } from './seasons.js';
 import { TEMPLATES } from '../components/studio/templates.js';
 import { getPhoto } from './photos/index.js';
 import { photoIdsIn } from './photos/registry.js';
+import { spanOf, spreadPartner } from './photoSpreads.js';
+import { spreadIssues } from './photoSpreadEdits.js';
 
 const REQUIRED = ['id', 'slug', 'title', 'titleJp', 'subtitle', 'category', 'region', 'seasons', 'organization', 'summary', 'tags', 'format', 'updatedAt', 'readMinutes', 'source', 'theme', 'cover', 'pages'];
 const HEX = /^#[0-9a-f]{6}$/i;
@@ -49,14 +51,47 @@ describe('built-in brochures', () => {
     expect(['serif', 'sans', 'mono']).toContain(b.theme.typeface);
   });
 
-  it.each(BROCHURES.map((b) => [b.slug, b]))('%s has 12–15 valid pages, cover first and back last', (_slug, b) => {
-    expect(b.pages.length).toBeGreaterThanOrEqual(12);
-    expect(b.pages.length).toBeLessThanOrEqual(15);
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s has 16–18 valid pages, cover first and back last', (_slug, b) => {
+    expect(b.pages.length).toBeGreaterThanOrEqual(16);
+    expect(b.pages.length).toBeLessThanOrEqual(18);
     expect(b.pages[0].type).toBe('cover');
     expect(b.pages.at(-1).type).toBe('back');
     expect(new Set(b.pages.map((p) => p.id)).size).toBe(b.pages.length);
     for (const page of b.pages) expect(Object.keys(PAGE_TYPES)).toContain(page.type);
     expect(new Set(b.pages.map((p) => p.type)).size).toBeGreaterThanOrEqual(8);
+  });
+
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s places every double-page spread on facing pages (2–3, 4–5…)', (_slug, b) => {
+    expect(spreadIssues(b.pages)).toEqual([]);
+    b.pages.forEach((page, i) => {
+      if (!spanOf(page)) return;
+      // A left half sits at an odd index (an even page number) and its right half follows it.
+      if (page.span === 'left') {
+        expect(i % 2, `${page.id} at index ${i}`).toBe(1);
+        expect(spreadPartner(b.pages, i)).toBe(i + 1);
+      } else {
+        expect(spreadPartner(b.pages, i)).toBe(i - 1);
+      }
+    });
+  });
+
+  it.each(BROCHURES.map((b) => [b.slug, b]))('%s opens a magazine spread and a full-page photo from its own photo slots', (_slug, b) => {
+    const photos = b.pages.filter((p) => p.type === 'photo');
+    const halves = photos.filter((p) => spanOf(p));
+    const full = photos.filter((p) => !spanOf(p));
+    expect(halves).toHaveLength(2);
+    expect(full).toHaveLength(1);
+    expect(halves[0].photo).toMatch(/-spread$/);
+    expect(full[0].photo).toMatch(/-fullpage$/);
+    // Every photo page is captioned (the spread on one of its halves) and named in Japanese too.
+    for (const page of [full[0], halves.find((p) => p.caption)]) {
+      expect(page.caption, page.id).toBeTruthy();
+      expect(page.name, page.id).toBeTruthy();
+      expect(page.nameJp, page.id).toMatch(/[぀-ヿ一-龯]/);
+      expect(page.caption, page.id).toBe(getPhoto(page.photo).caption);
+    }
+    // The spread leads the reader in early; neither photo page is the cover or the back.
+    expect(b.pages.findIndex((p) => p.span === 'left')).toBeLessThanOrEqual(7);
   });
 
   it.each(BROCHURES.map((b) => [b.slug, b]))('%s uses only known art styles and icons with sensible counts', (_slug, b) => {

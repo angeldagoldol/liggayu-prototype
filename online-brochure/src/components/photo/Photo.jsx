@@ -1,25 +1,35 @@
-import { useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { cn } from '../../lib/cn.js';
-import { resolvePhoto } from '../../data/photos/index.js';
-import { PhotoContext } from './photoContext.js';
+import { PhotoContext, PrintPhotosContext } from './photoContext.js';
 import { PhotoCredit } from './PhotoCredit.jsx';
 import { renderedWidth } from './renderedWidth.js';
+import { reportLiveImage, useLivePhotos } from './useLivePhotos.js';
 import styles from './Photo.module.css';
 
+/** How long the art stays under a live photo after it has loaded (its fade-in is 700 ms). */
+const UNDERLAY_MS = 900;
+
 const DEFAULT_SIZES = '(min-width: 900px) 50vw, 100vw';
+/** The one file a printed photo uses (an A4 page at ~150 dpi). */
+const PRINT_WIDTH = 1280;
 
 /**
  * A real photograph from the photo registry (src/data/photos) or one the
  * brochure carries itself (brochure.userPhotos, ids "user:<key>"), drawn the
  * way print does it: the dominant colour and a blurred preview hold the space,
- * then the picture sharpens in. Until a photo has been downloaded — or if it
- * fails to load — the `fallback` (usually the brochure's <CoverArt>) stands
- * in, filling the same box, so pages always look finished.
+ * then the picture sharpens in. A photo not bundled with the site is shown
+ * live from Wikimedia Commons once the browser has looked it up
+ * (data/photos/live.js; this component asks for it): the `fallback` art holds
+ * the space while the picture travels, then the photo sharpens in over it.
+ * Until there is a photo — or if it fails to load — the `fallback` (usually
+ * the brochure's <CoverArt>) stands in, filling the same box, so pages always
+ * look finished.
  *
  *   <Photo id="kyoto-senbon-torii" sizes="(min-width: 900px) 50vw, 100vw"
  *          credit="overlay" fallback={<CoverArt style="torii" seed={5} theme={theme} />} />
  *
- * - `id` | `photo`  a photo id (registry or "user:<key>"), or a record from resolvePhoto().
+ * - `id` | `photo`  a photo id (registry or "user:<key>"), or a record from resolvePhoto()
+ *                   (a registry record not available yet is looked up again, so it turns live).
  * - `brochure`      where "user:<key>" ids are looked up; defaults to the surrounding
  *                   <PhotoContext> (every <BrochurePage> provides its brochure).
  * - `alt`           overrides the manifest's alt text (falling back to its caption);
@@ -28,7 +38,9 @@ const DEFAULT_SIZES = '(min-width: 900px) 50vw, 100vw';
  *                   frame measures itself and replaces it with the width the picture is
  *                   really drawn at — wider than the slot when `cover` crops a landscape
  *                   photo into a portrait box — so thumbnails fetch the 480 and covers
- *                   never upscale. `priority` loads eagerly with high fetch priority.
+ *                   never upscale. `priority` loads eagerly with high fetch priority. Inside
+ *                   <PrintPhotosContext value> (the print edition) every photo loads eagerly,
+ *                   from one fixed 1280px file and no srcset.
  * - `fit`           'cover' (default) or 'contain'; `focus` overrides the CSS
  *                   object-position from the manifest ("50% 40%").
  * - `credit`        'none' (decorative, thumbnail, or credited elsewhere on the page),
@@ -55,7 +67,11 @@ export function Photo({
   kenBurns = false,
 }) {
   const fromContext = useContext(PhotoContext);
-  const record = photo && typeof photo === 'object' ? photo : resolvePhoto(id, brochure ?? fromContext);
+  const forPrint = useContext(PrintPhotosContext);
+  const given = photo && typeof photo === 'object' ? photo : null;
+  const lookupId = given ? (given.available || given.user ? null : given.id) : id;
+  const live = useLivePhotos(lookupId ? [lookupId] : []);
+  const record = given && !lookupId ? given : (live.resolvePhoto(lookupId, brochure ?? fromContext) ?? given);
   const usable = Boolean(record?.available && (record.srcSet || record.src?.(960)));
   const key = usable ? `${record.id}|${record.token ?? record.srcSet}` : 'none';
   return (
@@ -66,6 +82,7 @@ export function Photo({
       alt={alt}
       sizes={sizes}
       priority={priority}
+      forPrint={forPrint}
       fit={fit}
       focus={focus}
       className={className}
@@ -79,18 +96,28 @@ export function Photo({
 }
 
 /** Keyed by the photo's files, so a new photo starts from a fresh loading state. */
-function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className, credit, creditLinks, fallback, rounded, kenBurns }) {
+function PhotoFrame({ record, color, alt, sizes, priority, forPrint, fit, focus, className, credit, creditLinks, fallback, rounded, kenBurns }) {
   const [state, setState] = useState(record ? 'loading' : 'fallback');
   const [drawn, setDrawn] = useState(null);
+  // A live photo has no LQIP: the art stays under it until it has faded in.
+  const [settled, setSettled] = useState(false);
   const img = useRef(null);
   const frameRef = useRef(null);
-  const responsive = Boolean(record?.srcSet);
+  // Printed photos use one fixed file: a srcset would be re-chosen for the paper, unloaded.
+  const responsive = Boolean(record?.srcSet) && !forPrint;
 
   // An image already in the cache can finish before React listens: check once.
   useLayoutEffect(() => {
     const el = img.current;
     if (el?.complete && el.naturalWidth > 0) setState('loaded');
   }, []);
+
+  const live = Boolean(record?.live);
+  useEffect(() => {
+    if (!live || state !== 'loaded') return undefined;
+    const timer = setTimeout(() => setSettled(true), UNDERLAY_MS);
+    return () => clearTimeout(timer);
+  }, [live, state]);
 
   // Measure the frame (layout size, so flips and zooms do not count) before the
   // browser picks a file from srcset, and again whenever the frame resizes.
@@ -114,6 +141,7 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
     '--photo-ratio': record?.width && record?.height ? `${record.width} / ${record.height}` : undefined,
   };
   const withCaption = credit === 'caption' && !showFallback;
+  const underlay = live && !showFallback && !settled && fallback;
 
   const frame = (
     <div className={styles.frame} ref={frameRef}>
@@ -125,22 +153,33 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
         )
       ) : (
         <>
+          {underlay && (
+            <div className={styles.fallback} data-photo-underlay="" aria-hidden="true">
+              {fallback}
+            </div>
+          )}
           {record.lqip && <span className={styles.lqip} style={{ backgroundImage: `url("${record.lqip}")` }} aria-hidden="true" />}
           <img
             ref={img}
             className={styles.img}
-            src={record.src(960)}
+            src={record.src(forPrint ? PRINT_WIDTH : 960)}
             srcSet={responsive ? record.srcSet : undefined}
             sizes={responsive ? (drawn ? `${drawn}px` : sizes) : undefined}
             width={record.width ?? undefined}
             height={record.height ?? undefined}
             alt={alt ?? (record.alt || record.caption || '')}
-            loading={priority ? 'eager' : 'lazy'}
+            loading={priority || forPrint ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : undefined}
             decoding="async"
             draggable={false}
-            onLoad={() => setState('loaded')}
-            onError={() => setState('error')}
+            onLoad={() => {
+              setState('loaded');
+              reportLiveImage(record, true);
+            }}
+            onError={() => {
+              setState('error');
+              reportLiveImage(record, false);
+            }}
           />
           {credit === 'overlay' && <PhotoCredit credit={record.credit} links={creditLinks} className={styles.chip} />}
         </>
@@ -153,6 +192,7 @@ function PhotoFrame({ record, color, alt, sizes, priority, fit, focus, className
       className={cn(styles.photo, withCaption && styles.withCaption, rounded && styles.rounded, kenBurns && styles.kenBurns, className)}
       style={style}
       data-state={showFallback ? 'fallback' : state}
+      data-live={live || undefined}
       data-object-fit={fit === 'contain' ? 'contain' : 'cover'}
     >
       {frame}

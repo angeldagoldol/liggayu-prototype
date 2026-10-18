@@ -134,3 +134,14 @@ and the brochure shows its generative art until real titles are added. Suggested
 Avoid photos where people are the main subject, and be careful with photos of Ainu ceremonies or performers.
 Prefer buildings, landscapes and crafts on display. Snow and ice sculptures are temporary artworks: prefer
 wide views of the festival over close, flat reproductions of a single sculpture.
+
+## Photo pages (magazine spread and full page) — 18 October 2026
+
+The double-page spread and the full-page photo print a magazine caption: the place in small capitals, its Japanese name and one line taken from the photo manifest.
+
+| Claim (page) | Value used | Sources | Notes |
+| --- | --- | --- | --- |
+| Caption (spread, pages 4–5) | Ōdōri Park after dark during the Sapporo Snow Festival, its sculptures lit block after block through the city centre | src/data/photos/manifest/hokkaido-powder-snow.json → `hokkaido-spread` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (spread, pages 4–5) | Ōdōri Park, Sapporo / 大通公園 | manifest `place`; this brochure | Japanese name as printed elsewhere in this brochure (checked with it). |
+| Caption (full page, page 10) | A small torii under a heavy fall of snow at Hokkaidō Jingū, in the woods of Maruyama Park, Sapporo | src/data/photos/manifest/hokkaido-powder-snow.json → `hokkaido-fullpage` (caption, place) | Copied from the manifest; no new facts. |
+| Place name / Japanese name (full page, page 10) | Hokkaidō Jingū / 北海道神宮 | manifest `place`; editorial | Standard Japanese name of the place, added for the caption; **not re-checked online in this pass** (no web access) — confirm against the official sources above. |

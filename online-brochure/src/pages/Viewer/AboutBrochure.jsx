@@ -4,11 +4,12 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion
 import { ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, CircleDashed, PenLine } from 'lucide-react';
 import { Photo } from '../../components/photo/Photo.jsx';
 import { PhotoCredit } from '../../components/photo/PhotoCredit.jsx';
+import { useLivePhotos } from '../../components/photo/useLivePhotos.js';
 import { sourceLinks } from '../../components/viewer/links.js';
 import { sealText } from '../../components/viewer/pageMeta.js';
 import { Button, Hanko, RevealText, VerticalText } from '../../components/ui/index.js';
 import { getCategory } from '../../data/categories.js';
-import { creditsFor, resolvePhoto } from '../../data/photos/index.js';
+import { photoIdsIn } from '../../data/photos/index.js';
 import { getRegion } from '../../data/regions.js';
 import { FORMATS } from '../../data/schema.js';
 import { SEASONS } from '../../data/seasons.js';
@@ -126,7 +127,7 @@ function SourceList({ links, headingId }) {
 }
 
 /** Photo credits: a thumbnail, what it shows, and the author and licence (linked). */
-function PhotoCredits({ brochure, credits, pending, headingId }) {
+function PhotoCredits({ brochure, credits, pending, loading = 0, headingId }) {
   const total = credits.length + pending.length;
   return (
     <div className={styles.block}>
@@ -152,7 +153,13 @@ function PhotoCredits({ brochure, credits, pending, headingId }) {
           ))}
         </ul>
       )}
-      {pending.length > 0 && <p className={styles.pending}>{pendingNote(pending.length, credits.length)}</p>}
+      {loading > 0 ? (
+        <p className={styles.pending} role="status">
+          Looking up {pluralize(loading, 'photograph')} on Wikimedia Commons…
+        </p>
+      ) : (
+        pending.length > 0 && <p className={styles.pending}>{pendingNote(pending.length, credits.length)}</p>
+      )}
       {total === 0 && <p className={styles.blockEmpty}>No photographs: this brochure’s pictures are drawn in code from traditional patterns.</p>}
     </div>
   );
@@ -182,9 +189,12 @@ export function AboutBrochure({ brochure, onPlan }) {
 
   const links = useMemo(() => sourceLinks(brochure), [brochure]);
   const status = factsStatus(brochure, links.length);
-  const credits = useMemo(() => creditsFor(brochure), [brochure]);
-  const { pending } = useMemo(() => photoStatus(brochure, resolvePhoto), [brochure]);
-  const feature = useMemo(() => featurePhoto(brochure, resolvePhoto), [brochure]);
+  // Live Commons photos count (and are credited) as soon as they resolve.
+  const photoIds = useMemo(() => photoIdsIn(brochure), [brochure]);
+  const live = useLivePhotos(photoIds);
+  const credits = useMemo(() => live.creditsFor(brochure), [live, brochure]);
+  const { pending } = useMemo(() => photoStatus(brochure, live.resolvePhoto), [live, brochure]);
+  const feature = useMemo(() => featurePhoto(brochure, live.resolvePhoto), [live, brochure]);
 
   const facts = [
     { label: 'Region', value: region.label, jp: region.jp },
@@ -292,7 +302,7 @@ export function AboutBrochure({ brochure, onPlan }) {
             <SourceList links={links} headingId={sourcesId} />
           </motion.div>
           <motion.div variants={fadeUp}>
-            <PhotoCredits brochure={brochure} credits={credits} pending={pending} headingId={photosId} />
+            <PhotoCredits brochure={brochure} credits={credits} pending={pending} loading={live.loading} headingId={photosId} />
           </motion.div>
         </div>
       </motion.div>
