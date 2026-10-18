@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Tabi 旅 — an online brochure system about Japan: browse, flip through and build interactive Japan travel brochures.",
+  "engines": {
+    "node": ">=20.19"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
