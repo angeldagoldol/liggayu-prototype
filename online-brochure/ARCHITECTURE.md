@@ -64,9 +64,10 @@ own lazy chunk: `cover-art`, `Icon` (the named lucide registry), `BrochurePage`,
 `BrochureCard`, and small ones Rollup names after a module inside them
 (`progress`, `pageMeta`, `Switch`). The photo registry (`data/photos`, with
 the manifests, `photos.generated.json` and the live-photo resolver `live.js`)
-and `<Photo>` share a `Photo` chunk (cards, pages and the Studio's photo
-fields all import it; ~29 KB gzipped, half of it the Commons titles and
-search words live photos need); only the tiny live-photos *setting*
+and `<Photo>` travel with `<CoverArt>` in the `cover-art` chunk: every route
+that draws one draws the other (the art is each photograph's fallback), so
+Rollup keeps them together (~49 KB gzipped, a third of it the Commons titles
+and search words live photos need); only the tiny live-photos *setting*
 (`data/photos/liveSetting.js`, the footer's switch) is in the entry. The
 Studio's photo picker (`PhotoPicker`) is a lazy chunk of its own. Tabi draws
 no maps (there is no map chunk, no geo data and no `map` page type any more:
@@ -133,7 +134,9 @@ src/
                            (PhotoContext, usePhotoRecord: resolve ids in the brochure being drawn;
                            PrintPhotosContext: eager, fixed-size photos in the print edition);
                            useLivePhotos.js (useLivePhotos, useRequestLivePhotos, useLiveCredits);
-                           useLivePhotosSetting.js + LivePhotosToggle (footer, #/credits)
+                           useLivePhotosSetting.js + LivePhotosToggle (footer, #/credits);
+                           MastheadPlate (a page masthead's photograph: the first known id of a preference
+                           list, a vertical word on a hung slip, a seal, place + credit; a band on phones)
   components/viewer/       flipbook + reader UI (pure maths in spreads/flipMath/layout.js); TripPlanner
                            ("Plan this trip", tripPlan.js), links.js (a brochure's sources and official
                            sites, http(s) only, de-duplicated, with hosts);
@@ -196,6 +199,13 @@ region's Japanese name and brochure count — plain links in reading order, no
 map. Every Home photograph (`homePhotoIds`) is requested in one batch and
 listed under "Home page" on `#/credits`, whose totals count a photograph once
 even when a brochure shows it too.
+
+The other routes lead with photographs as well: the Library and Credits
+mastheads carry a photograph of a nostalgic place (`MastheadPlate`, with
+旅のしおり / 奥付 on its slip; ids `nostalgic-…` in `LibraryHeader.jsx` and
+`Credits.jsx`, the art standing in until one is found), the Studio start's fan
+of templates and the 404's suggested brochure show cover photographs, and the
+reader opens on each brochure's cover photograph.
 
 Shell behaviour every page can rely on (`components/layout/AppShell.jsx`):
 

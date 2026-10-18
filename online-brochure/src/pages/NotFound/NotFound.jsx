@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowUpRight, Shuffle } from 'lucide-react';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { CoverArt } from '../../components/brochure/CoverArt.jsx';
+import { Photo } from '../../components/photo/Photo.jsx';
 import { Button, IconButton, VerticalText } from '../../components/ui/index.js';
 import { getCategory } from '../../data/categories.js';
 import { getRegion } from '../../data/regions.js';
@@ -45,7 +46,13 @@ function Suggestion({ brochure, onShuffle }) {
         >
           <Link to={`/brochures/${brochure.slug}`} className={styles.card}>
             <span className={styles.cover} aria-hidden="true">
-              <CoverArt style={brochure.cover?.art ?? 'torii'} seed={brochure.cover?.seed ?? 1} theme={brochure.theme} className={styles.coverArt} />
+              <Photo
+                id={brochure.cover?.photo ?? ''}
+                alt=""
+                sizes="64px"
+                className={styles.coverArt}
+                fallback={<CoverArt style={brochure.cover?.art ?? 'torii'} seed={brochure.cover?.seed ?? 1} theme={brochure.theme} />}
+              />
             </span>
             <span className={styles.cardText}>
               <span className={styles.cardMeta}>
@@ -99,7 +106,7 @@ export default function NotFound() {
           </motion.h1>
           <motion.p className={styles.lede} variants={fadeUp}>
             You’ve wandered off the path, like a Nara deer following a rice cracker. It happens to the best of us — even
-            the best maps of Japan have a few unmarked lanes.
+            the oldest towns in Japan have a few lanes no guidebook names.
           </motion.p>
           <motion.p className={styles.path} variants={fadeUp}>
             Nothing lives at <code className={styles.code}>{location.pathname}</code>

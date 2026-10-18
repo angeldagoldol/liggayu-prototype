@@ -152,7 +152,7 @@ export const PAGE_TYPES = dict({
   cover: {
     label: 'Cover',
     jp: '表紙',
-    description: 'Front cover with artwork',
+    description: 'Front cover led by a photograph of the place',
     icon: 'BookOpen',
     create: () => ({ eyebrow: 'Volume 01', title: 'Your headline here', titleJp: '旅', subtitle: 'A short line that makes people want to turn the page.' }),
   },

@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Hanko, RevealText, VerticalText } from '../../../components/ui/index.js';
 import { CoverArt } from '../../../components/brochure/index.js';
+import { Photo } from '../../../components/photo/Photo.jsx';
 import { TEMPLATES } from '../../../components/studio/templates.js';
 import { ease, fadeUp, stagger } from '../../../lib/motion.js';
 import styles from './StartHero.module.css';
@@ -11,7 +12,7 @@ const STEPS = [
   { n: '03', jp: '刷る', title: 'Publish', text: 'Stamp it, and it joins the library as a flip-through brochure.' },
 ];
 
-/** Three template covers fanned out like proofs on a desk. */
+/** Three template covers — each a photograph of its real place — fanned out like proofs on a desk. */
 const FAN = [
   { template: TEMPLATES[1], rotate: -11, x: '-30%', y: 18, z: 1 },
   { template: TEMPLATES[2], rotate: 8, x: '30%', y: 26, z: 2 },
@@ -20,7 +21,8 @@ const FAN = [
 
 /**
  * Start-screen masthead: "Make your own Japan brochure · 作る", the three
- * steps, and a fan of template covers beside a vertical 作る.
+ * steps, and a fan of template covers (their cover photographs, the art
+ * until each arrives) beside a vertical 作る.
  */
 export function StartHero() {
   const reduce = useReducedMotion();
@@ -65,8 +67,15 @@ export function StartHero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 140, rotate: rotate * 2.2, x }}
               animate={{ opacity: 1, y, rotate, x, transition: { duration: 1.2, ease: ease.out, delay: 0.25 + i * 0.12 } }}
             >
-              <CoverArt style={template.brochure.cover.art} seed={template.brochure.cover.seed} theme={template.brochure.theme} animated />
-              <VerticalText className={styles.sheetJp} style={{ color: template.brochure.theme.ink }}>
+              <Photo
+                id={template.brochure.cover.photo}
+                alt=""
+                sizes="220px"
+                priority={i === FAN.length - 1}
+                className={styles.sheetPhoto}
+                fallback={<CoverArt style={template.brochure.cover.art} seed={template.brochure.cover.seed} theme={template.brochure.theme} animated />}
+              />
+              <VerticalText className={styles.sheetJp} style={{ color: template.brochure.theme.ink, background: template.brochure.theme.paper }}>
                 {template.brochure.titleJp}
               </VerticalText>
             </motion.div>

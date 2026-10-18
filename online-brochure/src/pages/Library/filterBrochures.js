@@ -54,7 +54,7 @@ const FIELD_WEIGHTS = {
   title: 8,
   titleJp: 8,
   kana: 7, // hiragana readings: title, region, category, seasons (data/kana.js)
-  places: 6, // the brochure's location and the sights on its place and map pages
+  places: 6, // the brochure's location and the sights on its place and photo pages
   tags: 5,
   category: 4,
   region: 4,

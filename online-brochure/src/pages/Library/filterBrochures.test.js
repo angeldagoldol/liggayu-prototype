@@ -127,11 +127,12 @@ describe('filterBrochures — kana readings', () => {
 
   it('finds category, region and season readings, and partial input while an IME composes', () => {
     expect(found('おんせん')).toEqual(['hakone-onsen-ryokan']);
-    // The festivals category reading ranks first; a festival named on a map (さっぽろ雪まつり) also matches.
+    // The festivals category reading ranks first; a festival named on a place page (さっぽろ雪まつり) also matches.
     expect(found('まつり')[0]).toBe('tohoku-summer-festivals');
     expect(found('かんさい').length).toBeGreaterThan(1);
     expect(found('きょ')).toContain('kyoto-thousand-gates');
-    expect(found('ふゆ')).toEqual(found('winter'));
+    // The same brochures as the English word (ranking ties may fall differently).
+    expect([...found('ふゆ')].sort()).toEqual([...found('winter')].sort());
   });
 
   it('ignores a remixed copy’s inherited title reading', () => {

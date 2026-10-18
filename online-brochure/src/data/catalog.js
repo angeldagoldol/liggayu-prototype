@@ -6,7 +6,7 @@
  * its first paint. `./brochures/index.js?outline` (scripts/build/brochure-outline.mjs)
  * gives each brochure with all its top-level fields (title, cover, theme,
  * location, sources, factsChecked…) and a stub per page — id, type, name,
- * nameJp, kicker, photo, item photos and map place names. That is everything
+ * nameJp, kicker, photo and item photos. That is everything
  * the Library, search, palette, Credits and the Studio's photo library read.
  * Anything that draws pages (the reader, the Home flip sketch, a Studio remix)
  * gets the full brochure from `loadBrochure`/`useFullBrochure`; each one is its

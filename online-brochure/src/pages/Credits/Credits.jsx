@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { Counter, Hanko, RevealText, VerticalText } from '../../components/ui/index.js';
+import { Counter, RevealText } from '../../components/ui/index.js';
 import { LivePhotosToggle } from '../../components/photo/LivePhotosToggle.jsx';
+import { MastheadPlate } from '../../components/photo/MastheadPlate.jsx';
 import { useLivePhotos } from '../../components/photo/useLivePhotos.js';
 import { useBrochures } from '../../context/BrochureContext.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
@@ -17,6 +18,9 @@ import { FactsTable } from './FactsTable.jsx';
 import { PhotoGroups } from './PhotoGroups.jsx';
 import { TypeSpecimens } from './TypeSpecimens.jsx';
 import styles from './Credits.module.css';
+
+/** The masthead's photograph, in order of preference: a nostalgic street from the Nostalgic Japan brochure. */
+const PLATE_PHOTOS = ['nostalgic-higashi-chaya', 'nostalgic-kakunodate', 'nostalgic-ginzan'];
 
 /** Every photograph the Home page shows (hero, Nostalgic Japan, seasons, regions). */
 const HOME_PHOTO_IDS = homePhotoIds(listPhotos());
@@ -111,19 +115,9 @@ export default function Credits() {
             </motion.dl>
           </motion.div>
 
-          <motion.aside
-            className={styles.accent}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, ease: ease.out, delay: 0.35 }}
-            aria-label="Okuzuke"
-          >
-            <VerticalText className={styles.vertical}>奥付</VerticalText>
-            <Hanko text="感謝" size={56} className={styles.hanko} />
-            <p className={styles.caption}>
-              <em>Okuzuke</em> — the colophon at the back of a Japanese book: who made it, who printed it, and when.
-            </p>
-          </motion.aside>
+          <MastheadPlate ids={PLATE_PHOTOS} jp="奥付" seal="感謝" label="Okuzuke">
+            <em>Okuzuke</em> — the colophon at the back of a Japanese book: who made it, who printed it, and when.
+          </MastheadPlate>
         </div>
 
         <div className="container">

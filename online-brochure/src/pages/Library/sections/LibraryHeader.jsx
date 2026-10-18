@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
-import { Counter, Hanko, RevealText, VerticalText } from '../../../components/ui/index.js';
+import { MastheadPlate } from '../../../components/photo/MastheadPlate.jsx';
+import { Counter, RevealText } from '../../../components/ui/index.js';
 import { ease, fadeUp, stagger } from '../../../lib/motion.js';
 import styles from './LibraryHeader.module.css';
+
+/** The masthead's photograph, in order of preference: a nostalgic street from the Nostalgic Japan brochure. */
+const PLATE_PHOTOS = ['nostalgic-fullpage', 'nostalgic-ginzan', 'nostalgic-tsumago'];
 
 const rule = {
   hidden: { scaleX: 0 },
@@ -10,8 +14,8 @@ const rule = {
 
 /**
  * Editorial opener: eyebrow, headline, standfirst, live counts set with
- * Japanese counters (冊 for bound volumes, 分 for minutes) and a vertical
- * 旅のしおり accent.
+ * Japanese counters (冊 for bound volumes, 分 for minutes) and, beside them,
+ * a photograph of a nostalgic street with 旅のしおり hung on a paper slip.
  * `stats`: { brochures, regions, minutes, saved }.
  */
 export function LibraryHeader({ stats }) {
@@ -25,10 +29,6 @@ export function LibraryHeader({ stats }) {
   return (
     <header className={styles.header}>
       <div className={`container ${styles.inner}`}>
-        <VerticalText className={styles.mobileAccent} aria-hidden="true">
-          旅のしおり
-        </VerticalText>
-
         <motion.div className={styles.copy} variants={stagger(0.1, 0.15)} initial="hidden" animate="show">
           <motion.p variants={fadeUp} className={`eyebrow ${styles.eyebrow}`}>
             <span>Library</span>
@@ -66,19 +66,9 @@ export function LibraryHeader({ stats }) {
           </motion.dl>
         </motion.div>
 
-        <motion.aside
-          className={styles.accent}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: ease.out, delay: 0.35 }}
-          aria-label="Tabi no shiori"
-        >
-          <VerticalText className={styles.vertical}>旅のしおり</VerticalText>
-          <Hanko text="資料" size={52} className={styles.hanko} />
-          <p className={styles.caption}>
-            <em>Tabi no shiori</em> — the little booklet handed out before every Japanese school trip.
-          </p>
-        </motion.aside>
+        <MastheadPlate ids={PLATE_PHOTOS} jp="旅のしおり" seal="資料" label="Tabi no shiori">
+          <em>Tabi no shiori</em> — the little booklet handed out before every Japanese school trip.
+        </MastheadPlate>
       </div>
 
       <div className="container">

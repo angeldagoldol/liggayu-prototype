@@ -27,6 +27,8 @@ describe('<Credits>', () => {
     }
     // Tabi draws no maps any more: no map section, no map data credit.
     expect(screen.queryByRole('region', { name: 'Map data' })).toBeNull();
+    // The masthead leads with a photograph of a nostalgic place (its art until it arrives).
+    expect(screen.getByRole('complementary', { name: 'Okuzuke' }).querySelector('[data-state]')).not.toBeNull();
   });
 
   it('groups photographs by the Home page and every built-in brochure', () => {

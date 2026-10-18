@@ -28,7 +28,7 @@ export function ViewerNotFound({ slug }) {
             Brochure not found · <span lang="ja">迷子</span> maigo
           </motion.p>
           <motion.h1 id="viewer-missing-title" className={styles.title} variants={fadeUp}>
-            This brochure has wandered off the map.
+            This brochure has wandered off the path.
           </motion.h1>
           <motion.p className={styles.text} variants={fadeUp}>
             We could not find a brochure called <code className={styles.slug}>{slug || '(blank)'}</code>. It may have been

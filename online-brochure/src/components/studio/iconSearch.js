@@ -45,7 +45,6 @@ const KEYWORDS = {
   Swords: 'samurai katana sword martial',
   Footprints: 'walk hike stroll footpath',
   Route: 'route trail itinerary path',
-  Map: 'map guide area',
   MapPin: 'location address place pin',
   Compass: 'explore direction compass',
   Hotel: 'hotel stay accommodation',

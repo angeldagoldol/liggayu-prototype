@@ -130,7 +130,7 @@ export function pageItems() {
     page('credits', {
       title: 'Credits & sources',
       titleJp: '奥付',
-      meta: 'Photo credits, fact checks, map data and fonts',
+      meta: 'Photo credits, fact checks and fonts',
       icon: 'Camera',
       to: '/credits',
       keywords: 'credits photographs photos photographers licence license attribution wikimedia commons sources facts fact check research fonts typefaces colophon okuzuke about',

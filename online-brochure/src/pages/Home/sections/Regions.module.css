@@ -214,6 +214,10 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-rows: clamp(9.5rem, 42vw, 14rem);
   }
+
+  .tile[data-shape='tile'] .plate {
+    --photo-credit-size: 0.5625rem;
+  }
 }
 
 @media (max-width: 420px) {

@@ -43,6 +43,8 @@ describe('<Library>', () => {
   it('lists every built-in brochure as one named link per card', () => {
     renderLibrary();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Every brochure, unfolded.');
+    // The masthead leads with a photograph of a nostalgic place (its art until it arrives).
+    expect(screen.getByRole('complementary', { name: 'Tabi no shiori' }).querySelector('[data-state]')).not.toBeNull();
     expect(cards()).toHaveLength(BROCHURES.length);
     expect(screen.getByRole('link', { name: 'Kyoto: A Thousand Gates' })).toHaveAttribute('href', '/brochures/kyoto-thousand-gates');
   });

@@ -46,7 +46,7 @@ export function CtaBand() {
             </p>
             <RevealText as="h2" text={['Make your own ', { text: 'Japan', className: 'serif-italic' }, ' brochure']} className={styles.title} />
             <p className={styles.text}>
-              Pick a cover motif and colours, then add pages — an itinerary, a phrasebook, prices, a map of favourite places. It saves in your browser, ready to flip.
+              Pick a cover motif and colours, then add pages — your favourite places with their photographs, a full-page picture, an itinerary, a phrasebook, prices. It saves in your browser, ready to flip.
             </p>
             <div className={styles.actions}>
               <Magnetic strength={0.3}>

@@ -105,7 +105,7 @@ export function StudioEditor({ mode, initial, baseline, storageKey, restored = f
 
   // Everything but the pages, so thumbnails only redraw when their own page changes. The
   // real-place fields and the uploads are in it too: covers print the coordinates and the
-  // facts-checked date, the map tints the region, and "user:<key>" photos resolve here.
+  // facts-checked date, and "user:<key>" photos resolve here.
   const { title, titleJp, subtitle, organization, theme, cover, format, updatedAt, region, location, factsChecked, sources, userPhotos } = doc;
   const shell = useMemo(
     () => ({ title, titleJp, subtitle, organization, theme, cover, format, updatedAt, region, location, factsChecked, sources, userPhotos }),

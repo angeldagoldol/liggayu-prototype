@@ -103,65 +103,6 @@
   color: var(--accent);
 }
 
-/* --- Vertical accent ---------------------------------------------------- */
-.accent {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: auto 1fr;
-  gap: var(--space-4) var(--space-5);
-  align-self: stretch;
-  align-content: end;
-  padding: var(--space-6) var(--space-5) var(--space-5);
-  /* Printer's crop marks in the four corners. */
-  --mark: linear-gradient(var(--ink-3), var(--ink-3));
-  background:
-    var(--mark) top left / 14px 1px no-repeat,
-    var(--mark) top left / 1px 14px no-repeat,
-    var(--mark) top right / 14px 1px no-repeat,
-    var(--mark) top right / 1px 14px no-repeat,
-    var(--mark) bottom left / 14px 1px no-repeat,
-    var(--mark) bottom left / 1px 14px no-repeat,
-    var(--mark) bottom right / 14px 1px no-repeat,
-    var(--mark) bottom right / 1px 14px no-repeat;
-}
-
-.vertical {
-  grid-column: 2;
-  grid-row: 1 / -1;
-  font-size: clamp(3rem, 1.9rem + 2.6vw, 4.75rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.06em;
-  color: var(--ink);
-}
-
-.hanko {
-  grid-column: 1;
-  grid-row: 1;
-  justify-self: end;
-}
-
-.caption {
-  grid-column: 1;
-  grid-row: 2;
-  align-self: end;
-  max-width: 14ch;
-  font-size: var(--fs-xs);
-  line-height: 1.5;
-  text-align: right;
-  color: var(--ink-3);
-}
-
-.caption em {
-  display: block;
-  margin-bottom: 0.2em;
-  font-family: var(--font-display);
-  font-size: var(--fs-sm);
-  font-style: italic;
-  color: var(--ink);
-}
-
 .rule {
   display: block;
   height: 1px;
@@ -181,35 +122,10 @@
   }
 }
 
-.mobileAccent {
-  display: none;
-}
-
 @media (max-width: 760px) {
   .inner {
     position: relative;
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .accent {
-    display: none;
-  }
-
-  /* The vertical accent shrinks to a margin note beside the eyebrow. */
-  .mobileAccent {
-    position: absolute;
-    top: 0.1rem;
-    right: var(--gutter);
-    display: inline-block;
-    font-size: var(--fs-base);
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    color: var(--accent);
-  }
-
-  .eyebrow,
-  .title {
-    padding-right: 1.75rem;
   }
 
   .stats {
